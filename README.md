@@ -8,7 +8,8 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 - `musikomat.html`: Musik’o’mat (Tisch 4)
 - `rhythmus-tresor.html`: Rhythmus-Tresor (Tisch 5)
 - `kompetenz-fussball.html`: Kompetenz Fußball (Abpfiff)
-- `fonts/`: lokale Schriften, keine Verbindung zu Google
+- `suno-studio.html`: Suno Klanganweisung Studio, Version 9 als Web-Fassung ohne die beiden KI-Funktionen (Credits: Franz Pregler)
+- `fonts/`: lokale Schriften, keine Verbindung zu Google (Lizenztexte der OFL-Schriften liegen bei)
 
 Die Apps laufen im Browser ohne Anmeldung und senden keine Eingaben an einen Server.
 Gebaut mit Claude (Anthropic). Lernziele und Spielregeln: Ulrich Frefat.
