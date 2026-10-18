@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Maestro Rush</title>
+<meta name="color-scheme" content="light">
+<style>
+/* Lokale Schriften, keine Verbindung zu Google: Spieltitel und Spieltext nutzen Poppins */
+@font-face{font-family:'Lilita One';src:url('fonts/Poppins-Bold.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Nunito';src:url('fonts/Poppins-Regular.ttf') format('truetype');font-weight:400 600;font-style:normal;font-display:swap}
+@font-face{font-family:'Nunito';src:url('fonts/Poppins-Bold.ttf') format('truetype');font-weight:700 900;font-style:normal;font-display:swap}
+</style>
+<style>
+/* Layout: eine Handy-Spalte (höchstens 430 px) vor einem Konzertsaal-Samtvorhang; die Auswertung ist eine helle Lesespalte (höchstens 720 px).
+   Spielwelt (literal): Samt #240B1E · Samt hell #3A1230 · Messing #F2B33D · Messing tief #C9861A · Elfenbein #FFF4E2 · Rosé-Grau #C9A9BC
+   Auswertung (literal): Papier #FCFCFB · Tinte #211A26 · Grau #645B6B · Linie #E7E1EA · Pflaume #9C3577 · Messing #C98417 · Blau #1F87B8
+   Schrift: Lilita One (Spieltitel, Zahlen), Nunito (Spieltext), Atkinson Hyperlegible (graue Leiste, Auswertung) */
+:root{color-scheme:light}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0!important;background:#240B1E!important;color:#FFF4E2!important;font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif!important;font-size:16px;line-height:1.4;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+body.dim{background:#1C1A1F!important;color:#F4F2F6!important}
+body.lit{background:#FCFCFB!important;color:#211A26!important}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible,input:focus-visible{outline:3px solid #F2B33D!important;outline-offset:2px}
+body.lit button:focus-visible{outline-color:#9C3577!important}
+h1,h2,h3,p{margin:0}
+.curtain{position:fixed;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(90deg,#2C0E26 0 26px,#1D0818 26px 34px,#2C0E26 34px 60px)!important}
+body.dim .curtain,body.lit .curtain{display:none}
+
+/* ------- graue Leiste außerhalb der App ------- */
+.meta{position:fixed;left:0;right:0;top:0;z-index:60;padding-top:env(safe-area-inset-top,0px);background:#ECEAEE!important;color:#2E2A33!important;border-bottom:1px solid #CFCAD3;font-family:'Atkinson Hyperlegible',system-ui,sans-serif!important;font-size:13px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:61;background:#ECEAEE!important}
+.meta-in{display:flex;align-items:center;gap:8px;height:40px;max-width:720px;margin:0 auto;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.meta-lbl{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta-lbl b{font-weight:700}
+.meta-time{font-variant-numeric:tabular-nums;font-weight:700;min-width:36px;text-align:right}
+.meta button{font-family:inherit;font-size:13px;padding:5px 9px;border-radius:6px;border:1px solid #BDB6C3!important;background:#FFFFFF!important;color:#2E2A33!important;white-space:nowrap}
+.meta button.end{background:#2E2A33!important;color:#FFFFFF!important;border-color:#2E2A33!important}
+
+/* ------- App-Spalte ------- */
+.app{position:relative;z-index:1;max-width:430px;margin:0 auto;min-height:100%;padding-top:calc(41px + env(safe-area-inset-top,0px));box-sizing:border-box;background:radial-gradient(120% 70% at 50% 0%,#4A1640 0%,#2B0D25 55%,#200A1B 100%)!important;box-shadow:0 0 0 1px #3D1434,0 30px 80px #00000099}
+body.dim .app{background:#1C1A1F!important;box-shadow:none}
+body.lit .app{max-width:720px;background:#FCFCFB!important;box-shadow:none}
+.scr{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 28px;box-sizing:border-box}
+
+/* ------- Einstieg (ehrlicher Rahmen) ------- */
+.intro{display:grid;gap:16px;padding-top:28px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#C9A9BC!important;font-weight:800}
+.intro h1{font-family:'Lilita One','Nunito',sans-serif!important;font-weight:400;font-size:34px;line-height:1.05;color:#FFF4E2!important;text-wrap:balance}
+.intro p{color:#EBD9E3!important;font-size:16px;max-width:60ch}
+.intro .facts{display:grid;gap:8px;margin:4px 0 6px;padding:0;list-style:none}
+.intro .facts li{display:flex;gap:10px;align-items:flex-start;color:#EBD9E3!important;font-size:15px}
+.intro .facts svg{flex:0 0 18px;margin-top:2px;color:#F2B33D!important}
+
+/* ------- Knöpfe der App ------- */
+.btn-gold{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;padding:12px 18px;border-radius:18px;font-family:'Lilita One','Nunito',sans-serif!important;font-size:21px;letter-spacing:.02em;color:#3A1230!important;background:linear-gradient(180deg,#FFD873 0%,#F2B33D 52%,#D99520 100%)!important;box-shadow:0 5px 0 #9C6512,0 10px 26px #F2B33D55;transition:transform .08s}
+.btn-gold:active{transform:translateY(3px);box-shadow:0 2px 0 #9C6512}
+.btn-gold.pulse{animation:pulse 1.3s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 5px 0 #9C6512,0 0 0 0 #F2B33D88}50%{box-shadow:0 5px 0 #9C6512,0 0 0 12px #F2B33D00}}
+.btn-meek{display:block;margin:12px auto 0;padding:6px 10px;font-size:12px;color:#8F7787!important;text-decoration:underline;text-underline-offset:2px}
+.btn-plain{display:block;width:100%;min-height:48px;border-radius:14px;font-weight:800;font-size:16px;color:#FFF4E2!important;background:#4B1A41!important;border:1px solid #6A2A5C!important}
+
+/* ------- Splash ------- */
+.splash{display:grid;gap:18px;justify-items:center;text-align:center;padding-top:26px}
+.logo{width:96px;height:96px;border-radius:28px;display:grid;place-items:center;background:linear-gradient(160deg,#FFD873,#D99520)!important;color:#3A1230!important;box-shadow:0 8px 0 #9C6512,0 18px 40px #F2B33D44;animation:float 3s ease-in-out infinite}
+.logo svg{width:60px;height:60px}
+@keyframes float{50%{transform:translateY(-6px) rotate(-3deg)}}
+.brand{font-family:'Lilita One',sans-serif!important;font-size:44px;line-height:1;color:#FFD873!important;text-shadow:0 3px 0 #9C6512}
+.tag{font-weight:800;font-size:19px;color:#FFF4E2!important}
+.rating{font-size:14px;color:#C9A9BC!important}
+.rating b{color:#FFD873!important}
+.pick-h{font-weight:900;font-size:16px;color:#FFF4E2!important;margin-top:4px}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.pick button{display:grid;justify-items:center;gap:6px;padding:16px 8px;border-radius:18px;background:#3A1230!important;border:2px solid #5E2352!important;color:#FFF4E2!important;font-weight:800}
+.pick button svg{width:44px;height:44px;color:#FFD873!important}
+.pick button:active,.pick button.sel{border-color:#F2B33D!important;background:#4E1944!important}
+.loading{width:100%;display:grid;gap:10px;text-align:center}
+.loading .bar{height:10px;border-radius:5px;background:#3A1230!important;overflow:hidden}
+.loading .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#F2B33D,#FFD873)!important;transition:width 1.5s ease-out}
+
+/* ------- Spiel ------- */
+.game{display:grid;gap:12px;padding-bottom:96px}
+.top{display:flex;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#3A1230!important;color:#C9A9BC!important;flex:0 0 40px}
+.icon-btn svg{width:22px;height:22px}
+.lvl{flex:1;min-width:0;display:flex;align-items:center;gap:8px;font-weight:900;font-size:14px;color:#FFF4E2!important}
+.lvl .badge{flex:0 0 auto;font-family:'Lilita One',sans-serif!important;font-size:13px;padding:3px 8px;border-radius:999px;background:#F2B33D!important;color:#3A1230!important}
+.lvl .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cur{display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:999px;background:#3A1230!important;font-family:'Lilita One',sans-serif!important;font-size:15px;color:#FFF4E2!important;font-variant-numeric:tabular-nums}
+.cur svg{width:16px;height:16px}
+.cur.star svg{color:#8FD3FF!important}
+.cur.tix svg{color:#FF7AB6!important}
+.score{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.score .lbl{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#C9A9BC!important}
+.score .val{font-family:'Lilita One',sans-serif!important;font-size:44px;line-height:1;color:#FFD873!important;text-shadow:0 3px 0 #9C6512;font-variant-numeric:tabular-nums}
+.score .val.bump{animation:bump .45s ease-out}
+@keyframes bump{40%{transform:scale(1.12)}}
+.flame{display:flex;align-items:center;gap:2px;font-family:'Lilita One',sans-serif!important;font-size:26px;color:#FF9B3D!important;opacity:.35;transition:opacity .3s}
+.flame.on{opacity:1}
+.flame.on svg{animation:flick .5s ease-in-out infinite alternate}
+.flame svg{width:30px;height:30px}
+@keyframes flick{to{transform:scale(1.12) rotate(4deg)}}
+.path{display:grid;gap:6px}
+.path .row{display:flex;justify-content:space-between;font-weight:800;font-size:13px;color:#EBD9E3!important}
+.path .row b{color:#FFD873!important}
+.path .track{position:relative;height:14px;border-radius:7px;background:#3A1230!important;overflow:hidden}
+.path .fill{position:absolute;inset:0 auto 0 0;width:0;border-radius:7px;background:linear-gradient(90deg,#F2B33D,#FFD873)!important;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.path .fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,#FFFFFF66,transparent)!important;animation:shine 1.8s linear infinite}
+@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.bonus-pill{justify-self:start;font-family:'Lilita One',sans-serif!important;font-size:14px;padding:4px 10px;border-radius:999px;background:#FF7AB6!important;color:#3A1230!important}
+.card{background:#FFF4E2!important;color:#2B0D25!important;border-radius:22px;padding:18px 16px 16px;display:grid;gap:14px;box-shadow:0 8px 0 #C9A9BC33,0 18px 40px #00000055}
+.card.enter{animation:cardIn .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes cardIn{from{transform:translateY(16px) scale(.97);opacity:.2}}
+.chip{justify-self:start;font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:#3A1230!important;color:#FFD873!important}
+.qtext{font-weight:900;font-size:20px;line-height:1.25;color:#2B0D25!important;text-wrap:balance}
+.hear{display:flex;flex-wrap:wrap;gap:8px}
+.hear button{display:flex;align-items:center;gap:6px;padding:9px 12px;border-radius:12px;background:#3A1230!important;color:#FFF4E2!important;font-weight:800;font-size:15px}
+.hear button svg{width:18px;height:18px;color:#FFD873!important}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts button{min-height:58px;padding:10px;border-radius:16px;font-weight:900;font-size:17px;line-height:1.15;color:#3A1230!important;background:#FFFFFF!important;border:2px solid #E6CFDC!important;box-shadow:0 4px 0 #E6CFDC;transition:transform .08s}
+.opts button:active{transform:translateY(3px);box-shadow:0 1px 0 #E6CFDC}
+.opts button.right{background:#D7F7E6!important;border-color:#39D98A!important;box-shadow:0 4px 0 #39D98A}
+.opts button.wrong{background:#FFE1E5!important;border-color:#FF5C6C!important;box-shadow:0 4px 0 #FF5C6C}
+.skip{justify-self:center;font-size:13px;font-weight:700;color:#8F6F84!important;text-decoration:underline}
+.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:430px;z-index:20;box-sizing:border-box;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));background:#1D0818EE!important;border-top:1px solid #4A1A40}
+.nav button{position:relative;display:grid;justify-items:center;gap:2px;padding:6px 4px;border-radius:14px;font-weight:800;font-size:13px;color:#EBD9E3!important}
+.nav button svg{width:28px;height:28px;color:#FFD873!important}
+.nav button.glow{background:#4E1944!important;animation:glow 1s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 0 3px #F2B33D,0 0 22px #F2B33D}}
+.nav .dot{position:absolute;top:2px;right:18%;min-width:18px;height:18px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:#FF5C6C!important;color:#FFFFFF!important;font-size:11px;line-height:18px;font-weight:900}
+
+/* ------- Bottom-Sheets ------- */
+.mbg{position:fixed;inset:0;z-index:30;background:#0E0410B3!important;opacity:0;transition:opacity .2s}
+.mbg.in{opacity:1}
+.sheet{position:fixed;left:50%;bottom:0;z-index:31;width:100%;max-width:430px;box-sizing:border-box;transform:translate(-50%,105%);transition:transform .28s cubic-bezier(.2,.9,.3,1);padding:22px max(18px,env(safe-area-inset-left,0px)) calc(22px + env(safe-area-inset-bottom,0px));border-radius:26px 26px 0 0;background:linear-gradient(180deg,#4A1640,#2B0D25)!important;color:#FFF4E2!important;box-shadow:0 -10px 40px #00000088;display:grid;gap:12px;text-align:center;max-height:88vh;overflow-y:auto}
+.sheet.in{transform:translate(-50%,0)}
+.sheet h2{font-family:'Lilita One',sans-serif!important;font-weight:400;font-size:30px;line-height:1.05;color:#FFD873!important;text-wrap:balance}
+.sheet p{color:#F2E2EA!important;font-size:16px}
+.sheet .small{font-size:13px;color:#C9A9BC!important}
+.sheet .big-ico{justify-self:center;width:110px;height:110px}
+.sheet .gain{font-family:'Lilita One',sans-serif!important;font-size:40px;color:#FFD873!important;text-shadow:0 3px 0 #9C6512}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.chips span{font-weight:900;font-size:13px;padding:4px 9px;border-radius:999px;background:#3A1230!important;color:#FFD873!important}
+.timer{justify-self:center;font-family:'Lilita One',sans-serif!important;font-size:34px;padding:2px 16px;border-radius:14px;background:#FF5C6C!important;color:#FFFFFF!important;font-variant-numeric:tabular-nums}
+.timer.calm{background:#3A1230!important}
+.scarce{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:900;color:#FF7AB6!important}
+.social{font-weight:800;font-size:14px;color:#C9F2DD!important}
+.price{display:grid;gap:4px;padding:12px;border-radius:16px;background:#3A1230!important}
+.price b{font-family:'Lilita One',sans-serif!important;font-weight:400;font-size:24px;color:#FF7AB6!important}
+.lb{display:grid;gap:6px;text-align:left}
+.lb div{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:#3A1230!important;font-weight:800}
+.lb div.me{background:#F2B33D!important;color:#3A1230!important}
+.lb .rk{font-family:'Lilita One',sans-serif!important;width:22px;text-align:center}
+.lb .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;background:#6A2A5C!important;color:#FFF4E2!important}
+.lb .me .av{background:#3A1230!important;color:#FFD873!important}
+.lb .nm{flex:1;min-width:0}
+.lb .pt{font-variant-numeric:tabular-nums}
+.coll{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.coll div{display:grid;justify-items:center;gap:4px;padding:12px 4px;border-radius:16px;background:#3A1230!important;font-weight:800;font-size:13px;color:#FFF4E2!important}
+.coll div svg{width:42px;height:42px;color:#FFD873!important}
+.coll div.miss{background:#26091F!important;border:2px dashed #F2B33D!important;color:#F2B33D!important}
+.coll div.miss svg{color:#5E2352!important}
+.wheel-wrap{position:relative;justify-self:center;width:250px;height:250px;max-width:100%}
+.wheel{position:absolute;inset:0;border-radius:50%;border:6px solid #FFD873;box-sizing:border-box}
+.wheel span{position:absolute;left:50%;top:50%;width:0;height:0;font-weight:900;font-size:12px}
+.wheel span i{position:absolute;left:-40px;width:80px;top:-104px;text-align:center;font-style:normal;color:#2B0D25!important}
+.wheel span i.gold{color:#FFFFFF!important}
+.pointer{position:absolute;left:50%;top:-10px;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:26px solid #FFFFFF;filter:drop-shadow(0 3px 2px #00000088);z-index:2}
+.hub{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:#FFD873!important;border:4px solid #3A1230;box-sizing:border-box}
+.check{display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;font-weight:700;color:#EBD9E3!important;cursor:pointer}
+.check input{appearance:none;-webkit-appearance:none;margin:0;width:22px;height:22px;border-radius:6px;border:2px solid #F2B33D;background:#3A1230!important;display:grid;place-items:center}
+.check input:checked{background:#F2B33D!important}
+.check input:checked::after{content:"";width:6px;height:11px;border:solid #3A1230;border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+.reasons{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.reasons button{padding:8px 12px;border-radius:999px;border:1px solid #6A2A5C!important;background:#3A1230!important;color:#EBD9E3!important;font-weight:800;font-size:14px}
+.reasons button.sel{background:#F2B33D!important;color:#3A1230!important}
+.chest{transform-origin:50% 90%}
+.chest.shake{animation:shake .5s ease-in-out 2}
+@keyframes shake{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+.chest .lid{transform-box:fill-box;transform-origin:10% 100%;transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+.chest.open .lid{transform:rotate(-38deg) translateY(-6px)}
+.spin{width:42px;height:42px;justify-self:center;border-radius:50%;border:4px solid #5E2352;border-top-color:#F2B33D;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;top:calc(50px + env(safe-area-inset-top,0px));z-index:40;width:calc(100% - 32px);max-width:398px;transform:translate(-50%,-160%);transition:transform .3s cubic-bezier(.2,.9,.3,1.2);display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:#FFF4E2!important;color:#2B0D25!important;font-weight:800;font-size:14px;box-shadow:0 10px 30px #00000088;box-sizing:border-box;text-align:left}
+.toast.in{transform:translate(-50%,0)}
+.toast .av{flex:0 0 32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#6A2A5C!important;color:#FFF4E2!important;font-size:12px;font-weight:900}
+.fx{position:fixed;inset:0;z-index:50;pointer-events:none}
+
+/* ------- Ende ------- */
+.end{display:grid;gap:16px;padding-top:48px;text-align:left}
+.end h1{font-family:'Atkinson Hyperlegible',system-ui,sans-serif!important;font-size:40px;font-weight:700;color:#F4F2F6!important}
+.end p{font-family:'Atkinson Hyperlegible',system-ui,sans-serif!important;font-size:18px;color:#D7D2DC!important;max-width:40ch}
+.end .btn-neutral{margin-top:10px;min-height:52px;border-radius:12px;font-family:'Atkinson Hyperlegible',system-ui,sans-serif!important;font-weight:700;font-size:17px;background:#F4F2F6!important;color:#1C1A1F!important}
+
+/* ------- Auswertung ------- */
+.ana{font-family:'Atkinson Hyperlegible',system-ui,sans-serif!important;color:#211A26!important;display:grid;gap:28px;padding-top:26px}
+.ana .eb{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#9C3577!important}
+.ana h1{font-size:34px;line-height:1.1;font-weight:700;color:#211A26!important;text-wrap:balance}
+.ana h2{font-size:22px;line-height:1.2;font-weight:700;color:#211A26!important;text-wrap:balance}
+.ana h3{font-size:16px;font-weight:700;color:#211A26!important}
+.ana p{font-size:16px;line-height:1.5;color:#3B3440!important;max-width:65ch}
+.ana .lead{font-size:18px;color:#211A26!important}
+.ana .muted{color:#645B6B!important;font-size:14px}
+.ana section{display:grid;gap:14px}
+.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.num{padding:10px 12px;border:1px solid #E7E1EA;border-radius:10px;display:grid;gap:2px;align-content:start}
+.num b{font-size:clamp(20px,6vw,30px);line-height:1.05;font-variant-numeric:tabular-nums;color:#211A26!important}
+.num span{font-size:13px;color:#645B6B!important}
+.sbar{display:grid;gap:8px}
+.sbar .bar{display:flex;gap:2px;height:22px}
+.sbar .bar i{display:block;height:100%;min-width:3px}
+.sbar .bar i:first-child{border-radius:4px 0 0 4px}
+.sbar .bar i:last-child{border-radius:0 4px 4px 0}
+.sbar .bar i:only-child{border-radius:4px}
+.sbar .leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:#3B3440!important}
+.sbar .leg span{display:flex;align-items:center;gap:6px}
+.sbar .leg em{font-style:normal;width:12px;height:12px;border-radius:3px;display:inline-block}
+.c1{background:#9C3577!important}.c2{background:#C98417!important}.c3{background:#1F87B8!important}
+.grp{display:grid;gap:10px}
+.grp h3{padding-bottom:6px;border-bottom:2px solid #211A26}
+.mech{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;padding:10px 0;border-bottom:1px solid #E7E1EA}
+.mech .mt{display:grid;gap:2px;min-width:0}
+.mech.solo{grid-template-columns:1fr}
+.mech .term{font-size:13px;font-weight:700}
+.mech .term.d{color:#B23C1F!important}
+.mech .term.b{color:#1F6E78!important}
+.mech .st{grid-row:1/3;align-self:start;margin-top:2px;font-size:12px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.mech .st.seen{background:#9C3577!important;color:#FFFFFF!important}
+.mech .st.not{background:#ECE8EF!important;color:#645B6B!important}
+.mech b{font-size:16px;color:#211A26!important}
+.mech p{font-size:15px}
+.mech .you{display:block;margin-top:4px;font-size:14px;color:#9C3577!important;font-weight:700}
+.tests{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:t}
+.tests li{counter-increment:t;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;font-size:17px;line-height:1.35;color:#211A26!important}
+.tests li::before{content:counter(t);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#211A26!important;color:#FFFFFF!important;font-weight:700;font-size:14px}
+.tbl{overflow-x:auto}
+.tbl table{border-collapse:collapse;width:100%;font-size:15px}
+.tbl th{text-align:left;font-size:13px;color:#645B6B!important;font-weight:700;padding:6px 10px 6px 0;border-bottom:2px solid #211A26}
+.tbl td{padding:9px 10px 9px 0;border-bottom:1px solid #E7E1EA;vertical-align:top;color:#211A26!important}
+.ana .src{font-size:13px;line-height:1.5;color:#645B6B!important;border-top:1px solid #E7E1EA;padding-top:14px;display:grid;gap:6px}
+.ana .src a{color:#9C3577!important}
+.ana .restart{justify-self:start;padding:9px 14px;border-radius:8px;border:1px solid #BDB6C3!important;background:#FFFFFF!important;color:#211A26!important;font-family:inherit;font-weight:700;font-size:14px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (max-width:360px){.meta-lbl .long{display:none}.score .val{font-size:38px}.opts button{font-size:15px}}
+</style>
+</head>
+<body>
+
+
+<div class="curtain" aria-hidden="true"></div>
+
+<div class="meta" role="region" aria-label="Simulation">
+  <div class="meta-in">
+    <span class="meta-lbl"><b>Simulation</b><span class="long"> · Fachseminar Musik · erfundene Anzeigen</span></span>
+    <span class="meta-time" id="metaTime">6:00</span>
+    <button type="button" id="btnSound" data-act="sound" aria-pressed="true">Ton an</button>
+    <button type="button" class="end" id="btnMetaEnd" data-act="metaEnd">Simulation beenden</button>
+  </div>
+</div>
+
+<main class="app" id="app">
+  <!-- ehrlicher Rahmen -->
+  <section class="scr intro" id="scrIntro">
+    <span class="eyebrow">Fachseminar Musik · Einsatz digitaler Medien</span>
+    <h1>Gleich startet eine Musik-Lern-App.</h1>
+    <p>Spielt sechs Minuten lang, so wie ihr eine neue App für eure Klasse ausprobieren würdet.</p>
+    <ul class="facts">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Die App ist inszeniert. Sie enthält erfundene Anzeigen und Angebote.</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Es gibt keine echten Käufe. Nichts wird gespeichert oder übertragen, niemand wird bewertet.</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Ton leise stellen, Kopfhörer, wer welche hat.</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Die graue Leiste oben gehört nicht zur App. Dort könnt ihr jederzeit aufhören.</li>
+    </ul>
+    <button type="button" class="btn-gold" data-act="openApp" id="btnOpenApp">App öffnen</button>
+  </section>
+
+  <!-- App: Splash und Instrumentwahl -->
+  <section class="scr splash" id="scrSplash" hidden>
+    <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 3v11.3A3.5 3.5 0 1 0 11 17.5V8.2l8-1.8v6.1a3.5 3.5 0 1 0 2 3.2V2.5z"/></svg></div>
+    <div class="brand">Maestro Rush</div>
+    <div class="tag">Wie musikalisch bist du wirklich?</div>
+    <div class="rating"><b>★ 4,9</b> · über 2 Millionen Musiker:innen lernen mit uns</div>
+    <div class="pick-h" id="pickH">Wähle dein Instrument</div>
+    <div class="pick" id="pick"></div>
+    <div class="loading" id="loading" hidden>
+      <div class="pick-h">Wir stellen deinen persönlichen Lernweg zusammen …</div>
+      <div class="bar"><i id="loadBar"></i></div>
+    </div>
+  </section>
+
+  <!-- App: Spiel -->
+  <section class="scr game" id="scrGame" hidden>
+    <div class="top">
+      <button type="button" class="icon-btn" data-act="menu" aria-label="Menü"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="lvl"><span class="badge" id="lvlBadge">Lv 1</span><span class="nm" id="lvlName">Sound Scout</span></div>
+      <span class="cur star" title="Sterne"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"/></svg><span id="stars">0</span></span>
+      <span class="cur tix" title="Tickets"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2.5a2.5 2.5 0 0 0 0 5V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.5a2.5 2.5 0 0 0 0-5z"/></svg><span id="tix">1</span></span>
+    </div>
+    <div class="score">
+      <div><div class="lbl">Kompetenzwert</div><div class="val" id="kVal">0</div></div>
+      <div class="flame" id="flame" title="Serie"><svg viewBox="0 0 24 24"><defs><linearGradient id="fl" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF5C3D"/><stop offset="1" stop-color="#FFD873"/></linearGradient></defs><path fill="url(#fl)" d="M12 2c1 3.5 5.5 5.6 5.5 10.4A5.5 5.5 0 0 1 6.5 12.6c0-2.1 1-3.8 2.2-4.8 0 2.1 1.1 3.2 2.2 3.2C10.9 8 9.9 5.6 12 2z"/></svg><span id="streak">0</span></div>
+    </div>
+    <div class="path">
+      <div class="row"><span id="pathName">Maestro-Pfad</span><b id="pathPct">72 %</b></div>
+      <div class="track"><div class="fill" id="pathFill"></div></div>
+    </div>
+    <span class="bonus-pill" id="bonusPill" hidden>Maestro-Bonus ×2 · noch 3 Fragen</span>
+    <div class="card" id="card"></div>
+  </section>
+
+  <!-- Ende (neutral) -->
+  <section class="scr end" id="scrEnd" hidden>
+    <h1 id="endH">Stopp.</h1>
+    <p id="endP">Die Simulation ist vorbei. Legt das Handy kurz mit dem Display nach unten.</p>
+    <p>Die Auswertung öffnet ihr, wenn die Seminarleitung es sagt.</p>
+    <button type="button" class="btn-neutral" data-act="openAnalysis" id="btnAnalysis">Auswertung öffnen</button>
+  </section>
+
+  <!-- Auswertung -->
+  <section class="scr ana" id="scrAna" hidden></section>
+</main>
+
+<nav class="nav" id="nav" hidden aria-label="Spielmenü">
+  <button type="button" data-act="navChest" id="navChest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 10a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v1H3z" fill="currentColor" fill-opacity=".25"/><path d="M3 11h18v8H3z"/><path d="M10 11v3h4v-3"/></svg>Truhe</button>
+  <button type="button" data-act="navColl" id="navColl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2" stroke-dasharray="3 2"/></svg><span id="collLbl">Sammlung 1/6</span></button>
+  <button type="button" data-act="navRank" id="navRank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7"/></svg>Rangliste</button>
+</nav>
+
+<div class="mbg" id="mbg" hidden></div>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"></div>
+<div class="toast" id="toast" aria-live="polite"></div>
+<canvas class="fx" id="fx" aria-hidden="true"></canvas>
+
+<script>
+(function(){
+'use strict';
+var $ = function(s, r){ return (r || document).querySelector(s); };
+var reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+var DUR = 360;
+var fmt = function(n){ return Math.round(n).toLocaleString('de-DE'); };
+var mmss = function(s){ s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+
+/* ================= Klang ================= */
+var AU = {ctx:null, m:null, on:true,
+  init: function(){
+    if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
+    try { var C = window.AudioContext || window.webkitAudioContext; this.ctx = new C(); this.m = this.ctx.createGain(); this.m.gain.value = .5; var k = this.ctx.createDynamicsCompressor(); this.m.connect(k); k.connect(this.ctx.destination); } catch (e) { this.ctx = null; }
+  },
+  t: function(){ return this.ctx ? this.ctx.currentTime + .02 : 0; },
+  o: function(type, f, t, d, v, f2){
+    if (!this.ctx || !this.on) return;
+    var c = this.ctx, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g); g.connect(this.m); o.start(t); o.stop(t + d + .05);
+  },
+  piano: function(f, t, d, v){ v = v || .2; this.o('triangle', f, t, d, v); this.o('sine', f * 2, t, d * .6, v * .3); this.o('sine', f * 3, t, d * .35, v * .1); },
+  chord: function(fs, t, d){ var s = this; fs.forEach(function(f){ s.piano(f, t, d, .14); }); },
+  wood: function(t, acc){ this.o('square', acc ? 1500 : 1200, t, .05, acc ? .16 : .12, 700); this.o('sine', 900, t, .08, .1, 500); },
+  coin: function(){ var t = this.t(); this.o('square', 988, t, .08, .07); this.o('square', 1319, t + .07, .25, .07); },
+  praise: function(n){ var t = this.t(), b = [523.25, 659.25, 783.99, 1046.5, 1318.5]; for (var i = 0; i < Math.min(5, 2 + n); i++) this.o('triangle', b[i], t + i * .07, .28, .13); this.coin(); },
+  level: function(){ var t = this.t(), s = this; [523.25, 659.25, 783.99, 1046.5, 1318.5, 1568].forEach(function(f, i){ s.o('triangle', f, t + i * .08, .35, .14); }); this.o('sawtooth', 130.8, t, .7, .05); },
+  fanfare: function(){ var t = this.t(), s = this; [[261.6, 329.6, 392], [349.2, 440, 523.3], [392, 493.9, 587.3], [523.3, 659.3, 784, 1046.5]].forEach(function(ch, i){ ch.forEach(function(f){ s.o('sawtooth', f, t + i * .2, i === 3 ? .9 : .22, .045); s.o('triangle', f, t + i * .2, i === 3 ? .9 : .22, .08); }); }); },
+  chest: function(){ var t = this.t(); this.o('sine', 300, t, .5, .12, 1200); var s = this; [1568, 2093, 2637].forEach(function(f, i){ s.o('triangle', f, t + .45 + i * .06, .3, .08); }); },
+  tick: function(u){ this.o('square', u ? 1500 : 1000, this.t(), .035, u ? .08 : .05); },
+  miss: function(){ var t = this.t(); this.o('triangle', 466, t, .32, .14, 440); this.o('triangle', 415, t + .32, .32, .14, 392); this.o('triangle', 370, t + .64, .6, .14, 330); },
+  soft: function(){ this.o('sine', 330, this.t(), .25, .1, 260); },
+  whoosh: function(){ this.o('sine', 900, this.t(), .25, .05, 200); }
+};
+var HEAR = {
+  moll: function(){ var t = AU.t(); AU.chord([220, 261.63, 329.63], t, 1.6); },
+  schlussA: function(){ var t = AU.t(); AU.chord([98, 246.94, 293.66, 349.23], t, .8); AU.chord([130.81, 261.63, 329.63, 392], t + .85, 1.6); },
+  schlussB: function(){ var t = AU.t(); AU.chord([98, 246.94, 293.66, 349.23], t, .8); AU.chord([110, 261.63, 329.63, 440], t + .85, 1.6); },
+  rhythmus: function(){ var t = AU.t(), q = .42; [0, 1, 2, 2.5, 3].forEach(function(b, i){ AU.wood(t + b * q, i === 0); }); [0, 1, 1.5, 2, 3].forEach(function(b, i){ AU.wood(t + (5 + b) * q, i === 0); }); },
+  hoeher: function(){ var t = AU.t(); AU.piano(392, t, .7, .22); AU.piano(329.63, t + .8, .7, .22); },
+  dur: function(){ var t = AU.t(); AU.chord([261.63, 329.63, 392], t, 1.6); },
+  quinte: function(){ var t = AU.t(); AU.piano(261.63, t, .8, .22); AU.piano(392, t + .9, .9, .22); },
+  takt3: function(){ var t = AU.t(), q = .45; for (var i = 0; i < 9; i++) AU.wood(t + i * q, i % 3 === 0); },
+  cresc: function(){ var t = AU.t(); for (var i = 0; i < 6; i++) AU.piano(392, t + i * .42, .38, .03 + i * .05); },
+  accel: function(){ var t = AU.t(), tt = 0, d = .7; for (var i = 0; i < 9; i++) { AU.wood(t + tt, i === 0); tt += d; d *= .84; } },
+  abwaerts: function(){ var t = AU.t(); [392, 349.23, 329.63, 293.66, 261.63].forEach(function(f, i){ AU.piano(f, t + i * .38, .36, .2); }); }
+};
+
+/* ================= Inhalte ================= */
+var IC = {
+  geige: '<path d="M12 2.5v7"/><path d="M10 9.5c-2.2.3-3.2 2-2.6 3.6.4 1-1.1 1.7-1 3.3.2 2.5 2.5 4.1 5.6 4.1s5.4-1.6 5.6-4.1c.1-1.6-1.4-2.3-1-3.3.6-1.6-.4-3.3-2.6-3.6"/><path d="M12 11v8M10 14.5h.01M14 14.5h.01"/>',
+  trompete: '<path d="M2.5 11h11.5M2.5 14h11.5"/><path d="M14 9.5l7-3.5v12l-7-3.5z"/><path d="M6.5 11V7.5M9 11V7.5M11.5 11V7.5"/>',
+  gitarre: '<circle cx="9" cy="15.5" r="4.6"/><circle cx="12.2" cy="10.8" r="3"/><path d="M14 9l6-6M18.5 2l2.5 2.5"/><circle cx="9.6" cy="14.6" r="1"/>',
+  klavier: '<rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M7.5 13v6M12 13v6M16.5 13v6"/><path d="M6 5h3v8H6zM10.5 5h3v8h-3zM15 5h3v8h-3z" fill="currentColor"/>',
+  trommel: '<ellipse cx="12" cy="9" rx="8" ry="3"/><path d="M4 9v7.5c0 1.7 3.6 3 8 3s8-1.3 8-3V9"/><path d="M6.5 11.3l3 7.2M17.5 11.3l-3 7.2"/><path d="M14 5l6-3M10 5L4 2"/>',
+  harfe: '<path d="M6 21V3.5c5.5 0 9.5 3.5 13 9.5-3.5 3.5-7 6.5-13 8z"/><path d="M9 6v13.5M12 8v10M15 10.5v6"/>'
+};
+var INSTR = [
+  {id:'geige', n:'Geige'}, {id:'trompete', n:'Trompete'}, {id:'gitarre', n:'Gitarre'}, {id:'klavier', n:'Klavier'}, {id:'trommel', n:'Trommel'}, {id:'harfe', n:'Goldene Harfe'}
+];
+function icon(id){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + IC[id] + '</svg>'; }
+var SPK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+var QS = [
+  {c:'Musiklehre', q:'Wie viele Linien hat ein Notensystem?', o:['4', '5', '6', '7'], a:1},
+  {c:'Gehörbildung', q:'Klingt dieser Akkord nach Dur oder nach Moll?', h:[['Akkord anhören', 'moll']], o:['Dur', 'Moll'], a:1},
+  {c:'Medienwissen', q:'Welche App erkennt einen Song, wenn man das Handy ans Radio hält?', o:['Spotify', 'Shazam', 'Chordify', 'Moises'], a:1},
+  {c:'Musiklehre', q:'Was bedeutet „piano“?', o:['laut', 'leise', 'schnell', 'langsam'], a:1},
+  {c:'Lehrersprache', q:'Wie lange schweigst du nach einer Frage an die Klasse mindestens, bevor du weitersprichst?', o:['gar nicht', 'eine Sekunde', 'drei Sekunden', 'eine Minute'], a:2},
+  {c:'Gehörbildung', q:'Welcher Schluss klingt abgeschlossen?', h:[['Schluss A', 'schlussA'], ['Schluss B', 'schlussB']], o:['Schluss A', 'Schluss B'], a:0},
+  {c:'Musiklehre', q:'Welcher Stammton folgt auf a?', o:['b', 'h', 'c', 'g'], a:1},
+  {c:'Medienwissen', q:'Schätzfrage: Wie viel Prozent der 12- bis 19-Jährigen hören jeden Tag Musik?', o:['30 %', '50 %', '70 %', '90 %'], a:2},
+  {c:'Werke', q:'Wer komponierte „Die Zauberflöte“?', o:['Haydn', 'Mozart', 'Beethoven', 'Schubert'], a:1},
+  {c:'Gehörbildung', q:'Zählt mit: Welcher Takt erklingt?', h:[['Schläge anhören', 'takt3']], o:['Zweiertakt', 'Dreiertakt', 'Vierertakt'], a:1},
+  {c:'Musiklehre', q:'Wie viele Achtelnoten passen in einen 4/4-Takt?', o:['4', '6', '8', '16'], a:2},
+  {c:'Unterrichtsführung', q:'Was kommt beim Aufrufen zuerst?', o:['der Name, dann die Frage', 'die Frage, dann der Name', 'die Reihenfolge der Sitzplätze', 'wer sich zuerst meldet'], a:1},
+  {c:'Musiklehre', q:'Welche Dur-Tonart hat ein Kreuz als Vorzeichen?', o:['F-Dur', 'G-Dur', 'D-Dur', 'B-Dur'], a:1},
+  {c:'Medienwissen', q:'Was macht die App Moises mit einem fertigen Song?', o:['Erkennt den Titel', 'Trennt ihn in Spuren', 'Schreibt die Noten', 'Macht ihn schneller'], a:1},
+  {c:'Gehörbildung', q:'Zwei Rhythmen nacheinander: Ist der zweite gleich oder verändert?', h:[['Rhythmen anhören', 'rhythmus']], o:['gleich', 'verändert'], a:1},
+  {c:'Instrumente', q:'Welches Instrument gehört zu den Holzblasinstrumenten, obwohl es meist aus Metall ist?', o:['Trompete', 'Querflöte', 'Posaune', 'Tuba'], a:1},
+  {c:'Lehrersprache', q:'Welche Ansage passt zum Prinzip „Stelle, ein Kriterium, Einsatz“?', o:['„Nochmal, aber schöner!“', '„Ab Takt 5, einheitlicher Bogenstrich, und …“', '„Das war gar nicht gut.“', '„Wir machen einfach weiter.“'], a:1},
+  {c:'Musiklehre', q:'Welches Intervall liegt zwischen c und g (aufwärts)?', o:['Terz', 'Quarte', 'Quinte', 'Sexte'], a:2},
+  {c:'Gehörbildung', q:'Was passiert mit der Lautstärke?', h:[['Anhören', 'cresc']], o:['crescendo', 'decrescendo', 'bleibt gleich'], a:0},
+  {c:'Medienwissen', q:'Schätzfrage: Wie viel Prozent der Jugendlichen nutzen KI für Hausaufgaben oder zum Lernen?', o:['24 %', '49 %', '74 %', '94 %'], a:2},
+  {c:'Werke', q:'In welcher Epoche wirkte Johann Sebastian Bach?', o:['Renaissance', 'Barock', 'Klassik', 'Romantik'], a:1},
+  {c:'Musiklehre', q:'Welche Dur-Tonart hat kein Vorzeichen?', o:['G-Dur', 'F-Dur', 'C-Dur', 'D-Dur'], a:2},
+  {c:'Unterrichtsführung', q:'Wo bist du in einer Arbeitsphase am besten?', o:['am Pult beim Korrigieren', 'im Raum unterwegs und präsent', 'vor der Tür', 'am Laptop'], a:1},
+  {c:'Gehörbildung', q:'Welches Intervall erklingt?', h:[['Intervall anhören', 'quinte']], o:['Terz', 'Quarte', 'Quinte', 'Oktave'], a:2},
+  {c:'Musiklehre', q:'Wie heißt die Paralleltonart von C-Dur?', o:['c-Moll', 'a-Moll', 'e-Moll', 'd-Moll'], a:1},
+  {c:'Medienwissen', q:'Wie heißt die Texteingabe, mit der man einer KI sagt, was sie tun soll?', o:['Patch', 'Prompt', 'Preset', 'Plug-in'], a:1},
+  {c:'Lehrersprache', q:'Was ist positiv formuliert?', o:['„Nicht so laut!“', '„Spielt pianissimo, flüstert mit euren Instrumenten.“', '„Wer stört, fliegt raus.“', '„Das war wieder zu laut.“'], a:1},
+  {c:'Musiklehre', q:'Wie viele Viertel dauert eine punktierte halbe Note?', o:['2', '2,5', '3', '4'], a:2},
+  {c:'Gehörbildung', q:'Welcher der beiden Töne ist höher?', h:[['Töne anhören', 'hoeher']], o:['Ton 1', 'Ton 2'], a:0},
+  {c:'Formenlehre', q:'Welcher Ablauf ist typisch für ein Rondo?', o:['A B A B', 'A B A C A', 'A A B B', 'A B C D'], a:1},
+  {c:'Unterrichtsführung', q:'Wie nennt Kounin es, wenn die Lehrkraft zeigt, dass sie alles im Blick hat?', o:['Allgegenwärtigkeit', 'Überlappung', 'Reibungslosigkeit', 'Gruppenmobilisierung'], a:0},
+  {c:'Medienwissen', q:'Was sollte feststehen, bevor eine App für die Stunde ausgewählt wird?', o:['Die Sitzordnung', 'Das WLAN-Passwort', 'Das Lernziel', 'Der Name der App'], a:2},
+  {c:'Gehörbildung', q:'Was passiert mit dem Tempo?', h:[['Anhören', 'accel']], o:['accelerando', 'ritardando', 'bleibt gleich'], a:0},
+  {c:'Musiklehre', q:'Welches Zeichen erhöht einen Ton um einen Halbton?', o:['das b', 'das Kreuz', 'die Fermate', 'das Auflösungszeichen'], a:1},
+  {c:'Lehrersprache', q:'Wie heißt es, wenn die Lehrkraft jede Schülerantwort wiederholt?', o:['Lehrerecho', 'Schülerecho', 'Paraphrase', 'Feedback'], a:0},
+  {c:'Musiklehre', q:'Welche Tonleiter kommt mit fünf Tönen aus?', o:['Chromatik', 'Pentatonik', 'Ganztonleiter', 'Dur-Tonleiter'], a:1},
+  {c:'Gehörbildung', q:'Und dieser Akkord: Dur oder Moll?', h:[['Akkord anhören', 'dur']], o:['Dur', 'Moll'], a:0},
+  {c:'Musiklehre', q:'Welche Taktart hat ein Walzer?', o:['2/4', '3/4', '4/4', '6/8'], a:1},
+  {c:'Unterrichtsführung', q:'Wie oft stellst du eine Arbeitsanweisung, wenn sie gut ist?', o:['einmal, klar formuliert', 'zweimal, zur Sicherheit', 'dreimal, in anderen Worten', 'bis alle nicken'], a:0},
+  {c:'Medienwissen', q:'Wie viel Prozent eines Schulbuchs darf eine Lehrkraft nach § 60a UrhG für ihre Klasse kopieren?', o:['5 %', '15 %', '25 %', '50 %'], a:1},
+  {c:'Musiklehre', q:'Wie viele Halbtonschritte umfasst eine große Terz?', o:['2', '3', '4', '5'], a:2},
+  {c:'Gehörbildung', q:'Bewegt sich die Melodie aufwärts oder abwärts?', h:[['Melodie anhören', 'abwaerts']], o:['aufwärts', 'abwärts'], a:1},
+  {c:'Lehrersprache', q:'Was gilt für den Sprechanteil der Lehrkraft?', o:['so viel wie möglich', 'so viel wie nötig, so wenig wie möglich', 'immer die Hälfte der Stunde', 'nur im Plenum'], a:1},
+  {c:'Musiklehre', q:'Welche Stufe einer Tonart heißt Dominante?', o:['II. Stufe', 'IV. Stufe', 'V. Stufe', 'VI. Stufe'], a:2},
+  {c:'Musiklehre', q:'Was bedeutet „crescendo“?', o:['lauter werdend', 'leiser werdend', 'schneller werdend', 'gebunden'], a:0}
+];
+var PRAISE = ['Stark!', 'Außergewöhnliches musikalisches Gespür!', 'Du hörst wie ein Profi!', 'Unglaublich. Das schaffen nur die Besten.', 'Wow! Top 3 Prozent!', 'Eine echte Ausnahmebegabung!', 'Grandios! Dein Ohr ist Gold wert.', 'Weltklasse!'];
+var LEVELS = ['Sound Scout', 'Rhythm Rookie', 'Melody Pro', 'Harmony Hero', 'Maestro', 'Grand Maestro'];
+var RIVALS = [{n:'Lena M.', d:40}, {n:'Tom K.', d:190}, {n:'Aylin S.', d:520}, {n:'Jonas P.', d:-260}, {n:'Mia R.', d:-610}];
+
+/* Die zwölf Mechanismen der Auswertung, in vier Gruppen */
+var GROUPS = [
+  {h:'Belohnung ohne Lernen', ids:['lob', 'punkte', 'ziel']},
+  {h:'Sammeln, Serien, Vergleich', ids:['sammlung', 'serie', 'rangliste']},
+  {h:'Druck und erfundene Angaben', ids:['countdown', 'angaben', 'preis']},
+  {h:'Lenkung durch die Oberfläche', ids:['knoepfe', 'auto', 'ausstieg']}
+];
+var TERM = {lob:['b', 'Bindung'], punkte:['b', 'Bindung · Addictive Design'], ziel:['b', 'Bindung'], sammlung:['b', 'Bindung · Addictive Design'], serie:['b', 'Bindung'], rangliste:['d', 'Dark Pattern · Fake Social Proof'], countdown:['d', 'Dark Pattern · Fake Urgency'], angaben:['d', 'Dark Pattern · Fake Scarcity, Fake Social Proof'], preis:['d', 'Dark Pattern · Hidden Costs, Currency Confusion'], knoepfe:['d', 'Dark Pattern · Confirmshaming, Visual Interference'], auto:['d', 'Dark Pattern · Preselection'], ausstieg:['d', 'Dark Pattern · Obstruction, Nagging']};
+var MECH = {
+  lob: ['Übertriebenes Lob', 'Jede richtige Antwort wurde gefeiert, egal wie leicht. „Top 3 Prozent“ bekamen alle. Das Lob sagte nichts über deine Leistung.'],
+  punkte: ['Punkte ohne Leistung', 'Truhe, Glücksrad, Mut-Bonus, Tempo- und Serien-Faktor brachten Punkte, ohne dass du etwas gehört oder gewusst hast. Was in der Truhe lag, entschied der Zufall.'],
+  ziel: ['Ziel, das wegläuft', 'Der Maestro-Pfad stand zu Beginn schon bei 72 Prozent. Kaum war er voll, kam der nächste Pfad. Ein Ende war nicht vorgesehen.'],
+  sammlung: ['Sammeln und Fast-Gewinnen', 'Fünf von sechs Instrumenten: Die Lücke zieht. Das Glücksrad blieb absichtlich direkt neben der goldenen Harfe stehen. Die Harfe gab es nie.'],
+  serie: ['Serie und Verlustangst', 'Die Flamme machte das Aufhören teuer. Wer sie verlor, sollte sie mit einem Ticket zurückkaufen, und zum Schluss drohte ein „Wochenbonus“ zu verfallen.'],
+  rangliste: ['Erfundene Rangliste', 'Lena M., Tom K. und die anderen gibt es nicht. Ihr Punktestand wurde aus deinem berechnet, damit sie immer knapp vor dir liegen.'],
+  countdown: ['Künstlicher Zeitdruck', 'Die 30 Sekunden für den Maestro-Bonus und die „letzten 60 Sekunden“ hatten keinen Grund außer dem, dass du schneller entscheidest.'],
+  angaben: ['Erfundene Angaben', '„Nur noch 2 Tickets“, „87 Prozent nehmen den Bonus“ und „über 2 Millionen Musiker:innen“ waren ausgedacht.'],
+  preis: ['Preis nach dem Klick', 'Was der Bonus kostet, stand erst im zweiten Schritt, in Tickets, die du vorher aus Sternen tauschen musstest. Drei Währungen machen Preise unübersichtlich.'],
+  knoepfe: ['Ungleiche Knöpfe', '„Bonus sichern“ war groß und golden, das Nein klein und grau und sprach dir den Lernerfolg ab. Der Fachbegriff dafür ist Confirmshaming.'],
+  auto: ['Vorausgewähltes Weiterspielen', '„Nächste Frage automatisch starten“ war schon angekreuzt. Eine Pause musstest du dir selbst nehmen.'],
+  ausstieg: ['Schwerer Ausstieg', 'Im Spielmenü führte „Spiel beenden“ über zwei Überredungsseiten. Ein abgelehntes Angebot kam noch einmal.']
+};
+
+/* ================= Zustand ================= */
+var S;
+function fresh(){
+  S = {phase:'intro', t0:0, elapsed:0, last:0, ended:false, endHow:'',
+    K:0, kShown:0, kFach:0, stars:0, tix:1, streak:0, best:0, bonusLeft:0,
+    level:0, path:72, pathName:'Maestro-Pfad', pathDone:false,
+    qi:0, answered:0, correct:0, qActive:false, qStart:0, cur:null,
+    instr:null, coll:[], chestReady:false, chests:0,
+    seen:{}, time:{frage:0, lob:0, angebot:0},
+    events:[], modal:false, modalSrc:'', fb:false,
+    offer:0, offerDeclinedAt:-1, flattered:false, lastMin:false, toastN:0,
+    dec:{bonus:'', exch:0, autoOff:false, exitTried:0, exitStayed:0, restored:0, chestLater:0, wheel:false}};
+}
+fresh();
+function mark(id){ S.seen[id] = true; }
+function wave(){ var e = S.elapsed; return e < 90 ? 1 : e < 200 ? 2 : e < 300 ? 3 : 4; }
+
+/* ================= Anzeige ================= */
+function show(id){ ['scrIntro', 'scrSplash', 'scrGame', 'scrEnd', 'scrAna'].forEach(function(s){ $('#' + s).hidden = s !== id; }); $('#nav').hidden = id !== 'scrGame'; window.scrollTo(0, 0); }
+function renderHUD(){
+  $('#lvlBadge').textContent = 'Lv ' + (S.level + 1);
+  $('#lvlName').textContent = LEVELS[S.level];
+  $('#stars').textContent = fmt(S.stars);
+  $('#tix').textContent = S.tix;
+  $('#streak').textContent = S.streak;
+  $('#flame').classList.toggle('on', S.streak >= 2);
+  $('#pathName').textContent = S.pathName;
+  $('#pathPct').textContent = Math.round(S.path) + ' %';
+  $('#pathFill').style.width = S.path + '%';
+  $('#bonusPill').hidden = S.bonusLeft <= 0;
+  $('#bonusPill').textContent = 'Maestro-Bonus ×2 · noch ' + S.bonusLeft + (S.bonusLeft === 1 ? ' Frage' : ' Fragen');
+  $('#collLbl').textContent = 'Sammlung ' + S.coll.length + '/6';
+  var nc = $('#navChest'); nc.classList.toggle('glow', S.chestReady);
+  nc.querySelectorAll('.dot').forEach(function(d){ d.remove(); });
+  if (S.chestReady) { var d = document.createElement('span'); d.className = 'dot'; d.textContent = '1'; nc.appendChild(d); }
+}
+function addK(n){
+  S.K += n;
+  var el = $('#kVal'), from = S.kShown, to = S.K, t0 = performance.now(), dur = reduced ? 1 : 650;
+  S.kShown = to;
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+  (function step(now){ var p = Math.min(1, (now - t0) / dur); el.textContent = fmt(from + (to - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); })(t0);
+}
+function toast(html, av){
+  var t = $('#toast'); t.innerHTML = (av ? '<span class="av">' + av + '</span>' : '') + '<span>' + html + '</span>';
+  t.classList.add('in'); var n = ++S.toastN;
+  setTimeout(function(){ if (S.toastN === n) t.classList.remove('in'); }, 2800);
+}
+
+/* ================= Effekte ================= */
+var FX = {cv:null, cx:null, p:[], run:false,
+  size: function(){ this.cv = $('#fx'); this.cx = this.cv.getContext('2d'); var d = Math.min(2, window.devicePixelRatio || 1); this.cv.width = innerWidth * d; this.cv.height = innerHeight * d; this.cx.setTransform(d, 0, 0, d, 0, 0); },
+  burst: function(x, y, n, kind){
+    if (reduced) return; if (!this.cv) this.size();
+    var cols = ['#FFD873', '#F2B33D', '#FF7AB6', '#8FD3FF', '#39D98A', '#FFFFFF'];
+    for (var i = 0; i < n; i++) {
+      var a = -Math.PI / 2 + (Math.random() - .5) * (kind === 'coin' ? 1.6 : 2.6), v = 5 + Math.random() * 7;
+      this.p.push({x:x, y:y, vx:Math.cos(a) * v, vy:Math.sin(a) * v, r:kind === 'coin' ? 6 + Math.random() * 3 : 3 + Math.random() * 3, c:kind === 'coin' ? '#FFD873' : cols[i % cols.length], k:kind, life:1, rot:Math.random() * 6, vr:(Math.random() - .5) * .4});
+    }
+    if (!this.run) { this.run = true; requestAnimationFrame(this.tick.bind(this)); }
+  },
+  rain: function(n){ if (reduced) return; if (!this.cv) this.size(); for (var i = 0; i < n; i++) this.p.push({x:Math.random() * innerWidth, y:-20 - Math.random() * innerHeight * .5, vx:(Math.random() - .5) * 2, vy:2 + Math.random() * 3, r:3 + Math.random() * 3, c:['#FFD873', '#FF7AB6', '#8FD3FF', '#39D98A', '#FFFFFF'][i % 5], k:'conf', life:1, rot:Math.random() * 6, vr:(Math.random() - .5) * .3}); if (!this.run) { this.run = true; requestAnimationFrame(this.tick.bind(this)); } },
+  tick: function(){
+    var c = this.cx; c.clearRect(0, 0, innerWidth, innerHeight);
+    this.p = this.p.filter(function(q){ return q.life > 0 && q.y < innerHeight + 40; });
+    this.p.forEach(function(q){
+      q.vy += .28; q.vx *= .99; q.x += q.vx; q.y += q.vy; q.rot += q.vr; q.life -= .006;
+      c.save(); c.translate(q.x, q.y); c.rotate(q.rot); c.globalAlpha = Math.max(0, Math.min(1, q.life * 1.5));
+      if (q.k === 'coin') { c.fillStyle = '#C9861A'; c.beginPath(); c.ellipse(0, 0, q.r, q.r * Math.abs(Math.cos(q.rot)) + 1, 0, 0, 7); c.fill(); c.fillStyle = q.c; c.beginPath(); c.ellipse(0, -1, q.r * .8, (q.r * Math.abs(Math.cos(q.rot)) + 1) * .8, 0, 0, 7); c.fill(); }
+      else { c.fillStyle = q.c; c.fillRect(-q.r, -q.r / 2, q.r * 2, q.r); }
+      c.restore();
+    });
+    if (this.p.length) requestAnimationFrame(this.tick.bind(this)); else { this.run = false; c.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+};
+function burstAt(el, n, kind){ if (!el) return; var r = el.getBoundingClientRect(); FX.burst(r.left + r.width / 2, r.top + r.height / 2, n, kind); }
+
+/* ================= Uhr ================= */
+var clockId = 0;
+function startClock(){
+  S.t0 = performance.now(); S.last = S.t0;
+  clearInterval(clockId);
+  clockId = setInterval(function(){
+    if (S.ended) return;
+    var now = performance.now(), dt = (now - S.last) / 1000; S.last = now;
+    S.elapsed = (now - S.t0) / 1000;
+    if (S.phase === 'game') {
+      if (S.modal) S.time.angebot += dt; else if (S.fb) S.time.lob += dt; else if (S.qActive) S.time.frage += dt;
+    }
+    $('#metaTime').textContent = mmss(DUR - S.elapsed);
+    if (S.elapsed >= DUR) endGame('zeit');
+  }, 250);
+}
+
+/* ================= Ablauf ================= */
+function openApp(){
+  AU.init(); AU.whoosh();
+  S.phase = 'splash'; startClock();
+  $('#pick').innerHTML = INSTR.slice(0, 4).map(function(i){ return '<button type="button" data-act="pickInstr" data-id="' + i.id + '">' + icon(i.id) + i.n + '</button>'; }).join('');
+  show('scrSplash'); mark('angaben');
+}
+function pickInstr(b){
+  if (S.instr) return;
+  S.instr = b.dataset.id; S.coll = [S.instr]; b.classList.add('sel'); AU.coin();
+  $('#pick').hidden = true; $('#pickH').hidden = true; $('#loading').hidden = false;
+  requestAnimationFrame(function(){ $('#loadBar').style.width = '100%'; });
+  setTimeout(function(){ if (S.ended) return; S.phase = 'game'; show('scrGame'); mark('ziel'); renderHUD(); $('#kVal').textContent = '0'; showQuestion(); }, reduced ? 200 : 1700);
+}
+function showQuestion(){
+  if (S.ended) return;
+  var q = QS[S.qi % QS.length], round = Math.floor(S.qi / QS.length); S.cur = q;
+  var card = $('#card');
+  var h = '<span class="chip">' + (round ? 'Grand-Maestro-Runde · ' : '') + q.c + '</span><p class="qtext">' + q.q + '</p>';
+  if (q.h) h += '<div class="hear">' + q.h.map(function(x){ return '<button type="button" data-act="hear" data-k="' + x[1] + '">' + SPK + x[0] + '</button>'; }).join('') + '</div>';
+  h += '<div class="opts">' + q.o.map(function(o, i){ return '<button type="button" data-act="answer" data-i="' + i + '">' + o + '</button>'; }).join('') + '</div>';
+  if (q.h) h += '<button type="button" class="skip" data-act="skipHear">Ohne Ton? Überspringen</button>';
+  card.innerHTML = h; card.classList.remove('enter'); void card.offsetWidth; card.classList.add('enter');
+  S.qActive = true; S.qStart = performance.now();
+}
+function answer(i){
+  if (!S.qActive || S.modal || S.fb || S.ended) return;
+  var q = S.cur, ok = i === q.a, dt = (performance.now() - S.qStart) / 1000, prev = S.streak;
+  S.qActive = false; S.answered++; S.qi++;
+  var btns = document.querySelectorAll('#card .opts button');
+  btns.forEach(function(b, k){ if (k === q.a) b.classList.add('right'); else if (k === i) b.classList.add('wrong'); b.disabled = true; });
+  var gain = 0, chips = [];
+  if (ok) {
+    S.correct++; S.streak++; S.best = Math.max(S.best, S.streak); S.kFach += 100; gain = 100; chips.push('richtig +100');
+    var mult = S.streak >= 6 ? 3 : S.streak >= 3 ? 2 : 1;
+    if (mult > 1) { gain += 100 * (mult - 1); chips.push('Serie ×' + mult); mark('serie'); mark('punkte'); }
+    if (dt < 6) { gain += 50; chips.push('Tempo +50'); mark('punkte'); }
+    if (S.bonusLeft > 0) { gain *= 2; S.bonusLeft--; chips.push('Maestro-Bonus ×2'); }
+    S.path = Math.min(100, S.path + 4); mark('lob');
+  } else {
+    S.streak = 0; gain = 50; chips.push(i < 0 ? 'Übersprungen, trotzdem +50' : 'Mut-Bonus +50'); mark('punkte');
+    S.path = Math.min(100, S.path + 2);
+  }
+  if (S.streak >= 2) mark('serie');
+  addK(gain); renderHUD();
+  feedback(ok, gain, chips, q, i < 0);
+  plan(ok, prev);
+}
+function feedback(ok, gain, chips, q, skipped){
+  S.fb = true; mark('auto');
+  var title = ok ? PRAISE[Math.min(PRAISE.length - 1, S.correct - 1)] : (skipped ? 'Kein Problem!' : 'Fast! Mutig probiert.');
+  var html = '<h2>' + title + '</h2><div class="gain">+' + fmt(gain) + '</div><div class="chips">' + chips.map(function(c){ return '<span>' + c + '</span>'; }).join('') + '</div>' +
+    (ok ? '' : '<p class="small">Richtig wäre: ' + q.o[q.a] + '</p>') +
+    '<label class="check"><input type="checkbox" id="chkAuto" checked>Nächste Frage automatisch starten</label>' +
+    '<button type="button" class="btn-gold" data-act="fbNext">Weiter</button>';
+  openSheet(html, 'fb');
+  if (ok) { AU.praise(Math.min(3, S.streak)); setTimeout(function(){ burstAt($('#sheet .gain'), 26, 'coin'); }, 120); } else AU.soft();
+  var chk = $('#chkAuto');
+  chk.addEventListener('change', function(){ if (!chk.checked) { S.dec.autoOff = true; clearTimeout(S.fbTimer); } });
+  S.fbTimer = setTimeout(function(){ if (S.fb && chk.checked) fbNext(); }, 2300);
+}
+function fbNext(){ if (!S.fb) return; clearTimeout(S.fbTimer); S.fb = false; closeSheet(true); }
+
+/* Nach jeder Antwort: Ereignisse einplanen. In späteren Wellen kommen mehr Angebote als Fragen. */
+function plan(ok, prev){
+  var n = S.answered, w = wave(), ev = [];
+  if (!ok && prev >= 3) ev.push(['serieLost', prev]);
+  if (n === 2) ev.push(['level', 1]);
+  if (n === 3) { S.chestReady = true; ev.push(['chestPrompt']); }
+  if (n === 5) ev.push(['wheel']);
+  if (n > 5 && n % 3 === 0) { S.chestReady = true; setTimeout(function(){ if (!S.ended) toast('Deine Truhe ist bereit! Unten antippen.'); }, 2600); }
+  if (S.path >= 100 && !S.pathDone) ev.push(['path']);
+  if (S.K >= 2500 && S.level < 2 && n !== 2) ev.push(['level', 2]);
+  if (S.K >= 5500 && S.level === 2) ev.push(['level', 3]);
+  if (w >= 2 && !S.flattered && n >= 4) ev.push(['flatter']);
+  if (!S.offer && (S.elapsed >= 190 || n >= 9)) ev.push(['offer', 0]);
+  else if (S.offer === 1 && S.dec.bonus !== 'ja' && S.offerDeclinedAt >= 0 && n >= S.offerDeclinedAt + 2) ev.push(['offer', 1]);
+  if (w >= 3 && n % 2 === 1) ev.push(['rival']);
+  if (w >= 4 && !S.lastMin) ev.push(['lastMin']);
+  S.events = S.events.concat(ev.slice(0, w >= 3 ? 3 : 2));
+  if (w >= 2 && n >= 4 && n % 2 === 0) setTimeout(function(){ if (!S.ended) { var r = RIVALS[0]; toast(r.n + ' ist nur ' + r.d + ' Punkte vor dir. Überhol sie!', 'LM'); mark('rangliste'); } }, 900);
+}
+function nextStep(){
+  if (S.ended) return;
+  if (S.events.length) { var e = S.events.shift(); EV[e[0]](e[1]); return; }
+  showQuestion();
+}
+
+/* ================= Sheets ================= */
+function openSheet(html, src){
+  var sh = $('#sheet'), bg = $('#mbg');
+  sh.innerHTML = html; sh.hidden = false; bg.hidden = false;
+  if (src !== 'fb') { S.modal = true; S.modalSrc = src || 'queue'; }
+  requestAnimationFrame(function(){ sh.classList.add('in'); bg.classList.add('in'); });
+  return sh;
+}
+function closeSheet(goOn){
+  var sh = $('#sheet'), bg = $('#mbg'), src = S.modalSrc;
+  clearInterval(S.cdId); S.modal = false; S.modalSrc = '';
+  sh.classList.remove('in'); bg.classList.remove('in');
+  setTimeout(function(){ if (!S.modal && !S.fb) { sh.hidden = true; bg.hidden = true; } }, reduced ? 0 : 260);
+  if (goOn && src !== 'nav') setTimeout(nextStep, reduced ? 0 : 280);
+}
+function seq(html, src){ return openSheet(html, src || 'queue'); }
+
+/* ================= Ereignisse ================= */
+var EV = {
+  level: function(to){
+    S.level = Math.max(S.level, to); var gift = to === 1 ? 400 : 600; S.stars += 300; mark('punkte'); mark('lob');
+    seq('<span class="eyebrow">Aufgestiegen</span><h2>' + LEVELS[S.level] + '</h2><p>Level ' + (S.level + 1) + '! Dein Talent ist nicht zu übersehen.</p><div class="chips"><span>+' + gift + ' Kompetenz</span><span>+300 Sterne</span></div><button type="button" class="btn-gold" data-act="close">Weiter</button>');
+    AU.level(); FX.rain(90); addK(gift); renderHUD();
+  },
+  chestPrompt: function(){
+    seq(chestSVG(false) + '<h2>Deine erste Truhe ist bereit!</h2><p>Was steckt wohl drin?</p><button type="button" class="btn-gold pulse" data-act="chestOpen">Jetzt öffnen</button><button type="button" class="btn-meek" data-act="chestLater">Später</button>');
+    mark('punkte');
+  },
+  wheel: function(){
+    var segs = [['+100', '#FFF4E2'], ['Sterne', '#FFD873'], ['Goldene Harfe', '#C9861A'], ['+250', '#FF7AB6'], ['+500', '#FFF4E2'], ['Ticket', '#8FD3FF'], ['+100', '#FFD873'], ['+250', '#FF7AB6']];
+    var grad = 'conic-gradient(' + segs.map(function(s, i){ return s[1] + ' ' + (i * 45) + 'deg ' + ((i + 1) * 45) + 'deg'; }).join(',') + ')';
+    var labels = segs.map(function(s, i){ return '<span style="transform:rotate(' + (i * 45 + 22.5) + 'deg)"><i' + (i === 2 ? ' class="gold"' : '') + '>' + s[0] + '</i></span>'; }).join('');
+    seq('<span class="eyebrow">Gratis-Dreh</span><h2>Glücksrad</h2><p>Heute mit Chance auf die <b>Goldene Harfe</b>!</p><div class="wheel-wrap"><div class="pointer"></div><div class="wheel" id="wheel" style="background:' + grad + '">' + labels + '</div><div class="hub"></div></div><button type="button" class="btn-gold pulse" data-act="spin" id="btnSpin">Drehen!</button>');
+    mark('sammlung');
+  },
+  path: function(){
+    S.pathDone = true; S.level = Math.max(S.level, 4); addK(1000); renderHUD(); mark('ziel');
+    seq('<span class="eyebrow">Ziel erreicht</span><h2>MAESTRO!</h2><p>Du hast den Maestro-Pfad abgeschlossen.</p><div class="gain">+1.000</div><button type="button" class="btn-gold" data-act="pathNext">Weiter</button>');
+    AU.fanfare(); FX.rain(160);
+  },
+  flatter: function(){
+    S.flattered = true; mark('lob');
+    var sh = seq('<span class="eyebrow">Persönliche Auswertung</span><h2>Wir analysieren dein Profil …</h2><div class="spin"></div>');
+    setTimeout(function(){ if (!S.modal || S.ended) return; sh.innerHTML = '<span class="eyebrow">Persönliche Auswertung</span><h2>Du gehörst zu den besten 3 Prozent!</h2><p>Unter allen Musikpädagog:innen in deiner Region bist du ein besonderes Talent.</p><button type="button" class="btn-gold" data-act="close">Weiter so!</button>'; AU.level(); FX.rain(60); }, reduced ? 300 : 1500);
+  },
+  offer: function(again){
+    S.offer = again ? 2 : 1; mark('countdown'); mark('angaben'); mark('knoepfe'); if (again) mark('ausstieg');
+    var left = again ? 20 : 30;
+    var sh = seq('<span class="eyebrow">' + (again ? 'Letzte Chance' : 'Nur jetzt') + '</span><h2>Maestro-Bonus: doppelte Punkte!</h2><div class="timer" id="cd">0:' + left + '</div><div class="scarce"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2.5a2.5 2.5 0 0 0 0 5V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2.5a2.5 2.5 0 0 0 0-5z"/></svg>Nur noch 2 goldene Tickets verfügbar</div><p class="social">87 Prozent der Musikpädagog:innen nehmen den Bonus mit.</p><button type="button" class="btn-gold pulse" data-act="offerYes">Bonus sichern</button><button type="button" class="btn-meek" data-act="offerNo">Nein, ich verzichte auf meinen Lernerfolg</button>');
+    clearInterval(S.cdId);
+    S.cdId = setInterval(function(){
+      left--; var el = $('#cd'); if (!el) { clearInterval(S.cdId); return; }
+      el.textContent = '0:' + String(Math.max(0, left)).padStart(2, '0'); AU.tick(left <= 10);
+      if (left <= 0) { clearInterval(S.cdId); if (!S.dec.bonus) S.dec.bonus = 'abgelaufen'; S.offerDeclinedAt = S.answered; sh.innerHTML = '<h2>Abgelaufen.</h2><p>Schade! Beim nächsten Mal schneller sein.</p><button type="button" class="btn-gold" data-act="close">Weiter</button>'; AU.miss(); }
+    }, 1000);
+  },
+  rival: function(){
+    mark('rangliste'); var r = RIVALS[1];
+    seq('<span class="eyebrow">Rangliste</span><h2>' + r.n + ' hat dich überholt!</h2>' + board() + '<button type="button" class="btn-gold" data-act="close">Zurückholen</button><button type="button" class="btn-meek" data-act="close">Ist mir egal</button>');
+    AU.miss();
+  },
+  serieLost: function(n){
+    mark('serie');
+    seq('<span class="eyebrow">Oh nein</span><h2>Deine Serie von ' + n + ' ist gerissen!</h2><p>Hol sie dir für 1 Ticket zurück, bevor sie verfällt.</p><button type="button" class="btn-gold pulse" data-act="restore" data-n="' + n + '"' + (S.tix < 1 ? ' disabled' : '') + '>' + (S.tix < 1 ? 'Kein Ticket mehr' : 'Serie retten · 1 Ticket') + '</button><button type="button" class="btn-meek" data-act="close">Serie aufgeben</button>');
+    AU.miss();
+  },
+  lastMin: function(){
+    S.lastMin = true; mark('countdown'); mark('serie');
+    seq('<span class="eyebrow">Achtung</span><h2>Noch 60 Sekunden für deinen Wochenbonus!</h2><p>Wer jetzt aufhört, verliert 2.000 Bonuspunkte.</p><button type="button" class="btn-gold pulse" data-act="close">Weiterspielen</button>');
+    AU.tick(true);
+  }
+};
+function board(){
+  var rows = RIVALS.slice(0, 3).map(function(r){ return {n:r.n, p:S.K + r.d}; }).concat([{n:'Du', p:S.K, me:true}], RIVALS.slice(3).map(function(r){ return {n:r.n, p:Math.max(0, S.K + r.d)}; }));
+  return '<div class="lb">' + rows.map(function(r, i){ var ini = r.me ? 'DU' : r.n.split(' ').map(function(x){ return x[0]; }).join(''); return '<div' + (r.me ? ' class="me"' : '') + '><span class="rk">' + (i + 1) + '</span><span class="av">' + ini + '</span><span class="nm">' + r.n + '</span><span class="pt">' + fmt(Math.round(r.p / 10) * 10) + '</span></div>'; }).join('') + '</div>';
+}
+function chestSVG(open){
+  return '<svg class="big-ico chest' + (open ? ' open' : '') + '" id="chest" viewBox="0 0 120 110" aria-hidden="true"><ellipse cx="60" cy="102" rx="44" ry="6" fill="#00000055"/><rect x="18" y="52" width="84" height="46" rx="6" fill="#8A4B1F" stroke="#3A1230" stroke-width="3"/><rect x="18" y="62" width="84" height="8" fill="#F2B33D"/><rect x="52" y="58" width="16" height="20" rx="3" fill="#FFD873" stroke="#3A1230" stroke-width="2.5"/><g class="lid"><path d="M18 52V40a14 14 0 0 1 14-14h56a14 14 0 0 1 14 14v12z" fill="#A65E28" stroke="#3A1230" stroke-width="3"/><rect x="18" y="44" width="84" height="7" fill="#F2B33D"/></g></svg>';
+}
+function chestOpen(){
+  S.chestReady = false; S.chests++; mark('punkte');
+  var missing = INSTR.filter(function(x){ return S.coll.indexOf(x.id) < 0 && x.id !== 'harfe'; });
+  var ins = (S.chests === 1 || Math.random() < .6) && missing.length ? missing[0] : null;
+  var k = S.chests === 1 ? 500 : [300, 450, 600, 900][Math.floor(Math.random() * 4)];
+  var st = S.chests === 1 ? 600 : [200, 300, 500, 700][Math.floor(Math.random() * 4)];
+  var sh = $('#sheet');
+  sh.innerHTML = chestSVG(false) + '<h2>Öffne …</h2>';
+  var ch = $('#chest'); if (ch) ch.classList.add('shake'); AU.whoosh();
+  setTimeout(function(){
+    if (!S.modal || S.ended) return;
+    if (ins) { S.coll.push(ins.id); mark('sammlung'); }
+    addK(k); S.stars += st; renderHUD();
+    sh.innerHTML = chestSVG(false) + '<h2>' + (ins ? 'Neues Instrument: ' + ins.n + '!' : 'Volltreffer!') + '</h2><div class="chips"><span>+' + fmt(k) + ' Kompetenz</span><span>+' + fmt(st) + ' Sterne</span></div>' +
+      (S.coll.length >= 5 ? '<p class="small">' + S.coll.length + ' von 6 Instrumenten. Nur noch die Goldene Harfe fehlt!</p>' : '<p class="small">Sammlung: ' + S.coll.length + ' von 6</p>') +
+      '<button type="button" class="btn-gold" data-act="close">Einsammeln</button>';
+    AU.chest(); requestAnimationFrame(function(){ var c2 = $('#chest'); if (c2) c2.classList.add('open'); }); setTimeout(function(){ burstAt($('#chest'), 40, 'coin'); }, 150);
+  }, reduced ? 200 : 1000);
+}
+function spin(){
+  var w = $('#wheel'), b = $('#btnSpin'); if (!w || b.disabled) return; b.disabled = true; S.dec.wheel = true;
+  var target = 360 * 6 - (135 + 4);
+  if (w.animate && !reduced) w.animate([{transform:'rotate(0deg)'}, {transform:'rotate(' + target + 'deg)'}], {duration:3600, easing:'cubic-bezier(.12,.72,.16,1)', fill:'forwards'});
+  else w.style.transform = 'rotate(' + target + 'deg)';
+  var ticks = 0, tid = setInterval(function(){ AU.tick(false); if (++ticks > 22) clearInterval(tid); }, 140);
+  setTimeout(function(){
+    if (!S.modal || S.ended) return;
+    addK(250); renderHUD(); AU.miss(); mark('punkte');
+    b.outerHTML = '<p><b>So knapp!</b> Die Goldene Harfe war nur einen Hauch entfernt. Beim nächsten Dreh vielleicht!</p><div class="chips"><span>+250 Kompetenz</span></div><button type="button" class="btn-gold" data-act="close">Weiter</button>';
+  }, reduced ? 300 : 3700);
+}
+
+/* ================= Menü und Ausstieg ================= */
+function menu(){
+  if (S.modal || S.fb) return;
+  openSheet('<h2>Menü</h2><button type="button" class="btn-plain" data-act="inert">Profil</button><button type="button" class="btn-plain" data-act="inert">Einstellungen</button><button type="button" class="btn-plain" data-act="inert">Hilfe</button><button type="button" class="btn-gold" data-act="close">Zurück zum Spiel</button><button type="button" class="btn-meek" data-act="exit1">Spiel beenden</button>', 'nav');
+}
+function exit1(){
+  S.dec.exitTried++; mark('ausstieg'); mark('knoepfe');
+  var loss = []; if (S.streak > 0) loss.push('deine Serie von ' + S.streak); if (S.stars > 0) loss.push(fmt(S.stars) + ' Sterne'); loss.push('dein Fortschritt auf dem ' + S.pathName + ' (' + Math.round(S.path) + ' %)');
+  var lossTxt = loss.length > 1 ? loss.slice(0, -1).join(', ') + ' und ' + loss[loss.length - 1] : loss[0];
+  $('#sheet').innerHTML = '<span class="eyebrow">Wirklich?</span><h2>Willst du wirklich aufhören?</h2><p>' + lossTxt.charAt(0).toUpperCase() + lossTxt.slice(1) + (loss.length > 1 ? ' gehen' : ' geht') + ' verloren.</p><button type="button" class="btn-gold pulse" data-act="stay">Weiterlernen</button><button type="button" class="btn-meek" data-act="exit2">Trotzdem beenden</button>';
+  AU.miss();
+}
+function exit2(){
+  var nxt = S.level < LEVELS.length - 1 ? LEVELS[S.level + 1] : 'zum Wochenbonus';
+  $('#sheet').innerHTML = '<span class="eyebrow">Schade</span><h2>Was hält dich ab?</h2><div class="reasons"><button type="button" data-act="reason">Keine Zeit</button><button type="button" data-act="reason">Zu leicht</button><button type="button" data-act="reason">Zu schwer</button></div><p>Nur noch 2 Fragen bis <b>' + nxt + '</b>!</p><button type="button" class="btn-gold pulse" data-act="stay">Doch weiterspielen</button><button type="button" class="btn-meek" data-act="exitFinal">Endgültig beenden</button>';
+}
+
+/* ================= Ende ================= */
+function endGame(how){
+  if (S.ended) return;
+  S.ended = true; S.endHow = how; S.qActive = false; S.fb = false; S.modal = false;
+  clearInterval(clockId); clearInterval(S.cdId); clearTimeout(S.fbTimer); S.events = [];
+  var sh = $('#sheet'); sh.classList.remove('in'); sh.hidden = true; $('#mbg').hidden = true; $('#toast').classList.remove('in');
+  FX.p = [];
+  document.body.classList.add('dim'); $('#btnMetaEnd').hidden = true;
+  $('#endH').textContent = how === 'zeit' ? 'Zeit.' : 'Stopp.';
+  $('#metaTime').textContent = mmss(DUR - Math.min(DUR, S.elapsed));
+  show('scrEnd'); AU.soft();
+}
+function renderAnalysis(demo){
+  document.body.classList.remove('dim'); document.body.classList.add('lit');
+  var played = !demo && S.answered > 0;
+  var tot = S.time.frage + S.time.lob + S.time.angebot, fach = S.kFach, ohne = Math.max(0, S.K - S.kFach);
+  var pct = S.K ? Math.round(100 * fach / S.K) : 0;
+  function mal(n){ return n === 1 ? 'einmal' : n === 2 ? 'zweimal' : n + '-mal'; }
+  function bar(parts){ var sum = parts.reduce(function(a, p){ return a + p[1]; }, 0) || 1; return '<div class="bar">' + parts.filter(function(p){ return p[1] > 0; }).map(function(p){ return '<i class="' + p[2] + '" style="flex:' + (p[1] / sum) + ' 1 0" title="' + p[0] + '"></i>'; }).join('') + '</div><div class="leg">' + parts.map(function(p){ return '<span><em class="' + p[2] + '"></em>' + p[0] + ': ' + p[3] + '</span>'; }).join('') + '</div>'; }
+  var how = {zeit:'Die Zeit ist abgelaufen.', meta:'Du hast über die graue Leiste beendet, ohne Überredung.', app:'Du hast über das Spielmenü beendet, nach zwei Überredungsseiten.'}[S.endHow] || '';
+  var you = {
+    punkte: S.chests ? 'Du hast ' + S.chests + (S.chests === 1 ? ' Truhe' : ' Truhen') + ' geöffnet' + (S.dec.wheel ? ' und am Glücksrad gedreht.' : '.') : (S.dec.wheel ? 'Du hast am Glücksrad gedreht.' : ''),
+    serie: 'Deine längste Serie: ' + S.best + '.' + (S.dec.restored ? ' Du hast sie mit einem Ticket zurückgekauft.' : ''),
+    countdown: S.dec.bonus === 'ja' ? 'Du hast den Bonus angenommen.' : S.dec.bonus === 'nein' ? 'Du hast den Bonus abgelehnt.' : S.dec.bonus === 'abgelaufen' ? 'Du hast die Zeit ablaufen lassen.' : '',
+    preis: S.dec.exch ? 'Du hast ' + fmt(S.dec.exch) + ' Sterne in Tickets getauscht.' : '',
+    auto: S.seen.auto ? (S.dec.autoOff ? 'Du hast das Häkchen mindestens einmal entfernt.' : 'Du hast das Häkchen immer stehen lassen.') : '',
+    ausstieg: S.dec.exitTried ? 'Du wolltest ' + mal(S.dec.exitTried) + ' aufhören' + (S.dec.exitStayed ? ' und bist ' + mal(S.dec.exitStayed) + ' geblieben.' : '.') : ''
+  };
+  var h = '<span class="eb">Licht an · Auswertung nur auf diesem Gerät</span><h1>Was in Maestro Rush steckte</h1>' +
+    '<p class="lead">Die App sah aus wie eine Lern-App für Musik und war darauf gebaut, dass du weiterspielst.</p>';
+  if (played) {
+    h += '<section><h2>Deine ' + (S.elapsed >= DUR - 1 ? 'sechs Minuten' : mmss(S.elapsed) + ' Minuten') + '</h2>' +
+      '<div class="nums"><div class="num"><b>' + fmt(S.K) + '</b><span>Kompetenzwert angezeigt</span></div><div class="num"><b>' + pct + ' %</b><span>davon für richtige Antworten</span></div><div class="num"><b>' + S.correct + '/' + S.answered + '</b><span>Fragen richtig</span></div></div>' +
+      '<div class="sbar"><h3>Woher die Punkte kamen</h3>' + bar([['für richtige Antworten', fach, 'c1', fmt(fach)], ['ohne fachliche Leistung', ohne, 'c2', fmt(ohne)]]) + '</div>' +
+      '<div class="sbar"><h3>Wofür die Zeit draufging</h3>' + bar([['Fragen', S.time.frage, 'c1', mmss(S.time.frage) + ' min'], ['Lob und Punkte', S.time.lob, 'c2', mmss(S.time.lob) + ' min'], ['Truhe, Rad, Angebote, Rangliste', S.time.angebot, 'c3', mmss(S.time.angebot) + ' min']]) + '</div>' +
+      (how ? '<p class="muted">' + how + '</p>' : '') + '</section>';
+  } else {
+    h += '<section><p class="muted">Diese Ansicht zeigt alle Mechanismen. Eigene Zahlen gibt es nach dem Spielen.</p></section>';
+  }
+  h += '<section><h2>Zwölf Mechanismen</h2><p>' + (played ? 'Markiert ist, was bei dir vorkam. Nicht alle haben alles gesehen, das ist Stoff für den Austausch. ' : '') + 'Sieben davon sind <b>Dark Patterns</b>: Sie täuschen oder erschweren freie Entscheidungen. Fünf sind <b>Bindungsmechaniken</b>, die es auch in guten Lern-Apps gibt; sie kippen, wenn sie sich vom Lernen lösen. Die Begriffe stammen aus der Liste von deceptive.design.</p>' +
+    GROUPS.map(function(g){ return '<div class="grp"><h3>' + g.h + '</h3>' + g.ids.map(function(id){ var m = MECH[id], seen = played && S.seen[id]; var tm = TERM[id]; return '<div class="mech' + (played ? '' : ' solo') + '">' + (played ? '<span class="st ' + (seen ? 'seen' : 'not') + '">' + (seen ? 'bei dir' : 'nicht gesehen') + '</span>' : '') + '<div class="mt"><b>' + m[0] + '</b><span class="term ' + tm[0] + '">' + tm[1] + '</span><p>' + m[1] + (played && you[id] ? '<span class="you">' + you[id] + '</span>' : '') + '</p></div></div>'; }).join('') + '</div>'; }).join('') + '</section>';
+  h += '<section><h2>Motivierend oder manipulativ?</h2><p>Punkte, Level und Fortschrittsbalken sind nicht automatisch manipulativ. Drei Prüffragen trennen das eine vom anderen:</p>' +
+    '<ol class="tests"><li>Wachsen Punkte und Lob nur mit musikalischer Leistung?</li><li>Kann ich jederzeit ohne Verlust aufhören?</li><li>Stimmt, was mir angezeigt wird: Zeit, Knappheit, andere Spieler:innen?</li></ol>' +
+    '<div class="tbl"><table><thead><tr><th>In Maestro Rush</th><th>Lernförderlich umgebaut</th></tr></thead><tbody>' +
+    '<tr><td>Punkte für Truhe, Rad und Tempo</td><td>Rückmeldung zu einer konkreten musikalischen Leistung</td></tr>' +
+    '<tr><td>Pauschales Talent-Lob</td><td>Genaue Rückmeldung mit einem nächsten Lernschritt</td></tr>' +
+    '<tr><td>Erfundene Rangliste</td><td>Eigene Entwicklung an vergleichbaren Aufgaben</td></tr>' +
+    '<tr><td>Verlustdrohung beim Aufhören</td><td>Zwischenstand speichern, klarer Abschluss</td></tr>' +
+    '<tr><td>Nächste Frage automatisch</td><td>Bewusste Wahl: vertiefen, wechseln oder beenden</td></tr>' +
+    '</tbody></table></div></section>';
+  h += '<div class="src"><span><b>Begriffe und Quellen.</b> Den Begriff Dark Patterns prägte Harry Brignull 2010 (heute <a href="https://www.deceptive.design" target="_blank" rel="noopener">deceptive.design</a>), dort auch Confirmshaming. OECD (2022): Dark commercial patterns. OECD Digital Economy Papers Nr. 336. Für Online-Plattformen verbietet Art. 25 Abs. 1 der Verordnung (EU) 2022/2065 (Digital Services Act) Oberflächen, die Nutzer:innen täuschen oder manipulieren.</span>' +
+    '<span>Zahlen in den Fragen: JIM-Studie 2024 und 2025 (mpfs). Alle Namen, Anzeigen, Angebote und Ranglisten im Spiel sind erfunden. Gebaut mit Claude für das Fachseminar Musik Erfurt.</span></div>' +
+    '<button type="button" class="restart" data-act="restart">Simulation neu starten</button>';
+  $('#scrAna').innerHTML = h; show('scrAna');
+}
+
+/* ================= Klicks ================= */
+var ACT = {
+  openApp: openApp,
+  pickInstr: pickInstr,
+  answer: function(b){ answer(+b.dataset.i); },
+  skipHear: function(){ answer(-1); },
+  hear: function(b){ AU.init(); if (!AU.on) { toast('Der Ton ist aus. Oben in der grauen Leiste einschalten.'); return; } (HEAR[b.dataset.k] || function(){})(); },
+  fbNext: fbNext,
+  close: function(){ closeSheet(true); },
+  chestOpen: function(){ chestOpen(); },
+  chestLater: function(){ S.dec.chestLater++; closeSheet(true); },
+  spin: spin,
+  pathNext: function(){
+    S.path = 8; S.pathName = 'Grand-Maestro-Pfad'; S.level = 5; renderHUD();
+    $('#sheet').innerHTML = '<span class="eyebrow">Neu freigeschaltet</span><h2>Grand-Maestro-Pfad</h2><p>Du bist schon bei <b>8 Prozent</b>! Die wahren Profis hören hier nicht auf.</p><button type="button" class="btn-gold" data-act="close">Los geht’s</button>';
+    AU.level();
+  },
+  offerYes: function(){
+    clearInterval(S.cdId); mark('preis');
+    if (S.tix >= 3) { S.tix -= 3; S.bonusLeft = 3; S.dec.bonus = 'ja'; renderHUD(); $('#sheet').innerHTML = '<h2>Bonus gesichert!</h2><button type="button" class="btn-gold" data-act="close">Weiter</button>'; return; }
+    var need = Math.max(600, S.stars);
+    $('#sheet').innerHTML = '<span class="eyebrow">Fast geschafft</span><h2>Der Maestro-Bonus kostet 3 Tickets.</h2><div class="price"><span>Du hast</span><b>' + S.tix + (S.tix === 1 ? ' Ticket' : ' Tickets') + '</b><span>Tausche ' + fmt(need) + ' Sterne gegen 2 Tickets</span></div><button type="button" class="btn-gold pulse" data-act="exch" data-need="' + need + '">Tauschen und sichern</button><button type="button" class="btn-meek" data-act="offerNo">Abbrechen</button>';
+  },
+  exch: function(b){
+    var need = +b.dataset.need; S.dec.exch += Math.min(need, S.stars); S.stars = Math.max(0, S.stars - need); S.tix = Math.max(0, S.tix + 2 - 3); S.bonusLeft = 3; S.dec.bonus = 'ja'; renderHUD();
+    $('#sheet').innerHTML = '<span class="eyebrow">Gesichert</span><h2>Maestro-Bonus aktiv!</h2><p>Doppelte Punkte für die nächsten 3 Fragen.</p><button type="button" class="btn-gold" data-act="close">Los</button>';
+    AU.level(); FX.rain(70);
+  },
+  offerNo: function(){ clearInterval(S.cdId); if (S.dec.bonus !== 'ja') S.dec.bonus = 'nein'; S.offerDeclinedAt = S.answered; closeSheet(true); },
+  restore: function(b){ if (S.tix < 1) return; S.tix--; S.streak = +b.dataset.n; S.dec.restored++; renderHUD(); AU.level(); closeSheet(true); },
+  navChest: function(){
+    if (S.modal || S.fb) return;
+    if (!S.chestReady) { toast('Die nächste Truhe gibt es nach weiteren Fragen.'); return; }
+    openSheet(chestSVG(false) + '<h2>Truhe öffnen?</h2><button type="button" class="btn-gold pulse" data-act="chestOpen">Öffnen</button>', 'nav');
+  },
+  navColl: function(){
+    if (S.modal || S.fb) return; mark('sammlung');
+    openSheet('<span class="eyebrow">Deine Sammlung</span><h2>' + S.coll.length + ' von 6 Instrumenten</h2><div class="coll">' + INSTR.map(function(i){ var has = S.coll.indexOf(i.id) >= 0; return '<div class="' + (has ? '' : 'miss') + '">' + icon(i.id) + (has ? i.n : (i.id === 'harfe' ? 'Goldene Harfe' : '?')) + '</div>'; }).join('') + '</div><p class="small">Die Goldene Harfe steckt nur in seltenen Truhen.</p><button type="button" class="btn-gold" data-act="close">Weiter sammeln</button>', 'nav');
+  },
+  navRank: function(){
+    if (S.modal || S.fb) return; mark('rangliste');
+    openSheet('<span class="eyebrow">Deine Region</span><h2>Rangliste</h2>' + board() + '<p class="small">' + RIVALS[0].n + ' ist nur ' + RIVALS[0].d + ' Punkte vor dir.</p><button type="button" class="btn-gold" data-act="close">Aufholen!</button>', 'nav');
+  },
+  menu: menu,
+  inert: function(){ toast('Bald verfügbar.'); },
+  exit1: exit1,
+  exit2: exit2,
+  reason: function(b){ document.querySelectorAll('#sheet .reasons button').forEach(function(x){ x.classList.toggle('sel', x === b); }); },
+  stay: function(){ S.dec.exitStayed++; closeSheet(true); },
+  exitFinal: function(){ endGame('app'); },
+  metaEnd: function(){ endGame('meta'); },
+  openAnalysis: function(){ renderAnalysis(false); },
+  sound: function(b){ AU.on = !AU.on; b.textContent = AU.on ? 'Ton an' : 'Ton aus'; b.setAttribute('aria-pressed', String(AU.on)); if (AU.on) AU.init(); },
+  restart: function(){ fresh(); document.body.classList.remove('lit', 'dim'); $('#btnMetaEnd').hidden = false; $('#pick').hidden = false; $('#pickH').hidden = false; $('#loading').hidden = true; $('#loadBar').style.width = '0'; $('#metaTime').textContent = mmss(DUR); show('scrIntro'); }
+};
+document.addEventListener('click', function(e){
+  var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
+  var f = ACT[b.dataset.act]; if (f) f(b, e);
+});
+$('#mbg').addEventListener('click', function(){ /* Hintergrund schließt bewusst nichts */ });
+window.addEventListener('resize', function(){ if (FX.cv) FX.size(); });
+window.__mr = {get S(){ return S; }, ACT:ACT, endGame:endGame, renderAnalysis:renderAnalysis};
+
+if (location.hash === '#auswertung') { $('#metaTime').textContent = '–'; renderAnalysis(true); }
+else show('scrIntro');
+})();
+</script>
+
+</body>
+</html>

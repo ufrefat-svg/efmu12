@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Apps zur Sitzung · Fachseminar Musik</title>
+<style>
+@font-face{font-family:'Poppins';src:url('fonts/Poppins-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'Poppins';src:url('fonts/Poppins-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+@font-face{font-family:'Poppins';src:url('fonts/Poppins-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+:root{color-scheme:light}
+html,body{margin:0!important;padding:0!important;background:#F6F5F2!important;color:#232B35!important;font-family:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif!important}
+main{max-width:640px!important;margin:0 auto!important;padding:28px 16px 40px!important}
+.kicker{font-size:12px!important;letter-spacing:.06em!important;text-transform:uppercase!important;color:#C1502E!important;font-weight:700!important;margin:0 0 6px!important}
+h1{font-size:30px!important;line-height:1.15!important;margin:0 0 8px!important;color:#232B35!important}
+p.lead{font-size:15px!important;line-height:1.5!important;color:#3D4450!important;margin:0 0 22px!important}
+.card{background:#FFFFFF!important;border:1px solid #E2E0DA!important;border-radius:14px!important;padding:16px 16px 14px!important;margin:0 0 14px!important}
+.card h2{font-size:19px!important;margin:0 0 4px!important;color:#232B35!important}
+.card .wo{font-size:12px!important;font-weight:700!important;color:#1F6E78!important;margin:0 0 6px!important;text-transform:uppercase!important;letter-spacing:.04em!important}
+.card p{font-size:14px!important;line-height:1.45!important;color:#3D4450!important;margin:0 0 12px!important}
+button{font:inherit!important;font-size:15px!important;font-weight:700!important;border:0!important;border-radius:10px!important;padding:12px 18px!important;background:#C1502E!important;color:#FFFFFF!important;cursor:pointer!important;width:100%!important}
+button.petrol{background:#1F6E78!important}
+button:focus-visible{outline:3px solid #232B35!important;outline-offset:2px!important}
+footer{font-size:12px!important;line-height:1.5!important;color:#6B7280!important;margin-top:22px!important}
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">Fachseminar Musik · Erfurt</p>
+  <h1>Apps zur Sitzung</h1>
+  <p class="lead">Einsatz digitaler Medien im Musikunterricht. Alle vier Apps laufen im Browser, ohne Anmeldung und ohne Installation.</p>
+
+  <section class="card">
+    <p class="wo">Anpfiff · nur auf Ansage öffnen</p>
+    <h2>Maestro Rush</h2>
+    <p>Eine inszenierte Lern-App mit erfundenen Anzeigen. Bitte erst öffnen, wenn die Seminarleitung es sagt.</p>
+    <button type="button" data-go="maestro-rush.html">Maestro Rush öffnen</button>
+  </section>
+
+  <section class="card">
+    <p class="wo">Tisch 4 · Üben</p>
+    <h2>Musik’o’mat</h2>
+    <p>Übeprogramm mit gestuften Hilfen und einer Fehlerkartei. Probiert es so aus, wie es eine Schülerin oder ein Schüler täte.</p>
+    <button type="button" class="petrol" data-go="musikomat.html">Musik’o’mat öffnen</button>
+  </section>
+
+  <section class="card">
+    <p class="wo">Tisch 5 · Lernspiel zu zweit</p>
+    <h2>Rhythmus-Tresor</h2>
+    <p>Eine Person sitzt am Gerät und hört, die andere hat das Handbuch. Gemeinsam öffnet ihr den Tresor.</p>
+    <button type="button" class="petrol" data-go="rhythmus-tresor.html">Rhythmus-Tresor öffnen</button>
+  </section>
+
+  <section class="card">
+    <p class="wo">Abpfiff · Tafelspiel</p>
+    <h2>Kompetenz Fußball</h2>
+    <p>Das Tafelspiel vom Ende der Sitzung, zum Mitnehmen für die eigene Klasse. Alle fertigen Sammlungen sind dabei, eigene Fragen lassen sich als Liste einfügen.</p>
+    <button type="button" data-go="kompetenz-fussball.html">Kompetenz Fußball öffnen</button>
+  </section>
+
+  <footer>
+    Staatliches Studienseminar für Lehrerausbildung · Regionalstelle Mittelthüringen (Erfurt) · Lehramt an Gymnasien · Musik / Doppelfach Musik<br>
+    Die Apps senden keine Eingaben an einen Server. Was sie sich merken, bleibt im Browser dieses Geräts. Gebaut mit Claude (Anthropic); Lernziele und Spielregeln: Ulrich Frefat.
+  </footer>
+</main>
+<script>
+document.querySelectorAll('button[data-go]').forEach(function (b) {
+  b.addEventListener('click', function () { window.location.href = b.getAttribute('data-go'); });
+});
+</script>
+</body>
+</html>

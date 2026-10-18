@@ -1,0 +1,649 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Rhythmus-Tresor</title>
+<meta name="color-scheme" content="light">
+
+
+<style>
+@font-face{font-family:'Poppins';src:url('fonts/Poppins-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins';src:url('fonts/Poppins-Medium.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins';src:url('fonts/Poppins-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+</style>
+<style>
+/* Rhythmus-Tresor · Optik wie im Lernpfad „Vom Puls zum Ton" (Farbwelt B)
+   Layout: Topbar, darunter Startseite oder Spielfeld. Spielfeld = dunkle Tresortür mit Fächern links, Tastenfeld rechts; auf schmalen Geräten untereinander.
+   Farben (feste Werte, bewusst nur helles Schema für einheitliche Schul-iPads):
+   Anthrazit #232B35 Tür und Schrift · Terracotta #C1502E Aktion und Drehrad · Petrol #1F6E78 Ziffern und Hören
+   Aubergine #5B2C5E Joker und Rollentausch · Gold #C8871E Münzen · Papier #F5F1EB Grund
+   Schrift: Poppins, Ersatz system-ui */
+:root{color-scheme:light}
+html{font-size:17px;background:#F5F1EB !important;height:100%}
+html.fs-1{font-size:15px}html.fs1{font-size:19px}html.fs2{font-size:21px}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:#F5F1EB !important;color:#232B35 !important;font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-text-size-adjust:100%}
+[hidden]{display:none !important}
+h1,h2,h3,h4{margin:0;line-height:1.2;text-wrap:balance;color:#232B35 !important}
+p,li,label,td,th{color:#232B35 !important}
+p{margin:0}
+ol,ul{margin:0;padding-left:1.3em}
+button{font:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:48px;padding:10px 18px;border-radius:14px;border:2px solid #D9D2C7;background:#FFFFFF !important;color:#232B35 !important;font-weight:600;line-height:1.25}
+button:focus-visible,input:focus-visible{outline:3px solid #1F6E78;outline-offset:2px}
+button:disabled{opacity:.4;cursor:default}
+button:active:not(:disabled){transform:translateY(1px)}
+input{font:inherit;color:#232B35 !important;background:#FFFFFF !important;border:2px solid #D9D2C7;border-radius:12px;padding:10px 14px;min-height:48px;width:100%}
+svg{display:block}
+svg text{font-family:'Poppins',system-ui,sans-serif}
+.small{font-size:.86rem;color:#5C6470 !important}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px}
+.eyebrow{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#5C6470 !important}
+.h2{font-size:1.3rem;font-weight:800}
+.h3{font-size:1.1rem;font-weight:700}
+
+/* Kopf */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.topbar{background:#232B35 !important}
+.topbar .wrap{display:flex;align-items:center;gap:12px;min-height:62px;padding-block:8px}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;background:transparent !important;border:0;padding:0;min-height:0;text-align:left}
+.mark{width:40px;height:40px;border-radius:12px;background:#C1502E !important;display:grid;place-items:center;flex:none}
+.brand-txt{min-width:0}
+.topbar .eyebrow{color:#C9CFD8 !important}
+.brand-name{display:block;font-weight:800;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#FFFFFF !important}
+.brand-txt .eyebrow{display:block}
+.hbtns{display:flex;gap:6px;flex:none}
+.topbar .hbtns button{background:rgba(255,255,255,.12) !important;border-color:rgba(255,255,255,.3);color:#FFFFFF !important;min-height:40px;padding:6px 11px;border-radius:10px;font-size:.9rem}
+#btn-sound{display:inline-flex;align-items:center;gap:6px}
+.topbar .hbtns button.off{background:#C1502E !important;border-color:#C1502E}
+
+/* Grundbausteine */
+main{padding-block:20px 48px}
+.card{background:#FFFFFF !important;border:1px solid #E3DDD4;border-radius:20px;padding:20px}
+@media(min-width:700px){.card{padding:26px}}
+.stack{display:grid;gap:18px}
+.stack-s{display:grid;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.between{justify-content:space-between}
+.lead{font-size:1.05rem}
+.btn-primary{background:#C1502E !important;color:#FFFFFF !important;border-color:#C1502E}
+.btn-dark{background:#232B35 !important;color:#FFFFFF !important;border-color:#232B35}
+.btn-petrol{background:#1F6E78 !important;color:#FFFFFF !important;border-color:#1F6E78}
+.btn-aub{background:#5B2C5E !important;color:#FFFFFF !important;border-color:#5B2C5E}
+.btn-ghost{background:transparent !important}
+.btn-big{font-size:1.12rem;min-height:60px;padding:14px 26px;border-radius:18px}
+.btn-sm{min-height:40px;padding:6px 12px;border-radius:10px;font-size:.9rem}
+.wide{width:100%}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:#FFFFFF !important;border:1px solid #E3DDD4;font-size:.85rem;font-weight:600;color:#232B35 !important}
+.chip.st1{background:#F8E4DC !important;color:#8E3418 !important;border-color:#F8E4DC}
+.chip.st2{background:#DDEEF0 !important;color:#1F6E78 !important;border-color:#DDEEF0}
+.chip.st3{background:#EEE3F0 !important;color:#5B2C5E !important;border-color:#EEE3F0}
+.chip.warn{background:#F8E3E1 !important;color:#B8322F !important;border-color:#F8E3E1}
+.auftrag{background:#FFFFFF !important;border-left:5px solid #232B35;border-radius:0 14px 14px 0;padding:12px 16px}
+.auftrag strong{color:#232B35 !important}
+.feedback{border-radius:14px;padding:12px 16px;background:#F5F1EB !important;display:grid;gap:4px}
+.feedback.bad{background:#F8E3E1 !important}
+.feedback.ok{background:#E4F2EA !important}
+.feedback b{color:#232B35 !important}
+.notation{overflow-x:auto;padding-block:2px}
+.notation svg{max-width:100%;height:auto;margin-inline:auto}
+.hilfe-btn{width:100%;text-align:left;background:#F5F1EB !important;border-color:transparent;font-weight:600;display:flex;justify-content:space-between;gap:10px;align-items:center;color:#1F6E78 !important}
+.hilfe-btn::after{content:'+';font-size:1.3rem;font-weight:700;color:#1F6E78}
+.hilfe-btn.open::after{content:'–'}
+.hilfe-body{padding:10px 4px 2px}
+.legend2{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.legend2>span{display:flex;align-items:center;gap:8px;font-size:.95rem}
+.legend2 b{color:#232B35 !important}
+
+/* Startseite */
+.hero{display:grid;gap:16px}
+@media(min-width:760px){.hero{grid-template-columns:1.15fr 1fr;align-items:stretch}}
+.hero-main{display:grid;gap:12px;align-content:center}
+.hero h1{font-size:2.3rem;font-weight:800;letter-spacing:-.01em}
+.hero-side{background:#232B35 !important;border-radius:20px;padding:20px;display:grid;gap:12px;align-content:start}
+.hero-side *{color:#FFFFFF !important}
+.hero-side .eyebrow{color:#C9CFD8 !important}
+.steps{list-style:none;padding:0;display:grid;gap:10px;counter-reset:st}
+.steps li{display:flex;gap:12px;align-items:flex-start;counter-increment:st}
+.steps li::before{content:counter(st);width:28px;height:28px;border-radius:50%;background:#C1502E;color:#FFFFFF;display:grid;place-items:center;font-weight:700;font-size:.85rem;flex:none;margin-top:1px}
+.roles{display:grid;gap:12px}
+@media(min-width:700px){.roles{grid-template-columns:1fr 1fr}}
+.role{display:grid;gap:10px;align-content:start}
+.role-h{display:flex;align-items:center;gap:12px}
+.role-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none}
+.role-ic.t{background:#232B35 !important}
+.role-ic.h{background:#1F6E78 !important}
+.role ul{display:grid;gap:6px;padding-left:1.1em}
+.rules{display:flex;flex-wrap:wrap;gap:8px}
+.stcards{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.stcard{display:grid;gap:4px;align-content:start;text-align:left;padding:16px;min-height:150px;border-radius:18px;border-top:6px solid #232B35;font-weight:500}
+.stcard[data-stage="1"]{border-top-color:#C1502E}
+.stcard[data-stage="2"]{border-top-color:#1F6E78}
+.stcard[data-stage="3"]{border-top-color:#5B2C5E}
+.stcard .n{font-size:1.6rem;font-weight:800;line-height:1}
+.stcard .t{font-weight:700;font-size:1rem;line-height:1.25}
+.stcard .d{font-size:.85rem;color:#5C6470 !important}
+.stcard .s{font-size:.8rem;font-weight:700;color:#5C6470 !important;display:flex;gap:6px;align-items:center;margin-top:4px}
+.stcard.done .s{color:#2F7D5B !important}
+.stcard:disabled{opacity:.55}
+.counter{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.coins{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.coins .more{font-weight:700;color:#8E5A0C !important;margin-left:4px}
+
+/* Spielfeld */
+.gtop{gap:8px}
+.game{display:grid;gap:16px}
+@media(min-width:900px){.game{grid-template-columns:minmax(0,1.3fr) minmax(300px,1fr);align-items:start}}
+.vault{position:relative;background:#232B35 !important;border-radius:28px;padding:22px 20px 18px;display:grid;gap:16px;box-shadow:inset 0 0 0 3px #3A4553,0 16px 30px rgba(35,43,53,.18);transition:box-shadow .4s}
+.bolt{position:absolute;width:12px;height:12px;border-radius:50%;background:#5C6470 !important;box-shadow:inset -2px -2px 0 rgba(0,0,0,.25)}
+.bolt.tl{top:10px;left:10px}.bolt.tr{top:10px;right:10px}.bolt.bl{bottom:10px;left:10px}.bolt.br{bottom:10px;right:10px}
+.vhead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-inline:14px}
+.plate{font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#C9CFD8 !important;border:1px solid #4A5563;border-radius:8px;padding:5px 12px;background:#2B3440 !important}
+.lampbox{display:flex;align-items:center;gap:10px;background:#1B2129 !important;border-radius:14px;padding:6px 14px 6px 10px;border:1px solid #4A5563}
+.lamplbl{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#C9CFD8 !important}
+.lampname{font-weight:700;color:#FFFFFF !important;font-size:.95rem}
+.faecher{display:grid;gap:12px}
+.faecher.n4{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:600px){.faecher.n4{grid-template-columns:minmax(0,1fr)}}
+.fach{background:#FFFFFF !important;border-radius:16px;padding:10px 12px 12px;display:grid;gap:4px;box-shadow:0 0 0 3px #3A4553,inset 0 3px 0 rgba(35,43,53,.07);transition:box-shadow .2s}
+.fhead{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:40px}
+.fach .lbl{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#5C6470 !important}
+.vfoot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-inline:8px}
+.wheel svg{transition:transform .9s cubic-bezier(.3,.7,.2,1)}
+.alarms{display:flex;align-items:center;gap:8px}
+.allbl{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#C9CFD8 !important;margin-right:4px}
+.al{width:18px;height:18px;border-radius:50%;background:#3A4553 !important;border:2px solid #4A5563;display:block;transition:background .2s,box-shadow .2s}
+.al.on{background:#E0483E !important;border-color:#E0483E;box-shadow:0 0 10px #E0483E}
+.vault.opening{box-shadow:inset 0 0 0 3px #C8871E,0 0 0 4px #C8871E,0 16px 34px rgba(200,135,30,.35)}
+.vault.opening .wheel svg{transform:rotate(300deg)}
+.vault.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+.panel{display:grid;gap:14px}
+.slots{display:grid;gap:8px}
+.slots.s3{grid-template-columns:repeat(3,1fr)}
+.slots.s4{grid-template-columns:repeat(4,1fr)}
+.slot{min-height:70px;border-radius:14px;border:2px solid #D9D2C7;background:#F5F1EB !important;display:grid;place-items:center;font-size:2rem;font-weight:800;font-variant-numeric:tabular-nums;color:#232B35 !important}
+.slot.full{background:#FFFFFF !important;border-color:#232B35}
+.slot.cur{border-color:#C1502E;border-style:dashed}
+.keypad{display:grid;grid-template-columns:repeat(3,minmax(64px,1fr));gap:8px}
+.keypad button{min-height:62px;font-size:1.45rem;font-weight:700;border-radius:14px;font-variant-numeric:tabular-nums}
+.keypad button[data-k="del"]{font-size:1.2rem;background:#F5F1EB !important}
+.jinfo{background:#EEE3F0 !important;border-radius:14px;padding:12px 16px;display:grid;gap:2px}
+.jinfo b{color:#5B2C5E !important}
+.jinfo span{font-size:.92rem;color:#232B35 !important}
+.fach.playing{box-shadow:0 0 0 3px #3A4553,0 0 0 7px #1F6E78}
+
+/* Ergebnis */
+.result{display:grid;gap:16px}
+.result.won{border:3px solid #C8871E}
+.rhead{display:flex;gap:16px;align-items:center}
+.rhead h2{font-size:1.7rem;font-weight:800}
+.sol{display:grid;gap:10px}
+.solrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;border:2px solid #E3DDD4;border-radius:16px;padding:8px 12px;transition:border-color .15s,background .15s}
+.solrow.lit{border-color:#1F6E78;background:#F0F7F8 !important}
+.solrow .lbl{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#5C6470 !important;white-space:nowrap}
+.dchip{width:52px;height:52px;border-radius:50%;background:#1F6E78 !important;color:#FFFFFF !important;display:grid;place-items:center;font-size:1.5rem;font-weight:800}
+.dchip.star{background:#5B2C5E !important}
+.starnote{grid-column:1/-1;color:#5B2C5E !important;font-weight:600}
+.lampline{display:flex;gap:12px;align-items:center;background:#F5F1EB !important;border-radius:14px;padding:10px 14px}
+.swap{background:#EEE3F0 !important;border-radius:14px;padding:14px 16px;color:#5B2C5E !important;font-size:1.05rem}
+.swap b{color:#5B2C5E !important}
+
+/* Lehrkraft und Beamer */
+.foot{border-top:1px solid #E3DDD4;padding-block:22px 34px;font-size:.8rem;display:grid;gap:8px}
+.foot p{color:#5C6470 !important}
+.foot .sem{font-weight:600;color:#232B35 !important}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);background:#232B35 !important;color:#FFFFFF !important;padding:10px 18px;border-radius:12px;font-weight:600;z-index:80;max-width:92vw;text-align:center;box-shadow:0 8px 24px rgba(35,43,53,.25)}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(35,43,53,.55);display:grid;place-items:center;padding:16px}
+.box{background:#FFFFFF !important;border-radius:20px;max-width:680px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:22px;display:grid;gap:14px}
+.pinpad{display:grid;grid-template-columns:repeat(3,72px);gap:8px;justify-content:center}
+.pinpad button{min-height:60px;font-size:1.3rem}
+.pindots{display:flex;gap:12px;justify-content:center}
+.pindots i{width:16px;height:16px;border-radius:50%;background:#E3DDD4 !important;display:block}
+.pindots i.on{background:#232B35 !important}
+.lkgrid{display:grid;gap:14px}
+.lksec{border:1px solid #E3DDD4;border-radius:16px;padding:14px;display:grid;gap:10px}
+.lksec h4{font-size:1rem}
+.lksec .big{font-size:1.6rem;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;font-weight:500}
+.toggle .sw{width:52px;height:30px;border-radius:15px;background:#D9D2C7 !important;position:relative;flex:none}
+.toggle .sw::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#FFFFFF;transition:left .15s}
+.toggle.on .sw{background:#2F7D5B !important}
+.toggle.on .sw::after{left:25px}
+.seg{display:inline-flex;border:2px solid #D9D2C7;border-radius:12px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;border-radius:0;min-height:44px;background:#FFFFFF !important}
+.seg button.on{background:#232B35 !important;color:#FFFFFF !important}
+#tafel{position:fixed;inset:0;z-index:60;background:#F5F1EB !important;overflow:auto;padding:16px;padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
+.tf-in{max-width:1200px;margin:0 auto;display:grid;gap:18px}
+.tf-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tf-top h2{flex:1;font-size:1.6rem;font-weight:800}
+.tfgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.tfcard{display:flex;align-items:center;gap:14px;padding:10px 16px;border-radius:18px;min-height:96px}
+.tfcard .dnum{width:56px;height:56px;border-radius:50%;background:#1F6E78 !important;color:#FFFFFF !important;display:grid;place-items:center;font-size:1.8rem;font-weight:800;flex:none}
+.tfcard .notation{flex:1;min-width:0}
+.tfrules{display:grid;gap:12px}
+@media(min-width:900px){.tfrules{grid-template-columns:1.4fr 1fr}}
+.rulebox{background:#FFFFFF !important;border:1px solid #E3DDD4;border-radius:18px;padding:16px 18px;display:grid;gap:10px;align-content:start}
+.lrow{display:grid;grid-template-columns:44px 64px minmax(0,1fr);gap:10px;align-items:center}
+.lrow .ex{grid-column:3;font-size:.85rem;color:#5C6470 !important;font-variant-numeric:tabular-nums}
+.bigstar{font-size:2.6rem;line-height:1;font-weight:800;color:#5B2C5E !important}
+.tfsol{display:grid;gap:12px}
+.tfsol .solrow{background:#FFFFFF !important}
+@media(max-width:430px){#btn-fminus,#btn-fplus{display:none}}
+@media(max-width:560px){.solrow{grid-template-columns:minmax(0,1fr) auto}.solrow .notation{grid-column:1/-1;grid-row:2}}
+@media(max-width:520px){.topbar .eyebrow{display:none !important}.topbar .hbtns button{padding:6px 8px;font-size:.8rem}.brand-name{font-size:.95rem}.hero h1{font-size:1.9rem}.lrow{grid-template-columns:36px 54px minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+</style>
+
+<div id="app">
+  <header class="hdr" id="top">
+    <div class="topbar"><div class="wrap">
+      <button class="brand" id="btn-brand" type="button" aria-label="Zur Startseite">
+        <span class="mark" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3.5" fill="none" stroke="#FFFFFF" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="#FFFFFF" stroke-width="2"/><line x1="12" y1="7.8" x2="12" y2="10" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/><line x1="6.5" y1="21" x2="6.5" y2="22.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/><line x1="17.5" y1="21" x2="17.5" y2="22.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span class="brand-txt"><span class="eyebrow" id="hdr-eyebrow">Kreativklasse · Teamspiel</span><span class="brand-name">Rhythmus-Tresor</span></span>
+      </button>
+      <div class="hbtns">
+        <button type="button" id="btn-fminus" aria-label="Schrift kleiner">A−</button>
+        <button type="button" id="btn-fplus" aria-label="Schrift größer">A+</button>
+        <button type="button" id="btn-sound" aria-pressed="true">Klang an</button>
+      </div>
+    </div></div>
+  </header>
+
+  <main>
+    <section class="wrap" id="screen-start"></section>
+    <section class="wrap" id="screen-game" hidden></section>
+  </main>
+
+  <footer class="foot"><div class="wrap stack-s">
+    <p class="sem">Ein Spiel des Fachseminars Musik · STAATLICHES STUDIENSEMINAR FÜR LEHRERAUSBILDUNG – Regionalstelle Mittelthüringen (Erfurt) – Lehramt an Gymnasien – Musik / Doppelfach Musik</p>
+    <p>Alles bleibt auf diesem Gerät. Die Seite schickt nichts an einen Server. Rhythmen und Klang wie im Lernpfad „Vom Puls zum Ton“. Schrift: Poppins (SIL Open Font License) über Google Fonts, ohne Internet erscheint eine Ersatzschrift.</p>
+    <div class="row between"><p>Version 1.1 · 12.10.2026</p><button type="button" class="btn-sm" id="btn-lk">Lehrkraft</button></div>
+  </div></footer>
+</div>
+
+<div class="modal" id="modal-lk" hidden><div class="box" id="lk-box" role="dialog" aria-modal="true" aria-label="Lehrkraft-Bereich"></div></div>
+<div id="tafel" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+
+/* ============ Speicher (nur dieses Gerät) ============ */
+const store={
+  ls(k,d){try{const v=localStorage.getItem('rtr.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  lsSet(k,v){try{localStorage.setItem('rtr.'+k,JSON.stringify(v))}catch(e){}},
+  ss(k,d){try{const v=sessionStorage.getItem('rtr.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  ssSet(k,v){try{sessionStorage.setItem('rtr.'+k,JSON.stringify(v))}catch(e){}}
+};
+const settings={
+  profile:store.ls('profile','kreativ'),
+  klasse:store.ls('klasse','Klasse 5'),
+  pin:store.ls('pin','2026'),
+  timer:store.ls('timer',0),
+  jokers:store.ls('jokers',1),
+  allOpen:store.ls('allOpen',false),
+  sound:store.ls('sound',true),
+  font:store.ls('font',0)
+};
+function saveSettings(){Object.keys(settings).forEach(k=>store.lsSet(k,settings[k]))}
+let prog=store.ss('prog',null);
+if(!prog||!Array.isArray(prog.cracked))prog={unlocked:1,cracked:[0,0,0,0],nr:0};
+function saveProg(){store.ssSet('prog',prog)}
+function maxStage(){return settings.allOpen?3:Math.min(3,Math.max(1,prog.unlocked))}
+function totalCracked(){return prog.cracked[1]+prog.cracked[2]+prog.cracked[3]}
+function klasseName(){return settings.profile==='kreativ'?'Kreativklasse':(settings.klasse||'Klasse 5')}
+
+/* ============ Hilfsfunktionen ============ */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+let toastT=null;
+function toast(msg){const t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},2800)}
+function gotoSection(id){const el=$(id);if(!el)return;const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}
+
+/* ============ Klang (wie im Lernpfad) ============ */
+const Snd={
+  ctx:null,out:null,noiseBuf:null,timers:[],nodes:[],
+  ensure(){if(!this.ctx){try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+      const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;const c=new AC();this.ctx=c;
+      /* etwas lauter, Kompressor gegen Übersteuern */
+      const comp=c.createDynamicsCompressor();comp.threshold.value=-12;comp.knee.value=6;comp.ratio.value=5;comp.attack.value=0.002;comp.release.value=0.12;comp.connect(c.destination);
+      const g=c.createGain();g.gain.value=1.7;g.connect(comp);this.out=g;
+      /* iPad: ein stiller Puffer gibt den Ton frei */
+      try{const b=c.createBuffer(1,1,22050);const s=c.createBufferSource();s.buffer=b;s.connect(c.destination);s.start(0)}catch(e){}}
+    if(this.ctx.state!=='running'){try{const pr=this.ctx.resume();if(pr&&pr.catch)pr.catch(()=>{})}catch(e){}}return this.ctx},
+  now(){const c=this.ensure();return c?c.currentTime:performance.now()/1000},
+  tone(midi,t,dur,vol){const c=this.ensure();if(!c||!settings.sound)return;const f=440*Math.pow(2,(midi-69)/12);dur=dur||0.9;vol=vol||0.32;
+    const g=c.createGain();g.connect(this.out);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(vol*0.45,t+0.22);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    [[1,1,'triangle'],[2,0.28,'sine'],[3,0.1,'sine'],[4,0.04,'sine']].forEach(([m,a,ty])=>{const o=c.createOscillator();o.type=ty;o.frequency.value=f*m;const og=c.createGain();og.gain.value=a;o.connect(og);og.connect(g);o.start(t);o.stop(t+dur+0.05);this.nodes.push(o)})},
+  click(t,accent,vol){const c=this.ensure();if(!c||!settings.sound)return;vol=vol==null?1:vol;const o=c.createOscillator();o.type='square';o.frequency.value=accent?1500:1050;const g=c.createGain();g.gain.setValueAtTime((accent?0.22:0.14)*vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+0.05);o.connect(g);g.connect(this.out);o.start(t);o.stop(t+0.07);this.nodes.push(o)},
+  noise(){const c=this.ctx;if(!this.noiseBuf){const b=c.createBuffer(1,Math.floor(c.sampleRate*0.12),c.sampleRate);const d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;this.noiseBuf=b}return this.noiseBuf},
+  wood(t,kind,len){const c=this.ensure();if(!c||!settings.sound)return;const dei=kind==='dei';const dua=kind==='dua';const f=dei?760:440;const dur=dua?Math.max(0.5,(len||1)*0.8):0.16;
+    const o=c.createOscillator();o.type='triangle';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*(dua?0.98:0.78),t+dur);const g=c.createGain();g.gain.setValueAtTime(0.5,t);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(this.out);o.start(t);o.stop(t+dur+0.03);this.nodes.push(o);
+    const s=c.createBufferSource();s.buffer=this.noise();const fl=c.createBiquadFilter();fl.type='bandpass';fl.frequency.value=dei?3200:1900;fl.Q.value=1.2;const ng=c.createGain();ng.gain.setValueAtTime(0.35,t);ng.gain.exponentialRampToValueAtTime(0.0001,t+0.05);s.connect(fl);fl.connect(ng);ng.connect(this.out);s.start(t);s.stop(t+0.07);this.nodes.push(s)},
+  at(t,fn){const c=this.ctx;const nowT=c?c.currentTime:performance.now()/1000;const id=setTimeout(fn,Math.max(0,(t-nowT)*1000));this.timers.push(id);return id},
+  stopAll(){this.timers.forEach(clearTimeout);this.timers=[];const now=this.ctx?this.ctx.currentTime:0;this.nodes.forEach(n=>{try{n.stop(now)}catch(e){}});this.nodes=[]}
+};
+function sfxWin(){if(!settings.sound||!Snd.ensure())return;const t=Snd.now()+0.05;[72,76,79,84].forEach((m,i)=>Snd.tone(m,t+i*0.11,0.55,0.2))}
+function sfxFail(){if(!settings.sound||!Snd.ensure())return;const t=Snd.now()+0.03;Snd.tone(50,t,0.32,0.22);Snd.tone(49,t+0.17,0.45,0.22)}
+
+/* ============ Rhythmen (identisch mit dem Rhythmustelefon im Lernpfad) ============ */
+const TEL={1:'h h',2:'h q q',3:'q q h',4:'q q ee q',5:'q ee h',6:'q ee q q',7:'q ee ee q',8:'ee q h',9:'ee ee h',0:'ee ee ee q'};
+const TEL_ORDER=[1,2,3,4,5,6,7,8,9,0];
+function toks(s){return Array.isArray(s)?s:s.trim().split(/\s+/)}
+function patternOnsets(tokens){const out=[];let b=0;toks(tokens).forEach(tok=>{if(tok==='q'){out.push({beat:b,syl:'Du',kind:'du',len:1});b+=1}else if(tok==='ee'){out.push({beat:b,syl:'Du',kind:'du',len:.5});out.push({beat:b+.5,syl:'dei',kind:'dei',len:.5});b+=1}else if(tok==='h'){out.push({beat:b,syl:'Du-a',kind:'dua',len:2});b+=2}});return{onsets:out,beats:b}}
+function sylString(tokens){return patternOnsets(tokens).onsets.map(n=>n.syl).join('  ')}
+function rhythmSVG(tokens,o){o=o||{};tokens=toks(tokens);const unit=o.unit||48;const marks=o.marks||null;const showSyl=!!o.syl;const H=showSyl?100:74;const lineY=46;const left=40;const info=patternOnsets(tokens);const beats=info.beats;const bars=Math.max(1,Math.ceil(beats/4));const W=left+beats*unit+24;
+  let s=`<svg class="rh" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rhythmus" style="width:${W}px">`;
+  s+=`<line x1="${left-8}" y1="${lineY}" x2="${W-6}" y2="${lineY}" stroke="#232B35" stroke-width="1.6"/>`;
+  s+=`<text x="12" y="${lineY-3}" font-size="15" font-weight="700" fill="#232B35">4</text><text x="12" y="${lineY+15}" font-size="15" font-weight="700" fill="#232B35">4</text>`;
+  for(let b=0;b<=bars;b++){const x=b===bars?left+b*4*unit+8:left-8+b*4*unit;if(b===bars){s+=`<line x1="${x-5}" y1="${lineY-22}" x2="${x-5}" y2="${lineY+22}" stroke="#232B35" stroke-width="1.6"/><line x1="${x}" y1="${lineY-22}" x2="${x}" y2="${lineY+22}" stroke="#232B35" stroke-width="3.5"/>`}else{s+=`<line x1="${x}" y1="${lineY-22}" x2="${x}" y2="${lineY+22}" stroke="#232B35" stroke-width="1.6"/>`}}
+  const col=i=>marks?(marks[i]==='hit'?'#2F7D5B':marks[i]==='miss'?'#B8322F':'#232B35'):(o.lit===i?'#C1502E':'#232B35');
+  const head=(x,i,hollow)=>{const c=col(i);let h=`<ellipse cx="${x}" cy="${lineY}" rx="7.2" ry="5" transform="rotate(-18 ${x} ${lineY})" fill="${hollow?'none':c}" stroke="${c}" stroke-width="2"/><line x1="${x+6.6}" y1="${lineY-1}" x2="${x+6.6}" y2="${lineY-30}" stroke="${c}" stroke-width="2"/>`;if(showSyl)h+=`<text x="${x}" y="${H-8}" text-anchor="middle" font-size="13.5" font-weight="700" fill="${c}">${info.onsets[i].syl}</text>`;return h};
+  let b=0,i=0;tokens.forEach(tok=>{const x=left+b*unit+12;if(tok==='q'){s+=head(x,i,false);i++;b++}else if(tok==='ee'){s+=head(x,i,false)+head(x+unit/2,i+1,false);s+=`<rect x="${x+5.6}" y="${lineY-31}" width="${unit/2+2}" height="4.5" fill="${col(i)}"/>`;i+=2;b++}else if(tok==='h'){s+=head(x,i,true);i++;b+=2}});
+  return s+'</svg>'}
+function playPattern(tokens,o){o=o||{};const bpm=o.bpm||80;const bd=60/bpm;Snd.ensure();const t0=o.start!=null?o.start:Snd.now()+0.1;let t=t0;const info=patternOnsets(tokens);
+  if(o.countIn){for(let i=0;i<4;i++){const tt=t+i*bd;Snd.click(tt,i===0);Snd.at(tt,()=>o.onCount&&o.onCount(i))}t+=4*bd}
+  const pStart=t;
+  if(o.clicks){for(let i=0;i<info.beats;i++){const tt=pStart+i*bd;Snd.click(tt,i%4===0,o.clickVol==null?0.5:o.clickVol);Snd.at(tt,()=>o.onBeat&&o.onBeat(i))}}
+  info.onsets.forEach((n,idx)=>{const tt=pStart+n.beat*bd;Snd.wood(tt,n.kind,n.len*bd);Snd.at(tt,()=>o.onOnset&&o.onOnset(idx,n))});
+  const end=pStart+info.beats*bd;Snd.at(end,()=>o.onEnd&&o.onEnd());return{start:pStart,end,bd,beats:info.beats,onsets:info.onsets}}
+
+/* Sternchen-Rhythmen: alle 4/4-Takte aus Viertel, Achtelpaar und Halber, die nicht im Handbuch stehen */
+function allPatterns(beats){const res=[];(function rec(arr,b){if(b===beats){res.push(arr.join(' '));return}['q','ee','h'].forEach(t=>{const l=t==='h'?2:1;if(b+l<=beats)rec(arr.concat(t),b+l)})})([],0);return res}
+const TEL_SET=new Set(Object.values(TEL));
+const STAR_POOL=allPatterns(4).filter(p=>!TEL_SET.has(p));
+
+/* ============ Lampen und Stufen ============ */
+const LAMPS={
+  gruen:{name:'grün',adj:'grüne',fill:'#2F8A5B',rule:'Code so eingeben, wie er ist',ex:'1 2 3 4 → 1 2 3 4'},
+  rot:{name:'rot',adj:'rote',fill:'#C2362F',rule:'Code rückwärts eingeben',ex:'1 2 3 4 → 4 3 2 1'},
+  blau:{name:'blau',adj:'blaue',fill:'#2C63B8',rule:'Erste und letzte Ziffer tauschen',ex:'1 2 3 4 → 4 2 3 1'}
+};
+const LAMP_ORDER=['gruen','rot','blau'];
+function applyLamp(code,key){const c=code.slice();if(key==='rot')return c.reverse();if(key==='blau'&&c.length>1){const t=c[0];c[0]=c[c.length-1];c[c.length-1]=t}return c}
+function lampShape(key,s){s=s||40;const f=LAMPS[key].fill;let sh;
+  if(key==='gruen')sh=`<circle cx="20" cy="20" r="13" fill="${f}"/>`;
+  else if(key==='rot')sh=`<polygon points="20,5 35,32 5,32" fill="${f}"/>`;
+  else sh=`<rect x="7" y="7" width="26" height="26" rx="3" fill="${f}"/>`;
+  return `<svg width="${s}" height="${s}" viewBox="0 0 40 40" aria-hidden="true">${sh}</svg>`}
+const STAGES={
+  1:{n:3,lamp:false,star:false,title:'Drei Fächer',sub:'Alle Rhythmen stehen im Handbuch.'},
+  2:{n:4,lamp:true,star:false,title:'Vier Fächer und eine Lampe',sub:'Die Lampe sagt, wie ihr den Code eingebt.'},
+  3:{n:4,lamp:true,star:true,title:'Der Sternchen-Rhythmus',sub:'Manchmal steht ein Rhythmus nicht im Handbuch.'}
+};
+const FACH='ABCD';
+/* Knackzettel, Aufgaben zum Schluss (gleiche Rhythmen wie auf dem gedruckten Blatt) */
+const KZ1=[TEL[7],'ee q ee q',TEL[2]];
+const KZ2=[{tok:TEL[5],said:['Du','Du','dei','Du'],wrong:3},{tok:TEL[0],said:['Du','dei','Du','dei','Du','Du','Du'],wrong:5}];
+
+/* ============ Bildzeichen ============ */
+const COIN=s=>`<svg width="${s}" height="${s}" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#C8871E"/><circle cx="14" cy="14" r="10.2" fill="none" stroke="#F3D9A6" stroke-width="1.4"/><g fill="#FFFFFF"><ellipse cx="10.3" cy="18.2" rx="2.6" ry="1.9" transform="rotate(-18 10.3 18.2)"/><ellipse cx="17.6" cy="18.2" rx="2.6" ry="1.9" transform="rotate(-18 17.6 18.2)"/><rect x="12.2" y="8.4" width="1.4" height="9.8"/><rect x="19.5" y="8.4" width="1.4" height="9.8"/><rect x="12.2" y="8.4" width="8.7" height="2.3"/></g></svg>`;
+const LOCK=(s,c)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.2" fill="${c}"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="${c}" stroke-width="2.2"/></svg>`;
+const BOOK=`<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4 9.5 4 12 5.8 14.5 4 17.5 4 20 5.5V19c-2.5-1.4-5.5-1.4-8 .4-2.5-1.8-5.5-1.8-8-.4z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/><line x1="12" y1="5.8" x2="12" y2="19.4" stroke="#FFFFFF" stroke-width="2"/></svg>`;
+const WHEEL=`<svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" fill="#3A4553"/><circle cx="30" cy="30" r="20" fill="#C1502E"/><g stroke="#232B35" stroke-width="3.2" stroke-linecap="round"><line x1="30" y1="12.5" x2="30" y2="19"/><line x1="30" y1="41" x2="30" y2="47.5"/><line x1="12.5" y1="30" x2="19" y2="30"/><line x1="41" y1="30" x2="47.5" y2="30"/></g><circle cx="30" cy="30" r="6.5" fill="#232B35"/><circle cx="30" cy="30" r="2.6" fill="#E9B4A2"/></svg>`;
+function noteIcon(kind){const c='#232B35';const head=(x,hollow)=>`<ellipse cx="${x}" cy="34" rx="7.2" ry="5" transform="rotate(-18 ${x} 34)" fill="${hollow?'none':c}" stroke="${c}" stroke-width="2"/><line x1="${x+6.6}" y1="33" x2="${x+6.6}" y2="6" stroke="${c}" stroke-width="2"/>`;
+  if(kind==='ee')return `<svg width="46" height="44" viewBox="0 0 46 44" aria-hidden="true">${head(10,false)}${head(32,false)}<rect x="15.6" y="5" width="24" height="4.5" fill="${c}"/></svg>`;
+  return `<svg width="26" height="44" viewBox="0 0 26 44" aria-hidden="true">${head(10,kind==='h')}</svg>`}
+function legendHTML(){return `<div class="legend2"><span>${noteIcon('q')}<span>Viertel = <b>Du</b></span></span><span>${noteIcon('ee')}<span>zwei Achtel = <b>Du dei</b></span></span><span>${noteIcon('h')}<span>Halbe = <b>Du-a</b> (lang)</span></span></div>`}
+function coinsHTML(n){const k=Math.min(n,12);let s='';for(let i=0;i<k;i++)s+=COIN(30);return s+(n>12?`<span class="more">+${n-12}</span>`:'')}
+
+/* ============ Kopf ============ */
+function applyFont(){const h=document.documentElement;h.classList.remove('fs-1','fs1','fs2');if(settings.font===-1)h.classList.add('fs-1');if(settings.font===1)h.classList.add('fs1');if(settings.font===2)h.classList.add('fs2')}
+const SPK_ON='<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5h3.8L12 5.6v12.8l-4.7-3.9H3.5z" fill="currentColor"/><path d="M15.4 9.2a4 4 0 0 1 0 5.6M18 6.6a7.6 7.6 0 0 1 0 10.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const SPK_OFF='<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5h3.8L12 5.6v12.8l-4.7-3.9H3.5z" fill="currentColor"/><path d="M15.5 9.5l5 5M20.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+function updateHeader(){$('hdr-eyebrow').textContent=klasseName()+' · Teamspiel';const b=$('btn-sound');b.innerHTML=(settings.sound?SPK_ON:SPK_OFF)+'<span>'+(settings.sound?'Klang an':'Klang aus')+'</span>';b.classList.toggle('off',!settings.sound);b.setAttribute('aria-pressed',String(!!settings.sound))}
+$('btn-fminus').addEventListener('click',()=>{settings.font=Math.max(-1,settings.font-1);saveSettings();applyFont()});
+$('btn-fplus').addEventListener('click',()=>{settings.font=Math.min(2,settings.font+1);saveSettings();applyFont()});
+$('btn-sound').addEventListener('click',()=>{settings.sound=!settings.sound;saveSettings();updateHeader();if(!settings.sound)Snd.stopAll();else Snd.ensure()});
+$('btn-brand').addEventListener('click',()=>leaveGame());
+
+/* ============ Startseite ============ */
+function stageCard(s){const cfg=STAGES[s];const open=s<=maxStage();const n=prog.cracked[s];
+  const status=open?(n?`Geknackt: ${n}×`:'Frei'):`Gesperrt, erst Stufe ${s-1} knacken`;
+  return `<button type="button" class="stcard ${n?'done':''}" data-stage="${s}" ${open?'':'disabled'}><span class="n">${s}</span><span class="t">${esc(cfg.title)}</span><span class="d">${esc(cfg.sub)}</span><span class="s">${open?'':LOCK(15,'#5C6470')}${esc(status)}</span></button>`}
+function renderStart(){const ms=maxStage();const tc=totalCracked();
+  $('screen-start').innerHTML=`<div class="stack">
+    <div class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">Teamspiel für zwei</p>
+        <h1>Der Rhythmus-Tresor</h1>
+        <p class="lead">Ihr knackt den Tresor nur zusammen. Eine Person sieht die Noten, die andere Person hat das Handbuch.</p>
+        <div class="row"><button type="button" class="btn-primary btn-big" id="st-go">Tresor holen</button><span class="chip st${ms}">Stufe ${ms}</span><button type="button" class="btn-sm" id="st-sound">Ton testen</button></div>
+      </div>
+      <div class="hero-side">
+        <p class="eyebrow">So spielt ihr</p>
+        <ol class="steps">
+          <li><span>Wer das iPad hat, ist die <b>Tresor-Person</b> und spricht jeden Rhythmus in Du und dei.</span></li>
+          <li><span>Die <b>Handbuch-Person</b> sucht den Rhythmus und sagt die Ziffer.</span></li>
+          <li><span>Die Tresor-Person tippt den Code ein und öffnet den Tresor.</span></li>
+          <li><span>Danach tauscht ihr die Rollen.</span></li>
+        </ol>
+      </div>
+    </div>
+    <section class="stack-s" aria-labelledby="h-rollen">
+      <h2 class="h2" id="h-rollen">Eure Rollen</h2>
+      <div class="roles">
+        <div class="card role"><div class="role-h"><span class="role-ic t">${LOCK(26,'#FFFFFF')}</span><h3 class="h3">Tresor-Person</h3></div>
+          <ul><li>Du hast das iPad und siehst die Noten.</li><li>Sprich jeden Rhythmus in Du und dei.</li><li>Zeig das iPad nicht her.</li><li>Ab Stufe 2 sagst du auch, welche Lampe leuchtet.</li></ul></div>
+        <div class="card role"><div class="role-h"><span class="role-ic h">${BOOK}</span><h3 class="h3">Handbuch-Person</h3></div>
+          <ul><li>Du hast das Handbuch und hörst genau zu.</li><li>Such den Rhythmus und sag die Ziffer.</li><li>Schreib die Ziffer auf deinen Knackzettel.</li><li>Unsicher? Dann sag „Noch mal, bitte!“</li></ul></div>
+      </div>
+      <div class="rules"><span class="chip">Sprecht leise</span><span class="chip">Drei Versuche pro Tresor</span><span class="chip">${jokerChipText()}</span><span class="chip">Nach jedem Tresor tauschen</span></div>
+    </section>
+    <section class="stack-s" aria-labelledby="h-stufen">
+      <h2 class="h2" id="h-stufen">Die drei Stufen</h2>
+      <div class="stcards">${[1,2,3].map(stageCard).join('')}</div>
+    </section>
+    <section class="card counter" aria-label="Geknackte Tresore">
+      <div class="coins">${tc?coinsHTML(tc):COIN(30)}</div>
+      <p><b>${tc?`Euer Team hat schon ${tc} ${tc===1?'Tresor':'Tresore'} geknackt.`:'Noch kein Tresor geknackt. Los geht’s!'}</b></p>
+    </section>
+  </div>`}
+function showStart(){stopTimer();Snd.stopAll();G=null;renderStart();$('screen-game').hidden=true;$('screen-start').hidden=false;gotoSection('top')}
+let leaveArmed=0;
+function leaveGame(){if(G&&G.status==='play'&&(G.input.length||G.strikes||(G.unlocked&&G.unlocked.length))){const b=$('g-home');if(b&&Date.now()-leaveArmed>3000){leaveArmed=Date.now();b.textContent='Wirklich aufhören?';b.classList.add('btn-dark');setTimeout(()=>{if(b.isConnected){b.textContent='Übersicht';b.classList.remove('btn-dark')}},3000);gotoSection('top');return}}leaveArmed=0;showStart()}
+
+/* ============ Spiel ============ */
+let G=null,timerId=null;
+function newGame(stage){stopTimer();Snd.stopAll();const cfg=STAGES[stage];const digits=shuffle(TEL_ORDER).slice(0,cfg.n);
+  let starIdx=-1;if(cfg.star&&Math.random()<0.75)starIdx=Math.floor(Math.random()*cfg.n);
+  const faecher=digits.map((d,i)=>i===starIdx?{d:'✱',tok:pick(STAR_POOL)}:{d:String(d),tok:TEL[d]});
+  const lamp=cfg.lamp?pick(LAMP_ORDER):null;
+  const raw=faecher.map(f=>f.d);const expected=lamp?applyLamp(raw,lamp):raw.slice();
+  prog.nr++;saveProg();
+  G={stage,n:cfg.n,faecher,lamp,raw,expected,input:[],strikes:0,unlocked:[],status:'play',nr:prog.nr,last:null,time:settings.timer||0,left:settings.timer||0}}
+function startStage(s){if(s>maxStage())return;try{if(navigator.wakeLock)navigator.wakeLock.request('screen').catch(()=>{})}catch(e){}
+  newGame(s);showGame()}
+function showGame(){$('screen-start').hidden=true;$('screen-game').hidden=false;renderGame();startTimer();gotoSection('top')}
+function roleText(){const g=G;let t='<strong>Du hast das iPad, also bist du die Tresor-Person.</strong> Sprich die Rhythmen in Du und dei und zeig das iPad nicht her.';if(STAGES[g.stage].lamp)t+=' Sag auch, welche Lampe leuchtet.';return t}
+function hintText(){const g=G;if(g.stage===1)return 'Die Handbuch-Person sagt dir die Ziffern. Tippe sie in der Reihenfolge der Fächer ein.';if(g.stage===2)return 'Die Handbuch-Person sagt dir die Ziffern. Denkt an die Lampe!';return 'Denkt an die Lampe. Steht ein Rhythmus nicht im Handbuch, tippt ihr ✱.'}
+function renderGame(){const g=G;
+  $('screen-game').innerHTML=`<div class="stack">
+    <div class="row between gtop"><div class="row"><span class="chip st${g.stage}">Stufe ${g.stage}</span><span class="chip">Tresor ${g.nr}</span><span class="chip" id="g-timer" hidden></span></div><button type="button" class="btn-sm btn-ghost" id="g-home">Übersicht</button></div>
+    <div class="auftrag">${roleText()}</div>
+    <div class="game" id="g-area"></div>
+  </div>`;
+  renderPlay()}
+function fachHTML(f,i){const g=G;const heard=g.unlocked.includes(i);const can=heard||(g.status==='play'&&jokersLeft()>0);
+  return `<div class="fach" id="fach${i}"><div class="fhead"><span class="lbl">Fach ${FACH[i]}</span>${can?`<button type="button" class="btn-sm ${heard?'btn-aub':'btn-petrol'} fplay" data-fach="${i}" aria-label="Fach ${FACH[i]} anhören">▶ ${heard?'Noch mal':'Anhören'}</button>`:''}</div><div class="notation" id="fnot${i}">${rhythmSVG(f.tok,{unit:50})}</div></div>`}
+function vaultHTML(){const g=G;const L=g.lamp?LAMPS[g.lamp]:null;
+  return `<div class="vault" id="vault">
+    <span class="bolt tl"></span><span class="bolt tr"></span><span class="bolt bl"></span><span class="bolt br"></span>
+    <div class="vhead"><span class="plate">Tresor ${g.nr}</span>${L?`<span class="lampbox" role="img" aria-label="Lampe ${L.name}"><span class="lamplbl">Lampe</span><span style="filter:drop-shadow(0 0 7px ${L.fill})">${lampShape(g.lamp,40)}</span><span class="lampname">${L.name}</span></span>`:''}</div>
+    <div class="faecher n${g.n}" id="faecher">${g.faecher.map((f,i)=>fachHTML(f,i)).join('')}</div>
+    <div class="vfoot"><span class="wheel">${WHEEL}</span><span class="alarms" aria-label="Fehlversuche"><span class="allbl">Fehlversuche</span><span class="al" id="al0"></span><span class="al" id="al1"></span><span class="al" id="al2"></span></span></div>
+  </div>`}
+function panelHTML(){const g=G;const star=STAGES[g.stage].star;
+  const keys=['1','2','3','4','5','6','7','8','9','✱','0','del'];
+  return `<div class="panel card">
+    <div class="stack-s"><h2 class="h3">Code eingeben</h2><p class="small">${hintText()}</p></div>
+    <div class="slots s${g.n}" id="slots" aria-label="Eingegebener Code"></div>
+    <div id="g-fb" aria-live="polite"></div>
+    <div class="keypad" id="keypad">${keys.map(k=>`<button type="button" data-k="${k}" ${k==='✱'&&!star?'disabled':''} aria-label="${k==='del'?'Letzte Ziffer löschen':k==='✱'?'Sternchen':'Ziffer '+k}">${k==='del'?'⌫':k}</button>`).join('')}</div>
+    <button type="button" class="btn-primary btn-big wide" id="g-open" disabled>Tresor öffnen</button>
+    <div class="jinfo" id="g-joker" aria-live="polite"></div>
+    <div><button type="button" class="hilfe-btn" id="g-help" aria-expanded="false">Hilfe: So liest du die Noten</button><div class="hilfe-body" id="g-helpbody" hidden>${legendHTML()}</div></div>
+  </div>`}
+function renderPlay(){$('g-area').innerHTML=vaultHTML()+panelHTML();renderCode();renderAlarms();renderJokerInfo();renderTimer()}
+function renderCode(){const g=G;const s=$('slots');if(!s)return;let h='';for(let i=0;i<g.n;i++){const v=g.input[i];h+=`<span class="slot ${v?'full':''} ${i===g.input.length?'cur':''}">${v?esc(v):''}</span>`}s.innerHTML=h;const ob=$('g-open');if(ob)ob.disabled=g.input.length<g.n||g.status!=='play'}
+function renderAlarms(){for(let i=0;i<3;i++){const a=$('al'+i);if(a)a.classList.toggle('on',i<G.strikes)}}
+function rerenderFaecher(){const el=$('faecher');if(el)el.innerHTML=G.faecher.map((f,i)=>fachHTML(f,i)).join('')}
+function jokerMax(){const n=G?G.n:4;return settings.jokers>=9?n:Math.min(n,Math.max(1,settings.jokers||1))}
+function jokersLeft(){return G?Math.max(0,jokerMax()-G.unlocked.length):0}
+function jokerChipText(){const j=settings.jokers;return j>=9?'Hör-Joker für jedes Fach':j===2?'Zwei Hör-Joker pro Tresor':'Ein Hör-Joker pro Tresor'}
+function renderJokerInfo(){const el=$('g-joker');if(!el||!G)return;const left=jokersLeft();const heard=G.unlocked.length;
+  if(left>0)el.innerHTML=`<b>Noch ${left} Hör-Joker</b><span>Tippt bei einem Fach auf ▶ Anhören. Dieses Fach dürft ihr danach so oft hören, wie ihr wollt.</span>`;
+  else el.innerHTML=`<b>${heard===1?'Euer Hör-Joker ist eingesetzt':'Eure Hör-Joker sind eingesetzt'}</b><span>Mit ▶ Noch mal hört ihr ${heard===1?'euer Joker-Fach':'eure Joker-Fächer'} so oft, wie ihr wollt.</span>`}
+function soundCheck(){setTimeout(()=>{const c=Snd.ctx;if(!c||c.state!=='running')toast('Kein Ton? Tippe noch einmal. Hilft das nicht, mach das iPad lauter und schalte die Stummschaltung aus.')},600)}
+function soundTest(){if(!settings.sound){settings.sound=true;saveSettings();updateHeader()}Snd.stopAll();playPattern(TEL[6],{bpm:80,clicks:true,clickVol:0.35});toast('Hörst du den Rhythmus? Wenn nicht, mach das iPad lauter und schalte die Stummschaltung aus.');soundCheck()}
+function playFach(i){const g=G;if(!g||g.status!=='play'||!g.faecher[i])return;
+  if(!settings.sound){toast('Der Klang ist aus. Tippe oben auf „Klang aus“, dann hörst du den Rhythmus.');return}
+  if(!g.unlocked.includes(i)){if(jokersLeft()<=0)return;g.unlocked.push(i);rerenderFaecher();renderJokerInfo()}
+  const f=g.faecher[i];Snd.stopAll();document.querySelectorAll('.fach.playing').forEach(x=>x.classList.remove('playing'));const box=$('fach'+i);if(box)box.classList.add('playing');
+  playPattern(f.tok,{bpm:80,countIn:true,clicks:true,clickVol:0.35,onOnset:idx=>{const n=$('fnot'+i);if(n)n.innerHTML=rhythmSVG(f.tok,{unit:50,lit:idx})},onEnd:()=>{const n=$('fnot'+i);if(n)n.innerHTML=rhythmSVG(f.tok,{unit:50});const b2=$('fach'+i);if(b2)b2.classList.remove('playing')}});
+  soundCheck()}
+function press(k){const g=G;if(!g||g.status!=='play')return;
+  if(k==='del'){g.input.pop()}
+  else if(k==='✱'){if(!STAGES[g.stage].star)return;if(g.input.length<g.n)g.input.push('✱')}
+  else if(/^[0-9]$/.test(k)){if(g.input.length<g.n)g.input.push(k)}
+  renderCode()}
+function tryOpen(){const g=G;if(!g||g.status!=='play'||g.input.length<g.n)return;
+  if(g.input.join('|')===g.expected.join('|')){win();return}
+  g.strikes++;g.last={code:g.input.slice(),right:g.input.filter((c,i)=>c===g.expected[i]).length};g.input=[];
+  sfxFail();renderAlarms();renderCode();
+  const v=$('vault');if(v){v.classList.remove('shake');void v.offsetWidth;v.classList.add('shake')}
+  if(g.strikes>=3){g.status='lost';stopTimer();renderCode();setTimeout(()=>showResult('alarm'),700);return}
+  showWrong()}
+function showWrong(){const g=G;const l=g.last;const forgotLamp=g.lamp&&g.lamp!=='gruen'&&l.code.join('|')===g.raw.join('|');
+  const msg=forgotLamp?`Das ist der Code ohne Lampe. Schaut im Handbuch nach, was die ${LAMPS[g.lamp].adj} Lampe bedeutet.`:`Bei eurem Versuch ${l.code.join(' ')} ${l.right===1?'steht':'stehen'} ${l.right} von ${g.n} Ziffern an der richtigen Stelle. Prüft die Rhythmen noch einmal.`;
+  const left=3-g.strikes;
+  $('g-fb').innerHTML=`<div class="feedback bad"><b>Noch nicht offen.</b><span>${esc(msg)}</span><span class="small">Noch ${left} ${left===1?'Versuch':'Versuche'}.</span></div>`}
+function win(){const g=G;g.status='won';stopTimer();prog.cracked[g.stage]++;let unlockedNew=0;if(g.stage<3&&prog.unlocked<g.stage+1){prog.unlocked=g.stage+1;unlockedNew=g.stage+1}saveProg();sfxWin();
+  const v=$('vault');if(v)v.classList.add('opening');renderCode();$('g-fb').innerHTML='<div class="feedback ok"><b>Klick! Der Tresor geht auf.</b></div>';
+  setTimeout(()=>{if(G!==g)return;showResult('won');if(unlockedNew&&!settings.allOpen)toast(`Stufe ${unlockedNew} ist jetzt frei!`)},1000)}
+function solRow(f,i,idp){const star=f.d==='✱';return `<div class="solrow" id="${idp}row${i}"><span class="lbl">Fach ${FACH[i]}</span><div class="notation" id="${idp}not${i}">${rhythmSVG(f.tok,{unit:64,syl:true})}</div><span class="dchip ${star?'star':''}">${esc(f.d)}</span>${star?'<span class="small starnote">Dieser Rhythmus steht nicht im Handbuch.</span>':''}</div>`}
+function showResult(kind){const g=G;if(!g)return;const won=kind==='won';Snd.stopAll();
+  const title=won?'Geknackt!':kind==='time'?'Die Zeit ist um.':'Der Tresor ist verriegelt.';
+  const text=won?'Jetzt dürft ihr beide auf das iPad schauen. So sah die Lösung aus.':kind==='time'?'Schaut euch zusammen an, wie es gegangen wäre.':'Drei Fehlversuche. Schaut euch zusammen an, wie es gegangen wäre.';
+  const L=g.lamp?LAMPS[g.lamp]:null;
+  const lampLine=L?`<div class="lampline">${lampShape(g.lamp,30)}<span><b>Lampe ${L.name}:</b> ${esc(L.rule)}. Aus <b>${g.raw.join(' ')}</b> wird <b>${g.expected.join(' ')}</b>.</span></div>`:`<div class="lampline"><span>Code: <b>${g.expected.join(' ')}</b></span></div>`;
+  const next=won&&g.stage<3&&(g.stage+1)<=maxStage();
+  $('g-area').innerHTML=`<div class="result card ${won?'won':''}" style="grid-column:1/-1">
+    <div class="rhead">${won?COIN(64):LOCK(56,'#B8322F')}<div class="stack-s"><p class="eyebrow">Tresor ${g.nr} · Stufe ${g.stage}</p><h2>${title}</h2><p>${text}</p></div></div>
+    <div class="sol">${g.faecher.map((f,i)=>solRow(f,i,'s')).join('')}</div>
+    ${lampLine}
+    <div class="row"><button type="button" class="btn-petrol" id="r-play">Lösung anhören</button></div>
+    <div class="swap"><b>Rollentausch!</b> Wer das Handbuch hatte, bekommt jetzt das iPad.</div>
+    <div class="row">${next?`<button type="button" class="btn-primary btn-big" id="r-next">Weiter mit Stufe ${g.stage+1}</button><button type="button" class="btn-dark" id="r-again">Neuer Tresor, Stufe ${g.stage}</button>`:`<button type="button" class="btn-primary btn-big" id="r-again">Neuer Tresor, Stufe ${g.stage}</button>`}<button type="button" class="btn-ghost" id="r-home">Zur Übersicht</button></div>
+  </div>`;
+  gotoSection('top')}
+function playRows(list,idp){Snd.stopAll();if(!Snd.ensure())return;const bpm=80,bd=60/bpm;let t=Snd.now()+0.15;
+  for(let i=0;i<4;i++)Snd.click(t+i*bd,i===0,0.5);t+=4*bd;
+  const mark=k=>document.querySelectorAll(`[id^="${idp}row"]`).forEach(r=>r.classList.toggle('lit',r.id===idp+'row'+k));
+  list.forEach((tok,i)=>{const r=playPattern(tok,{bpm,start:t,clicks:true,clickVol:0.3,onOnset:idx=>{mark(i);const n=$(idp+'not'+i);if(n)n.innerHTML=rhythmSVG(tok,{unit:64,syl:true,lit:idx})},onEnd:()=>{const n=$(idp+'not'+i);if(n)n.innerHTML=rhythmSVG(tok,{unit:64,syl:true})}});t=r.end+bd});
+  Snd.at(t,()=>mark(-1))}
+
+/* Zeit (nur wenn die Lehrkraft sie einschaltet) */
+function startTimer(){stopTimer();if(!G||!G.time||G.status!=='play')return;if(!(G.left>0))G.left=G.time;renderTimer();
+  timerId=setInterval(()=>{if(!G||G.status!=='play'){stopTimer();return}G.left--;renderTimer();if(G.left<=0){stopTimer();G.status='lost';sfxFail();renderCode();showResult('time')}},1000)}
+function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}}
+function renderTimer(){const el=$('g-timer');if(!el||!G)return;if(!G.time){el.hidden=true;return}el.hidden=false;const m=Math.floor(Math.max(0,G.left)/60),s=Math.max(0,G.left)%60;el.textContent=`Zeit ${m}:${String(s).padStart(2,'0')}`;el.classList.toggle('warn',G.left<=30)}
+
+/* Klicks im Spiel und auf der Startseite */
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;
+  if(b.closest('#modal-lk')||b.closest('#tafel'))return;
+  if(b.dataset.k!=null&&b.closest('#keypad')){press(b.dataset.k);return}
+  if(b.classList.contains('fplay')){playFach(+b.dataset.fach);return}
+  if(b.dataset.stage&&b.closest('#screen-start')){startStage(+b.dataset.stage);return}
+  switch(b.id){
+    case 'st-go':startStage(maxStage());break;
+    case 'g-open':tryOpen();break;
+    case 'st-sound':soundTest();break;
+    case 'g-home':leaveGame();break;
+    case 'r-home':showStart();break;
+    case 'r-play':if(G)playRows(G.faecher.map(f=>f.tok),'s');break;
+    case 'r-again':if(G)startStage(G.stage);break;
+    case 'r-next':if(G)startStage(G.stage+1);break;
+    case 'g-help':{const body=$('g-helpbody');body.hidden=!body.hidden;b.classList.toggle('open',!body.hidden);b.setAttribute('aria-expanded',String(!body.hidden));break}
+    case 'btn-lk':openLK();break;
+  }
+});
+
+/* ============ Lehrkraft-Bereich ============ */
+let pinBuf='';
+function openLK(){pinBuf='';renderPin();$('modal-lk').hidden=false}
+function closeLK(){$('modal-lk').hidden=true;pinBuf=''}
+function renderPin(msg){$('lk-box').innerHTML=`<h2>Lehrkraft-Bereich</h2><p class="small">${esc(msg||'Gib die PIN ein.')}</p><div class="pindots">${[0,1,2,3].map(i=>`<i class="${i<pinBuf.length?'on':''}"></i>`).join('')}</div><div class="pinpad">${['1','2','3','4','5','6','7','8','9','','0','del'].map(k=>k===''?'<span></span>':`<button type="button" data-p="${k}" aria-label="${k==='del'?'Löschen':k}">${k==='del'?'⌫':k}</button>`).join('')}</div><div class="row"><button type="button" class="btn-ghost" id="lk-cancel">Abbrechen</button></div>`}
+function lkSolution(){const g=G&&G.status==='play'?G:null;if(!g)return '<p class="small">Auf diesem iPad ist gerade kein Tresor offen.</p>';const L=g.lamp?LAMPS[g.lamp]:null;
+  return `<p>Stufe ${g.stage}, Tresor ${g.nr}. Ziffern in den Fächern: <b>${g.raw.join(' · ')}</b></p>${L?`<p>Lampe ${L.name}: ${esc(L.rule)}.</p>`:''}<p>Richtiger Code: <b class="big">${g.expected.join(' ')}</b></p>`}
+function renderLK(){
+  $('lk-box').innerHTML=`<div class="row between"><h2>Lehrkraft-Bereich</h2><button type="button" class="btn-dark btn-sm" id="lk-close">Fertig</button></div>
+  <div class="lkgrid">
+    <div class="lksec"><h4>Einführung im Plenum</h4><p class="small">Zeig das Handbuch am Beamer. Du hast den Tresor auf deinem iPad, die Klasse ist die Handbuch-Person. Spielt einen Tresor der Stufe 1 gemeinsam durch.</p><div class="row"><button type="button" class="btn-petrol" id="lk-tafel">Handbuch am Beamer zeigen</button></div></div>
+    <div class="lksec"><h4>Hilfe für dieses Team</h4>${lkSolution()}</div>
+    <div class="lksec"><h4>Knackzettel</h4><p class="small">Lösung der Aufgaben zum Schluss, zum Vergleichen am Beamer.</p><div class="row"><button type="button" class="btn-petrol" id="lk-kz">Lösung am Beamer zeigen</button></div></div>
+    <div class="lksec"><h4>Spiel</h4>
+      <div class="row between"><span>Zeit pro Tresor</span><div class="seg" id="lk-timer">${[[0,'Aus'],[180,'3 Min'],[300,'5 Min']].map(([v,l])=>`<button type="button" data-t="${v}" class="${settings.timer===v?'on':''}">${l}</button>`).join('')}</div></div>
+      <div class="row between"><span>Hör-Joker pro Tresor</span><div class="seg" id="lk-jok">${[[1,'1'],[2,'2'],[9,'Alle Fächer']].map(([v,l])=>`<button type="button" data-j="${v}" class="${settings.jokers===v?'on':''}">${l}</button>`).join('')}</div></div>
+      <p class="small">Ein Joker-Fach dürfen die Kinder so oft anhören, wie sie wollen.</p>
+      <button type="button" class="toggle ${settings.allOpen?'on':''}" id="lk-all"><span>Alle Stufen sofort frei</span><span class="sw"></span></button>
+      <button type="button" class="toggle ${settings.sound?'on':''}" id="lk-sound"><span>Klang</span><span class="sw"></span></button>
+    </div>
+    <div class="lksec"><h4>Klasse</h4>
+      <div class="seg" id="lk-prof"><button type="button" data-pr="kreativ" class="${settings.profile==='kreativ'?'on':''}">Kreativklasse</button><button type="button" data-pr="neutral" class="${settings.profile==='neutral'?'on':''}">Andere Klasse</button></div>
+      <div class="stack-s" id="lk-klrow" ${settings.profile==='neutral'?'':'hidden'}><label for="lk-kl" class="small">Name der Klasse</label><input id="lk-kl" value="${esc(settings.klasse)}" maxlength="30"></div>
+    </div>
+    <div class="lksec"><h4>PIN ändern</h4><div class="row"><input id="lk-pin" inputmode="numeric" maxlength="4" placeholder="Neue PIN, 4 Ziffern" style="max-width:220px"><button type="button" class="btn-sm" id="lk-pinsave">Speichern</button></div></div>
+    <div class="lksec"><h4>Dieses iPad zurücksetzen</h4><p class="small">Setzt Tresor-Zähler und freigeschaltete Stufen auf diesem iPad zurück.</p><div class="row"><button type="button" class="btn-sm" id="lk-reset">Zurücksetzen</button></div></div>
+  </div>`}
+let resetArmed=0;
+$('modal-lk').addEventListener('click',e=>{if(e.target===$('modal-lk')){closeLK();return}const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.p!=null){const k=b.dataset.p;if(k==='del')pinBuf=pinBuf.slice(0,-1);else if(pinBuf.length<4)pinBuf+=k;
+    if(pinBuf.length===4){if(pinBuf===String(settings.pin)){pinBuf='';renderLK()}else{pinBuf='';renderPin('Falsche PIN. Noch einmal.')}}else renderPin();return}
+  if(b.dataset.t!=null){settings.timer=+b.dataset.t;saveSettings();renderLK();if(G&&G.status==='play'){G.time=settings.timer;G.left=settings.timer;renderTimer();startTimer()}return}
+  if(b.dataset.j!=null){settings.jokers=+b.dataset.j;saveSettings();renderLK();if(G&&G.status==='play'){rerenderFaecher();renderJokerInfo()}return}
+  if(b.dataset.pr){settings.profile=b.dataset.pr;saveSettings();updateHeader();renderLK();return}
+  switch(b.id){
+    case 'lk-cancel':case 'lk-close':closeLK();if($('screen-start').hidden===false)renderStart();break;
+    case 'lk-tafel':closeLK();openTafel('hb');break;
+    case 'lk-kz':closeLK();openTafel('kz');break;
+    case 'lk-all':settings.allOpen=!settings.allOpen;saveSettings();renderLK();break;
+    case 'lk-sound':settings.sound=!settings.sound;saveSettings();updateHeader();renderLK();break;
+    case 'lk-pinsave':{const v=($('lk-pin').value||'').trim();if(/^\d{4}$/.test(v)){settings.pin=v;saveSettings();toast('Neue PIN gespeichert.');renderLK()}else toast('Die PIN braucht genau 4 Ziffern.');break}
+    case 'lk-reset':if(Date.now()-resetArmed>4000){resetArmed=Date.now();b.textContent='Wirklich zurücksetzen?';b.classList.add('btn-dark')}else{resetArmed=0;prog={unlocked:1,cracked:[0,0,0,0],nr:0};saveProg();toast('Zähler und Stufen sind zurückgesetzt.');renderLK()}break;
+  }
+});
+$('modal-lk').addEventListener('input',e=>{if(e.target.id==='lk-kl'){settings.klasse=e.target.value.trim()||'Klasse 5';saveSettings();updateHeader()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('tafel').hidden)closeTafel();else if(!$('modal-lk').hidden)closeLK()}});
+
+/* ============ Beamer: Handbuch und Lösung Knackzettel ============ */
+function rulesHTML(){return `<div class="rulebox"><h3 class="h3">Stufe 2 · Die Lampe</h3><p class="small">Fragt die Tresor-Person, welche Lampe leuchtet.</p>${LAMP_ORDER.map(k=>{const L=LAMPS[k];return `<div class="lrow">${lampShape(k,40)}<b>${L.name}</b><span>${esc(L.rule)}.</span><span class="ex">${esc(L.ex)}</span></div>`}).join('')}</div>
+  <div class="rulebox"><h3 class="h3">Stufe 3 · Das Sternchen</h3><div class="row"><span class="bigstar">✱</span><p>Manchmal steht ein Rhythmus nicht in der Tabelle. Dann tippt ihr für ihn ✱.</p></div><p class="small">Vergleicht genau, Schlag für Schlag.</p></div>`}
+function kzRow(tok,i,said,wrong){const info=patternOnsets(tok);const good=info.onsets.map(n=>n.syl);
+  const fix=said?`<p class="small" style="grid-column:1/-1">Gesprochen: ${said.map((s,k)=>k===wrong?`<b style="color:#B8322F">${esc(s)}</b>`:esc(s)).join(' ')} · richtig ist <b>${esc(good[wrong])}</b></p>`:'';
+  return `<div class="solrow" id="krow${i}"><span class="lbl">${said?'2'+'ab'[i-3]:'1'+'abc'[i]}</span><div class="notation" id="knot${i}">${rhythmSVG(tok,{unit:64,syl:true})}</div><span></span>${fix}</div>`}
+function openTafel(mode){const t=$('tafel');
+  if(mode==='kz'){t.innerHTML=`<div class="tf-in"><div class="tf-top"><h2>Knackzettel · Lösung</h2><button type="button" class="btn-petrol" id="tf-play">Anhören</button><button type="button" class="btn-dark" id="tf-close">Schließen</button></div>
+    <h3 class="h3">Aufgabe 1 · Rhythmussprache unter den Noten</h3><div class="tfsol">${KZ1.map((tok,i)=>kzRow(tok,i)).join('')}</div>
+    <h3 class="h3">Aufgabe 2 · Die falsche Silbe</h3><div class="tfsol">${KZ2.map((x,j)=>kzRow(x.tok,3+j,x.said,x.wrong)).join('')}</div></div>`}
+  else{t.innerHTML=`<div class="tf-in"><div class="tf-top"><h2>Das Tresor-Handbuch</h2><button type="button" class="btn-dark" id="tf-close">Schließen</button></div>${legendHTML()}<p class="small">Tippe auf einen Rhythmus, um ihn zu hören.</p>
+    <div class="tfgrid">${TEL_ORDER.map(d=>`<button type="button" class="tfcard" data-d="${d}" aria-label="Rhythmus ${d} anhören"><span class="dnum">${d}</span><span class="notation" id="tfn${d}">${rhythmSVG(TEL[d],{unit:58})}</span></button>`).join('')}</div>
+    <div class="tfrules">${rulesHTML()}</div></div>`}
+  t.hidden=false;t.scrollTop=0}
+function closeTafel(){Snd.stopAll();$('tafel').hidden=true}
+$('tafel').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.id==='tf-close'){closeTafel();return}
+  if(b.id==='tf-play'){playRows(KZ1.concat(KZ2.map(x=>x.tok)),'k');return}
+  if(b.dataset.d!=null){const d=+b.dataset.d;Snd.stopAll();playPattern(TEL[d],{bpm:80,clicks:true,clickVol:0.35,onOnset:idx=>{const n=$('tfn'+d);if(n)n.innerHTML=rhythmSVG(TEL[d],{unit:58,lit:idx})},onEnd:()=>{const n=$('tfn'+d);if(n)n.innerHTML=rhythmSVG(TEL[d],{unit:58})}})}});
+
+/* ============ Start ============ */
+let booted=false;
+function boot(data){if(booted)return;booted=true;applyFont();updateHeader();
+  const saved=data&&data.G;
+  if(saved&&saved.status==='play'&&Array.isArray(saved.faecher)){G=saved;if(!Array.isArray(G.unlocked))G.unlocked=[];delete G.joker;delete G.jokerArmed;$('screen-start').hidden=true;$('screen-game').hidden=false;renderGame();startTimer()}
+  else{renderStart()}}
+try{if(window.claude&&window.claude.hot&&typeof window.claude.hot.snapshot==='function')window.claude.hot.snapshot(()=>({G:G&&G.status==='play'?G:null}))}catch(e){}
+try{if(window.claude&&window.claude.hot&&typeof window.claude.hot.ready==='function')window.claude.hot.ready(d=>boot(d||{}));else boot((window.claude&&window.claude.hot&&window.claude.hot.data)||{})}catch(e){boot({})}
+setTimeout(()=>boot({}),800);
+</script>
+
+</body></html>
