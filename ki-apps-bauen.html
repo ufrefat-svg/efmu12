@@ -84,6 +84,12 @@ section{padding:56px 0 8px;scroll-margin-top:70px}
 .callout.amber{background:#FFF6DD !important;border-color:#EEDB9F !important;color:#3E2F05 !important}
 .callout p:last-child{margin-bottom:0}
 .callout-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase;margin:0 0 6px}
+.chain{list-style:none;margin:22px 0 4px;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.chain li{background:#FFFFFF !important;border:1px solid #E6E0D6 !important;border-top:5px solid #4B2E83 !important;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;color:#1F2430 !important}
+.chain li b{font-family:'Plus Jakarta Sans',sans-serif;font-size:16.5px;color:#2E1F57 !important}
+.chain li span{font-size:14.5px;color:#4A5160 !important}
+.chain li .cn{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;letter-spacing:.08em;color:#C2410C !important}
+.chain li.tool{border-top-color:#C2410C !important;background:#FDF0E6 !important}
 blockquote.pull{margin:22px 0;padding:6px 0 6px 20px;border-left:5px solid #C2410C !important;font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(20px,2.6vw,26px);font-weight:700;line-height:1.3;color:#4B2E83 !important;max-width:760px}
 
 /* Glossar */
@@ -262,7 +268,7 @@ footer .btn-ghost{border-color:#7C68B5 !important}
 
 <nav class="nav" aria-label="Inhalt">
   <div class="wrap">
-    <button type="button" class="chip" onclick="gotoSection('s-haltung')">Haltung</button>
+    <button type="button" class="chip" onclick="gotoSection('s-haltung')">Kompetenz vor Tool</button>
     <button type="button" class="chip" onclick="gotoSection('s-was')">Was ist eine KI-App?</button>
     <button type="button" class="chip" onclick="gotoSection('s-werkzeuge')">Werkzeuge</button>
     <button type="button" class="chip" onclick="gotoSection('s-ideen')">Ideen für Musik</button>
@@ -284,7 +290,7 @@ footer .btn-ghost{border-color:#7C68B5 !important}
     <h2 id="kurz">Das Wichtigste in Kürze</h2>
     <ul>
       <li>Mit KI-Werkzeugen wie Claude kannst du kleine <strong>Übe- und Spiel-Apps</strong> bauen, die genau zu deiner Lerngruppe passen.</li>
-      <li>Am Anfang steht das <strong>Lernziel</strong>. Die App kommt danach und bleibt ein Material unter anderen.</li>
+      <li>Am Anfang stehen die <strong>angestrebte Kompetenz</strong> und das <strong>Lernziel</strong>, dann die <strong>Begegnung mit Musik</strong>. Die App kommt danach und bleibt ein Material unter anderen.</li>
       <li>KI macht auch in Musiktheorie Fehler. Jede Frage, jeden Ton und jedes Notenbeispiel <strong>prüfst du selbst</strong>.</li>
       <li>Für die Lernenden gibt es eine <strong>Fassung ohne KI</strong>, ohne Konto und ohne Namen.</li>
       <li>Ob solche Apps das Musiklernen verbessern, ist <strong>noch nicht erforscht</strong>. Die Beispiele hier sind Erfahrungsberichte.</li>
@@ -294,7 +300,7 @@ footer .btn-ghost{border-color:#7C68B5 !important}
 
 <section id="s-haltung">
   <div class="wrap">
-    <div class="sec-head"><div class="sec-num">1</div><div><h2>Erst die Musik, dann die App</h2><p class="sub">Warum das Lernziel vor dem Werkzeug steht</p></div></div>
+    <div class="sec-head"><div class="sec-num">1</div><div><h2>Kompetenz und Ziel vor Tool</h2><p class="sub">Warum die Planung bei Kompetenz, Lernziel und der Begegnung mit Musik beginnt</p></div></div>
     <div class="prose">
       <p>Musikunterricht lebt vom gemeinsamen Hören, Singen, Spielen und Gestalten und vom Gespräch über Musik. Digitale Werkzeuge können das unterstützen. Sie sind ein Baustein unter vielen und ersetzen weder die musikalische Praxis noch die Lehrkraft.</p>
       <p>Die Kultusministerkonferenz bindet Lehren und Lernen in der digitalen Welt an das „Primat des Pädagogischen“ (KMK 2016) und hält fest, dass sich die Potenziale der Digitalität „nicht automatisch“ entfalten (KMK 2021, S. 12). Weil das Bauen mit KI schnell geht und Freude macht, liegt eine Versuchung nahe. Man beginnt mit der Idee für ein Werkzeug und reicht das Lernziel nach. Die Mediendidaktik nennt das „Toolisierung“, die „Reduktion pädagogischer Handlungsanforderungen auf technische Problemlösungen“ (Ruge &amp; Schwaiger 2024).</p>
@@ -302,8 +308,15 @@ footer .btn-ghost{border-color:#7C68B5 !important}
     </div>
     <blockquote class="pull">Wer eine App für die eigene Klasse baut, plant Unterricht.</blockquote>
     <div class="prose">
-      <p>Eine selbst gebaute App ist damit ein Material wie ein Arbeitsblatt oder ein Hörplan. Sie muss sich an denselben Fragen messen lassen. Was sollen die Lernenden musikalisch können, und hilft ihnen die App dabei?</p>
+      <p>Eine selbst gebaute App ist damit ein Material wie ein Arbeitsblatt oder ein Hörplan und muss sich an denselben Fragen messen lassen. Geplant wird deshalb in der gewohnten Reihenfolge.</p>
     </div>
+    <ol class="chain" aria-label="Planungsweg">
+      <li><span class="cn">1</span><b>Angestrebte Kompetenz</b><span>Was sollen die Lernenden auf Dauer können?</span></li>
+      <li><span class="cn">2</span><b>Lernziel</b><span>„Die Lernenden können …“ mit Operator, Gegenstand und Maßstab</span></li>
+      <li><span class="cn">3</span><b>Begegnung mit Musik</b><span>geführtes Hören, Singen, Spielen, Bewegen oder Gestalten</span></li>
+      <li><span class="cn">4</span><b>Aufgabe</b><span>Woran zeigen die Lernenden ihr Können?</span></li>
+      <li class="tool"><span class="cn">5</span><b>Werkzeug</b><span>Erst jetzt die Frage, ob eine App dabei hilft</span></li>
+    </ol>
   </div>
 </section>
 
@@ -378,55 +391,55 @@ footer .btn-ghost{border-color:#7C68B5 !important}
     <div class="grid">
       <article class="card idea c1">
         <div class="area">Hören</div><h3>Intervalle und Akkorde unterscheiden</h3>
-        <p class="row"><b>Lernziel</b>Die Lernenden unterscheiden beim Hören Dur- und Molldreiklänge.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können Dur- und Molldreiklänge hörend unterscheiden.</p>
         <p class="row"><b>Die App</b>spielt Klänge in zufälliger Reihenfolge. Die Lernenden wählen aus, Hilfen kommen in Stufen.</p>
-        <p class="watch"><b>Darauf achten.</b> Synthetische Klänge klingen anders als Instrumente. Danach wird gesungen und gespielt.</p>
+        <p class="watch"><b>Darauf achten.</b> Zuerst begegnen die Lernenden Dur und Moll in Musik, etwa beim Singen und Hören. Synthetische Klänge klingen anders als Instrumente.</p>
       </article>
       <article class="card idea c2">
         <div class="area">Rhythmus</div><h3>Rhythmen hören und lesen</h3>
-        <p class="row"><b>Lernziel</b>Die Lernenden ordnen gehörte Rhythmen aus Vierteln, Achteln und Halben dem Notenbild zu.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können gehörte Rhythmen aus Vierteln, Achteln und Halben dem passenden Notenbild zuordnen.</p>
         <p class="row"><b>Die App</b>nutzt die Rhythmussprache der Klasse, als Diktat, Zuordnung oder Teamspiel.</p>
         <p class="watch"><b>Darauf achten.</b> Tippen im Takt nicht auf Millisekunden auswerten, besonders nicht auf iPads oder mit Bluetooth-Kopfhörern.</p>
       </article>
       <article class="card idea c3">
         <div class="area">Noten</div><h3>Noten lesen</h3>
-        <p class="row"><b>Lernziel</b>Die Lernenden benennen Töne im Violinschlüssel zwischen c’ und g’’.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können Töne im Violinschlüssel zwischen c’ und g’’ benennen.</p>
         <p class="row"><b>Die App</b>zeigt Noten mit einer freien Bibliothek wie abcjs an und lässt den Ton erklingen.</p>
         <p class="watch"><b>Darauf achten.</b> KI schreibt Notation flüssig, aber nicht fehlerfrei. Vorzeichen, Takte und Taktart prüfen.</p>
       </article>
       <article class="card idea c4">
         <div class="area">Erfinden</div><h3>Patterns gestalten</h3>
-        <p class="row"><b>Lernziel</b>Die Lernenden erfinden in Gruppen ein Ostinato und begründen ihre Klangauswahl.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können in Gruppen ein Ostinato zu einem Lied gestalten.</p>
         <p class="row"><b>Die App</b>bietet ein einfaches Raster mit wenigen Klängen und wählbarem Tempo.</p>
         <p class="watch"><b>Darauf achten.</b> Zuerst prüfen, ob ein vorhandenes Werkzeug wie die Groove Pizza reicht. Das Gespräch über das Ergebnis gehört dazu.</p>
       </article>
       <article class="card idea c1">
         <div class="area">Wissen</div><h3>Fachbegriffe festigen</h3>
-        <p class="row"><b>Lernziel</b>Die Lernenden erklären zentrale Begriffe der laufenden Einheit.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können zentrale Fachbegriffe der laufenden Einheit erklären.</p>
         <p class="row"><b>Die App</b>ist ein Quiz oder ein Tafelspiel für Teams mit Fragen aus den eigenen Unterlagen.</p>
         <p class="watch"><b>Darauf achten.</b> Jede Frage prüfen. Spiele belohnen Tempo, deshalb auf die Beteiligung aller achten.</p>
       </article>
       <article class="card idea c2">
         <div class="area">Klassenmusizieren</div><h3>Zusammen spielen</h3>
-        <p class="row"><b>Lernziel</b>Die Klasse spielt einen Mitspielsatz im gemeinsamen Tempo.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können einen Mitspielsatz im gemeinsamen Tempo spielen.</p>
         <p class="row"><b>Die App</b>zeigt am Beamer groß Zählzeiten, Akkorde und den Formablauf an.</p>
         <p class="watch"><b>Darauf achten.</b> Die Lehrkraft zählt ein und dirigiert. Die Anzeige hilft beim Mitlesen.</p>
       </article>
       <article class="card idea c3">
         <div class="area">Hören mit Plan</div><h3>Form verfolgen</h3>
-        <p class="row"><b>Lernziel</b>Die Lernenden erkennen beim Hören die Formteile eines Rondos.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können ein Rondo beim Hören in seine Formteile gliedern.</p>
         <p class="row"><b>Die App</b>ist eine Formleiste, die die Lehrkraft beim Hören weiterschaltet. Die Lernenden markieren die Wechsel.</p>
         <p class="watch"><b>Darauf achten.</b> Die Musik kommt live oder vom eigenen Tonträger. In öffentliche Apps gehören nur freie oder eigene Aufnahmen.</p>
       </article>
       <article class="card idea c4">
         <div class="area">Üben</div><h3>Mit Rückmeldung üben</h3>
-        <p class="row"><b>Lernziel</b>Die Lernenden üben Tonleitern im eigenen Tempo und sehen, woran sie noch arbeiten.</p>
-        <p class="row"><b>Die App</b>gibt gestufte Hilfen, ohne die Lösung zu verraten, und führt eine Fehlerkartei.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können Dur- und Molltonleitern bestimmen.</p>
+        <p class="row"><b>Die App</b>lässt im eigenen Tempo üben, gibt gestufte Hilfen, ohne die Lösung zu verraten, und zeigt in einer Fehlerkartei, woran man noch arbeitet.</p>
         <p class="watch"><b>Darauf achten.</b> Fortschritt nur auf dem Gerät speichern und ohne Namen.</p>
       </article>
       <article class="card idea c1">
         <div class="area">Über Musik nachdenken</div><h3>KI-Musik untersuchen</h3>
-        <p class="row"><b>Lernziel</b>Die Lernenden formulieren eine Klanganweisung und vergleichen das Ergebnis mit ihrer Hörerwartung.</p>
+        <p class="row"><b>Lernziel</b>Die Lernenden können das klingende Ergebnis ihrer Klanganweisung mit ihrer Hörerwartung vergleichen.</p>
         <p class="row"><b>Die App</b>strukturiert die Klanganweisung und hält die Hörerwartung vorher schriftlich fest.</p>
         <p class="watch"><b>Darauf achten.</b> Musik-KI-Dienste haben eigene Konten und Bedingungen. Erzeugt wird am Gerät der Lehrkraft.</p>
       </article>
@@ -454,8 +467,8 @@ footer .btn-ghost{border-color:#7C68B5 !important}
       <div class="card">
         <h3 style="font-size:19px;margin-bottom:12px">Speziell im Fach Musik</h3>
         <p class="small muted">Ein breit geteiltes Modell guten Musikunterrichts gibt es bislang nicht, diskutiert wird etwa eine „ästhetische Aktivierung“ (Kranefeld 2021). Ob digitale Medien die Lernwirksamkeit steigern, ist noch weitgehend offen (Platz, Wolf &amp; Hasselhorn 2021).</p>
-        <div class="crit"><div class="ic">1</div><div><h4>Musik steht im Zentrum</h4><p>Jede App dient dem Hören, Singen, Spielen, Erfinden oder dem Nachdenken über Musik.</p></div></div>
-        <div class="crit"><div class="ic">2</div><div><h4>Klang kommt zuerst</h4><p>Ein Intervall wird gehört, bevor es benannt wird. Eine Hörerwartung wird notiert, bevor das Ergebnis erklingt.</p></div></div>
+        <div class="crit"><div class="ic">1</div><div><h4>Die Begegnung mit Musik steht an erster Stelle</h4><p>Bevor eine App ins Spiel kommt, begegnen die Lernenden der Musik, etwa im geführten Hören, im Singen und Spielen, in Bewegung oder im eigenen Gestalten. Ein Intervall wird gesungen oder gehört, bevor es benannt wird. Die App knüpft an diese Erfahrung an und führt zu ihr zurück.</p></div></div>
+        <div class="crit"><div class="ic">2</div><div><h4>Musik steht im Zentrum</h4><p>Jede App dient dem Hören, Singen, Spielen, Erfinden oder dem Nachdenken über Musik.</p></div></div>
         <div class="crit"><div class="ic">3</div><div><h4>App-Phasen bleiben kurz</h4><p>Sie stehen zwischen Phasen, in denen gemeinsam gesungen, gespielt und gesprochen wird.</p></div></div>
         <div class="crit"><div class="ic">4</div><div><h4>Die Sprache der Klasse zählt</h4><p>Eine selbst gebaute App greift Rhythmussprache, Fachbegriffe und Beispiele der eigenen Lerngruppe auf. Das ist ihr größter Vorteil gegenüber Fertigprodukten.</p></div></div>
         <div class="crit"><div class="ic">5</div><div><h4>Erfahrung braucht Raum</h4><p>Apps eignen sich zum Üben, Abrufen und Vergleichen. Ästhetische Erfahrung und begründetes Urteil entstehen eher im Musizieren und im Gespräch.</p></div></div>
@@ -493,16 +506,16 @@ footer .btn-ghost{border-color:#7C68B5 !important}
   <div class="wrap">
     <div class="sec-head"><div class="sec-num">7</div><div><h2>Schritt für Schritt zur eigenen App</h2><p class="sub">In einfacher Sprache. Du brauchst nur einen Browser und ein KI-Werkzeug.</p></div></div>
     <ol class="steps">
-      <li class="step"><div class="n">1</div><div><h3>Schreib das Lernziel auf</h3><p>Was sollen die Lernenden danach können? Schreib es in einen Satz. Ein Beispiel ist „Die Lernenden erkennen beim Hören eine Quarte und eine Quinte.“</p><span class="tip"><b>Tipp.</b> Fällt dir kein Lernziel ein, brauchst du wahrscheinlich keine App.</span></div></li>
-      <li class="step"><div class="n">2</div><div><h3>Schau, ob es schon etwas gibt</h3><p>Vielleicht gibt es schon eine gute App. Dann sparst du Zeit. Schau zum Beispiel in die Spalten des Padlets „Musikunterricht digital gestalten 2.1“. Bau nur selbst, wenn nichts passt.</p></div></li>
-      <li class="step"><div class="n">3</div><div><h3>Plane die App auf Papier</h3><p>Zeichne den Bildschirm. Was sieht man? Was hört man? Was tippt man an? Was passiert bei einer falschen Antwort?</p><p>Plane die Hilfen in Stufen. Die erste Hilfe ist ein kleiner Tipp. Die letzte Hilfe zeigt die Lösung.</p></div></li>
-      <li class="step"><div class="n">4</div><div><h3>Schreib den Auftrag an die KI</h3><p>Der Auftrag heißt Prompt. Nenne das Lernziel, die Klasse, die Geräte und den Ablauf. Schreib auch auf, was die App nicht tun soll, zum Beispiel Namen speichern.</p><span class="tip"><b>Hilfe.</b> Der <button type="button" class="inline-btn" onclick="gotoSection('s-baukasten')">Prompt-Baukasten</button> schreibt den Auftrag mit dir zusammen.</span></div></li>
-      <li class="step"><div class="n">5</div><div><h3>Bau die App in kleinen Schritten</h3><p>Bitte die KI zuerst nur um die Grundfunktion. Wenn sie läuft, kommen die Extras dazu. Speichere jede Fassung, die funktioniert. Dann kannst du zurück, wenn etwas schiefgeht.</p></div></li>
-      <li class="step"><div class="n">6</div><div><h3>Teste die App</h3><p>Probier alles aus, auch falsche Knöpfe. Teste am Computer, am Tablet und am Beamer. Kommt der Ton? Ist die Schrift groß genug?</p><p>Beschreib Fehler in einfachen Worten. Die KI verbessert dann die App.</p></div></li>
+      <li class="step"><div class="n">1</div><div><h3>Kläre Kompetenz und Lernziel</h3><p>Welche Kompetenz sollen die Lernenden aufbauen? Und was können sie am Ende? Schreib das Lernziel in einen Satz mit „können“. Ein Beispiel ist „Die Lernenden können eine Quarte und eine Quinte hörend unterscheiden.“</p><span class="tip"><b>Tipp.</b> Fällt dir kein Lernziel ein, brauchst du wahrscheinlich keine App.</span></div></li>
+      <li class="step"><div class="n">2</div><div><h3>Plane die Begegnung mit Musik</h3><p>Zuerst begegnen die Lernenden der Musik. Das kann geführtes Hören sein. Es kann auch Singen, Spielen, Bewegen oder eigenes Gestalten sein. Die App kommt danach und knüpft an diese Erfahrung an.</p><span class="tip"><b>Tipp.</b> Frag dich, wo in der Stunde Musik erklingt und wer sie macht.</span></div></li>
+      <li class="step"><div class="n">3</div><div><h3>Schau, ob es schon etwas gibt</h3><p>Vielleicht gibt es schon eine gute App. Dann sparst du Zeit. Schau zum Beispiel in die Spalten des Padlets „Musikunterricht digital gestalten 2.1“. Bau nur selbst, wenn nichts passt.</p></div></li>
+      <li class="step"><div class="n">4</div><div><h3>Plane die App auf Papier</h3><p>Zeichne den Bildschirm. Was sieht man? Was hört man? Was tippt man an? Was passiert bei einer falschen Antwort?</p><p>Plane die Hilfen in Stufen. Die erste Hilfe ist ein kleiner Tipp. Die letzte Hilfe zeigt die Lösung.</p></div></li>
+      <li class="step"><div class="n">5</div><div><h3>Schreib den Auftrag an die KI</h3><p>Der Auftrag heißt Prompt. Nenne die Kompetenz, das Lernziel, die Klasse, die Geräte und den Ablauf. Schreib auch auf, was die App nicht tun soll, zum Beispiel Namen speichern.</p><span class="tip"><b>Hilfe.</b> Der <button type="button" class="inline-btn" onclick="gotoSection('s-baukasten')">Prompt-Baukasten</button> schreibt den Auftrag mit dir zusammen.</span></div></li>
+      <li class="step"><div class="n">6</div><div><h3>Bau und teste in kleinen Schritten</h3><p>Bitte die KI zuerst nur um die Grundfunktion. Wenn sie läuft, kommen die Extras dazu. Speichere jede Fassung, die funktioniert. Dann kannst du zurück, wenn etwas schiefgeht.</p><p>Probier alles aus, auch falsche Knöpfe. Teste am Computer, am Tablet und am Beamer. Kommt der Ton? Ist die Schrift groß genug? Beschreib Fehler in einfachen Worten. Die KI verbessert dann die App.</p></div></li>
       <li class="step"><div class="n">7</div><div><h3>Prüfe den Inhalt</h3><p>Die KI macht Fehler, auch in der Musiktheorie. Prüfe jede Frage und jede Lösung. Hör dir jeden Ton an. Stimmen Intervalle, Noten und Takte?</p><span class="tip"><b>Wichtig.</b> Du bist die Fachperson und trägst die Verantwortung.</span></div></li>
-      <li class="step"><div class="n">8</div><div><h3>Probier die App mit wenigen Lernenden aus</h3><p>Beobachte genau. Wo bleiben sie hängen? Lernen sie, was sie lernen sollen? Frag sie nach ihrer Meinung.</p><p>Manchmal zeigt sich, dass es ohne App besser geht. Auch das ist ein gutes Ergebnis.</p></div></li>
+      <li class="step"><div class="n">8</div><div><h3>Probier die App mit wenigen Lernenden aus</h3><p>Beobachte genau. Wo bleiben sie hängen? Können sie am Ende, was sie können sollen? Frag sie nach ihrer Meinung.</p><p>Manchmal zeigt sich, dass es ohne App besser geht. Auch das ist ein gutes Ergebnis.</p></div></li>
       <li class="step"><div class="n">9</div><div><h3>Mach eine sparsame Fassung für die Klasse</h3><p>Die Fassung für die Lernenden hat keine KI-Funktion. Sie fragt keine Namen ab und schickt keine Daten ins Internet. Speichere sie als eine einzige HTML-Datei.</p></div></li>
-      <li class="step"><div class="n">10</div><div><h3>Teile die App</h3><p>Du kannst die Datei zum Beispiel auf GitHub Pages veröffentlichen. Verwende nur Noten und Klänge, die frei nutzbar sind oder von dir stammen.</p><p>Schreib dazu, für welches Lernziel die App gedacht ist, wann du sie geprüft hast und unter welcher Lizenz sie steht.</p></div></li>
+      <li class="step"><div class="n">10</div><div><h3>Teile die App</h3><p>Du kannst die Datei zum Beispiel auf GitHub Pages veröffentlichen. Verwende nur Noten und Klänge, die frei nutzbar sind oder von dir stammen.</p><p>Schreib dazu, für welche Kompetenz und welches Lernziel die App gedacht ist, wann du sie geprüft hast und unter welcher Lizenz sie steht.</p></div></li>
     </ol>
   </div>
 </section>
@@ -522,7 +535,9 @@ footer .btn-ghost{border-color:#7C68B5 !important}
             <option value="anzeige">Anzeige für das Klassenmusizieren</option>
           </select></div>
         <div class="field"><label for="pb-klasse">Klasse oder Lerngruppe</label><input type="text" id="pb-klasse" value="Klasse 7"></div>
-        <div class="field"><label for="pb-ziel">Lernziel in einem Satz</label><p class="hint">Was sollen die Lernenden danach musikalisch können?</p><textarea id="pb-ziel">Die Lernenden unterscheiden beim Hören kleine Terz, große Terz, reine Quarte und reine Quinte.</textarea></div>
+        <div class="field"><label for="pb-komp">Angestrebte Kompetenz</label><p class="hint">Was sollen die Lernenden auf Dauer können?</p><input type="text" id="pb-komp" value="Intervalle hörend erfassen"></div>
+        <div class="field"><label for="pb-ziel">Lernziel in einem Satz mit „können“</label><p class="hint">Die Lernenden können … (ein Operator, ein klarer Gegenstand)</p><textarea id="pb-ziel">Die Lernenden können zwei nacheinander erklingende Töne als kleine Terz, große Terz, reine Quarte oder reine Quinte hörend unterscheiden.</textarea></div>
+        <div class="field"><label for="pb-vorher">Begegnung mit Musik vorher</label><p class="hint">Wo sind die Lernenden der Musik schon begegnet? Die App kann daran anknüpfen.</p><textarea id="pb-vorher">Die Klasse hat Liedanfänge gesungen, in denen diese Intervalle vorkommen.</textarea></div>
         <div class="field"><label for="pb-ablauf">So soll die App ablaufen</label><p class="hint">Was sieht, hört und tippt man? Was passiert am Ende?</p><textarea id="pb-ablauf">Ein Knopf spielt zwei Töne nacheinander. Der tiefere Ton liegt zufällig zwischen c’ und g’. Die Lernenden wählen eine von vier Antworten. Nach zehn Aufgaben zeigt die App, wie viele richtig waren.</textarea></div>
         <fieldset><legend>Geräte</legend><div class="checks">
           <label><input type="checkbox" name="geraet" value="am Beamer oder an der digitalen Tafel" checked><span>Beamer oder digitale Tafel</span></label>
@@ -603,7 +618,7 @@ footer .btn-ghost{border-color:#7C68B5 !important}
     </div>
     <div class="callout warm">
       <p class="callout-title">Einordnung</p>
-      <p>Sinustöne klingen anders als Stimme und Instrumente. Nach der Übung wird deshalb gesungen und gespielt, etwa mit Liedanfängen, in denen die Intervalle vorkommen.</p>
+      <p>Vor der Übung begegnen die Lernenden den Intervallen in Musik, etwa beim Singen von Liedanfängen, in denen sie vorkommen. Danach werden die Intervalle wieder gesungen und gespielt. Sinustöne klingen anders als Stimme und Instrumente.</p>
     </div>
   </div>
 </section>
@@ -632,8 +647,8 @@ footer .btn-ghost{border-color:#7C68B5 !important}
     <div class="checklist">
       <div class="progress"><div class="bar" aria-hidden="true"><i id="cl-bar"></i></div><b id="cl-count">0 von 12 erledigt</b><button type="button" class="btn btn-outline" onclick="resetChecklist()">Zurücksetzen</button></div>
       <ul class="cl" id="cl">
-        <li><label><input type="checkbox"><span>Das Lernziel ist in einem Satz benannt.</span></label></li>
-        <li><label><input type="checkbox"><span>Musik bleibt im Zentrum, also Hören, Singen, Spielen oder Gestalten.</span></label></li>
+        <li><label><input type="checkbox"><span>Die angestrebte Kompetenz ist benannt, das Lernziel als Satz mit „können“.</span></label></li>
+        <li><label><input type="checkbox"><span>Am Anfang steht die Begegnung mit Musik, und die App knüpft daran an.</span></label></li>
         <li><label><input type="checkbox"><span>Ich habe jede Frage, jede Lösung und jedes Notenbeispiel selbst geprüft.</span></label></li>
         <li><label><input type="checkbox"><span>Die App funktioniert auf den Geräten der Schule, auch auf dem iPad.</span></label></li>
         <li><label><input type="checkbox"><span>Die Schülerfassung verarbeitet keine Namen und keine anderen personenbezogenen Daten.</span></label></li>
@@ -655,7 +670,8 @@ footer .btn-ghost{border-color:#7C68B5 !important}
     <div class="grid-2">
       <article class="card app">
         <p class="kind">Tafelspiel für zwei Teams</p><h3>Kompetenz Fußball</h3>
-        <p>Jede richtige Antwort bringt den Ball näher ans gegnerische Tor. Über 130 Fragensammlungen von der Grundschule bis zur Oberstufe, eigene Fragen als Liste aus Excel, Word oder einer Textdatei. Antwortauswahl A bis D, Vorlesefunktion, Spiel gegen den Computer.</p>
+        <p>Jede richtige Antwort bringt den Ball näher ans gegnerische Tor. Über 130 Fragensammlungen von der Grundschule bis zur Oberstufe, eigene Fragen als Liste aus Excel, Word oder einer Textdatei. Antwortauswahl A bis D, Vorlesefunktion, Spiel gegen den Computer. Nicht alle Sammlungen sind bisher fachlich geprüft.</p>
+        <p><strong>So arbeite ich damit.</strong> Über den Link zur Fassung als Claude-Artefakt lasse ich Fragen zu einem Thema oder aus eigenem Material erzeugen. Das ist eine erste Grundlage, die ich an meinen Unterricht anpasse oder von der KI anpassen lasse und vor dem Spiel prüfe.</p>
         <p><strong>Wofür.</strong> Wissen abrufen und festigen, etwa vor einer Klausur. Danach wird das Gewusste klingend angewendet.</p>
         <div class="links"><a href="https://ufrefat-svg.github.io/efmu12/kompetenz-fussball.html" target="_blank" rel="noopener">Web-Fassung ohne Konto</a><a href="https://claude.ai/artifact/KQvasCkTS8qk6c94fRxqRq" target="_blank" rel="noopener">Fassung mit KI-Fragen (Claude-Konto)</a></div>
         <p class="note">Erfahrungsbericht, kein Wirksamkeitsnachweis.</p>
@@ -723,7 +739,7 @@ footer .btn-ghost{border-color:#7C68B5 !important}
 
 <footer>
   <div class="wrap">
-    <p><b>Eigene Musik-Apps mit KI bauen</b> · Ulrich Frefat · Fachseminar Musik, Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringen (Erfurt) · Teil der Sammlung „Musikunterricht digital gestalten 2.1“ · Stand 20.10.2026</p>
+    <p><b>Eigene Musik-Apps mit KI bauen</b> · Ulrich Frefat, Fachleiter Musik · STAATLICHES STUDIENSEMINAR FÜR LEHRERAUSBILDUNG – Regionalstelle Mittelthüringen (Erfurt) – Lehramt an Gymnasien – Musik / Doppelfach Musik · Teil der Sammlung „Musikunterricht digital gestalten 2.1“ · Stand 20.10.2026</p>
     <p>Gebaut mit Claude (Anthropic). Die Seite lädt nichts aus dem Internet nach. Gespeichert wird nur der Stand der Checkliste, und zwar in deinem Browser.</p>
     <button type="button" class="btn btn-ghost" onclick="gotoSection('top')">Nach oben</button>
   </div>
@@ -744,30 +760,42 @@ function gotoSection(id){
 /* Prompt-Baukasten */
 var ART={
   hoer:{name:'eine kleine Hör-App',klang:true,
-    ziel:'Die Lernenden unterscheiden beim Hören kleine Terz, große Terz, reine Quarte und reine Quinte.',
+    komp:'Intervalle hörend erfassen',
+    ziel:'Die Lernenden können zwei nacheinander erklingende Töne als kleine Terz, große Terz, reine Quarte oder reine Quinte hörend unterscheiden.',
+    vorher:'Die Klasse hat Liedanfänge gesungen, in denen diese Intervalle vorkommen.',
     ablauf:'Ein Knopf spielt zwei Töne nacheinander. Der tiefere Ton liegt zufällig zwischen c’ und g’. Die Lernenden wählen eine von vier Antworten. Nach zehn Aufgaben zeigt die App, wie viele richtig waren.'},
   rhythmus:{name:'ein kleines Rhythmusspiel',klang:true,
-    ziel:'Die Lernenden ordnen gehörte Rhythmen aus Vierteln, Achteln und Halben dem passenden Notenbild zu.',
+    komp:'Rhythmen hören, lesen und ausführen',
+    ziel:'Die Lernenden können gehörte Rhythmen aus Vierteln, Achteln und Halben dem passenden Notenbild zuordnen.',
+    vorher:'Die Klasse hat die Rhythmen vorher in unserer Rhythmussprache gesprochen und geklatscht.',
     ablauf:'Die App spielt einen Takt im 4/4-Takt mit einem leisen Klick auf jeder Zählzeit. Darunter stehen vier Notenbilder zur Auswahl. Die Silben unserer Rhythmussprache sind: (bitte eintragen). Nach acht Aufgaben zeigt die App, wie viele richtig waren.'},
   noten:{name:'eine kleine App zum Notenlesen',klang:true,noten:true,
-    ziel:'Die Lernenden benennen Töne im Violinschlüssel zwischen c’ und g’’.',
+    komp:'Notation lesen und in Klang umsetzen',
+    ziel:'Die Lernenden können Töne im Violinschlüssel zwischen c’ und g’’ benennen.',
+    vorher:'Die Klasse hat ein Lied aus Noten gesungen und die Töne dabei mitgezeigt.',
     ablauf:'Die App zeigt eine Note im Violinschlüssel. Die Lernenden tippen den Notennamen an. Danach erklingt der Ton. Nach fünfzehn Aufgaben zeigt die App, welche Töne noch unsicher sind.'},
   quiz:{name:'ein Quiz als Tafelspiel für zwei Teams',klang:false,
-    ziel:'Die Lernenden erklären zentrale Fachbegriffe der laufenden Einheit.',
+    komp:'Fachbegriffe sachgerecht verwenden',
+    ziel:'Die Lernenden können zentrale Fachbegriffe der laufenden Einheit erklären.',
+    vorher:'Die Begriffe kamen in der Einheit beim Hören und Musizieren vor.',
     ablauf:'Zwei Teams spielen gegeneinander. Die Lehrkraft zeigt am Beamer eine Frage mit vier Antworten und klickt weiter. Jede richtige Antwort bringt einen Punkt. Die Fragen füge ich als Liste ein, eine Frage pro Zeile mit Antworten und Lösung.'},
   ueben:{name:'ein kleines Übeprogramm mit Fehlerkartei',klang:false,
-    ziel:'Die Lernenden bestimmen Dur- und Molltonleitern und sehen, woran sie noch arbeiten.',
+    komp:'Tonleitern bestimmen und bilden',
+    ziel:'Die Lernenden können Dur- und Molltonleitern bestimmen.',
+    vorher:'Die Klasse hat Dur und Moll im Hören und Singen verglichen.',
     ablauf:'Die App stellt eine Aufgabe nach der anderen. Bei Fehlern gibt sie Hinweise, ohne die Lösung zu verraten. Falsch gelöste Aufgaben kommen in eine Fehlerkartei und tauchen später wieder auf.'},
   anzeige:{name:'eine Anzeige für das Klassenmusizieren am Beamer',klang:true,
-    ziel:'Die Klasse spielt einen Mitspielsatz im gemeinsamen Tempo.',
+    komp:'Im Ensemble musizieren',
+    ziel:'Die Lernenden können einen Mitspielsatz im gemeinsamen Tempo spielen.',
+    vorher:'Die Klasse hat die Stimmen vorher einzeln geprobt.',
     ablauf:'Die App zeigt am Beamer groß die Zählzeiten eines 4/4-Takts, den aktuellen Akkord und den Formteil an. Tempo und Akkordfolge stelle ich vorher ein. Ein Klick startet nach zwei Takten Einzählen.'}
 };
 function isDefault(field,v){for(var k in ART){if(ART[k][field]===v)return true;}return v==='';}
 function artChanged(){
   var a=ART[val('pb-art')];if(!a)return;
-  var z=document.getElementById('pb-ziel'),b=document.getElementById('pb-ablauf');
-  if(isDefault('ziel',z.value.trim())) z.value=a.ziel;
-  if(isDefault('ablauf',b.value.trim())) b.value=a.ablauf;
+  [['komp','pb-komp'],['ziel','pb-ziel'],['vorher','pb-vorher'],['ablauf','pb-ablauf']].forEach(function(f){
+    var e=document.getElementById(f[1]);if(e&&isDefault(f[0],e.value.trim()))e.value=a[f[0]];
+  });
   buildPrompt();
 }
 var DEFAULTS=null;
@@ -781,7 +809,9 @@ function buildPrompt(){
   var L=[];
   L.push('Baue '+a.name+' für den Musikunterricht als eine einzige HTML-Datei.');
   if(val('pb-klasse')) L.push('Lerngruppe: '+val('pb-klasse')+'.');
+  if(val('pb-komp')) L.push('Angestrebte Kompetenz: '+val('pb-komp').replace(/\.$/,'')+'.');
   if(val('pb-ziel')) L.push('Lernziel: '+val('pb-ziel'));
+  if(val('pb-vorher')) L.push('Vorher im Unterricht: '+val('pb-vorher')+' Greife das in Tipps und Beispielen auf.');
   if(val('pb-ablauf')) L.push('','So soll die App funktionieren: '+val('pb-ablauf'));
   var h=[];
   if(on('pb-hilfen')) h.push('Bei einer falschen Antwort gibt es zuerst einen kleinen Tipp, dann einen deutlicheren Hinweis und erst danach die Lösung.');
