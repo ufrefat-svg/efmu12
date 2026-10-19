@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Eigene Musik-Apps mit KI bauen</title>
+<meta name="description" content="Anleitung für Musiklehrkräfte: Schritt für Schritt zur eigenen Übe- oder Spiel-App mit KI, mit Ideen für den Musikunterricht, Grenzen, Recht und Datenschutz, Prompt-Baukasten und Checkliste.">
+<style>
+/* Lokale Schriften (SIL Open Font License, Dateien im Ordner fonts), keine Verbindung zu externen Servern */
+@font-face{font-family:'Plus Jakarta Sans';src:url('fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2') format('woff2');font-weight:200 800;font-style:normal;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Plus Jakarta Sans';src:url('fonts/plus-jakarta-sans-latin-wght-normal.woff2') format('woff2');font-weight:200 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'DM Sans';src:url('fonts/dm-sans-latin-ext-opsz-normal.woff2') format('woff2');font-weight:100 1000;font-style:normal;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'DM Sans';src:url('fonts/dm-sans-latin-opsz-normal.woff2') format('woff2');font-weight:100 1000;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'JetBrains Mono';src:url('fonts/jetbrains-mono-latin-ext-wght-normal.woff2') format('woff2');font-weight:100 800;font-style:normal;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'JetBrains Mono';src:url('fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2');font-weight:100 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* Immer helle Darstellung: feste Farbwerte, keine Variablen */
+:root{color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html,body{margin:0;padding:0;background:#FAF7F2 !important;color:#1F2430 !important}
+body{font-family:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Plus Jakarta Sans','DM Sans',system-ui,sans-serif;color:#1F2430 !important;line-height:1.2;margin:0}
+p,li,dd,dt,td,th,label,span,strong,em,small,figcaption,summary,legend{color:inherit}
+p{margin:0 0 .85em}
+strong{font-weight:700}
+a{color:#4B2E83 !important;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:2px}
+a:hover{color:#2E1F57 !important}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #C2410C !important;outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+sup{font-size:.7em}
+
+/* Kopf */
+.hero{background:#2E1F57 !important;background-image:linear-gradient(135deg,#2E1F57 0%,#4B2E83 62%,#6A3FA8 100%) !important;color:#FFFFFF !important;position:relative;overflow:hidden}
+.hero .wrap{position:relative;padding-top:44px;padding-bottom:40px}
+.hero .staff{position:absolute;right:-40px;top:24px;width:520px;max-width:70%;opacity:.16;pointer-events:none}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#F7C59F !important}
+.kicker:before{content:"";width:28px;height:4px;border-radius:2px;background:#F28C4B !important}
+.hero h1{color:#FFFFFF !important;font-size:clamp(34px,6vw,58px);font-weight:800;letter-spacing:-.02em;margin:14px 0 10px;max-width:780px}
+.hero .lede{color:#EDE7F8 !important;font-size:clamp(18px,2.3vw,22px);max-width:720px;margin:0 0 22px}
+.hero .meta{color:#CFC3EA !important;font-size:14px;margin:0}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 18px;border-radius:12px;border:2px solid transparent;font-weight:700;font-size:16px;text-decoration:none}
+.btn-light{background:#FFFFFF !important;color:#2E1F57 !important;border-color:#FFFFFF !important}
+.btn-light:hover{background:#F3EEFB !important}
+.btn-ghost{background:transparent !important;color:#FFFFFF !important;border-color:#B9A6E3 !important}
+.btn-ghost:hover{background:#3C2770 !important}
+.btn-primary{background:#4B2E83 !important;color:#FFFFFF !important;border-color:#4B2E83 !important}
+.btn-primary:hover{background:#2E1F57 !important}
+.btn-outline{background:#FFFFFF !important;color:#4B2E83 !important;border-color:#CFC3EA !important}
+.btn-outline:hover{background:#F3EEFB !important}
+
+/* Navigation */
+.nav{position:sticky;top:0;z-index:20;background:#FFFFFF !important;border-bottom:1px solid #E6E0D6 !important;box-shadow:0 2px 10px rgba(30,20,60,.05)}
+.nav .wrap{display:flex;gap:8px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;min-height:38px;padding:7px 14px;border-radius:999px;border:1.5px solid #E1D9EF !important;background:#FFFFFF !important;color:#3A2A66 !important;font-size:14.5px;font-weight:600;white-space:nowrap}
+.chip:hover{background:#F3EEFB !important;border-color:#B9A6E3 !important}
+
+/* Abschnitte */
+section{padding:56px 0 8px;scroll-margin-top:70px}
+.sec-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
+.sec-num{flex:0 0 auto;width:40px;height:40px;border-radius:12px;background:#4B2E83 !important;color:#FFFFFF !important;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.sec-head h2{font-size:clamp(25px,3.4vw,34px);font-weight:800;letter-spacing:-.01em}
+.sec-head .sub{color:#5A6270 !important;margin:6px 0 0;font-size:16.5px}
+.prose{max-width:760px}
+.muted{color:#5A6270 !important}
+.small{font-size:14.5px}
+
+/* Kästen */
+.card{background:#FFFFFF !important;color:#1F2430 !important;border:1px solid #E6E0D6 !important;border-radius:18px;padding:20px 20px 16px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.grid-2{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.keypoints{background:#FFFFFF !important;border:1px solid #E6E0D6 !important;border-left:6px solid #C2410C !important;border-radius:18px;padding:22px 22px 12px;margin-top:32px;box-shadow:0 10px 30px rgba(30,20,60,.08)}
+.keypoints h2{font-size:20px;margin-bottom:10px}
+.keypoints ul{margin:0;padding-left:20px}
+.keypoints li{margin:0 0 8px}
+.callout{border-radius:16px;padding:16px 18px;margin:18px 0;border:1px solid #E6E0D6 !important}
+.callout.warm{background:#FDF0E6 !important;border-color:#F4D3BC !important;color:#3B2414 !important}
+.callout.violet{background:#F3EEFB !important;border-color:#DCD0F1 !important;color:#2A1D4F !important}
+.callout.green{background:#E8F4EE !important;border-color:#C6E2D3 !important;color:#173D2C !important}
+.callout.amber{background:#FFF6DD !important;border-color:#EEDB9F !important;color:#3E2F05 !important}
+.callout p:last-child{margin-bottom:0}
+.callout-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase;margin:0 0 6px}
+blockquote.pull{margin:22px 0;padding:6px 0 6px 20px;border-left:5px solid #C2410C !important;font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(20px,2.6vw,26px);font-weight:700;line-height:1.3;color:#4B2E83 !important;max-width:760px}
+
+/* Glossar */
+dl.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;margin:18px 0 0}
+dl.gloss div{background:#FFFFFF !important;border:1px solid #E6E0D6 !important;border-radius:14px;padding:14px 16px}
+dl.gloss dt{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#4B2E83 !important;margin-bottom:4px}
+dl.gloss dd{margin:0;font-size:15.5px;color:#2F3542 !important}
+
+/* Werkzeuge */
+.tool h3{font-size:19px;margin-bottom:2px}
+.tool .who{font-size:13.5px;color:#5A6270 !important;margin:0 0 10px;font-weight:600;letter-spacing:.02em}
+.tool ul{margin:0;padding-left:18px;font-size:15.5px}
+.tool li{margin:0 0 6px}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:999px;margin:0 6px 8px 0;letter-spacing:.02em}
+.tag.ok{background:#E8F4EE !important;color:#1D5B40 !important}
+.tag.no{background:#FDECEA !important;color:#8E2A1E !important}
+.tag.info{background:#E8F0FA !important;color:#1F4E86 !important}
+
+/* Ideen */
+.idea{display:flex;flex-direction:column;gap:8px;border-top:6px solid #4B2E83 !important}
+.idea .area{font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#C2410C !important}
+.idea h3{font-size:19px}
+.idea .row{font-size:15.5px;margin:0}
+.idea .row b{display:block;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#5A6270 !important;margin-bottom:1px}
+.idea .watch{background:#FFF6DD !important;color:#3E2F05 !important;border-radius:10px;padding:8px 10px;font-size:14.5px;margin-top:auto}
+.idea.c1{border-top-color:#4B2E83 !important}.idea.c2{border-top-color:#C2410C !important}.idea.c3{border-top-color:#2F7D5B !important}.idea.c4{border-top-color:#1F5FA8 !important}
+
+/* Maßstäbe */
+.crit{display:flex;gap:12px;align-items:flex-start;margin:0 0 14px}
+.crit .ic{flex:0 0 auto;width:34px;height:34px;border-radius:10px;background:#F3EEFB !important;color:#4B2E83 !important;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif}
+.crit h4{font-size:17px;margin:3px 0 3px}
+.crit p{margin:0;font-size:15.5px;color:#2F3542 !important}
+
+/* Tabelle */
+.table-wrap{overflow-x:auto;border:1px solid #E6E0D6 !important;border-radius:16px;background:#FFFFFF !important}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid #EEE8DF !important;color:#1F2430 !important;background:#FFFFFF !important}
+th{background:#F6F2EB !important;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;letter-spacing:.04em;text-transform:uppercase;color:#3A3F4A !important}
+tr:last-child td{border-bottom:none !important}
+td:first-child{font-weight:700;width:22%}
+
+/* Schritte */
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:14px}
+.step{display:grid;grid-template-columns:56px 1fr;gap:14px;background:#FFFFFF !important;border:1px solid #E6E0D6 !important;border-radius:18px;padding:18px 18px 14px}
+.step .n{width:48px;height:48px;border-radius:14px;background:#C2410C !important;color:#FFFFFF !important;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:21px;display:flex;align-items:center;justify-content:center}
+.step h3{font-size:19.5px;margin:4px 0 6px}
+.step p{margin:0 0 .5em;font-size:16.5px}
+.step .tip{display:inline-block;background:#E8F4EE !important;color:#173D2C !important;border-radius:10px;padding:6px 10px;font-size:14.5px;margin-top:2px}
+.step .tip b{color:#1D5B40 !important}
+.inline-btn{background:none !important;border:none;padding:0;color:#4B2E83 !important;font-weight:700;text-decoration:underline;text-underline-offset:2px;font-size:inherit}
+
+/* Baukasten */
+.builder{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));align-items:start}
+.field{margin:0 0 14px}
+.field label,.field legend{display:block;font-weight:700;font-size:15px;margin:0 0 6px;color:#1F2430 !important}
+.field .hint{font-size:13.5px;color:#5A6270 !important;margin:-2px 0 6px}
+input[type=text],select,textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:1.5px solid #D9D2C6 !important;background:#FFFFFF !important;color:#1F2430 !important}
+textarea{min-height:92px;resize:vertical}
+fieldset{border:none;margin:0 0 14px;padding:0}
+fieldset legend{display:block;font-weight:700;font-size:15px;margin:0 0 6px;padding:0;color:#1F2430 !important}
+.checks{display:grid;gap:6px}
+.checks label{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:15.5px;margin:0;cursor:pointer;color:#1F2430 !important}
+.checks input{width:20px;height:20px;margin:2px 0 0;accent-color:#4B2E83;flex:0 0 auto}
+.out{background:#1E1838 !important;color:#F1ECFB !important;border-radius:18px;padding:18px;position:sticky;top:78px}
+.out h3{color:#FFFFFF !important;font-size:17px;margin-bottom:10px}
+.out pre{white-space:pre-wrap;word-wrap:break-word;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.6px;line-height:1.55;margin:0 0 14px;max-height:520px;overflow:auto;color:#F1ECFB !important;background:#1E1838 !important}
+.out .row-btns{display:flex;flex-wrap:wrap;gap:10px}
+.out .btn-light{border-color:#FFFFFF !important}
+.out .btn-ghost{border-color:#7C68B5 !important}
+.status{min-height:22px;font-size:14px;color:#C9F0D9 !important;margin-top:8px}
+.talk{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));margin-top:6px}
+.talk div{background:#FFFFFF !important;border:1px solid #E6E0D6 !important;border-radius:14px;padding:12px 14px;font-size:15.5px}
+.talk div span{display:block;font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C2410C !important;margin-bottom:4px}
+
+/* Beispiel-App */
+.demo{background:#FFFFFF !important;border:2px solid #4B2E83 !important;border-radius:22px;overflow:hidden}
+.demo-bar{background:#4B2E83 !important;color:#FFFFFF !important;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px}
+.demo-bar b{color:#FFFFFF !important;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px}
+.demo-bar span{color:#E6DDF7 !important}
+.demo-body{padding:20px}
+.demo-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.demo-count{font-weight:700;color:#4B2E83 !important}
+.vol{display:flex;align-items:center;gap:8px;font-size:15px}
+.vol input{accent-color:#4B2E83;width:140px}
+.play{width:100%;min-height:64px;border-radius:16px;border:none;background:#C2410C !important;color:#FFFFFF !important;font-size:20px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:14px}
+.play:hover{background:#A3360A !important}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px}
+.ans{min-height:58px;border-radius:14px;border:2px solid #CFC3EA !important;background:#FFFFFF !important;color:#2E1F57 !important;font-size:17.5px;font-weight:700}
+.ans:hover{background:#F3EEFB !important}
+.ans[disabled]{opacity:.55;cursor:default}
+.ans.right{background:#E8F4EE !important;border-color:#2F7D5B !important;color:#173D2C !important;opacity:1}
+.ans.wrong{background:#FDECEA !important;border-color:#C0392B !important;color:#7A1F14 !important}
+.feedback{min-height:52px;margin:14px 0 6px;padding:12px 14px;border-radius:12px;background:#F6F2EB !important;color:#1F2430 !important;font-size:16.5px}
+.demo-actions{display:flex;flex-wrap:wrap;gap:10px}
+details.check{margin-top:14px;background:#F6F2EB !important;border-radius:12px;padding:10px 14px;font-size:15px}
+details.check summary{font-weight:700;cursor:pointer;color:#1F2430 !important}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13.5px}
+
+/* Recht */
+.law .card h3{font-size:17.5px;margin-bottom:6px;color:#2E1F57 !important}
+.law .card p{font-size:15.5px;margin:0}
+
+/* Checkliste */
+.checklist{background:#FFFFFF !important;border:1px solid #E6E0D6 !important;border-radius:18px;padding:18px}
+.progress{display:flex;align-items:center;gap:12px;margin:0 0 14px;flex-wrap:wrap}
+.bar{flex:1 1 220px;height:12px;border-radius:999px;background:#EFE9E0 !important;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#2F7D5B !important;border-radius:999px;transition:width .25s}
+.progress b{font-family:'Plus Jakarta Sans',sans-serif}
+.cl{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.cl label{display:flex;gap:12px;align-items:flex-start;padding:10px 10px;border-radius:12px;cursor:pointer;font-size:16.5px;color:#1F2430 !important}
+.cl label:hover{background:#F6F2EB !important}
+.cl input{width:22px;height:22px;margin:1px 0 0;accent-color:#2F7D5B;flex:0 0 auto}
+.cl input:checked + span{color:#5A6270 !important;text-decoration:line-through;text-decoration-color:#9AA1AC}
+
+/* Praxis */
+.app h3{font-size:19.5px;margin-bottom:4px}
+.app .kind{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#C2410C !important;margin:0 0 8px}
+.app p{font-size:15.5px}
+.app .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.app .links a{font-size:14.5px;font-weight:700;text-decoration:none;padding:8px 12px;border-radius:10px;border:1.5px solid #CFC3EA !important;background:#FFFFFF !important}
+.app .links a:hover{background:#F3EEFB !important}
+.app .note{font-size:13.5px;color:#5A6270 !important;font-style:italic;margin:8px 0 0}
+
+/* Quellen */
+.refs{font-size:15px;padding-left:0;list-style:none;display:grid;gap:8px}
+.refs li{padding-left:16px;text-indent:-16px;color:#2F3542 !important}
+.refs .vendor{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#FFF6DD !important;color:#6B4E00 !important;padding:1px 6px;border-radius:6px;margin-left:4px;text-indent:0;display:inline-block}
+
+footer{margin-top:56px;background:#1E1838 !important;color:#D9D0EE !important;padding:30px 0 40px;font-size:14.5px}
+footer p{color:#D9D0EE !important}
+footer b{color:#FFFFFF !important}
+footer .btn-ghost{border-color:#7C68B5 !important}
+
+@media (max-width:560px){
+  body{font-size:16.5px}
+  .step{grid-template-columns:1fr;gap:8px}
+  .step .n{width:42px;height:42px;font-size:19px}
+  .out{position:static}
+  section{padding-top:44px}
+}
+@media print{
+  .nav,.hero-cta,.out .row-btns,.demo,footer .btn{display:none !important}
+  .hero{background:#FFFFFF !important;color:#1F2430 !important}
+  .hero h1,.hero .lede,.hero .meta,.kicker{color:#1F2430 !important}
+  section{padding-top:24px}
+  .card,.step{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <svg class="staff" viewBox="0 0 520 220" aria-hidden="true">
+    <g stroke="#FFFFFF" stroke-width="3" fill="none">
+      <line x1="0" y1="40" x2="520" y2="40"/><line x1="0" y1="70" x2="520" y2="70"/><line x1="0" y1="100" x2="520" y2="100"/><line x1="0" y1="130" x2="520" y2="130"/><line x1="0" y1="160" x2="520" y2="160"/>
+    </g>
+    <g fill="#FFFFFF">
+      <ellipse cx="120" cy="145" rx="17" ry="12" transform="rotate(-20 120 145)"/><rect x="134" y="62" width="4" height="84"/>
+      <ellipse cx="220" cy="115" rx="17" ry="12" transform="rotate(-20 220 115)"/><rect x="234" y="32" width="4" height="84"/>
+      <ellipse cx="320" cy="85" rx="17" ry="12" transform="rotate(-20 320 85)"/><rect x="334" y="2" width="4" height="84"/>
+      <rect x="236" y="30" width="102" height="10" transform="skewY(-16.5)" transform-origin="236 35"/>
+      <ellipse cx="420" cy="100" rx="17" ry="12" transform="rotate(-20 420 100)"/><rect x="434" y="17" width="4" height="84"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <div class="kicker">Musikunterricht digital gestalten 2.1 · Hintergrund</div>
+    <h1>Eigene Musik-Apps mit KI bauen</h1>
+    <p class="lede">Eine Anleitung für Musiklehrkräfte, Schritt für Schritt. Mit Ideen für den Unterricht, ehrlichen Grenzen, einem Prompt-Baukasten und einer Checkliste.</p>
+    <div class="hero-cta">
+      <button type="button" class="btn btn-light" onclick="gotoSection('s-schritte')">Zur Schritt-für-Schritt-Anleitung</button>
+      <button type="button" class="btn btn-ghost" onclick="gotoSection('s-baukasten')">Prompt-Baukasten öffnen</button>
+    </div>
+    <p class="meta">Ulrich Frefat · Stand 20. Oktober 2026 · Lesezeit etwa 20 Minuten</p>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Inhalt">
+  <div class="wrap">
+    <button type="button" class="chip" onclick="gotoSection('s-haltung')">Haltung</button>
+    <button type="button" class="chip" onclick="gotoSection('s-was')">Was ist eine KI-App?</button>
+    <button type="button" class="chip" onclick="gotoSection('s-werkzeuge')">Werkzeuge</button>
+    <button type="button" class="chip" onclick="gotoSection('s-ideen')">Ideen für Musik</button>
+    <button type="button" class="chip" onclick="gotoSection('s-massstab')">Gute Apps</button>
+    <button type="button" class="chip" onclick="gotoSection('s-grenzen')">Grenzen</button>
+    <button type="button" class="chip" onclick="gotoSection('s-schritte')">10 Schritte</button>
+    <button type="button" class="chip" onclick="gotoSection('s-baukasten')">Prompt-Baukasten</button>
+    <button type="button" class="chip" onclick="gotoSection('s-beispiel')">Beispiel-App</button>
+    <button type="button" class="chip" onclick="gotoSection('s-recht')">Recht</button>
+    <button type="button" class="chip" onclick="gotoSection('s-check')">Checkliste</button>
+    <button type="button" class="chip" onclick="gotoSection('s-praxis')">Aus der Praxis</button>
+    <button type="button" class="chip" onclick="gotoSection('s-quellen')">Quellen</button>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+  <aside class="keypoints" aria-labelledby="kurz">
+    <h2 id="kurz">Das Wichtigste in Kürze</h2>
+    <ul>
+      <li>Mit KI-Werkzeugen wie Claude kannst du kleine <strong>Übe- und Spiel-Apps</strong> bauen, die genau zu deiner Lerngruppe passen.</li>
+      <li>Am Anfang steht das <strong>Lernziel</strong>. Die App kommt danach und bleibt ein Material unter anderen.</li>
+      <li>KI macht auch in Musiktheorie Fehler. Jede Frage, jeden Ton und jedes Notenbeispiel <strong>prüfst du selbst</strong>.</li>
+      <li>Für die Lernenden gibt es eine <strong>Fassung ohne KI</strong>, ohne Konto und ohne Namen.</li>
+      <li>Ob solche Apps das Musiklernen verbessern, ist <strong>noch nicht erforscht</strong>. Die Beispiele hier sind Erfahrungsberichte.</li>
+    </ul>
+  </aside>
+</div>
+
+<section id="s-haltung">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">1</div><div><h2>Erst die Musik, dann die App</h2><p class="sub">Warum das Lernziel vor dem Werkzeug steht</p></div></div>
+    <div class="prose">
+      <p>Musikunterricht lebt vom gemeinsamen Hören, Singen, Spielen und Gestalten und vom Gespräch über Musik. Digitale Werkzeuge können das unterstützen. Sie sind ein Baustein unter vielen und ersetzen weder die musikalische Praxis noch die Lehrkraft.</p>
+      <p>Die Kultusministerkonferenz bindet Lehren und Lernen in der digitalen Welt an das „Primat des Pädagogischen“ (KMK 2016) und hält fest, dass sich die Potenziale der Digitalität „nicht automatisch“ entfalten (KMK 2021, S. 12). Weil das Bauen mit KI schnell geht und Freude macht, liegt eine Versuchung nahe. Man beginnt mit der Idee für ein Werkzeug und reicht das Lernziel nach. Die Mediendidaktik nennt das „Toolisierung“, die „Reduktion pädagogischer Handlungsanforderungen auf technische Problemlösungen“ (Ruge &amp; Schwaiger 2024).</p>
+      <p>Lehrkräfte gestalten Lernumgebungen, die technikgestützten eingeschlossen (Kirschner 2015). Diana Laurillard beschreibt Unterrichten deshalb als Entwurfsarbeit, in der Lehrwege entworfen, erprobt und geteilt werden (Laurillard 2012). Das TPACK-Modell fasst die dafür nötige Verbindung von fachlichem, pädagogischem und technischem Wissen (Mishra &amp; Koehler 2006).</p>
+    </div>
+    <blockquote class="pull">Wer eine App für die eigene Klasse baut, plant Unterricht.</blockquote>
+    <div class="prose">
+      <p>Eine selbst gebaute App ist damit ein Material wie ein Arbeitsblatt oder ein Hörplan. Sie muss sich an denselben Fragen messen lassen. Was sollen die Lernenden musikalisch können, und hilft ihnen die App dabei?</p>
+    </div>
+  </div>
+</section>
+
+<section id="s-was">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">2</div><div><h2>Was ist eine KI-App?</h2><p class="sub">Die wichtigsten Begriffe für den Einstieg</p></div></div>
+    <div class="prose">
+      <p>Sprachmodelle wie Claude, ChatGPT oder Gemini schreiben auf eine Beschreibung in Alltagssprache hin kleine Programme. Meist entsteht dabei eine einzelne Webseite mit Knöpfen, Klängen und Texten, die im Browser läuft. Du beschreibst, was die App tun soll, probierst sie aus und bittest die KI um Änderungen. Für diese Arbeitsweise hat der Informatiker Andrej Karpathy 2025 den Begriff „Vibe Coding“ geprägt (Karpathy 2025).</p>
+      <p>Programmierkenntnisse helfen, sind aber keine Voraussetzung. Dein Fachwissen und eine klare Idee für den Unterricht bringst du mit, und genau darauf kommt es beim Prüfen an.</p>
+    </div>
+    <dl class="gloss">
+      <div><dt>Prompt</dt><dd>Dein Auftrag an die KI, in normaler Sprache geschrieben.</dd></div>
+      <div><dt>Artefakt</dt><dd>So nennt Claude ein Ergebnis, das neben dem Chat erscheint, zum Beispiel eine kleine App. Du kannst es sofort ausprobieren und als Link teilen.</dd></div>
+      <div><dt>HTML-Datei</dt><dd>Eine Datei, in der eine Webseite steht. Sie öffnet sich per Doppelklick im Browser, auch ohne Internet, wenn sie nichts nachlädt.</dd></div>
+      <div><dt>Browser</dt><dd>Das Programm, mit dem du Webseiten öffnest, etwa Safari, Chrome, Firefox oder Edge.</dd></div>
+      <div><dt>GitHub Pages</dt><dd>Ein kostenloser Dienst, auf dem du Webseiten veröffentlichen kannst. Auch diese Seite liegt dort.</dd></div>
+      <div><dt>Web-Fassung</dt><dd>Eine Fassung der App ohne KI-Funktion, ohne Konto und ohne Datenübertragung, gedacht für die Lernenden.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="s-werkzeuge">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">3</div><div><h2>Welche Werkzeuge es gibt</h2><p class="sub">Stand Oktober 2026. Namen und Funktionen ändern sich schnell.</p></div></div>
+    <div class="grid">
+      <article class="card tool">
+        <h3>Claude</h3><p class="who">Anthropic</p>
+        <span class="tag ok">Vorschau</span><span class="tag ok">Teilen per Link</span><span class="tag no">ab 18 Jahren</span>
+        <ul>
+          <li>Apps entstehen als <strong>Artefakt</strong> neben dem Chat und lassen sich sofort ausprobieren und überarbeiten.</li>
+          <li>Artefakte können selbst KI-Funktionen enthalten. Diese laufen über das Claude-Konto der Person, die sie benutzt.</li>
+          <li>Laut Nutzungsbedingungen erst ab 18 Jahren, also ein Werkzeug für Lehrkräfte (Anthropic).</li>
+        </ul>
+      </article>
+      <article class="card tool">
+        <h3>ChatGPT</h3><p class="who">OpenAI</p>
+        <span class="tag ok">Vorschau</span><span class="tag info">früher Canvas</span>
+        <ul>
+          <li>Erzeugter Code lässt sich direkt im Chat als Vorschau anzeigen, auch HTML-Seiten.</li>
+          <li>Die frühere Arbeitsfläche Canvas wurde im Mai 2026 in den aktuellen Modellen durch Text- und Code-Blöcke ersetzt (OpenAI 2026).</li>
+          <li>Altersgrenze und Bedingungen beim Anbieter prüfen.</li>
+        </ul>
+      </article>
+      <article class="card tool">
+        <h3>Gemini</h3><p class="who">Google</p>
+        <span class="tag ok">Vorschau</span><span class="tag info">Canvas</span>
+        <ul>
+          <li>Die Arbeitsfläche Canvas gibt es seit März 2025. Sie zeigt erzeugte Web-Apps als Vorschau an.</li>
+          <li>Altersgrenze und Bedingungen beim Anbieter prüfen.</li>
+        </ul>
+      </article>
+      <article class="card tool">
+        <h3>AIS.chat</h3><p class="who">Chatbot der Länder, ehemals telli</p>
+        <span class="tag no">keine App-Vorschau</span><span class="tag ok">für Lernende im Schulrahmen</span>
+        <ul>
+          <li>Seit Mai 2026 heißt telli AIS.chat, in Thüringen erreichbar über das Schulportal (FWU 2026).</li>
+          <li>Eine Funktion zum Bauen von Apps mit Vorschau nennen die offiziellen Angaben nicht. HTML-Code lässt sich aber als Text erzeugen, in eine Datei kopieren und im Browser testen.</li>
+          <li>Lernende dürfen AIS.chat im schulischen Rahmen nutzen.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="callout violet">
+      <p class="callout-title">Tipp</p>
+      <p>Speichere jede fertige App als eigene HTML-Datei auf deinem Gerät. Dann bleibt sie nutzbar, auch wenn ein Anbieter Funktionen ändert oder abschaltet.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s-ideen">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">4</div><div><h2>Ideen für den Musikunterricht</h2><p class="sub">Neun Anwendungsszenarien, jeweils mit Lernziel und Stolperstein</p></div></div>
+    <div class="grid">
+      <article class="card idea c1">
+        <div class="area">Hören</div><h3>Intervalle und Akkorde unterscheiden</h3>
+        <p class="row"><b>Lernziel</b>Die Lernenden unterscheiden beim Hören Dur- und Molldreiklänge.</p>
+        <p class="row"><b>Die App</b>spielt Klänge in zufälliger Reihenfolge. Die Lernenden wählen aus, Hilfen kommen in Stufen.</p>
+        <p class="watch"><b>Darauf achten.</b> Synthetische Klänge klingen anders als Instrumente. Danach wird gesungen und gespielt.</p>
+      </article>
+      <article class="card idea c2">
+        <div class="area">Rhythmus</div><h3>Rhythmen hören und lesen</h3>
+        <p class="row"><b>Lernziel</b>Die Lernenden ordnen gehörte Rhythmen aus Vierteln, Achteln und Halben dem Notenbild zu.</p>
+        <p class="row"><b>Die App</b>nutzt die Rhythmussprache der Klasse, als Diktat, Zuordnung oder Teamspiel.</p>
+        <p class="watch"><b>Darauf achten.</b> Tippen im Takt nicht auf Millisekunden auswerten, besonders nicht auf iPads oder mit Bluetooth-Kopfhörern.</p>
+      </article>
+      <article class="card idea c3">
+        <div class="area">Noten</div><h3>Noten lesen</h3>
+        <p class="row"><b>Lernziel</b>Die Lernenden benennen Töne im Violinschlüssel zwischen c’ und g’’.</p>
+        <p class="row"><b>Die App</b>zeigt Noten mit einer freien Bibliothek wie abcjs an und lässt den Ton erklingen.</p>
+        <p class="watch"><b>Darauf achten.</b> KI schreibt Notation flüssig, aber nicht fehlerfrei. Vorzeichen, Takte und Taktart prüfen.</p>
+      </article>
+      <article class="card idea c4">
+        <div class="area">Erfinden</div><h3>Patterns gestalten</h3>
+        <p class="row"><b>Lernziel</b>Die Lernenden erfinden in Gruppen ein Ostinato und begründen ihre Klangauswahl.</p>
+        <p class="row"><b>Die App</b>bietet ein einfaches Raster mit wenigen Klängen und wählbarem Tempo.</p>
+        <p class="watch"><b>Darauf achten.</b> Zuerst prüfen, ob ein vorhandenes Werkzeug wie die Groove Pizza reicht. Das Gespräch über das Ergebnis gehört dazu.</p>
+      </article>
+      <article class="card idea c1">
+        <div class="area">Wissen</div><h3>Fachbegriffe festigen</h3>
+        <p class="row"><b>Lernziel</b>Die Lernenden erklären zentrale Begriffe der laufenden Einheit.</p>
+        <p class="row"><b>Die App</b>ist ein Quiz oder ein Tafelspiel für Teams mit Fragen aus den eigenen Unterlagen.</p>
+        <p class="watch"><b>Darauf achten.</b> Jede Frage prüfen. Spiele belohnen Tempo, deshalb auf die Beteiligung aller achten.</p>
+      </article>
+      <article class="card idea c2">
+        <div class="area">Klassenmusizieren</div><h3>Zusammen spielen</h3>
+        <p class="row"><b>Lernziel</b>Die Klasse spielt einen Mitspielsatz im gemeinsamen Tempo.</p>
+        <p class="row"><b>Die App</b>zeigt am Beamer groß Zählzeiten, Akkorde und den Formablauf an.</p>
+        <p class="watch"><b>Darauf achten.</b> Die Lehrkraft zählt ein und dirigiert. Die Anzeige hilft beim Mitlesen.</p>
+      </article>
+      <article class="card idea c3">
+        <div class="area">Hören mit Plan</div><h3>Form verfolgen</h3>
+        <p class="row"><b>Lernziel</b>Die Lernenden erkennen beim Hören die Formteile eines Rondos.</p>
+        <p class="row"><b>Die App</b>ist eine Formleiste, die die Lehrkraft beim Hören weiterschaltet. Die Lernenden markieren die Wechsel.</p>
+        <p class="watch"><b>Darauf achten.</b> Die Musik kommt live oder vom eigenen Tonträger. In öffentliche Apps gehören nur freie oder eigene Aufnahmen.</p>
+      </article>
+      <article class="card idea c4">
+        <div class="area">Üben</div><h3>Mit Rückmeldung üben</h3>
+        <p class="row"><b>Lernziel</b>Die Lernenden üben Tonleitern im eigenen Tempo und sehen, woran sie noch arbeiten.</p>
+        <p class="row"><b>Die App</b>gibt gestufte Hilfen, ohne die Lösung zu verraten, und führt eine Fehlerkartei.</p>
+        <p class="watch"><b>Darauf achten.</b> Fortschritt nur auf dem Gerät speichern und ohne Namen.</p>
+      </article>
+      <article class="card idea c1">
+        <div class="area">Über Musik nachdenken</div><h3>KI-Musik untersuchen</h3>
+        <p class="row"><b>Lernziel</b>Die Lernenden formulieren eine Klanganweisung und vergleichen das Ergebnis mit ihrer Hörerwartung.</p>
+        <p class="row"><b>Die App</b>strukturiert die Klanganweisung und hält die Hörerwartung vorher schriftlich fest.</p>
+        <p class="watch"><b>Darauf achten.</b> Musik-KI-Dienste haben eigene Konten und Bedingungen. Erzeugt wird am Gerät der Lehrkraft.</p>
+      </article>
+    </div>
+    <div class="callout amber">
+      <p class="callout-title">Weniger geeignet</p>
+      <p>Apps, die Intonation oder Rhythmusgenauigkeit benoten. Die Technik im Browser ist dafür zu ungenau. Als Rückmeldung beim Üben kann eine solche Auswertung helfen, als Grundlage einer Note taugt sie nicht.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s-massstab">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">5</div><div><h2>Woran sich eine gute App messen lässt</h2><p class="sub">Pädagogische und fachdidaktische Grundsätze</p></div></div>
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="font-size:19px;margin-bottom:12px">Guter Unterricht allgemein</h3>
+        <p class="small muted">Die Unterrichtsforschung beschreibt guten Unterricht mit drei Basisdimensionen (Praetorius et al. 2018). An ihnen lässt sich auch eine App prüfen.</p>
+        <div class="crit"><div class="ic">1</div><div><h4>Kognitiv aktivieren</h4><p>Die App lässt hören, nachdenken und entscheiden. Falsche Antworten sind plausibel, und die Rückmeldung erklärt, warum etwas stimmt.</p></div></div>
+        <div class="crit"><div class="ic">2</div><div><h4>Konstruktiv unterstützen</h4><p>Hilfen kommen in Stufen. Zuerst ein Tipp, dann ein Hinweis, zuletzt die Lösung.</p></div></div>
+        <div class="crit"><div class="ic">3</div><div><h4>Klassenführung erleichtern</h4><p>Klare Abläufe, große Schrift für den Beamer und ein Spiel, das die Lehrkraft jederzeit anhalten kann.</p></div></div>
+        <div class="crit"><div class="ic">+</div><div><h4>Motivation verstehen</h4><p>Motivation für Musik wächst mit Kompetenzerleben, Mitentscheiden und Eingebundenheit (Evans 2015). Neuheitseffekte klingen ab (Clark 1983), und die motivationalen Effekte von Spielelementen sind weniger stabil als die kognitiven (Sailer &amp; Homner 2020). Punkte und Tore tragen nur, wenn dahinter eine lohnende Aufgabe steht.</p></div></div>
+        <div class="crit"><div class="ic">+</div><div><h4>Zugänge öffnen</h4><p>Mehrere Wege der Darstellung, des Handelns und der Beteiligung (CAST 2024). Klang, Notation und Text verbinden, Tempo wählbar machen, Bedienung mit der Tastatur ermöglichen.</p></div></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:19px;margin-bottom:12px">Speziell im Fach Musik</h3>
+        <p class="small muted">Ein breit geteiltes Modell guten Musikunterrichts gibt es bislang nicht, diskutiert wird etwa eine „ästhetische Aktivierung“ (Kranefeld 2021). Ob digitale Medien die Lernwirksamkeit steigern, ist noch weitgehend offen (Platz, Wolf &amp; Hasselhorn 2021).</p>
+        <div class="crit"><div class="ic">1</div><div><h4>Musik steht im Zentrum</h4><p>Jede App dient dem Hören, Singen, Spielen, Erfinden oder dem Nachdenken über Musik.</p></div></div>
+        <div class="crit"><div class="ic">2</div><div><h4>Klang kommt zuerst</h4><p>Ein Intervall wird gehört, bevor es benannt wird. Eine Hörerwartung wird notiert, bevor das Ergebnis erklingt.</p></div></div>
+        <div class="crit"><div class="ic">3</div><div><h4>App-Phasen bleiben kurz</h4><p>Sie stehen zwischen Phasen, in denen gemeinsam gesungen, gespielt und gesprochen wird.</p></div></div>
+        <div class="crit"><div class="ic">4</div><div><h4>Die Sprache der Klasse zählt</h4><p>Eine selbst gebaute App greift Rhythmussprache, Fachbegriffe und Beispiele der eigenen Lerngruppe auf. Das ist ihr größter Vorteil gegenüber Fertigprodukten.</p></div></div>
+        <div class="crit"><div class="ic">5</div><div><h4>Erfahrung braucht Raum</h4><p>Apps eignen sich zum Üben, Abrufen und Vergleichen. Ästhetische Erfahrung und begründetes Urteil entstehen eher im Musizieren und im Gespräch.</p></div></div>
+      </div>
+    </div>
+    <div class="callout green">
+      <p class="callout-title">Wo kleine Apps ihre Stärken haben</p>
+      <p>Die Education Endowment Foundation empfiehlt, vor jedem Technikeinsatz zu klären, wie er Lehren und Lernen verbessern soll. Als Felder nennt sie unter anderem wirksameres Üben sowie Rückmeldung und Diagnose (EEF 2019). Genau dort setzen die meisten Ideen dieser Seite an.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s-grenzen">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">6</div><div><h2>Grenzen kennen</h2><p class="sub">Was die KI nicht kann und was du dagegen tun kannst</p></div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Grenze</th><th scope="col">Was man weiß</th><th scope="col">Was du tun kannst</th></tr></thead>
+        <tbody>
+          <tr><td>Fachliche Fehler</td><td>In einem großen Musik-Benchmark blieb selbst das beste getestete Modell beim Verstehen bei einem F1-Wert von 63, auch Halb- und Ganztöne wurden verwechselt (Li et al. 2024). Beim Partiturverständnis lagen 2026 mehrere große Modelle unter 40 Prozent (Dai et al. 2026).</td><td>Jede Frage, jede Lösung, jedes Notenbeispiel und jeden Ton selbst prüfen.</td></tr>
+          <tr><td>Dünne Forschung</td><td>Eine Studie mit zwölf Lehrkräften fand, dass Standardmodelle anspruchsvolle didaktische Konstrukte oft unbefriedigend umsetzen. Sie stammt vom Hersteller (Kovshov et al. 2026). Bei angehenden Kita-Lehrkräften stiegen Selbstauskünfte, Lernwirkungen wurden nicht gemessen (Papadakis &amp; Zacharis 2026). Für Musik gibt es keine einschlägige Studie.</td><td>Klein erproben, genau beobachten und ehrlich berichten.</td></tr>
+          <tr><td>Fachwissen nötig</td><td>Angehende Lehrkräfte erkannten Fehler von ChatGPT vor allem dort, wo sie selbst viel wussten (Yadav et al. 2025).</td><td>Apps nur zu Themen bauen, die du fachlich sicher beherrschst.</td></tr>
+          <tr><td>Sicherheit</td><td>Ein Herstellertest fand in 45 Prozent der Fälle sicherheitsrelevante Schwachstellen in KI-Code (Veracode 2025).</td><td>Apps ohne Server und ohne gespeicherte Daten bauen. Keine fremden Eingaben ungeprüft anzeigen.</td></tr>
+          <tr><td>Technik im Browser</td><td>Auf iPads fehlt die MIDI-Schnittstelle, und der genaue Zeitpunkt der Tonausgabe lässt sich in Safari nicht abfragen (W3C; Can I use). Tonhöhenerkennung klappt für eine einzelne Stimme, bei Klassenlärm kaum.</td><td>Lautsprecher per Kabel anschließen, keine Millisekunden-Wertung, Tonhöhenerkennung nur zum Üben.</td></tr>
+          <tr><td>Anbieter ändern sich</td><td>ChatGPT hat seine Arbeitsfläche Canvas 2026 in den aktuellen Modellen ersetzt.</td><td>Die HTML-Datei selbst sichern und Bibliotheken lokal mitliefern.</td></tr>
+          <tr><td>Arbeitszeit</td><td>Ein erster Entwurf entsteht oft schnell. Prüfen, Testen und Verbessern dauern deutlich länger.</td><td>Ein Zeitbudget festlegen und zuerst nach vorhandenen Werkzeugen suchen.</td></tr>
+          <tr><td>Weniger Musik</td><td>App-Phasen können Stimme, Körper und gemeinsames Musizieren verdrängen.</td><td>App-Phasen kurz halten und in Musizierphasen einbetten.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="s-schritte">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">7</div><div><h2>Schritt für Schritt zur eigenen App</h2><p class="sub">In einfacher Sprache. Du brauchst nur einen Browser und ein KI-Werkzeug.</p></div></div>
+    <ol class="steps">
+      <li class="step"><div class="n">1</div><div><h3>Schreib das Lernziel auf</h3><p>Was sollen die Lernenden danach können? Schreib es in einen Satz. Ein Beispiel ist „Die Lernenden erkennen beim Hören eine Quarte und eine Quinte.“</p><span class="tip"><b>Tipp.</b> Fällt dir kein Lernziel ein, brauchst du wahrscheinlich keine App.</span></div></li>
+      <li class="step"><div class="n">2</div><div><h3>Schau, ob es schon etwas gibt</h3><p>Vielleicht gibt es schon eine gute App. Dann sparst du Zeit. Schau zum Beispiel in die Spalten des Padlets „Musikunterricht digital gestalten 2.1“. Bau nur selbst, wenn nichts passt.</p></div></li>
+      <li class="step"><div class="n">3</div><div><h3>Plane die App auf Papier</h3><p>Zeichne den Bildschirm. Was sieht man? Was hört man? Was tippt man an? Was passiert bei einer falschen Antwort?</p><p>Plane die Hilfen in Stufen. Die erste Hilfe ist ein kleiner Tipp. Die letzte Hilfe zeigt die Lösung.</p></div></li>
+      <li class="step"><div class="n">4</div><div><h3>Schreib den Auftrag an die KI</h3><p>Der Auftrag heißt Prompt. Nenne das Lernziel, die Klasse, die Geräte und den Ablauf. Schreib auch auf, was die App nicht tun soll, zum Beispiel Namen speichern.</p><span class="tip"><b>Hilfe.</b> Der <button type="button" class="inline-btn" onclick="gotoSection('s-baukasten')">Prompt-Baukasten</button> schreibt den Auftrag mit dir zusammen.</span></div></li>
+      <li class="step"><div class="n">5</div><div><h3>Bau die App in kleinen Schritten</h3><p>Bitte die KI zuerst nur um die Grundfunktion. Wenn sie läuft, kommen die Extras dazu. Speichere jede Fassung, die funktioniert. Dann kannst du zurück, wenn etwas schiefgeht.</p></div></li>
+      <li class="step"><div class="n">6</div><div><h3>Teste die App</h3><p>Probier alles aus, auch falsche Knöpfe. Teste am Computer, am Tablet und am Beamer. Kommt der Ton? Ist die Schrift groß genug?</p><p>Beschreib Fehler in einfachen Worten. Die KI verbessert dann die App.</p></div></li>
+      <li class="step"><div class="n">7</div><div><h3>Prüfe den Inhalt</h3><p>Die KI macht Fehler, auch in der Musiktheorie. Prüfe jede Frage und jede Lösung. Hör dir jeden Ton an. Stimmen Intervalle, Noten und Takte?</p><span class="tip"><b>Wichtig.</b> Du bist die Fachperson und trägst die Verantwortung.</span></div></li>
+      <li class="step"><div class="n">8</div><div><h3>Probier die App mit wenigen Lernenden aus</h3><p>Beobachte genau. Wo bleiben sie hängen? Lernen sie, was sie lernen sollen? Frag sie nach ihrer Meinung.</p><p>Manchmal zeigt sich, dass es ohne App besser geht. Auch das ist ein gutes Ergebnis.</p></div></li>
+      <li class="step"><div class="n">9</div><div><h3>Mach eine sparsame Fassung für die Klasse</h3><p>Die Fassung für die Lernenden hat keine KI-Funktion. Sie fragt keine Namen ab und schickt keine Daten ins Internet. Speichere sie als eine einzige HTML-Datei.</p></div></li>
+      <li class="step"><div class="n">10</div><div><h3>Teile die App</h3><p>Du kannst die Datei zum Beispiel auf GitHub Pages veröffentlichen. Verwende nur Noten und Klänge, die frei nutzbar sind oder von dir stammen.</p><p>Schreib dazu, für welches Lernziel die App gedacht ist, wann du sie geprüft hast und unter welcher Lizenz sie steht.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section id="s-baukasten">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">8</div><div><h2>Prompt-Baukasten</h2><p class="sub">Fülle die Felder aus. Rechts entsteht dein Auftrag an die KI zum Kopieren.</p></div></div>
+    <div class="builder">
+      <form class="card" id="pb" onsubmit="return false" aria-label="Angaben für den Prompt">
+        <div class="field"><label for="pb-art">Art der App</label>
+          <select id="pb-art">
+            <option value="hoer">Hörübung</option>
+            <option value="rhythmus">Rhythmusspiel</option>
+            <option value="noten">Notenlesen</option>
+            <option value="quiz">Quiz oder Tafelspiel</option>
+            <option value="ueben">Übeprogramm mit Fehlerkartei</option>
+            <option value="anzeige">Anzeige für das Klassenmusizieren</option>
+          </select></div>
+        <div class="field"><label for="pb-klasse">Klasse oder Lerngruppe</label><input type="text" id="pb-klasse" value="Klasse 7"></div>
+        <div class="field"><label for="pb-ziel">Lernziel in einem Satz</label><p class="hint">Was sollen die Lernenden danach musikalisch können?</p><textarea id="pb-ziel">Die Lernenden unterscheiden beim Hören kleine Terz, große Terz, reine Quarte und reine Quinte.</textarea></div>
+        <div class="field"><label for="pb-ablauf">So soll die App ablaufen</label><p class="hint">Was sieht, hört und tippt man? Was passiert am Ende?</p><textarea id="pb-ablauf">Ein Knopf spielt zwei Töne nacheinander. Der tiefere Ton liegt zufällig zwischen c’ und g’. Die Lernenden wählen eine von vier Antworten. Nach zehn Aufgaben zeigt die App, wie viele richtig waren.</textarea></div>
+        <fieldset><legend>Geräte</legend><div class="checks">
+          <label><input type="checkbox" name="geraet" value="am Beamer oder an der digitalen Tafel" checked><span>Beamer oder digitale Tafel</span></label>
+          <label><input type="checkbox" name="geraet" value="auf dem iPad oder Tablet" checked><span>iPad oder Tablet</span></label>
+          <label><input type="checkbox" name="geraet" value="am Computer"><span>Computer</span></label>
+          <label><input type="checkbox" name="geraet" value="auf dem Smartphone"><span>Smartphone</span></label>
+        </div></fieldset>
+        <fieldset><legend>Hilfen und Rückmeldung</legend><div class="checks">
+          <label><input type="checkbox" id="pb-hilfen" checked><span>Hilfen in Stufen, erst Tipp, dann Hinweis, dann Lösung</span></label>
+          <label><input type="checkbox" id="pb-erklaer" checked><span>Kurze Erklärung, warum eine Antwort stimmt</span></label>
+          <label><input type="checkbox" id="pb-vorlesen"><span>Vorlesefunktion für Texte</span></label>
+        </div></fieldset>
+        <fieldset><legend>Bedingungen</legend><div class="checks">
+          <label><input type="checkbox" name="bed" value="Keine Namen und keine Anmeldung." checked><span>Keine Namen, keine Anmeldung</span></label>
+          <label><input type="checkbox" name="bed" value="Keine Daten ins Internet und nichts von fremden Servern nachladen, auch keine Bibliotheken oder Schriften." checked><span>Keine Daten ins Internet, nichts nachladen</span></label>
+          <label><input type="checkbox" name="bed" value="Nichts speichern, höchstens den Übungsstand auf diesem Gerät." checked><span>Keine Speicherung außer auf dem Gerät</span></label>
+          <label><input type="checkbox" name="bed" value="Keine KI-Funktion in der App." checked><span>Keine KI-Funktion in der App</span></label>
+        </div></fieldset>
+        <fieldset><legend>Gestaltung</legend><div class="checks">
+          <label><input type="checkbox" id="pb-gross" checked><span>Große Knöpfe und gut lesbare Schrift</span></label>
+          <label><input type="checkbox" id="pb-tastatur" checked><span>Bedienbar mit der Tastatur, Beschriftungen für Screenreader</span></label>
+          <label><input type="checkbox" id="pb-einfach" checked><span>Texte in einfacher Sprache</span></label>
+        </div></fieldset>
+      </form>
+      <div class="out" aria-live="polite">
+        <h3>Dein Prompt</h3>
+        <pre id="pb-out"></pre>
+        <div class="row-btns">
+          <button type="button" class="btn btn-light" onclick="copyPrompt()">Prompt kopieren</button>
+          <button type="button" class="btn btn-ghost" onclick="resetBuilder()">Zurücksetzen</button>
+        </div>
+        <p class="status" id="pb-status"></p>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;margin:34px 0 6px">So sprichst du mit der KI weiter</h3>
+    <p class="muted">Beschreibe, was du beobachtest, und sag genau, was sich ändern soll. Ein paar Beispiele zum Kopieren.</p>
+    <div class="talk">
+      <div><span>Kein Ton</span>„Auf dem iPad kommt kein Ton. Sorge bitte dafür, dass der Ton nach dem ersten Antippen startet.“</div>
+      <div><span>Zu klein</span>„Am Beamer ist die Schrift zu klein. Mach alle Texte und Knöpfe deutlich größer.“</div>
+      <div><span>Zu schnell gelöst</span>„Nach einer falschen Antwort kommt sofort die Lösung. Zeig zuerst einen Tipp und erst nach dem zweiten Fehler die Lösung.“</div>
+      <div><span>Nur eine Sache</span>„Ändere nur die Farbe der Knöpfe und lass alles andere, wie es ist.“</div>
+      <div><span>Verstehen</span>„Erklär mir in einfachen Worten, was du geändert hast.“</div>
+      <div><span>Daten prüfen</span>„Prüfe den Code. Werden irgendwo Daten gespeichert oder ins Internet geschickt?“</div>
+    </div>
+  </div>
+</section>
+
+<section id="s-beispiel">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">9</div><div><h2>So kann das Ergebnis aussehen</h2><p class="sub">Eine kleine Hör-App nach dem Beispielauftrag aus dem Baukasten, gebaut mit Claude</p></div></div>
+    <div class="demo" id="demo">
+      <div class="demo-bar"><b>Intervall-Training · Klasse 7</b><span>läuft ohne Internet und speichert nichts</span></div>
+      <div class="demo-body">
+        <div class="demo-top">
+          <span class="demo-count" id="d-count">Aufgabe 1 von 10 · 0 richtig</span>
+          <label class="vol" for="d-vol">Lautstärke <input type="range" id="d-vol" min="0" max="100" value="60"></label>
+        </div>
+        <button type="button" class="play" id="d-play" onclick="demoPlay(false)">▶ Anhören</button>
+        <div class="answers" role="group" aria-label="Antworten">
+          <button type="button" class="ans" data-st="3" onclick="demoAnswer(3,this)">kleine Terz</button>
+          <button type="button" class="ans" data-st="4" onclick="demoAnswer(4,this)">große Terz</button>
+          <button type="button" class="ans" data-st="5" onclick="demoAnswer(5,this)">reine Quarte</button>
+          <button type="button" class="ans" data-st="7" onclick="demoAnswer(7,this)">reine Quinte</button>
+        </div>
+        <p class="feedback" id="d-fb" aria-live="polite">Tippe auf „Anhören“. Du hörst zwei Töne nacheinander.</p>
+        <div class="demo-actions">
+          <button type="button" class="btn btn-outline" id="d-together" onclick="demoPlay(true)" hidden>Beide Töne zusammen hören</button>
+          <button type="button" class="btn btn-primary" id="d-next" onclick="demoNext()" hidden>Nächste Aufgabe</button>
+          <button type="button" class="btn btn-outline" id="d-restart" onclick="demoRestart()" hidden>Noch einmal von vorn</button>
+        </div>
+        <details class="check">
+          <summary>Frequenzen dieser Aufgabe zur fachlichen Prüfung</summary>
+          <p id="d-freq" class="mono" style="margin:8px 0 6px">Noch keine Aufgabe gespielt.</p>
+          <p style="margin:0">In gleichstufiger Stimmung ergibt sich der obere Ton aus dem unteren mal 2 hoch (Halbtöne geteilt durch 12). Die Quinte hat also das Verhältnis 2<sup>7/12</sup>, etwa 1,498. Von a’ mit 440 Hz aus liegt die Quinte e’’ bei etwa 659,3 Hz. Kleine Terz 2<sup>3/12</sup>, große Terz 2<sup>4/12</sup>, Quarte 2<sup>5/12</sup>.</p>
+        </details>
+      </div>
+    </div>
+    <div class="callout warm">
+      <p class="callout-title">Einordnung</p>
+      <p>Sinustöne klingen anders als Stimme und Instrumente. Nach der Übung wird deshalb gesungen und gespielt, etwa mit Liedanfängen, in denen die Intervalle vorkommen.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s-recht">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">10</div><div><h2>Recht und Datenschutz</h2><p class="sub">Das Wichtigste auf einen Blick. Die Hinweise ersetzen keine Rechtsberatung.</p></div></div>
+    <div class="grid law">
+      <div class="card"><h3>Altersgrenze</h3><p>Claude darf laut Nutzungsbedingungen erst ab 18 Jahren genutzt werden (Anthropic). KI-Funktionen gehören deshalb in die Hand der Lehrkraft.</p></div>
+      <div class="card"><h3>Datensparsamkeit</h3><p>Die DSGVO verlangt, Daten auf das notwendige Maß zu beschränken (Art. 5 Abs. 1 lit. c) und Datenschutz schon bei der Gestaltung mitzudenken (Art. 25). Eine Schülerfassung ohne Namen, ohne Konto und ohne KI-Aufruf erfüllt beides am einfachsten.</p></div>
+      <div class="card"><h3>Thüringen</h3><p>Lehrkräfte entscheiden nicht eigenverantwortlich, welche Daten von Schüler:innen sie erheben. Maßgeblich ist § 136 ThürSchulO (TMBJS 2019). Apps mit Anmeldung oder Schülerdaten stimmst du mit der Schulleitung und dem schulischen Datenschutz ab.</p></div>
+      <div class="card"><h3>Urheberrecht</h3><p>§ 60a UrhG erlaubt Ausschnitte nur für einen abgegrenzten Kreis von Lehrenden und Lernenden, für Noten gelten zusätzliche Grenzen. Eine öffentliche Web-App fällt nicht darunter. Dort stehen nur eigene Beispiele, gemeinfreie Werke oder frei lizenziertes Material.</p></div>
+      <div class="card"><h3>Lizenz</h3><p>Rein KI-erzeugter Code ist nach deutschem Recht in der Regel nicht urheberrechtlich geschützt (§§ 2 Abs. 2 und 69a Abs. 3 UrhG). Eine freie Lizenz wie MIT oder CC0 schafft Klarheit. Lizenzhinweise eingebundener Bibliotheken gehören dazu.</p></div>
+      <div class="card"><h3>Barrierefreiheit</h3><p>Ein guter Maßstab sind die WCAG 2.2 auf Stufe AA (W3C 2023), also Tastaturbedienung, guter Kontrast, Texte für Screenreader und Textalternativen zu Hörbeispielen.</p></div>
+    </div>
+    <div class="callout violet">
+      <p class="callout-title">Zwei Fassungen</p>
+      <p>Entwickle mit KI und setze im Unterricht eine Fassung ohne KI ein. So bleibt die KI beim Bauen in der Hand der Lehrkraft, und die Lernenden arbeiten mit einer App, die keine Daten weitergibt. Das entspricht dem Gedanken des Datenschutzes durch Technikgestaltung.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s-check">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">11</div><div><h2>Checkliste vor dem Einsatz</h2><p class="sub">Zwölf Fragen. Dein Stand bleibt nur in diesem Browser.</p></div></div>
+    <div class="checklist">
+      <div class="progress"><div class="bar" aria-hidden="true"><i id="cl-bar"></i></div><b id="cl-count">0 von 12 erledigt</b><button type="button" class="btn btn-outline" onclick="resetChecklist()">Zurücksetzen</button></div>
+      <ul class="cl" id="cl">
+        <li><label><input type="checkbox"><span>Das Lernziel ist in einem Satz benannt.</span></label></li>
+        <li><label><input type="checkbox"><span>Musik bleibt im Zentrum, also Hören, Singen, Spielen oder Gestalten.</span></label></li>
+        <li><label><input type="checkbox"><span>Ich habe jede Frage, jede Lösung und jedes Notenbeispiel selbst geprüft.</span></label></li>
+        <li><label><input type="checkbox"><span>Die App funktioniert auf den Geräten der Schule, auch auf dem iPad.</span></label></li>
+        <li><label><input type="checkbox"><span>Die Schülerfassung verarbeitet keine Namen und keine anderen personenbezogenen Daten.</span></label></li>
+        <li><label><input type="checkbox"><span>Die Schülerfassung läuft ohne KI-Aufruf und ohne Konto.</span></label></li>
+        <li><label><input type="checkbox"><span>Alle Noten, Texte und Klänge sind frei nutzbar oder selbst erstellt.</span></label></li>
+        <li><label><input type="checkbox"><span>Die App ist mit der Tastatur bedienbar und gut lesbar.</span></label></li>
+        <li><label><input type="checkbox"><span>Es gibt Hilfen in Stufen statt sofortiger Lösung.</span></label></li>
+        <li><label><input type="checkbox"><span>Die App-Phase ist kurz und in gemeinsames Musizieren eingebettet.</span></label></li>
+        <li><label><input type="checkbox"><span>Ich habe die App mit einer kleinen Gruppe erprobt und danach verbessert.</span></label></li>
+        <li><label><input type="checkbox"><span>Lizenz und Hinweise zu verwendeten Bibliotheken sind angegeben.</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="s-praxis">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">12</div><div><h2>Vier Beispiele aus der Praxis</h2><p class="sub">Entstanden für den eigenen Unterricht und das Fachseminar Musik</p></div></div>
+    <div class="grid-2">
+      <article class="card app">
+        <p class="kind">Tafelspiel für zwei Teams</p><h3>Kompetenz Fußball</h3>
+        <p>Jede richtige Antwort bringt den Ball näher ans gegnerische Tor. Über 130 Fragensammlungen von der Grundschule bis zur Oberstufe, eigene Fragen als Liste aus Excel, Word oder einer Textdatei. Antwortauswahl A bis D, Vorlesefunktion, Spiel gegen den Computer.</p>
+        <p><strong>Wofür.</strong> Wissen abrufen und festigen, etwa vor einer Klausur. Danach wird das Gewusste klingend angewendet.</p>
+        <div class="links"><a href="https://ufrefat-svg.github.io/efmu12/kompetenz-fussball.html" target="_blank" rel="noopener">Web-Fassung ohne Konto</a><a href="https://claude.ai/artifact/KQvasCkTS8qk6c94fRxqRq" target="_blank" rel="noopener">Fassung mit KI-Fragen (Claude-Konto)</a></div>
+        <p class="note">Erfahrungsbericht, kein Wirksamkeitsnachweis.</p>
+      </article>
+      <article class="card app">
+        <p class="kind">Übeprogramm</p><h3>Musik’o’mat</h3>
+        <p>Nach einem Fehlversuch kommt ein Hinweis, der die Lösung nicht verrät. Nach der Auflösung stehen falsche und richtige Antwort nebeneinander. Eine Fehlerkartei zeigt, woran man noch arbeitet.</p>
+        <p><strong>Wofür.</strong> Selbstständiges Üben mit gestuften Hilfen und informativer Rückmeldung.</p>
+        <div class="links"><a href="https://ufrefat-svg.github.io/efmu12/musikomat.html" target="_blank" rel="noopener">Musik’o’mat öffnen</a></div>
+        <p class="note">Erfahrungsbericht, kein Wirksamkeitsnachweis.</p>
+      </article>
+      <article class="card app">
+        <p class="kind">Lernspiel zu zweit</p><h3>Rhythmus-Tresor</h3>
+        <p>Eine Person sitzt am Gerät und hört, die andere hat das gedruckte Handbuch. Nur im Gespräch über die Rhythmen finden beide den Code. Die Stufen bringen eine Lampenregel und Rhythmen, die nicht im Handbuch stehen.</p>
+        <p><strong>Wofür.</strong> Rhythmen aus Vierteln, Achteln und Halben hören, lesen und beschreiben.</p>
+        <div class="links"><a href="https://ufrefat-svg.github.io/efmu12/rhythmus-tresor.html" target="_blank" rel="noopener">Rhythmus-Tresor öffnen</a></div>
+        <p class="note">Erfahrungsbericht, kein Wirksamkeitsnachweis.</p>
+      </article>
+      <article class="card app">
+        <p class="kind">Werkstatt für KI-Musik</p><h3>Suno Klanganweisung Studio</h3>
+        <p>Hilft, Klanganweisungen für das Musik-KI-Werkzeug Suno strukturiert zu schreiben und die eigene Hörerwartung vorher festzuhalten. Credits Franz Pregler.</p>
+        <p><strong>Wofür.</strong> Über Musik nachdenken, indem Absicht und klingendes Ergebnis verglichen werden.</p>
+        <div class="links"><a href="https://ufrefat-svg.github.io/efmu12/suno-studio.html" target="_blank" rel="noopener">Web-Fassung ohne KI-Funktionen</a></div>
+        <p class="note">Erfahrungsbericht, kein Wirksamkeitsnachweis. Suno selbst braucht ein eigenes Konto.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="s-quellen">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">13</div><div><h2>Quellen und Weiterlesen</h2><p class="sub">Herstellerquellen sind gekennzeichnet. Online-Quellen abgerufen am 19.10.2026.</p></div></div>
+    <ul class="refs">
+      <li>Anthropic. Consumer Terms of Service. <a href="https://www.anthropic.com/legal/consumer-terms" target="_blank" rel="noopener">anthropic.com/legal/consumer-terms</a><span class="vendor">Hersteller</span></li>
+      <li>CAST (2024). Universal Design for Learning Guidelines version 3.0. <a href="https://udlguidelines.cast.org" target="_blank" rel="noopener">udlguidelines.cast.org</a></li>
+      <li>Clark, R. E. (1983). Reconsidering Research on Learning from Media. Review of Educational Research, 53(4), 445–459. <a href="https://doi.org/10.3102/00346543053004445" target="_blank" rel="noopener">doi.org/10.3102/00346543053004445</a></li>
+      <li>Dai, C., Yang, Y., Li, K. et al. (2026). Musical Score Understanding Benchmark. Proceedings of the 64th Annual Meeting of the ACL, 10777–10799. <a href="https://doi.org/10.18653/v1/2026.acl-long.493" target="_blank" rel="noopener">doi.org/10.18653/v1/2026.acl-long.493</a></li>
+      <li>Education Endowment Foundation (2019). Using Digital Technology to Improve Learning. Guidance Report. London: EEF.</li>
+      <li>Evans, P. (2015). Self-determination theory. An approach to motivation in music education. Musicae Scientiae, 19(1), 65–83. <a href="https://doi.org/10.1177/1029864914568044" target="_blank" rel="noopener">doi.org/10.1177/1029864914568044</a></li>
+      <li>FWU (2026). Aus telli wird AIS.chat. Mitteilung vom 11.05.2026. <a href="https://ais-chat.schule/2026/05/11/aus-telli-wird-ais-chat/" target="_blank" rel="noopener">ais-chat.schule</a></li>
+      <li>Karpathy, A. (2025). Beitrag auf X vom 2. Februar 2025 zum Begriff „Vibe Coding“.</li>
+      <li>Kirschner, P. A. (2015). Do we need teachers as designers of technology enhanced learning? Instructional Science, 43(2), 309–322.</li>
+      <li>KMK (2016). Bildung in der digitalen Welt. Strategie der Kultusministerkonferenz. <a href="https://www.kmk.org/downloads-dokumente/beschluesse-und-veroeffentlichungen/bildung-in-der-digitalen-welt.html" target="_blank" rel="noopener">kmk.org</a></li>
+      <li>KMK (2021). Lehren und Lernen in der digitalen Welt. Ergänzung zur Strategie „Bildung in der digitalen Welt“. <a href="https://www.kmk.org/fileadmin/Dateien/veroeffentlichungen_beschluesse/2021/2021_12_09-Lehren-und-Lernen-Digi.pdf" target="_blank" rel="noopener">kmk.org (PDF)</a></li>
+      <li>Kovshov, A. et al. (2026). Harnessing Generative UI for Education. Tailored Learning Interactives. Preprint. <a href="https://arxiv.org/abs/2609.20738" target="_blank" rel="noopener">arXiv:2609.20738</a><span class="vendor">Hersteller</span></li>
+      <li>Kranefeld, U. (2021). Der Diskurs um Unterrichtsqualität in der Musikdidaktik zwischen generischen und fachspezifischen Dimensionen. Unterrichtswissenschaft, 49. <a href="https://doi.org/10.1007/s42010-021-00113-y" target="_blank" rel="noopener">doi.org/10.1007/s42010-021-00113-y</a></li>
+      <li>Laurillard, D. (2012). Teaching as a Design Science. Building Pedagogical Patterns for Learning and Technology. New York, London: Routledge.</li>
+      <li>Li, J. et al. (2024). The Music Maestro or The Musically Challenged, A Massive Music Evaluation Benchmark for Large Language Models. Findings of the ACL 2024, 3246–3257. <a href="https://doi.org/10.18653/v1/2024.findings-acl.194" target="_blank" rel="noopener">doi.org/10.18653/v1/2024.findings-acl.194</a></li>
+      <li>Mishra, P. &amp; Koehler, M. J. (2006). Technological Pedagogical Content Knowledge. A Framework for Teacher Knowledge. Teachers College Record, 108(6), 1017–1054.</li>
+      <li>OpenAI (2026). ChatGPT Release Notes, Eintrag vom 28.05.2026. <a href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes" target="_blank" rel="noopener">help.openai.com</a><span class="vendor">Hersteller</span></li>
+      <li>Papadakis, S. &amp; Zacharis, G. (2026). Preservice Early Childhood Teachers’ AI Literacy and Self-Efficacy in a Structured “Vibe Coding” Design Task. Education Sciences, 16(10), 1609. <a href="https://doi.org/10.3390/educsci16101609" target="_blank" rel="noopener">doi.org/10.3390/educsci16101609</a></li>
+      <li>Platz, F., Wolf, A. &amp; Hasselhorn, J. (2021). Lässt sich die Lernwirksamkeit von Musikunterricht durch den Einsatz neuer (digitaler) Medien steigern? In K. Martin &amp; C. Stick (Hrsg.), Musikpädagogik in Zeiten von Globalisierung und Digitalisierung (S. 82–102). Münster: Waxmann.</li>
+      <li>Praetorius, A.-K., Klieme, E., Herbert, B. &amp; Pinger, P. (2018). Generic dimensions of teaching quality. ZDM Mathematics Education, 50(3), 407–426. <a href="https://doi.org/10.1007/s11858-018-0918-4" target="_blank" rel="noopener">doi.org/10.1007/s11858-018-0918-4</a></li>
+      <li>Ruge, W. B. &amp; Schwaiger, S. (2024). Von der Toolisierung zur Enkulturation der Digitalität. In L. Mrohs et al. (Hrsg.), Digitale Kulturen der Lehre entwickeln (S. 117–132). Wiesbaden: Springer VS. <a href="https://doi.org/10.1007/978-3-658-43379-6_8" target="_blank" rel="noopener">doi.org/10.1007/978-3-658-43379-6_8</a></li>
+      <li>Sailer, M. &amp; Homner, L. (2020). The Gamification of Learning. A Meta-analysis. Educational Psychology Review, 32(1), 77–112.</li>
+      <li>TMBJS (2019). Antworten auf häufig gestellte Fragen zum Datenschutz in Schulen. <a href="https://tlfdi.de/fileadmin/tlfdi/datenschutz/schule/faq_datenschutz_in_schulen.pdf" target="_blank" rel="noopener">tlfdi.de (PDF)</a></li>
+      <li>Veracode (2025). 2025 GenAI Code Security Report. <a href="https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/" target="_blank" rel="noopener">veracode.com</a><span class="vendor">Hersteller</span></li>
+      <li>W3C. Web Audio API 1.1. <a href="https://www.w3.org/TR/webaudio-1.1/" target="_blank" rel="noopener">w3.org/TR/webaudio-1.1</a> sowie Can I use, Eintrag Web MIDI API. <a href="https://caniuse.com/midi" target="_blank" rel="noopener">caniuse.com/midi</a></li>
+      <li>W3C (2023). Web Content Accessibility Guidelines (WCAG) 2.2. <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">w3.org/TR/WCAG22</a></li>
+      <li>Yadav, A., Lachney, M., Hu, A. &amp; Tavernier, L. (2025). Integrating Generative AI in Teacher Education. Journal of Research in Childhood Education, 40(1), 24–45. <a href="https://doi.org/10.1080/02568543.2025.2581712" target="_blank" rel="noopener">doi.org/10.1080/02568543.2025.2581712</a></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Eigene Musik-Apps mit KI bauen</b> · Ulrich Frefat · Fachseminar Musik, Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringen (Erfurt) · Teil der Sammlung „Musikunterricht digital gestalten 2.1“ · Stand 20.10.2026</p>
+    <p>Gebaut mit Claude (Anthropic). Die Seite lädt nichts aus dem Internet nach. Gespeichert wird nur der Stand der Checkliste, und zwar in deinem Browser.</p>
+    <button type="button" class="btn btn-ghost" onclick="gotoSection('top')">Nach oben</button>
+  </div>
+</footer>
+
+<script>
+/* Sprungziele ohne Anker-Links */
+function gotoSection(id){
+  var el=document.getElementById(id);
+  if(!el) return;
+  try{el.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){el.scrollIntoView(true);}
+  if(id!=='top'){
+    var h=el.querySelector('h2');
+    if(h){h.setAttribute('tabindex','-1');try{h.focus({preventScroll:true});}catch(e){}}
+  }
+}
+
+/* Prompt-Baukasten */
+var ART={
+  hoer:{name:'eine kleine Hör-App',klang:true,
+    ziel:'Die Lernenden unterscheiden beim Hören kleine Terz, große Terz, reine Quarte und reine Quinte.',
+    ablauf:'Ein Knopf spielt zwei Töne nacheinander. Der tiefere Ton liegt zufällig zwischen c’ und g’. Die Lernenden wählen eine von vier Antworten. Nach zehn Aufgaben zeigt die App, wie viele richtig waren.'},
+  rhythmus:{name:'ein kleines Rhythmusspiel',klang:true,
+    ziel:'Die Lernenden ordnen gehörte Rhythmen aus Vierteln, Achteln und Halben dem passenden Notenbild zu.',
+    ablauf:'Die App spielt einen Takt im 4/4-Takt mit einem leisen Klick auf jeder Zählzeit. Darunter stehen vier Notenbilder zur Auswahl. Die Silben unserer Rhythmussprache sind: (bitte eintragen). Nach acht Aufgaben zeigt die App, wie viele richtig waren.'},
+  noten:{name:'eine kleine App zum Notenlesen',klang:true,noten:true,
+    ziel:'Die Lernenden benennen Töne im Violinschlüssel zwischen c’ und g’’.',
+    ablauf:'Die App zeigt eine Note im Violinschlüssel. Die Lernenden tippen den Notennamen an. Danach erklingt der Ton. Nach fünfzehn Aufgaben zeigt die App, welche Töne noch unsicher sind.'},
+  quiz:{name:'ein Quiz als Tafelspiel für zwei Teams',klang:false,
+    ziel:'Die Lernenden erklären zentrale Fachbegriffe der laufenden Einheit.',
+    ablauf:'Zwei Teams spielen gegeneinander. Die Lehrkraft zeigt am Beamer eine Frage mit vier Antworten und klickt weiter. Jede richtige Antwort bringt einen Punkt. Die Fragen füge ich als Liste ein, eine Frage pro Zeile mit Antworten und Lösung.'},
+  ueben:{name:'ein kleines Übeprogramm mit Fehlerkartei',klang:false,
+    ziel:'Die Lernenden bestimmen Dur- und Molltonleitern und sehen, woran sie noch arbeiten.',
+    ablauf:'Die App stellt eine Aufgabe nach der anderen. Bei Fehlern gibt sie Hinweise, ohne die Lösung zu verraten. Falsch gelöste Aufgaben kommen in eine Fehlerkartei und tauchen später wieder auf.'},
+  anzeige:{name:'eine Anzeige für das Klassenmusizieren am Beamer',klang:true,
+    ziel:'Die Klasse spielt einen Mitspielsatz im gemeinsamen Tempo.',
+    ablauf:'Die App zeigt am Beamer groß die Zählzeiten eines 4/4-Takts, den aktuellen Akkord und den Formteil an. Tempo und Akkordfolge stelle ich vorher ein. Ein Klick startet nach zwei Takten Einzählen.'}
+};
+function isDefault(field,v){for(var k in ART){if(ART[k][field]===v)return true;}return v==='';}
+function artChanged(){
+  var a=ART[val('pb-art')];if(!a)return;
+  var z=document.getElementById('pb-ziel'),b=document.getElementById('pb-ablauf');
+  if(isDefault('ziel',z.value.trim())) z.value=a.ziel;
+  if(isDefault('ablauf',b.value.trim())) b.value=a.ablauf;
+  buildPrompt();
+}
+var DEFAULTS=null;
+function val(id){var e=document.getElementById(id);return e?e.value.trim():'';}
+function on(id){var e=document.getElementById(id);return !!(e&&e.checked);}
+function listJoin(a){if(a.length<2)return a.join('');return a.slice(0,-1).join(', ')+' und '+a[a.length-1];}
+function buildPrompt(){
+  var a=ART[val('pb-art')]||ART.hoer;
+  var ger=[].slice.call(document.querySelectorAll('input[name=geraet]:checked')).map(function(x){return x.value;});
+  var bed=[].slice.call(document.querySelectorAll('input[name=bed]:checked')).map(function(x){return x.value;});
+  var L=[];
+  L.push('Baue '+a.name+' für den Musikunterricht als eine einzige HTML-Datei.');
+  if(val('pb-klasse')) L.push('Lerngruppe: '+val('pb-klasse')+'.');
+  if(val('pb-ziel')) L.push('Lernziel: '+val('pb-ziel'));
+  if(val('pb-ablauf')) L.push('','So soll die App funktionieren: '+val('pb-ablauf'));
+  var h=[];
+  if(on('pb-hilfen')) h.push('Bei einer falschen Antwort gibt es zuerst einen kleinen Tipp, dann einen deutlicheren Hinweis und erst danach die Lösung.');
+  if(on('pb-erklaer')) h.push('Nach jeder Antwort erklärt ein kurzer Satz, warum sie stimmt oder nicht stimmt.');
+  if(on('pb-vorlesen')) h.push('Texte lassen sich auf Knopfdruck vorlesen.');
+  if(h.length) L.push('','Hilfen und Rückmeldung: '+h.join(' '));
+  if(ger.length) L.push('','Geräte: Die App soll '+listJoin(ger)+' gut funktionieren.');
+  if(a.klang){
+    L.push('Klang: Nutze die Web Audio API. Der Ton startet erst nach dem ersten Antippen, damit er auch auf dem iPad funktioniert. Baue einen Regler für die Lautstärke ein.');
+  }
+  if(a.noten) L.push('Noten: Zeige Noten mit der freien Bibliothek abcjs an und liefere sie in der Datei mit, ohne sie aus dem Internet zu laden.');
+  if(bed.length) L.push('','Bedingungen: '+bed.join(' '));
+  var g=[];
+  if(on('pb-gross')) g.push('Große Knöpfe und gut lesbare Schrift, auch am Beamer.');
+  if(on('pb-tastatur')) g.push('Bedienbar mit der Tastatur, mit Beschriftungen für Screenreader.');
+  if(on('pb-einfach')) g.push('Alle Texte in einfacher deutscher Sprache.');
+  if(g.length) L.push('Gestaltung: '+g.join(' '));
+  var end='Erkläre mir am Ende in einfachen Worten, wie die App aufgebaut ist und was ich fachlich prüfen sollte.';
+  if(a.klang) end+=' Erkläre auch, wie du die Frequenzen der Töne berechnest.';
+  L.push('',end);
+  document.getElementById('pb-out').textContent=L.join('\n');
+}
+function snapshot(){
+  var s={};
+  [].slice.call(document.querySelectorAll('#pb input,#pb select,#pb textarea')).forEach(function(e,i){s[i]=(e.type==='checkbox')?e.checked:e.value;});
+  return s;
+}
+function resetBuilder(){
+  if(!DEFAULTS) return;
+  [].slice.call(document.querySelectorAll('#pb input,#pb select,#pb textarea')).forEach(function(e,i){if(e.type==='checkbox')e.checked=DEFAULTS[i];else e.value=DEFAULTS[i];});
+  buildPrompt();setStatus('Zurückgesetzt.');
+}
+function setStatus(t){var s=document.getElementById('pb-status');s.textContent=t;clearTimeout(setStatus._t);setStatus._t=setTimeout(function(){s.textContent='';},3500);}
+function copyPrompt(){
+  var t=document.getElementById('pb-out').textContent;
+  function fallback(){
+    var ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);setStatus(ok?'Kopiert. Jetzt in den Chat der KI einfügen.':'Bitte den Text markieren und selbst kopieren.');
+  }
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(t).then(function(){setStatus('Kopiert. Jetzt in den Chat der KI einfügen.');},fallback);
+  } else fallback();
+}
+
+/* Checkliste, Stand nur im Browser */
+var CL_KEY='ki-apps-bauen-checkliste';
+function clBoxes(){return [].slice.call(document.querySelectorAll('#cl input'));}
+function clUpdate(save){
+  var b=clBoxes(),n=b.filter(function(x){return x.checked;}).length;
+  document.getElementById('cl-count').textContent=n+' von '+b.length+' erledigt';
+  document.getElementById('cl-bar').style.width=(100*n/b.length)+'%';
+  if(save){try{localStorage.setItem(CL_KEY,JSON.stringify(b.map(function(x){return x.checked;})));}catch(e){}}
+}
+function resetChecklist(){clBoxes().forEach(function(x){x.checked=false;});clUpdate(true);}
+
+/* Beispiel-App: Intervalle hören */
+var NAMES={3:'kleine Terz',4:'große Terz',5:'reine Quarte',7:'reine Quinte'};
+var ctx=null,task=null,round=1,score=0,tries=0,done=false;
+function freq(midi){return 440*Math.pow(2,(midi-69)/12);}
+function newTask(){
+  var st=[3,4,5,7][Math.floor(Math.random()*4)];
+  var low=60+Math.floor(Math.random()*8); /* c' bis g' */
+  task={st:st,low:low,high:low+st};tries=0;done=false;
+  document.getElementById('d-freq').textContent='Noch nicht angehört.';
+}
+function tone(f,t0,dur,g){
+  var o=ctx.createOscillator(),v=ctx.createGain();
+  o.type='sine';o.frequency.value=f;
+  v.gain.setValueAtTime(0.0001,t0);
+  v.gain.exponentialRampToValueAtTime(g,t0+0.03);
+  v.gain.setValueAtTime(g,t0+dur-0.12);
+  v.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+  o.connect(v);v.connect(ctx.destination);o.start(t0);o.stop(t0+dur+0.02);
+}
+function demoPlay(together){
+  try{
+    if(!ctx){var AC=window.AudioContext||window.webkitAudioContext;ctx=new AC();}
+    if(ctx.state==='suspended') ctx.resume();
+  }catch(e){document.getElementById('d-fb').textContent='Dieser Browser kann hier keinen Ton abspielen.';return;}
+  var g=Math.max(0.0002,(+document.getElementById('d-vol').value/100)*0.35);
+  var t=ctx.currentTime+0.05,f1=freq(task.low),f2=freq(task.high);
+  if(together){tone(f1,t,1.6,g*0.75);tone(f2,t,1.6,g*0.75);}
+  else{tone(f1,t,0.9,g);tone(f2,t+1.0,0.9,g);}
+  document.getElementById('d-freq').textContent='Unterer Ton '+f1.toFixed(2).replace('.',',')+' Hz · oberer Ton '+f2.toFixed(2).replace('.',',')+' Hz · Verhältnis '+(f2/f1).toFixed(4).replace('.',',')+' (2 hoch '+task.st+'/12)';
+  if(!together&&!done&&tries===0) document.getElementById('d-fb').textContent='Welches Intervall hast du gehört?';
+}
+function setAnswersDisabled(d){[].slice.call(document.querySelectorAll('.ans')).forEach(function(b){b.disabled=d;});}
+function demoAnswer(st,btn){
+  if(done||!task) return;
+  var fb=document.getElementById('d-fb');
+  if(st===task.st){
+    btn.classList.add('right');done=true;if(tries===0)score++;
+    fb.textContent='Richtig, das war eine '+NAMES[task.st]+' ('+task.st+' Halbtöne).'+(tries>0?' Mit Hilfe geschafft.':'');
+    finishTask();
+    return;
+  }
+  tries++;btn.classList.add('wrong');btn.disabled=true;
+  if(tries===1){
+    fb.textContent='Noch nicht. Tipp: Der Abstand ist '+(task.st>st?'größer':'kleiner')+'. Hör noch einmal hin.';
+  } else if(tries===2){
+    fb.textContent='Hör dir beide Töne zusammen an. Klingt der Zusammenklang eher weich oder eher leer?';
+    document.getElementById('d-together').hidden=false;
+  } else {
+    done=true;
+    var r=document.querySelector('.ans[data-st="'+task.st+'"]');if(r)r.classList.add('right');
+    fb.textContent='Die Lösung ist die '+NAMES[task.st]+' ('+task.st+' Halbtöne). Sing die beiden Töne einmal nach.';
+    finishTask();
+  }
+}
+function finishTask(){
+  setAnswersDisabled(true);
+  document.getElementById('d-together').hidden=false;
+  document.getElementById('d-count').textContent='Aufgabe '+round+' von 10 · '+score+' richtig';
+  if(round>=10){
+    document.getElementById('d-fb').textContent+=' Geschafft. Du hattest '+score+' von 10 Aufgaben beim ersten Versuch richtig.';
+    document.getElementById('d-restart').hidden=false;
+  } else document.getElementById('d-next').hidden=false;
+}
+function resetButtons(){
+  [].slice.call(document.querySelectorAll('.ans')).forEach(function(b){b.classList.remove('right','wrong');b.disabled=false;});
+  document.getElementById('d-next').hidden=true;document.getElementById('d-together').hidden=true;document.getElementById('d-restart').hidden=true;
+}
+function demoNext(){
+  round++;resetButtons();newTask();
+  document.getElementById('d-count').textContent='Aufgabe '+round+' von 10 · '+score+' richtig';
+  document.getElementById('d-fb').textContent='Tippe auf „Anhören“.';
+}
+function demoRestart(){round=1;score=0;resetButtons();newTask();document.getElementById('d-count').textContent='Aufgabe 1 von 10 · 0 richtig';document.getElementById('d-fb').textContent='Tippe auf „Anhören“. Du hörst zwei Töne nacheinander.';}
+
+document.addEventListener('DOMContentLoaded',function(){
+  DEFAULTS=snapshot();
+  document.getElementById('pb').addEventListener('input',buildPrompt);
+  document.getElementById('pb').addEventListener('change',buildPrompt);
+  document.getElementById('pb-art').addEventListener('change',artChanged);
+  buildPrompt();
+  var saved=null;try{saved=JSON.parse(localStorage.getItem(CL_KEY)||'null');}catch(e){saved=null;}
+  clBoxes().forEach(function(x,i){if(saved&&saved[i])x.checked=true;x.addEventListener('change',function(){clUpdate(true);});});
+  clUpdate(false);
+  newTask();
+});
+</script>
+</body>
+</html>
