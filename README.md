@@ -9,6 +9,8 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 - `rhythmus-tresor.html`: Rhythmus-Tresor (Tisch 5)
 - `kompetenz-fussball.html`: Kompetenz Fußball (Abpfiff)
 - `suno-studio.html`: Suno Klanganweisung Studio, Version 9 als Web-Fassung ohne die beiden KI-Funktionen (Credits: Franz Pregler)
+- `rhythmus-trainer.html`: Rhythmus-Trainer (Drumset Coach), Raster 4 × 8 mit Lauflicht, Klick, Einzählen, Tippen und Auto-Sync über das Mikrofon
+- `melodie-trainer.html`: Melodie-Trainer, Raster mit den Tönen e, cis, h, a, fis, Lauflicht, Klick, Einzählen und Tippen
 - `ki-apps-bauen.html`: Anleitung „Eigene Musik-Apps mit KI bauen“ mit Ideen für den Musikunterricht, Grenzen, Recht und Datenschutz, Prompt-Baukasten, Beispiel-App und Checkliste
 - `fonts/`: lokale Schriften, keine Verbindung zu Google (Lizenztexte der OFL-Schriften liegen bei)
 
