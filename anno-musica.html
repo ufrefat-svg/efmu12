@@ -100,7 +100,7 @@ svg{display:block}
 .lbl{display:block;margin:0 0 6px;font-family:var(--f-display);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .hint{margin:0;font-size:14.5px;color:var(--mute)}
 .note{margin:0;padding:10px 12px;border-radius:12px;font-size:14.5px;background:rgba(255,197,61,.08);border:1px solid rgba(255,197,61,.35);color:#FFE3A1}
-input[type=text],input[type=number],textarea,select{width:100%;padding:11px 12px;border-radius:12px;border:1.5px solid var(--line2);background:#120E28;color:var(--text);font-size:16px;line-height:1.35}
+input[type=text],input[type=search],input[type=number],textarea,select{width:100%;padding:11px 12px;border-radius:12px;border:1.5px solid var(--line2);background:#120E28;color:var(--text);font-size:16px;line-height:1.35}
 textarea{resize:vertical;min-height:80px}
 input::placeholder,textarea::placeholder{color:var(--dim);opacity:1}
 input:focus,textarea:focus,select:focus{outline:2px solid var(--p2);outline-offset:1px;border-color:transparent}
@@ -218,6 +218,11 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--p2);outline-offs
 .prog{height:8px;border-radius:99px;background:var(--panel);overflow:hidden}
 .prog i{display:block;height:100%;width:30%;border-radius:inherit;background:linear-gradient(90deg,var(--p1),var(--p2));animation:prog 1.2s ease-in-out infinite alternate}
 @keyframes prog{from{transform:translateX(-40%)}to{transform:translateX(260%)}}
+.adapt-f{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px}
+input[type=search]{-webkit-appearance:none;appearance:none}
+.adapt-list{max-height:min(52vh,560px);overflow:auto;-webkit-overflow-scrolling:touch;padding-right:4px}
+.kdot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;vertical-align:1px}
+.kpill.ok{background:rgba(166,255,77,.18);color:var(--lime);border-color:rgba(166,255,77,.4)}
 .mylist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .mylist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 10px 10px 14px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
 .mylist .tt{font-weight:800}
@@ -472,6 +477,8 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--p2);outline-offs
   .mid{max-width:40vw}
 }
 @media (max-width:600px){
+  .mylist li{grid-template-columns:minmax(0,1fr)}
+  .mylist .acts{justify-content:flex-start}
   #app{padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
   .hud{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"a b" "m m";row-gap:6px}
   .pod[data-p="0"]{grid-area:a}.pod[data-p="1"]{grid-area:b}.mid{grid-area:m;max-width:100%;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;justify-items:start;text-align:left;column-gap:8px;width:100%}
@@ -623,6 +630,16 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--p2);outline-offs
       <div class="pane" data-pane="plan" id="planPane"></div>
 
       <div class="pane" data-pane="werk" hidden>
+        <div class="box" id="adaptBox" style="margin-bottom:14px">
+          <h2><small>alle vorhandenen Themen</small>Bestehende Themen anpassen</h2>
+          <p class="hint">Karten ändern, löschen oder ergänzen, Texte vereinfachen, Jahrgang wechseln. Eure Fassung ersetzt das Thema im Jahrgang. Das Original bleibt erhalten und lässt sich jederzeit zurückholen.</p>
+          <div class="adapt-f">
+            <div><label class="lbl" for="adG">Jahrgang</label><select id="adG"></select></div>
+            <div><label class="lbl" for="adA">Bereich</label><select id="adA"></select></div>
+            <div><label class="lbl" for="adQ">Suchen</label><input type="search" id="adQ" placeholder="Titel oder Stichwort" autocomplete="off"></div>
+          </div>
+          <ul class="mylist adapt-list" id="adList"></ul>
+        </div>
         <div class="cols">
           <div class="box" id="aiBox">
             <h2><small>mit Claude</small>Szenario aus Thema oder Material</h2>
@@ -655,7 +672,6 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--p2);outline-offs
             <button class="btn" id="btnFromList" type="button">Liste übernehmen</button>
             <div><label class="lbl" for="inCode">Szenario-Code einfügen</label><textarea id="inCode" placeholder="Code beginnt mit AM1."></textarea></div>
             <button class="btn" id="btnImport" type="button">Code öffnen</button>
-            <div id="tplBox"></div>
           </div>
         </div>
       </div>
@@ -787,7 +803,7 @@ function normScen(s, eigen){
   var achse = Array.isArray(s.achse) && s.achse.length === 2 ? [String(s.achse[0]), String(s.achse[1])] : kind(art).achse.slice();
   if (art === 'zeit' && !s.achse) achse = ['früher', 'später'];
   return {id: s.id || uid('sz'), titel: String(s.titel || 'Ohne Titel'), gruppe: s.gruppe || 'm56', art: art, achse: achse,
-    kurz: s.kurz || '', karten: karten, eigen: !!eigen, ki: !!s.ki};
+    kurz: s.kurz || '', karten: karten, eigen: !!eigen, ki: !!s.ki, basis: eigen && s.basis ? String(s.basis) : ''};
 }
 var BUILTIN = [];
 try { BUILTIN = (JSON.parse($('#am-data').textContent).szenarien || []).map(function(s){ return normScen(s, false); }).filter(Boolean); } catch(e){ BUILTIN = []; }
@@ -997,17 +1013,60 @@ function showTab(t){
   UI.tab = t; saveUI();
   $$('.tab').forEach(function(b){ b.setAttribute('aria-selected', b.dataset.tab === t ? 'true' : 'false'); });
   $$('.pane').forEach(function(p){ p.hidden = p.dataset.pane !== t; });
-  if (t === 'mine') renderMine(); if (t === 'erfolge') renderErfolge(); if (t === 'plan') renderPlan();
+  if (t === 'mine') renderMine(); if (t === 'werk') renderAdapt(); if (t === 'erfolge') renderErfolge(); if (t === 'plan') renderPlan();
 }
 $$('.tab').forEach(function(b){ b.addEventListener('click', function(){ showTab(b.dataset.tab); }); });
 
 function starsHtml(n){ var s = '<span class="stars" aria-label="' + (n || 0) + ' von 3 Sternen">'; for (var i = 0; i < 3; i++) s += '<svg class="' + (i < (n || 0) ? 'on' : '') + '"><use href="#i-star"/></svg>'; return s + '</span>'; }
 function tileHtml(s){
   var k = kind(s.art);
-  return '<button type="button" class="play" data-id="' + esc(s.id) + '"><span class="kic" style="background:' + k.c + '"><svg><use href="#' + k.icon + '"/></svg></span><h4>' + esc(s.titel) + (s.ki ? ' <span class="kpill">KI</span>' : '') + '</h4>' +
+  return '<button type="button" class="play" data-id="' + esc(s.id) + '"><span class="kic" style="background:' + k.c + '"><svg><use href="#' + k.icon + '"/></svg></span><h4>' + esc(s.titel) + (s.ki ? ' <span class="kpill">KI</span>' : '') + (s.basis ? ' <span class="kpill ok">angepasst</span>' : '') + '</h4>' +
     (s.kurz ? '<p>' + esc(s.kurz) + '</p>' : '<p></p>') + '<span class="meta">' + s.karten.length + ' Karten · ' + esc(s.achse[0]) + ' → ' + esc(s.achse[1]) + ' ' + starsHtml(PROG.stars[s.id]) + '</span></button>';
 }
-function levelList(id){ return id === 'eigen' ? MINE : BUILTIN.filter(function(s){ return s.gruppe === id; }); }
+function adaptOf(id){ for (var i = 0; i < MINE.length; i++) if (MINE[i].basis === id) return MINE[i]; return null; }
+function levelList(id){
+  if (id === 'eigen') return MINE;
+  return BUILTIN.filter(function(s){ return s.gruppe === id && !adaptOf(s.id); }).concat(MINE.filter(function(m){ return m.gruppe === id; }));
+}
+function adaptScen(s){
+  if (s.eigen) return openEditor(s);
+  var a = adaptOf(s.id); if (a) return openEditor(a);
+  openEditor(s, {keepTitle:true, basis:s.id, note:'Eure Fassung ersetzt dieses Thema in „' + grp(s.gruppe).label + '“. Das Original bleibt erhalten und lässt sich in der Werkstatt zurückholen.'});
+}
+function renderAdapt(){
+  var ul = $('#adList'); if (!ul) return;
+  var g = $('#adG').value || 'alle', a = $('#adA').value || 'alle', q = ($('#adQ').value || '').trim().toLowerCase();
+  var list = BUILTIN.map(function(s){ return adaptOf(s.id) || s; }).concat(MINE.filter(function(m){ return !m.basis; }));
+  list = list.filter(function(s){
+    if (g !== 'alle' && s.gruppe !== g) return false;
+    if (a !== 'alle' && s.art !== a) return false;
+    if (q && (s.titel + ' ' + (s.kurz || '') + ' ' + s.karten.map(function(c){ return c.h + ' ' + c.t; }).join(' ')).toLowerCase().indexOf(q) < 0) return false;
+    return true;
+  }).sort(function(x, y){ return GROUPS.findIndex(function(G){ return G.id === x.gruppe; }) - GROUPS.findIndex(function(G){ return G.id === y.gruppe; }) || x.titel.localeCompare(y.titel, 'de'); });
+  if (!list.length) { ul.innerHTML = '<li class="empty" style="display:block">Kein Thema gefunden.</li>'; return; }
+  ul.innerHTML = list.slice(0, 200).map(function(s){
+    var k = kind(s.art), st = s.basis ? '<span class="kpill ok">angepasst</span>' : s.eigen ? '<span class="kpill">eigen</span>' : '';
+    return '<li data-id="' + esc(s.id) + '"><div><div class="tt"><i class="kdot" style="background:' + k.c + '"></i>' + esc(s.titel) + ' ' + st + '</div><div class="mm">' + esc(grp(s.gruppe).label) + ' · ' + esc(k.label) + ' · ' + s.karten.length + ' Karten</div></div>' +
+      '<div class="acts"><button class="btn go sm" data-a="edit" type="button"><svg><use href="#i-edit"/></svg>' + (s.basis || s.eigen ? 'Bearbeiten' : 'Anpassen') + '</button>' +
+      (s.basis ? '<button class="btn sm" data-a="orig" type="button">Original zurück</button>' : '') +
+      '<button class="btn sm" data-a="play" type="button"><svg><use href="#i-play"/></svg>Spielen</button></div></li>';
+  }).join('');
+}
+(function(){
+  $('#adG').innerHTML = '<option value="alle">Alle Jahrgänge</option>' + GROUPS.map(function(g){ return '<option value="' + g.id + '">' + esc(g.label) + '</option>'; }).join('');
+  $('#adA').innerHTML = '<option value="alle">Alle Bereiche</option>' + KINDS.map(function(k){ return '<option value="' + k.id + '">' + esc(k.label) + '</option>'; }).join('');
+  ['#adG', '#adA'].forEach(function(id){ $(id).addEventListener('change', renderAdapt); });
+  $('#adQ').addEventListener('input', renderAdapt);
+  $('#adList').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-a]'); if (!b) return; var s = findScen(b.closest('li').dataset.id); if (!s) return;
+    if (b.dataset.a === 'edit') adaptScen(s);
+    else if (b.dataset.a === 'play') openStart(s);
+    else if (b.dataset.a === 'orig') {
+      if (!b.dataset.sure) { b.dataset.sure = '1'; b.textContent = 'Eure Fassung löschen?'; return; }
+      MINE = MINE.filter(function(m){ return m.id !== s.id; }); saveMine(); renderPlan(); renderMine(); renderAdapt(); toast('Das Original ist wieder im Jahrgang.');
+    }
+  });
+})();
 function renderPlan(){
   var pane = $('#planPane'), h = '';
   if (!UI.level) {
@@ -1045,7 +1104,7 @@ function renderMine(){
   var ul = $('#myList');
   if (!MINE.length) { ul.innerHTML = '<li class="empty" style="display:block">Noch keine eigenen Szenarien. Legt in der Werkstatt eines an oder fügt einen Code ein.</li>'; return; }
   ul.innerHTML = MINE.map(function(s){
-    return '<li data-id="' + esc(s.id) + '"><div><div class="tt">' + esc(s.titel) + (s.ki ? ' <span class="kpill">KI-Entwurf</span>' : '') + '</div><div class="mm">' + esc(grp(s.gruppe).label) + ' · ' + s.karten.length + ' Karten · ' + esc(s.achse[0]) + ' → ' + esc(s.achse[1]) + '</div></div>' +
+    return '<li data-id="' + esc(s.id) + '"><div><div class="tt">' + esc(s.titel) + (s.ki ? ' <span class="kpill">KI-Entwurf</span>' : '') + (s.basis ? ' <span class="kpill ok">angepasst</span>' : '') + '</div><div class="mm">' + esc(grp(s.gruppe).label) + ' · ' + s.karten.length + ' Karten · ' + esc(s.achse[0]) + ' → ' + esc(s.achse[1]) + '</div></div>' +
       '<div class="acts"><button class="btn go sm" data-a="play" type="button"><svg><use href="#i-play"/></svg>Spielen</button><button class="btn sm" data-a="edit" type="button"><svg><use href="#i-edit"/></svg>Bearbeiten</button><button class="btn sm" data-a="share" type="button"><svg><use href="#i-share"/></svg>Code</button></div></li>';
   }).join('');
 }
@@ -1154,7 +1213,7 @@ function openStart(s){
   seg('#segWin', function(v){ UI.win = v; });
   ['#nm0', '#nm1'].forEach(function(id){ $(id, d).addEventListener('input', function(){ readNames(); if (UI.mode === 'klasse') { saveUI(); $('#roomPic', d).innerHTML = roomSvg(teamNames(), UI.split, UI.win); } var nm = UI.mode === 'klasse' ? teamNames() : duoNames; $('#f0', d).textContent = nm[0]; $('#f1', d).textContent = UI.mode === 'cpu' ? CPU[UI.cpu || 'mittel'].name : nm[1]; }); });
   refresh();
-  $('#stEdit', d).addEventListener('click', function(){ closeDlg(); openEditor(s, s.eigen ? {} : {note:'Das ist deine Kopie. Ändere Karten, Texte oder Werte und speichere sie unter „Meine“.'}); });
+  $('#stEdit', d).addEventListener('click', function(){ closeDlg(); adaptScen(s); });
   $('#segFirst', d).addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; first = b.dataset.v; $$('#segFirst button', d).forEach(function(x){ x.setAttribute('aria-pressed', x === b); }); });
   $('#stCancel', d).addEventListener('click', closeDlg);
   $('#stGo', d).addEventListener('click', function(){
@@ -1634,7 +1693,7 @@ async function endDrag(cancel){
 function textWarn(c, art){ var w = []; if (art === 'zeit' && /\b\d{3,4}\b/.test(c.h + ' ' + c.t)) w.push('Der Text enthält eine Zahl, die die Jahreszahl verraten könnte.'); if (art === 'zeit' && /jahrhundert|jh\./i.test(c.h + ' ' + c.t)) w.push('Der Text nennt ein Jahrhundert.'); return w; }
 function openEditor(s, opts){
   opts = opts || {};
-  var S = clone(s); if (!S.eigen) { S.id = uid('eigen'); S.eigen = true; if (!opts.keepTitle) S.titel = S.titel + ' (Kopie)'; }
+  var S = clone(s); if (!S.eigen) { S.id = uid('eigen'); S.eigen = true; if (opts.basis) S.basis = opts.basis; if (!opts.keepTitle) S.titel = S.titel + ' (Kopie)'; }
   S.achse = S.achse || ['früher', 'später']; S.art = S.art || 'zeit';
   var d = openDlg(X_BTN + '<h2><small>' + (opts.ki ? 'KI-Entwurf · bitte prüfen' : 'Werkstatt') + '</small>Szenario bearbeiten</h2>' + (opts.note ? '<p class="note">' + esc(opts.note) + '</p>' : '') +
     '<div class="ed-head"><div><label class="lbl" for="edT">Titel</label><input type="text" id="edT" maxlength="80"></div>' +
@@ -1644,10 +1703,10 @@ function openEditor(s, opts){
     '<div><label class="lbl" for="edL">Achse links</label><input type="text" id="edL" maxlength="20"></div><div><label class="lbl" for="edR">Achse rechts</label><input type="text" id="edR" maxlength="20"></div></div>' +
     '<div class="row"><span class="lbl" style="margin:0">Karten</span><span class="hint" id="edCount"></span></div><ul class="ed-list" id="edList"></ul>' +
     '<div class="row"><button class="btn sm" type="button" id="edAdd"><svg><use href="#i-plus"/></svg>Karte</button><span class="ed-warn" id="edWarn"></span></div>' +
-    '<div class="foot-acts">' + (MINE.some(function(m){ return m.id === S.id; }) ? '<button class="btn ghost" type="button" id="edDel"><svg><use href="#i-trash"/></svg>Löschen</button>' : '') +
+    '<div class="foot-acts">' + (MINE.some(function(m){ return m.id === S.id; }) ? '<button class="btn ghost" type="button" id="edDel"><svg><use href="#i-trash"/></svg><span>' + (S.basis ? 'Original zurück' : 'Löschen') + '</span></button>' : '') +
     '<button class="btn" type="button" id="edShare"><svg><use href="#i-share"/></svg>Code</button><button class="btn" type="button" id="edSave">Speichern</button><button class="btn go" type="button" id="edPlay"><svg><use href="#i-play"/></svg>Spielen</button></div>', 'wide');
   $('#edT', d).value = S.titel; $('#edK', d).value = S.kurz || ''; $('#edL', d).value = S.achse[0]; $('#edR', d).value = S.achse[1];
-  $('#edG', d).value = GROUPS.some(function(g){ return g.id === S.gruppe; }) ? S.gruppe : 'm710'; $('#edA', d).value = S.art;
+  $('#edG', d).value = GROUPS.some(function(g){ return g.id === S.gruppe; }) ? S.gruppe : 'm78'; $('#edA', d).value = S.art;
   $('#edA', d).addEventListener('change', function(e){ var k = kind(e.target.value); S.art = k.id; $('#edL', d).value = k.achse[0]; $('#edR', d).value = k.achse[1]; draw(); });
   var list = $('#edList', d);
   function rowHtml(c, i){
@@ -1674,12 +1733,12 @@ function openEditor(s, opts){
     S.achse = [$('#edL', d).value.trim() || kind(S.art).achse[0], $('#edR', d).value.trim() || kind(S.art).achse[1]];
     var n = normScen(S, true); if (!n) { toast('Es braucht mindestens 3 Karten mit Wert.'); return null; } n.ki = !!S.ki; return n;
   }
-  function store(n){ var i = -1; MINE.forEach(function(m, k){ if (m.id === n.id) i = k; }); if (i >= 0) MINE[i] = n; else MINE.unshift(n); saveMine(); renderPlan(); renderMine(); }
-  $('#edSave', d).addEventListener('click', function(){ var n = collect(); if (!n) return; store(n); closeDlg(); toast('Gespeichert unter „Meine“.'); });
+  function store(n){ var i = -1; MINE.forEach(function(m, k){ if (m.id === n.id) i = k; }); if (i >= 0) MINE[i] = n; else MINE.unshift(n); saveMine(); renderPlan(); renderMine(); renderAdapt(); }
+  $('#edSave', d).addEventListener('click', function(){ var n = collect(); if (!n) return; store(n); closeDlg(); toast(n.basis ? 'Gespeichert. Im Jahrgang steht jetzt eure Fassung.' : 'Gespeichert unter „Meine“.'); });
   $('#edPlay', d).addEventListener('click', function(){ var n = collect(); if (!n) return; store(n); closeDlg(); openStart(n); });
   $('#edShare', d).addEventListener('click', function(){ var n = collect(); if (!n) return; store(n); shareScen(n); });
   var del = $('#edDel', d);
-  if (del) del.addEventListener('click', function(){ if (del.dataset.sure) { MINE = MINE.filter(function(m){ return m.id !== S.id; }); saveMine(); renderPlan(); renderMine(); closeDlg(); toast('Gelöscht.'); } else { del.dataset.sure = '1'; del.lastChild.textContent = 'Wirklich löschen?'; } });
+  if (del) del.addEventListener('click', function(){ if (del.dataset.sure) { MINE = MINE.filter(function(m){ return m.id !== S.id; }); saveMine(); renderPlan(); renderMine(); renderAdapt(); closeDlg(); toast(S.basis ? 'Das Original ist wieder im Jahrgang.' : 'Gelöscht.'); } else { del.dataset.sure = '1'; del.lastChild.textContent = S.basis ? 'Eure Fassung löschen?' : 'Wirklich löschen?'; } });
   if (!S.karten.length) S.karten.push({j:NaN, anz:'', h:'', t:''});
   draw();
 }
@@ -1728,11 +1787,7 @@ $('#btnImport').addEventListener('click', async function(){
   try { var s = await decodeScen($('#inCode').value); MINE.unshift(s); saveMine(); $('#inCode').value = ''; renderPlan(); renderMine(); toast('„' + s.titel + '“ liegt jetzt unter „Meine“.'); openStart(s); }
   catch(e){ toast(e.message || 'Code nicht lesbar.'); }
 });
-(function(){
-  $('#tplBox').innerHTML = '<label class="lbl" for="selTpl">Vorlage kopieren und anpassen</label><div class="row"><select id="selTpl" class="grow"></select><button class="btn sm" type="button" id="btnTpl"><svg><use href="#i-edit"/></svg>Bearbeiten</button></div>';
-  $('#selTpl').innerHTML = BUILTIN.slice().sort(function(a, b){ return a.gruppe.localeCompare(b.gruppe) || a.titel.localeCompare(b.titel, 'de'); }).map(function(s){ return '<option value="' + esc(s.id) + '">' + esc(grp(s.gruppe).label + ': ' + s.titel) + '</option>'; }).join('');
-  $('#btnTpl').addEventListener('click', function(){ var s = findScen($('#selTpl').value); if (s) openEditor(s); });
-})();
+
 
 /* ================= Werkstatt: KI ================= */
 function cap(name){ try { if (window.claude && typeof window.claude.use === 'function') return Promise.resolve(window.claude.use(name)).catch(function(){ return null; }); } catch(e){} return Promise.resolve(null); }
