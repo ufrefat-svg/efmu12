@@ -12,6 +12,8 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 - `rhythmus-trainer.html`: Rhythmus-Trainer (Drumset Coach), Raster 4 × 8 mit Lauflicht, Klick, Einzählen, Tippen und Auto-Sync über das Mikrofon
 - `melodie-trainer.html`: Melodie-Trainer, Raster mit den Tönen e, cis, h, a, fis, Lauflicht, Klick, Einzählen und Tippen
 - `ki-apps-bauen.html`: Anleitung „Eigene Musik-Apps mit KI bauen“ mit Ideen für den Musikunterricht, Grenzen, Recht und Datenschutz, Prompt-Baukasten, Beispiel-App und Checkliste
+- `entwurfsspiegel.html`: Entwurfsspiegel, Rückmeldung zum schriftlichen Unterrichtsentwurf nach den Kriterien des Fachseminars (PDF, DOCX, ODT, TXT oder eingefügter Text; Auswertung nur im Browser, nichts wird gespeichert)
+- `lib/`: JSZip (MIT) und pdf.js (Apache-2.0) zum Lesen von DOCX, ODT und PDF, lokal eingebunden, mit Lizenztexten
 - `fonts/`: lokale Schriften, keine Verbindung zu Google (Lizenztexte der OFL-Schriften liegen bei)
 
 Die Apps laufen im Browser ohne Anmeldung und senden keine Eingaben an einen Server.
