@@ -100,6 +100,8 @@ svg{display:block}
 .lbl{display:block;margin:0 0 6px;font-family:var(--f-display);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .hint{margin:0;font-size:14.5px;color:var(--mute)}
 .note{margin:0;padding:10px 12px;border-radius:12px;font-size:14.5px;background:rgba(255,197,61,.08);border:1px solid rgba(255,197,61,.35);color:#FFE3A1}
+.note a.kilink{color:#FFE3A1;font-weight:800;text-decoration:underline;text-underline-offset:3px;-webkit-user-select:text;user-select:text}
+.note a.kilink:hover{color:#fff}
 input[type=text],input[type=search],input[type=number],textarea,select{width:100%;padding:11px 12px;border-radius:12px;border:1.5px solid var(--line2);background:#120E28;color:var(--text);font-size:16px;line-height:1.35}
 textarea{resize:vertical;min-height:80px}
 input::placeholder,textarea::placeholder{color:var(--dim);opacity:1}
@@ -661,7 +663,7 @@ input[type=search]{-webkit-appearance:none;appearance:none}
             </div>
             <div class="row"><button class="btn go" id="btnGen" type="button"><svg><use href="#i-spark"/></svg>Karten erzeugen</button><span class="hint" id="genMsg"></span></div>
             <div class="prog" id="genProg" hidden><i></i></div>
-            <p class="note" id="aiOff" hidden>Die KI-Werkstatt gibt es in der Claude-Fassung für Lehrkräfte. Eigene Karten könnt ihr rechts selbst schreiben.</p>
+            <p class="note" id="aiOff" hidden>Die KI-Werkstatt gibt es in der <a class="kilink" href="https://claude.ai/artifact/26vPwww45xaSvFTd1PSpzE" target="_blank" rel="noopener">Fassung als Claude-Artefakt</a> für Lehrkräfte (Claude-Konto nötig). Eigene Karten könnt ihr rechts selbst schreiben.</p>
           </div>
           <div class="box">
             <h2><small>für alle, auch für Lernende</small>Selbst Karten schreiben</h2>

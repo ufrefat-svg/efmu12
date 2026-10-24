@@ -17,4 +17,11 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 - `fonts/`: lokale Schriften, keine Verbindung zu Google (Lizenztexte der OFL-Schriften liegen bei)
 
 Die Apps laufen im Browser ohne Anmeldung und senden keine Eingaben an einen Server.
+
+Die KI-Funktionen von Anno Musica, Kompetenz Fußball, Suno Studio und Entwurfsspiegel gibt es nur in den Fassungen als Claude-Artefakt (Claude-Konto nötig). In den Web-Fassungen hier zeigt jeweils ein Hinweis mit Link auf das Artefakt:
+- Anno Musica: https://claude.ai/artifact/26vPwww45xaSvFTd1PSpzE
+- Kompetenz Fußball: https://claude.ai/artifact/KQvasCkTS8qk6c94fRxqRq
+- Suno Studio: https://claude.ai/artifact/PYk8vokCz4wqz6kr9GNBFN
+- Entwurfsspiegel (Tiefenprüfung mit Claude): https://claude.ai/artifact/6jbQcKoVKRx7YvmJqVwbKq
+
 Gebaut mit Claude (Anthropic). Lernziele und Spielregeln: Ulrich Frefat.

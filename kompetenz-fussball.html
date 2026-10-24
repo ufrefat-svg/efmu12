@@ -1,6 +1,8 @@
 <!doctype html><html lang="de"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><style>
 /* Web-Fassung: KI-Erzeugung und Handy-Fernbedienung brauchen ein Claude-Konto und sind hier ausgeblendet */
 section.card[aria-labelledby="genH"], #btnRemote, #gRemote { display:none !important; }
+.note a.kilink{color:#FFD43B;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.note a.kilink:hover{color:#fff}
 #pane-fragen .cols { grid-template-columns: minmax(0, 1fr) !important; }
 </style></head><body>
 <title>Kompetenz Fußball</title>
@@ -853,6 +855,10 @@ body.calm .field::after{animation:none}
 
         <div class="pane" id="pane-fragen" data-pane="fragen" role="tabpanel" aria-labelledby="tab-fragen">
           <div class="cols">
+            <section class="card webki" aria-labelledby="webkiH">
+              <div class="card-h"><h2 id="webkiH">Fragen erzeugen</h2><span class="kicker">mit Claude</span></div>
+              <p class="note">Die KI-Funktionen gibt es in der <a class="kilink" href="https://claude.ai/artifact/KQvasCkTS8qk6c94fRxqRq" target="_blank" rel="noopener">Fassung als Claude-Artefakt</a>. Dort erzeugt Claude Fragen zu einem Thema oder aus eigenem Material wie PDF, Word oder Fotos von Buchseiten, und das Handy wird zur Fernbedienung. Dafür braucht die Lehrperson ein Claude-Konto.</p>
+            </section>
             <section class="card" aria-labelledby="genH">
               <div class="card-h"><h2 id="genH">Fragen erzeugen</h2><span class="kicker">mit Claude</span></div>
               <div class="fld">

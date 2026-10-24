@@ -161,6 +161,10 @@ select { border:2px solid #C9CDD4 !important; border-radius: 6px; padding: 7px 1
   .bar i { width: 15px; }
 }
 
+.box a.kilink { color:inherit !important; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.foot a { color:inherit !important; text-decoration: underline; text-underline-offset: 3px; }
+a.btn { text-decoration: none; display: inline-flex; align-items: center; }
+
 [hidden] { display: none !important; }
 
 </style>
@@ -253,8 +257,17 @@ select { border:2px solid #C9CDD4 !important; border-radius: 6px; padding: 7px 1
     <div class="cl-out" id="clOut"></div>
   </section>
 
+  <section class="step" id="stepClaudeWeb" hidden>
+    <h2><span class="no">6</span>Tiefenprüfung mit Claude (freiwillig)</h2>
+    <div class="box aub">
+      <p>Der Spiegel zeigt Signale im Text. Claude kann ein Kapitel zusätzlich lesen und Rückfragen stellen, wo etwas unklar bleibt. Claude verbessert nichts und schreibt keine Formulierungen.</p>
+      <p>Diese Tiefenprüfung gibt es in der <a class="kilink" href="https://claude.ai/artifact/6jbQcKoVKRx7YvmJqVwbKq" target="_blank" rel="noopener">Fassung als Claude-Artefakt</a>. Sie braucht ein Claude-Konto. Der Text eines Kapitels wird dort nur an Claude gesendet, wenn du zustimmst und auf den Knopf klickst. In dieser Fassung bleibt dein Text im Browser.</p>
+    </div>
+    <div class="row"><a class="btn primary" href="https://claude.ai/artifact/6jbQcKoVKRx7YvmJqVwbKq" target="_blank" rel="noopener">Entwurfsspiegel mit Claude öffnen</a></div>
+  </section>
+
   <footer class="foot">
-    <p>Entwurfsspiegel · Fachseminar Musik. Der Spiegel nutzt als Maßstab das Skript „Der schriftliche Unterrichtsentwurf“ und die Vorgaben des Allgemeinen Seminars (Juni 2025). Schwellenwerte wie „wie viele Belege“ sind Richtwerte der App. Er zeigt Signale im Text und ersetzt weder das Gespräch noch die Beratung im Seminar.</p>
+    <p>Entwurfsspiegel · Fachseminar Musik. Der Spiegel nutzt als Maßstab das Skript „Der schriftliche Unterrichtsentwurf“ und die Vorgaben des Allgemeinen Seminars (Juni 2025). Schwellenwerte wie „wie viele Belege“ sind Richtwerte der App. Er zeigt Signale im Text und ersetzt weder das Gespräch noch die Beratung im Seminar. Mit freiwilliger Tiefenprüfung durch Claude gibt es den Entwurfsspiegel auch als <a href="https://claude.ai/artifact/6jbQcKoVKRx7YvmJqVwbKq" target="_blank" rel="noopener">Claude-Artefakt</a>.</p>
   </footer>
 </main>
 
@@ -2550,6 +2563,7 @@ var ES = (typeof window !== 'undefined') ? (window.ES = window.ES || {}) : (glob
 
   function render(full) {
     ['step3', 'step4', 'step5'].forEach(function (id) { $('#' + id).hidden = false; });
+    if ($('#stepClaudeWeb')) $('#stepClaudeWeb').hidden = false;
     renderTop();
     var sig = visibleGroups().map(function (g) { return g.id; }).join(',');
     if (full || sig !== S.sig) { buildGroups(); S.sig = sig; }
@@ -2877,6 +2891,7 @@ var ES = (typeof window !== 'undefined') ? (window.ES = window.ES || {}) : (glob
   function resetAll() {
     S.texts = {}; S.analysed = {}; S.results = null; S.first = null; S.ctx = null; S.cmp = null; S.cmpFirst = null; S.excl = {}; S.ignore = {}; S.open = {};
     ['step3', 'step4', 'step5', 'stepClaude'].forEach(function (id) { $('#' + id).hidden = true; });
+    if ($('#stepClaudeWeb')) $('#stepClaudeWeb').hidden = true;
     $('#groups').innerHTML = ''; $('#top').innerHTML = ''; $('#dirty').hidden = true; $('#manualbox').hidden = true;
     hideErr(); setStatus(''); gotoSection('step1');
   }

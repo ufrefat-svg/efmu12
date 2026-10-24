@@ -12,6 +12,8 @@
 @font-face{font-family:'JetBrains Mono';src:url('fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2');font-weight:100 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 /* Web-Fassung: Die beiden KI-Funktionen brauchen ein Claude-Konto und sind hier ausgeblendet */
 #s-ki,#h-ki{display:none!important}
+.air-warn a.kilink{color:#7A4A00;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.air-warn a.kilink:hover{color:#000}
 </style>
 <style>
 /* Layout: dunkler Kopf- und Phasenstreifen, helle Arbeitsfläche, unten die mitlaufende Klanganweisung.
@@ -1503,6 +1505,11 @@ input.fi,textarea.fi,select.fi,textarea.fedit,.lm-hw-ta,.sctrl input,.sctrl sele
         </div>
       </div>
     </section>
+    <section class="acc" id="s-ki-web" data-title="KI-Song-Recherche" data-sub="Fassung als Claude-Artefakt">
+      <div class="acc-b">
+        <div class="air-warn">Die KI-Recherche zu Referenzen gibt es in der <a class="kilink" href="https://claude.ai/artifact/PYk8vokCz4wqz6kr9GNBFN" target="_blank" rel="noopener">Fassung als Claude-Artefakt</a>. Dafür braucht die Lehrkraft ein Claude-Konto. Alle anderen Werkzeuge dieser Seite laufen ohne Konto.</div>
+      </div>
+    </section>
     <section class="acc" id="s-ki" data-title="KI-Song-Recherche" data-help="airesearch" data-sub="nur am Gerät der Lehrkraft">
       <div class="acc-b">
         <div id="airGate">
@@ -1711,6 +1718,11 @@ input.fi,textarea.fi,select.fi,textarea.fedit,.lm-hw-ta,.sctrl input,.sctrl sele
       <div class="acc-b">
         <p class="chint">Was würdest du ändern, ergänzen, streichen? Oder nur einen Abschnitt gezielt bearbeiten (Suno › Bearbeiten)?</p>
         <div class="fg"><label for="ref5" class="fl">Überarbeitete Anweisung oder Notiz</label><textarea class="fi" id="ref5" style="min-height:100px" placeholder="Ich würde … ändern, weil Suno … Beim nächsten Mal …"></textarea></div>
+      </div>
+    </section>
+    <section class="acc" id="h-ki-web" data-title="KI-Hörfrage" data-sub="Fassung als Claude-Artefakt">
+      <div class="acc-b">
+        <div class="air-warn">Die KI-Hörfrage gibt es in der <a class="kilink" href="https://claude.ai/artifact/PYk8vokCz4wqz6kr9GNBFN" target="_blank" rel="noopener">Fassung als Claude-Artefakt</a>. Dafür braucht die Lehrkraft ein Claude-Konto. Alle anderen Werkzeuge dieser Seite laufen ohne Konto.</div>
       </div>
     </section>
     <section class="acc" id="h-ki" data-title="KI-Hörfrage" data-help="refai" data-sub="nur am Gerät der Lehrkraft">
