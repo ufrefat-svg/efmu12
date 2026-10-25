@@ -14,6 +14,7 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 - `ki-apps-bauen.html`: Anleitung „Eigene Musik-Apps mit KI bauen“ mit Ideen für den Musikunterricht, Grenzen, Recht und Datenschutz, Prompt-Baukasten, Beispiel-App und Checkliste
 - `entwurfsspiegel.html`: Entwurfsspiegel, Rückmeldung zum schriftlichen Unterrichtsentwurf nach den Kriterien des Fachseminars (PDF, DOCX, ODT, TXT oder eingefügter Text; Auswertung nur im Browser, nichts wird gespeichert)
 - `inkognito.html`: Inkognito 3.0, Dokumente anonymisieren oder pseudonymisieren (Word, Excel, PowerPoint, PDF, Text, Bilder). Schnell anonymisieren mit einem Klick oder ausführlich mit getrennter Zuordnungsdatei. Alle Bibliotheken sind eingebettet, eine Sicherheitsregel (Content Security Policy) sperrt jeden Netzverkehr. Lizenztexte in `inkognito-lizenzen.txt`
+- `kompetenzcheck.html`: Kompetenzcheck Digitalität, Version 4.0 (Oktober 2026). Selbsteinschätzung für Musiklehrkräfte, Lehramtsanwärter:innen und Fachleitungen mit Kurzcheck (16 Fragen) und ausführlichem Check (40 Fragen), sieben Dimensionen, Spinnennetz, Empfehlungen, 22 KI-Kompetenzkarten, Glossar mit 80 Begriffen und Hintergrund mit Belegen (Recherche Stand 25.10.2026). Läuft ohne Netzverkehr, Antworten bleiben im Browser. Lizenz CC BY-NC-SA 4.0
 - `lib/`: JSZip (MIT) und pdf.js (Apache-2.0) zum Lesen von DOCX, ODT und PDF, lokal eingebunden, mit Lizenztexten
 - `fonts/`: lokale Schriften, keine Verbindung zu Google (Lizenztexte der OFL-Schriften liegen bei)
 
