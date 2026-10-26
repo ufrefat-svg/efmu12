@@ -1,0 +1,45 @@
+Musikunterricht in der Kultur der Digitalität
+Politikfassung des Positionspapiers „Perspektiven von Digitalität in musikpädagogischen Kontexten“
+
+Digitalität ist die Bedingung, unter der Musikunterricht heute stattfindet. Der Bildungsauftrag des Faches bleibt, die Wege zur Musik verändern sich. Damit Schulen diesen Wandel aktiv gestalten können, braucht der Musikunterricht sechs verlässliche Entscheidungen von Bund, Ländern, Schulträgern und Hochschulen.
+
+WORUM ES GEHT
+Kinder und Jugendliche hören, machen und bewerten Musik auf Streamingdiensten und in sozialen Medien, und sie begegnen dort KI-Musik. 63 % der 16- bis 29-Jährigen haben schon bewusst KI-Musik gehört (Musikmonitor Deutschland 2026). Der Musikunterricht ist der Ort, an dem sie lernen, sich in dieser Musikkultur kompetent, kritisch und kreativ zu bewegen. Dazu gehören das Musizieren mit Stimme und Instrument ebenso wie das Produzieren am Rechner.
+
+Das Positionspapier hält fest: „Digitale Werkzeuge und KI-Anwendungen ergänzen, aber ersetzen nicht die leibliche, klangliche und soziale Dimension des Musizierens.“ Nach dem Leitprinzip „Technik folgt Pädagogik“ kommen sie nur dann zum Einsatz, wenn sie Lernen, Musizieren oder Verstehen verändern und musikalische Prozesse vertiefen.
+
+Belastbare Studien zur Wirkung von KI auf das Musiklernen fehlen bisher. In der Mathematik zeigt eine laufend aktualisierte Meta-Analyse (LLAMA LIMA, PH Freiburg, Preprint 2026) die größten Effekte, wenn KI den Unterricht der Lehrkraft ergänzt, und kaum Effekte, wenn sie ihn ersetzt.
+
+WARUM JETZT
+- Der Rahmen ist gesetzt. Die Bildungsministerkonferenz hat 2024 Empfehlungen zum Umgang mit KI in der Schule beschlossen und ihren Kompetenzrahmen „Bildung in der digitalen Welt“ im Oktober 2026 um KI erweitert. Das Fach Musik nennen beide Papiere nicht ausdrücklich. Die KI-Verordnung der EU verlangt Maßnahmen zur Förderung von KI-Kompetenz und Transparenz bei KI-erzeugten Inhalten. Deshalb muss dieser Rahmen für das Fach Musik jetzt in Lehrpläne, Fortbildung und Ausstattung übersetzt werden. [1]
+- Die Praxis ist schneller als die Strukturen. Gut die Hälfte der Lehrkräfte nutzt KI inzwischen mindestens mehrmals im Monat, ebenso viele geben persönlichen Fortbildungsbedarf zur KI-Nutzung an (Deutsches Schulbarometer 2026). 74 % der 12- bis 19-Jährigen nutzen KI für Hausaufgaben und Lernen (JIM-Studie 2025). 80 % der befragten Schüler:innen wollen den Umgang mit KI in der Schule lernen, 55 % sagen, dass er dort vermittelt wird (Bitkom 2025). [2]
+- Musik ist besonders betroffen. KI-Dienste erzeugen ganze Songs aus wenigen Worten. Das Landgericht München I hat im Juli 2026 entschieden, dass ein solcher Dienst durch Training, Speicherung im Modell und Ausgaben geschützter Werke Urheberrechte verletzt hat. Die Verantwortung sah das Gericht beim Anbieter, das Urteil ist nicht rechtskräftig. Schulen brauchen klare Vorgaben, welche Werkzeuge sie nutzen, wie sie Ergebnisse kennzeichnen und was sie veröffentlichen dürfen. [3]
+- Ausstattung braucht Planung. Mit dem Digitalpakt 2.0 stellen Bund und Länder über fünf Jahre 5 Milliarden Euro bereit, der Bund vor allem für Infrastruktur. Lizenzen und Wartung nennt die KMK dabei nicht als Förderbereich. Damit der Musikunterricht profitiert, muss das Fach in den Medienkonzepten der Schulen und den Planungen der Schulträger vorkommen. [4]
+- Ohne Struktur wachsen die Unterschiede. Mindestens mehrmals pro Woche nutzen 8 % der Lehrkräfte an Förderschulen KI, an beruflichen Schulen 34 % (Deutsches Schulbarometer 2026). Nur etwa jede dritte Lehrkraft fühlt sich gut informiert, wie sie KI nutzen darf (Deutsche Telekom Stiftung 2026). Wo Ausstattung, Fortbildung und Rechtssicherheit fehlen, hängt guter Unterricht vom Engagement Einzelner ab, und Plattformen mit eigenen Interessen bestimmen mit, wie Kinder Musik erleben. [5]
+
+SECHS FORDERUNGEN
+1. Lehrpläne (Länder): Digitale und KI-bezogene Kompetenzen werden als Querschnittsthema im Musikunterricht verbindlich verankert, mit Raum für kreative, reflektierte und kooperative Lernformen.
+2. Fortbildung (Länder): Lehrkräfte erhalten Zeit und Strukturen für Fortbildung. Multiplikator:innen-Modelle und regionale Netzwerke mit Fachberatung, Fachleitung, Landesmusikakademien und Musikhochschulen werden gezielt aufgebaut.
+3. Ausstattung und Lizenzen (Schulträger, Länder): Nachhaltige Investitionen in Infrastruktur, Software, Lizenzen und Wartung, einschließlich pädagogisch geprüfter und datenschutzkonformer KI-Werkzeuge, sowie Programme, die speziell die digitale Weiterentwicklung des Musikunterrichts fördern.
+4. Rechtssicherheit (Länder, Schulaufsicht): Klare Vorgaben zu Datenschutz, Plattformnutzung und Urheberrecht sowie abgestimmte Lizenzmodelle für Notations-, Audio- und KI-Werkzeuge.
+5. Zeit und Zuständigkeiten (Länder, Schulträger, Schulen): Die Länder weisen Zeitkontingente für Konzeptarbeit und Fortbildung aus, die Schulträger sichern Support, Wartung und Geräteverwaltung. Schulen und Behörden benennen feste Ansprechpersonen. Musiklehrkräfte gehören in Steuergruppen und Schulentwicklungsteams.
+6. Forschung (Bund, Länder, Hochschulen): Praxisnahe Forschung zum Musiklernen in der Kultur der Digitalität, mit Blick auf KI, ästhetische Erfahrung und Differenzierung.
+
+WAS DAMIT ERREICHT WIRD
+Alle Schüler:innen erhalten die Chance, Musikkultur aktiv mitzugestalten, auch mit neuen digitalen Mitteln. Lehrkräfte arbeiten auf einer verlässlichen Grundlage, und Schulen können gute Beispiele sichtbar machen und weitergeben.
+
+BITTE UND ANGEBOT
+Das Positionspapier bittet die Bildungspolitik, diese sechs Punkte in die Lehrplan-, Fortbildungs- und Haushaltsplanungen aufzunehmen. Es versteht sich als dynamisches Dokument, das im Dialog mit Schule, Wissenschaft und Kulturpolitik fortgeschrieben wird. Ansprechpartnerin für Gespräche und Anhörungen ist die Bundesgeschäftsstelle des BMU.
+
+Grundlage: Positionspapier des BMU-Bundesvorstands „Perspektiven von Digitalität in musikpädagogischen Kontexten“, Textstand Oktober 2025 · Politikfassung des Bundesreferenten für Digitalität, Stand Oktober 2026. Adressaten, aktuelle Bezüge und Hintergrund sind nicht Teil des Beschlusstextes · Verfasser: Uli Frefat · www.bmu-musik.de
+
+Online-Fassung mit Hintergrund zu allen Forderungen, Lesehilfen und Kompetenzcheck: https://bmu-positionspapier-digitalitaet.netlify.app
+
+Quellen
+[1] Bildungsministerkonferenz: Handlungsempfehlung für die Bildungsverwaltung zum Umgang mit Künstlicher Intelligenz in schulischen Bildungsprozessen (10.10.2024); Kompetenzrahmen „Bildung in der digitalen Welt“, Aktualisierung im Kontext Künstlicher Intelligenz (16.10.2026); Verordnung (EU) 2024/1689, Art. 4 und 50, geändert durch Verordnung (EU) 2026/1744.
+[2] Robert Bosch Stiftung: Deutsches Schulbarometer 2026, Befragung Lehrkräfte (forsa); Medienpädagogischer Forschungsverbund Südwest: JIM-Studie 2025, Pressemitteilung vom November 2025; Bitkom: Viele Schulen regeln KI-Einsatz nicht, Presseinformation vom 30.6.2025.
+[3] Landgericht München I, Urteil vom 31.7.2026, Az. 42 O 763/25 (GEMA gegen Suno), nicht rechtskräftig.
+[4] Kultusministerkonferenz: Digitalpakt 2.0 startet am 1. September, Pressemitteilung vom 1.9.2026.
+[5] Robert Bosch Stiftung: Deutsches Schulbarometer 2026, Befragung Lehrkräfte (forsa); Deutsche Telekom Stiftung: Trendmonitor Spezial „Regelwerke zu KI an Schulen“ (11.3.2026).
+
+KI-Transparenz: Die Politikfassung wurde im Oktober 2026 mit Unterstützung von Claude (Anthropic) erstellt. Auswahl, Prüfung und Verantwortung liegen beim Verfasser.

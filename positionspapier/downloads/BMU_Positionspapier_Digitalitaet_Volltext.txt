@@ -1,0 +1,139 @@
+Perspektiven von Digitalität in musikpädagogischen Kontexten
+============================================================
+Positionspapier des BMU-Bundesvorstands · Vollfassung (Originaltext) · Textstand Oktober 2025 · Verfasser: Uli Frefat
+
+GESAMTGEDANKE
+
+Digitalität ist nicht Beiwerk, sondern die kulturelle Bedingung, unter der Musikunterricht heute stattfindet.
+
+Sie verändert nicht den Bildungsauftrag des Faches, wohl aber die Formen, in denen Musik erlebt, verstanden und gestaltet wird.
+
+Ein zukunftsorientiertes Positionspapier sollte zeigen, wie der Musikunterricht analoge und digitale Lernwege, KI-gestützte Werkzeuge und ästhetische Bildung miteinander verbindet – um Kreativität, Orientierung und Menschlichkeit zu fördern.
+
+KAPITEL 1: BILDUNG IN DER KULTUR DER DIGITALITÄT
+------------------------------------------------
+
+Ziel: Ein gemeinsames Verständnis davon schaffen, was „Digitalität“ in musikpädagogischen Kontexten bedeuten kann – und was nicht.
+
+* Digitalität als kulturelle Realität: Schülerinnen und Schüler leben in einer Welt, in der Musik in digitalisierten Lebenswelten entsteht, zirkuliert und Bedeutung gewinnt. Sie hören, machen und bewerten Musik in digitalen Räumen – von Social Media über Streaming bis hin zu KI-generierten Klängen.
+
+* Musikunterricht als Erfahrungsraum: Der Unterricht soll Kindern und Jugendlichen helfen, sich in dieser Musikkultur kompetent, kritisch und kreativ zu bewegen – und dabei sowohl die analogen als auch die digitalen Dimensionen musikalischer Praxis zu verstehen.
+
+* Ganzheitliche Bildung als Ziel: Digitalität erweitert die Dimensionen musikalischen Lernens – sie ermöglicht neue Formen ästhetischer Erfahrung, fordert aber zugleich Orientierung und Urteilskraft. Im Musikunterricht werden Wahrnehmen, Gestalten, Verstehen und Bewerten von Musik miteinander verbunden.
+
+* Balance von analog und digital: Digitale Werkzeuge und KI-Anwendungen ergänzen, aber ersetzen nicht die leibliche, klangliche und soziale Dimension des Musizierens. Analoge Praxis und digitale Erweiterung bilden eine pädagogische Einheit.
+
+* Technik folgt Pädagogik: Digitale Mittel und KI-Tools werden nur dann eingesetzt, wenn sie Lernen, Musizieren oder Verstehen transformieren (im Sinne der SAMR-Logik: von „Ergänzung“ zu „Transformation“) und musikalische Prozesse vertiefen.
+
+Didaktische Modelle zur Orientierung
+
+Zur Planung und Reflexion digitaler Lernprozesse im Musikunterricht können verschiedene didaktische Modelle herangezogen werden (z. B. SAMR, TPACK, der KI-Würfel, ICAP oder Design Thinking). Sie bieten eine gemeinsame Sprache, um die Qualität und Tiefe von Lernarrangements zu beschreiben und werden in Kapitel 3 („Digitale Musikpraxis und Unterrichtsgestaltung“) ausführlicher entfaltet und mit Beispielen hinterlegt.
+
+KAPITEL 2: MUSIKPÄDAGOGISCHE KOMPETENZEN IM DIGITALEN ZEITALTER
+---------------------------------------------------------------
+
+Ziel: Klären, welche Fähigkeiten und Haltungen Lernende und Lehrende brauchen.
+
+Kompetenzen der Schülerinnen und Schüler
+
+* Künstlerisch-praktisch: Musik aufnehmen, bearbeiten, arrangieren, präsentieren und reflektieren – inklusive kreativer Arbeit mit KI-gestützten Tools (z. B. Komposition, Begleitautomatik, Text-to-Music).
+
+* Kritisch-analytisch: Funktionsweisen digitaler Systeme verstehen, inklusive algorithmischer Auswahlmechanismen (Streaming-Algorithmen, Empfehlungssysteme, KI-Entscheidungsprozesse).
+
+* Kommunikativ und kollaborativ: Musik gemeinsam digital gestalten – von Cloud-Komposition bis hin zu geteilten Projekten – und Feedbackprozesse reflektieren.
+
+* Verantwortlich und reflektiert: Datenschutz, Urheberrecht und ethische Fragen im Umgang mit KI-gestützter Kreativität kennen und anwenden.
+
+Kompetenzen der Lehrkräfte
+
+[Hinweis auf Querschnittsaufgaben der Länder und die musikspezifischen Anforderungen darüber hinaus]
+
+* Fachdidaktisch: Digitale Methoden in bewährte Lernformen integrieren und neue Lernwege entwickeln; Lernaufgaben so gestalten, dass sie analoge, digitale und KI-gestützte Lernprozesse sinnvoll verzahnen.
+
+* Technisch-praktisch: Sicherheit im Umgang mit Audio-, Notations-, Video- und KI-Tools besitzen; Funktionen verstehen, um didaktisch gezielt auswählen zu können.
+
+* Reflexiv-ethisch: Chancen und Grenzen digitaler und KI-basierter Medien abwägen, Auswirkungen auf Kreativität, Urheberschaft und Motivation diskutieren können.
+
+* Beziehungsorientiert: Lernprozesse begleiten, Feedback geben, Räume für eigenständige und explorative Lernwege schaffen – auch unter Einbezug digitaler Assistenzsysteme.
+
+Gemeinsamer Nenner: Digitale Kompetenz im Fach Musik bedeutet, mit, über und durch Musik in digitalen Kontexten zu denken und zu handeln – inklusive der Fähigkeit, KI-gestützte Prozesse kritisch und kreativ zu nutzen.
+
+KAPITEL 3: DIGITALE MUSIKPRAXIS UND UNTERRICHTSGESTALTUNG
+---------------------------------------------------------
+
+Ziel: Aufzeigen, wie Musikunterricht im digitalen Zeitalter konkret aussehen kann.
+
+* Musik machen: Digitale Instrumente, Apps, MIDI-Controller und KI-Tools erweitern das schulische Musizieren. Schülerinnen und Schüler komponieren, produzieren, improvisieren und arrangieren mit digitalen Werkzeugen (z. B. DAW, Loops, Sampling, generative KI). Dabei wird die kreative Entscheidung zwischen Eigenleistung und maschinischem Vorschlag bewusst reflektiert.
+
+* Musik verstehen: Digitale Lernformen ermöglichen das Sichtbarmachen musikalischer Strukturen (z. B. durch Visualisierungen oder KI-Analysen). Der Vergleich von Original, Aufnahme und digitaler Bearbeitung (z. B. durch Stem-Separation oder KI-Analyse) fördert tiefes musikalisches Verständnis.
+
+* Musik präsentieren und teilen: Digitale Plattformen, Podcasts, Videos oder Online-Ausstellungen bieten neue Wege, musikalische Produkte sichtbar zu machen. Reflexion über Öffentlichkeit, Wirkung und Verantwortung bleibt Bestandteil.
+
+Integration von Lernmodellen
+
+Um digitale Musikpraxis systematisch zu planen, können verschiedene didaktische Modelle miteinander verbunden werden. Sie bieten eine gemeinsame Sprache, um die Qualität von Lernarrangements in der Kultur der Digitalität zu beschreiben und den Einsatz von KI pädagogisch zu begründen.
+
+Das SAMR-Modell beschreibt, wie stark Lernprozesse durch digitale Medien verändert werden – von Substitution (ein digitales Medium ersetzt ein analoges, z. B. Playback vom Tablet statt CD) über Augmentation (z. B. Playbacks mit Tempo- oder Tonhöhenanpassung) und Modification (z. B. gemeinsames Arrangieren in einer DAW) bis zur Redefinition, bei der Lernformen entstehen, die ohne Digitalität nicht möglich wären (z. B. kollaborative Online-Kompositionen, Projekte mit generativer KI, veröffentlichte Podcasts). So wird sichtbar, ob Digitalität nur „dabei“ ist – oder Lernwege wirklich neu definiert werden.
+
+Das TPACK-Modell hilft, Fachwissen (Content), Didaktik (Pedagogy) und Technologie (Technology) zusammenzudenken. Im Musikunterricht werden digitale Werkzeuge nicht um ihrer selbst willen eingesetzt, sondern von den musikalischen Lernzielsetzungen her begründet: Eine DAW, Notationssoftware, Recording-Tools oder ein KI-Tool werden gezielt dann genutzt, wenn sie z. B. das Arbeiten an Form, Klangvorstellung, Mehrstimmigkeit oder Groove unterstützen. Technik folgt dabei der Pädagogik – nicht umgekehrt.
+
+Lernformen mit, über, durch, trotz und ohne KI
+
+Für die Einbettung von KI ist es hilfreich, zwischen verschiedenen Perspektiven (nach J. Falck) zu unterscheiden: Lernen mit KI (KI als kreativer Partner oder Assistenzsystem), Lernen über KI (Funktionsweisen, Algorithmen, Empfehlungssysteme), Lernen durch KI (adaptive Rückmeldungen, z. B. zu Intonation oder Rhythmus), Lernen trotz KI (bewusste Entscheidung für analoge, leibliche Musiziererfahrungen) und Lernen ohne KI (Phasen, in denen digitale Systeme bewusst außen vor bleiben). Diese Unterscheidung unterstützt Lehrkräfte dabei, den pädagogisch sinnvollen Ort von KI in einer Unterrichtsreihe zu bestimmen.
+
+Der KI-Würfel (nach Krämer & Hecht) lenkt den Blick auf drei Ebenen: Funktionen von KI (z. B. Generieren, Analysieren, Transformieren von Musik), ihre Einbettung in Lernprozesse (Impuls, Üben, Vertiefen, Präsentieren) und die Reflexion (Urheberschaft, ästhetischer Wert, Gerechtigkeit, Verzerrungen). So wird KI im Musikunterricht nicht nur als Werkzeug genutzt, sondern auch als Gegenstand kritischer Auseinandersetzung – etwa wenn eigene KI-Kompositionen mit analogen Versionen verglichen und bewertet werden.
+
+Das ICAP-Modell fragt nach der Tiefe der Lernaktivität:
+
+  - Passiv (zuhören, zuschauen),
+  - aktiv (ein Tool bedienen, Parameter verändern),
+  - konstruktiv (eigene musikalische Produkte erstellen, Wissen verknüpfen),
+  - interaktiv (gemeinsam arbeiten, sich wechselseitig aufeinander beziehen).
+
+Gerade in digitalen Settings ist das ICAP-Modell ein wichtiges Korrektiv: Es hilft zu überprüfen, ob Lernende wirklich konstruktiv und interaktiv arbeiten – oder ob digitale Medien am Ende doch nur zu einem eher passiven Konsum führen.
+
+Design Thinking bietet einen Rahmen für projektorientierte, kreative Musikvorhaben mit digitalen Medien. Ausgehend von einem gemeinsamen Anliegen der Lerngruppe (z. B. Soundwalk, Podcast, digitale Klanginstallation) werden Ideen entwickelt, erste musikalische Prototypen erprobt, im Feedbackprozess überarbeitet und präsentiert. So verbinden sich Kreativität, Empathie und Problemlösen mit digitaler Musikpraxis und stärken zugleich Kooperation und Verantwortung in der Lerngruppe.
+
+Diese Modelle ermöglichen in ihrer Kombination eine mehrperspektivische Planung: Lehrkräfte können einschätzen, wie tief Lernprozesse reichen (ICAP), wie sinnvoll Technologien eingebettet sind (TPACK, SAMR), welchen Stellenwert KI in einer Reihe einnehmen soll (Lernen mit/über/durch/trotz/ohne KI, KI-Würfel) und wie komplexe Projekte gestaltet werden können (Design Thinking). Digitale Medien und KI-Tools werden so zu Bausteinen einer differenzierenden und inklusiven Lernumgebung, in der unterschiedliche Vorerfahrungen, Instrumentalkenntnisse und Ausdrucksweisen produktiv aufgegriffen werden.
+
+KAPITEL 4: ETHISCHE, RECHTLICHE UND SCHULORGANISATORISCHE ASPEKTE
+-----------------------------------------------------------------
+
+Ziel: Rahmenbedingungen schaffen, damit digitaler Musikunterricht verantwortungsvoll, chancengerecht und nachhaltig gelingt.
+
+* Datenschutz und Sicherheit: Schulen brauchen klare Strukturen für den sicheren Umgang mit Daten, insbesondere bei KI-gestützten Anwendungen. Schüler:innen sollen Datensouveränität und informierte Zustimmung verstehen lernen.
+
+* Urheberrecht und Lizenzen: Umgang mit fremden und KI-erzeugten Materialien verlangt Sensibilität – Themen wie Kennzeichnungspflicht, Attribution und „kreative Redlichkeit“ gehören zum Lernprozess.
+
+* Plattformökonomien und Fairness: Schülerinnen und Schüler reflektieren, wie Streaming-Dienste, soziale Medien und KI-Systeme Musikangebote beeinflussen und wie sie selbst Teil dieser Kultur sind.
+
+* Schulentwicklung: Digitaler Musikunterricht und der Einsatz von KI können nicht nur über Einzelinitiativen gelingen. Sie brauchen eine verlässliche Verankerung in Schulprogrammen, Medienbildungskonzepten und Fachcurricula. Musiklehrkräfte sollten in Steuergruppen und Schulentwicklungsteams eingebunden sein, damit ihre Perspektive auf künstlerische und ästhetische Bildung systematisch berücksichtigt wird.
+
+* Unterstützung durch Schulträger, Schulämter und Ministerien: Schulen sind darauf angewiesen, dass Träger, Schulämter und Kultusministerien klare, verlässliche Rahmenbedingungen schaffen. Dazu gehören u. a. rechtssichere Vorgaben zu Datenschutz und Plattformnutzung, abgestimmte Lizenzmodelle (z. B. für Notations-, Audio- und KI-Tools) und Programme, die speziell die digitale Weiterentwicklung des Musikunterrichts fördern.
+
+* Zeit, Ressourcen und Zuständigkeiten: Schulentwicklung im Bereich Digitalität braucht Ressourcen: ausgewiesene Zeitkontingente für Konzeptarbeit und Fortbildung, technische Administration (Support, Wartung, Geräteverwaltung) sowie Ansprechpartner:innen auf Schul- und Behördenseite. Nur wenn diese Aufgaben nicht nebenbei „mitlaufen“, können digitale und KI-gestützte Lernformen im Musikunterricht nachhaltig aufgebaut und gepflegt werden.
+
+* Regionale Netzwerke und Begleitung: Fachberater:innen, Fachleiter:innen, Landesmusikakademien, Musikhochschulen und Verbände können Schulen bei dieser Entwicklung begleiten – etwa durch Fortbildungen, Hospitationen, Projektberatung und Austauschplattformen. Eine systematische Vernetzung hilft, gute Beispiele sichtbar zu machen und Überforderung einzelner Schulen zu vermeiden.
+
+* Kollegiale Kultur: Schulen brauchen Austausch, Fortbildung und Reflexion über Digitalität und KI in der Musikpädagogik.
+
+* Ethik: Schule ist der Ort, an dem Fragen nach Urheberschaft, Mensch-Maschine-Kooperation und Verantwortung verhandelt werden.
+
+KAPITEL 5: PERSPEKTIVEN, MASSNAHMEN UND BILDUNGSPOLITISCHE FORDERUNGEN
+----------------------------------------------------------------------
+
+Ziel: Wege aufzeigen, wie Digitalität – einschließlich KI – dauerhaft und sinnvoll in der Musikpädagogik verankert werden kann.
+
+* Curriculum und Lehrplanentwicklung: Digitale und KI-bezogene Kompetenzen sollen als Querschnittsthema des Musikunterrichts verbindlich verankert werden. Lehrpläne müssen Raum für kreative, reflektierte und kooperative Formen digitalen Lernens bieten.
+
+* Fortbildung und Professionalisierung: Lehrkräfte benötigen Zeit und Strukturen, um sich in digitalen und KI-basierten Lernformen fortzubilden. Multiplikatoren-Modelle und regionale Netzwerke sollten gezielt aufgebaut werden.
+
+* Unterstützung und Finanzierung: Nachhaltige Investitionen in Infrastruktur, Software, Lizenzen und Wartung sind Voraussetzung. Dazu gehört auch der Zugang zu KI-gestützten Bildungs-Tools, die pädagogisch geprüft und datenschutzkonform sind.
+
+* Forschung und Entwicklung: Praxisnahe Forschung zu Musiklernen in der Kultur der Digitalität – mit besonderem Blick auf KI, ästhetische Erfahrung und Differenzierung – ist notwendig, um Theorie und Schulpraxis enger zu verbinden.
+
+* Kulturelle Bildung und Teilhabe: Digitalität eröffnet neue Wege musikalischer Teilhabe. Schulen sollen befähigt werden, Schülerinnen und Schüler als aktive Mitgestalter:innen einer sich verändernden Musikkultur zu begleiten.
+
+* Zukunftsperspektive: Das Positionspapier versteht sich als dynamisches Dokument, das regelmäßig aktualisiert und weiterentwickelt wird – im Dialog zwischen Schule, Wissenschaft und Kulturpolitik.
+
+Originaltext des Bundesvorstands ohne Lesehilfen. Lesefassung mit Kurzfassungen, Infofenstern, Hintergrund und Kompetenzcheck: https://bmu-positionspapier-digitalitaet.netlify.app
