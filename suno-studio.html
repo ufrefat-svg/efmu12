@@ -2327,7 +2327,7 @@ const LAND_POP={
     <p>Das <strong>LG München I</strong> hat am <strong>31.07.2026</strong> im Verfahren der GEMA gegen Suno überwiegend für die GEMA entschieden (Az. 42 O 763/25, nicht rechtskräftig). Die Kammer sah eine Vervielfältigung beim Training und in den Modellen v3.5 und v4 eine reproduzierbare „Memorisierung“ von Werken. Für wiedererkennbare Werke in den Ausgaben machte sie Suno verantwortlich, nicht die Nutzer:innen, weil die Prompts einfach gehalten waren.</p>
     <ul><li>Keine fremden Liedtexte, Titel oder Künstlernamen eingeben.</li><li>Ergebnisse, die nach einem bekannten Werk klingen, nicht verwenden oder veröffentlichen.</li><li>Downloads aus dem Free-Tarif nur privat.</li></ul>
     <p class="src">Landgericht München I, Pressemitteilung 16/2026 vom 31.07.2026. Stand 16.10.2026, keine Rechtsberatung. Im Zweifel die oder den Datenschutzbeauftragten der Schule fragen.</p>`},
-  unterricht:{k:'Didaktik',title:'Lernziel vor Tool',body:`
+  unterricht:{k:'Didaktik',title:'Von der Musik her denken',body:`
     <p>Wer eine Klanganweisung schreibt, übersetzt eine Klangvorstellung in Fachbegriffe: Tonart, Tempo, Besetzung, Satzweise, Produktion. Das ist Beschreiben und Analysieren in umgekehrter Richtung.</p>
     <h4>Ablauf jeder Aufgabe</h4>
     <ol><li><strong>Frage</strong> stellen, die ohne Suno nicht zu beantworten wäre.</li><li><strong>Hörerwartung</strong> schriftlich festhalten, erst dann generieren.</li><li><strong>Zwei Takes</strong> hören, dann <strong>eine Variable</strong> ändern und erneut generieren.</li><li><strong>Abgleich</strong> mit Fachbegriffen, kurze Erklärphase.</li><li><strong>Rückfluss</strong>: Das Ergebnis wird Teil einer Musizier- oder Analysestunde.</li></ol>
@@ -2506,7 +2506,7 @@ function updateIntroTog(){const t=$('#introTog');if(t){const on=!lsGet('ss_intro
 function maybeShowIntro(){if(!lsGet('ss_intro_off',0))openIntro()}
 
 // ─── Menü „Mehr“ ───
-const MORE_ITEMS=[['intro','Kurz erklärt'],['glossar','Glossar'],['-','Hintergrund'],['suno','Was ist Suno v6?'],['prompt','Prompttechniken'],['unterricht','Lernziel vor Tool'],['dsgvo','Datenschutz und Urheberrecht'],['tarife','Free, Pro, Premier'],['studio','Das Studio: Aufbau und Bedienung'],['quellen','Stand und Quellen']];
+const MORE_ITEMS=[['intro','Kurz erklärt'],['glossar','Glossar'],['-','Hintergrund'],['suno','Was ist Suno v6?'],['prompt','Prompttechniken'],['unterricht','Von der Musik her denken'],['dsgvo','Datenschutz und Urheberrecht'],['tarife','Free, Pro, Premier'],['studio','Das Studio: Aufbau und Bedienung'],['quellen','Stand und Quellen']];
 function renderMore(){['L','A'].forEach(k=>{const m=$('#moreMenu'+k);if(!m)return;m.innerHTML=MORE_ITEMS.map(([id,l])=>id==='-'?`<div class="more-sep">${esc(l)}</div>`:`<button type="button" class="more-item" onclick="moreAction('${id}','${k}')">${esc(l)}</button>`).join('');
   m.addEventListener('keydown',e=>{const items=[...m.querySelectorAll('.more-item')],i=items.indexOf(document.activeElement);if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus()}else if(e.key==='ArrowUp'){e.preventDefault();items[(i-1+items.length)%items.length].focus()}});
   m.parentElement.addEventListener('focusout',e=>{if(openMoreKey===k&&!m.parentElement.contains(e.relatedTarget))closeMore()})})}
