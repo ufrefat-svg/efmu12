@@ -620,6 +620,15 @@ select.field { appearance: auto; }
 .st3-step.done .st3-num { background: #1F8A96 !important; color: #FFFFFF !important; }
 .st3-dash { width: 20px; height: 3px; border-radius: 2px; background: #D3D6EA !important; }
 .st3-tools { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.st3-tools .tool span { white-space: nowrap; }
+/* Passen Schritte und Werkzeuge nicht nebeneinander (etwa mit „Mitspielen“), kommen die Schritte in eine zweite Zeile */
+.st3-top.stack { grid-template-columns: minmax(0, 1fr) auto; }
+.st3-top.stack .st3-steps { grid-column: 1 / -1; grid-row: 2; justify-content: center; }
+/* Reicht die Breite nicht für Name und Werkzeuge (Handy mit „Mitspielen“), stehen die Werkzeuge unter dem Namen */
+.st3-top.tight { grid-template-columns: minmax(0, 1fr); }
+.st3-top.tight .st3-brand { grid-column: 1; grid-row: 1; }
+.st3-top.tight .st3-tools { grid-column: 1; grid-row: 2; justify-content: flex-end; flex-wrap: wrap; }
+.st3-top.tight .st3-steps { grid-column: 1; grid-row: 3; justify-content: center; }
 .tool { display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 15px; border: 0 !important; border-radius: 15px; background: #FFFFFF !important; color: #23264F !important; font-weight: 800; box-shadow: 0 4px 0 #DCDFF0 !important; cursor: pointer; }
 .tool .ti { color: #4C4FD8 !important; }
 .tool.icon { width: 46px; padding: 0; justify-content: center; }
@@ -18075,6 +18084,29 @@ function iconSpeaker(on) { return `<svg viewBox="0 0 24 24" class="ti" aria-hidd
 function iconArrow(dir) { return `<svg viewBox="0 0 24 24" class="ti" aria-hidden="true">${dir < 0 ? '<path d="M15 5l-7 7 7 7"/>' : '<path d="M9 5l7 7-7 7"/>'}</svg>`; }
 function iconNext() { return '<svg viewBox="0 0 24 24" class="ti" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>'; }
 
+/* Kopfzeile der Startseite: überlagern sich Schritte, Name und Werkzeuge, stehen die Schritte in einer zweiten Zeile */
+function fitStartTop() {
+  const top = document.querySelector('#v-start .st3-top'); if (!top) return;
+  top.classList.remove('stack', 'tight');
+  const steps = top.querySelector('.st3-steps'), tools = top.querySelector('.st3-tools'), brand = top.querySelector('.st3-brand');
+  if (!steps || !tools || !brand) return;
+  const box = (el) => el.getBoundingClientRect();
+  const toolsLeft = () => { const k = Array.from(tools.children).map(box).filter((r) => r.width > 0); return k.length ? Math.min.apply(null, k.map((r) => r.left)) : box(tools).left; };
+  const brandRight = () => Array.from(brand.children).reduce((m, x) => Math.max(m, box(x).right), 0);
+  if (!box(steps).width) return;
+  let narrow = false;
+  try { narrow = !!(window.matchMedia && window.matchMedia('(max-width: 1060px)').matches); } catch (e) { narrow = false; }
+  if (!narrow) {
+    const s = box(steps);
+    if (toolsLeft() < s.right + 8 || brandRight() > s.left - 8) top.classList.add('stack');
+  }
+  /* Name und Werkzeuge in derselben Zeile: überlagern sie sich, kommen die Werkzeuge in eine eigene Zeile */
+  if (Math.abs(box(brand).top - box(tools).top) < 30 && brandRight() > toolsLeft() - 8) top.classList.add('tight');
+}
+let fitTopTimer = 0;
+window.addEventListener('resize', () => { clearTimeout(fitTopTimer); fitTopTimer = setTimeout(() => { if (view === 'start') fitStartTop(); }, 80); });
+try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (view === 'start') fitStartTop(); }); } catch (e) { /* ohne Schriftereignis */ }
+
 function renderStart() {
   const s = settings;
   const pack = findPack(s.packId) || BUILTIN[0];
@@ -18161,6 +18193,7 @@ function renderStart() {
   }
   const foot = IS_WEB ? `<footer class="st3-foot"><span><b>Vierklang</b> · Uli Frefat · <a href="https://ulifrefat.de" target="_blank" rel="noopener">ulifrefat.de</a> · gebaut mit Claude (Anthropic)</span><span>KI-Assistent für neue Pakete und Handys koppeln: <a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Fassung auf claude.ai</a> (Claude-Konto nötig). Alles andere läuft hier, ohne Konto; Einstellungen, eigene Pakete und das Album bleiben in diesem Browser.</span></footer>` : '';
   $('#v-start').innerHTML = `<div class="st3 step-${startStep}">${startTop()}<main class="st3-main">${main}</main>${foot}</div>`;
+  fitStartTop();
   const c2 = $('#carousel');
   if (c2) {
     c2.scrollLeft = keepScroll;
