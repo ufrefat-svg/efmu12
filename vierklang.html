@@ -1233,6 +1233,65 @@ select.field { appearance: auto; }
 
 .tq-src { font-size: 12.5px; line-height: 1.4; gap: 4px; color: #4A4F6E !important; }
 
+/* ---------- Karten üben: Fächer, Selbstcheck, Eintippen, A oder B, Begriffshilfe, Code ---------- */
+.due-pill { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: #FFB020 !important; color: #23264F !important; font-size: 0.78rem; font-weight: 900; }
+.ln-stat .due { color: #8A5A00 !important; }
+.ln-setup { display: flex; flex-direction: column; gap: 14px; }
+.ln-boxes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.ln-box { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 4px; border-radius: 14px; background: #FFFFFF !important; border: 1px solid #DCDFF0 !important; box-shadow: 0 3px 0 #E3E5F2 !important; }
+.ln-box-n { font-family: 'Vierklang Display', 'Lilita One', 'Trebuchet MS', system-ui, sans-serif; font-size: 1.6rem; line-height: 1; color: #23264F !important; }
+.ln-box-l { font-size: 0.78rem; font-weight: 800; color: #5A5F86 !important; text-align: center; }
+.ln-box.b1 { border-color: #F2B8B0 !important; background: #FFF4F2 !important; }
+.ln-box.b2 { border-color: #F3D9A2 !important; background: #FFF9EC !important; }
+.ln-box.b3 { border-color: #BFDCE0 !important; background: #F0F9FA !important; }
+.ln-box.b4 { border-color: #B9DEC6 !important; background: #EFF9F2 !important; }
+.ln-note { margin: 0; color: #5A5F86 !important; font-size: 0.92rem; line-height: 1.45; }
+.ln-opt { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.ln-opt-l { min-width: 86px; font-weight: 800; color: #23264F !important; }
+.ln-opt-s { flex-basis: 100%; color: #5A5F86 !important; font-size: 0.85rem; }
+.seg-btn:disabled { opacity: 0.45; cursor: default; }
+.ln-expl.ln-big { font-size: 1.25rem; }
+.ln-type { display: flex; gap: 8px; margin-top: auto; }
+.ln-input { flex: 1; min-width: 0; min-height: 48px; padding: 8px 14px; border-radius: 12px; border: 2px solid #C9CCE6 !important; background: #FFFFFF !important; color: #23264F !important; font: inherit; font-size: 1.15rem; font-weight: 700; }
+.ln-input:focus { outline: none !important; border-color: #4C4FD8 !important; }
+.ln-input:disabled { background: #F3F4FA !important; color: #3A3E6B !important; }
+.ln-check { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+.ln-check-h { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #5A5F86 !important; }
+.ln-tick { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 46px; padding: 8px 12px; border-radius: 12px; border: 1px solid #DCD0F5 !important; background: #FFFFFF !important; color: #23264F !important; font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+.ln-tick.on { border-color: #1F8A96 !important; background: #E6F4F5 !important; }
+.ln-box-ck { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; border: 2px solid #9EA3C8 !important; color: #FFFFFF !important; font-weight: 900; }
+.ln-tick.on .ln-box-ck { border-color: #1F8A96 !important; background: #1F8A96 !important; }
+.ln-verdict { align-self: flex-end; padding: 6px 12px; border-radius: 999px; background: #EEF0FA !important; color: #5A5F86 !important; font-weight: 800; font-size: 0.9rem; }
+.ln-verdict.ok { background: #E3F3E8 !important; color: #1F6A3E !important; }
+.ln-res { padding: 10px 14px; border-radius: 12px; font-weight: 800; }
+.ln-res.ok { background: #E3F3E8 !important; color: #1F6A3E !important; }
+.ln-res.no { background: #FDECEA !important; color: #A63A3A !important; }
+.ln-gl { display: inline; padding: 0; border: 0 !important; background: transparent !important; color: inherit !important; font: inherit; text-decoration: underline; text-decoration-style: dotted; text-decoration-color: #4C4FD8 !important; text-decoration-thickness: 2px; text-underline-offset: 3px; cursor: help; }
+.ln-gl:hover { color: #4C4FD8 !important; }
+.ln-glossbox { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 14px; background: #FFFFFF !important; border: 2px solid #C9CCF4 !important; box-shadow: 0 6px 18px rgba(35, 38, 79, 0.08) !important; line-height: 1.45; }
+.ln-glossbox > div { flex: 1; min-width: 0; color: #23264F !important; }
+.ln-glossbox small { display: block; margin-top: 4px; color: #5A5F86 !important; font-weight: 700; }
+.ln-ab { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: auto; }
+.ln-ab > span { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #6A6FA0 !important; }
+.ln-ab-btn { flex: 1 1 180px; min-height: 64px; padding: 10px 14px; border-radius: 16px; border: 2px solid #C9CCE6 !important; background: #FFFFFF !important; color: #23264F !important; font-family: 'Vierklang Display', 'Lilita One', 'Trebuchet MS', system-ui, sans-serif; font-size: 1.3rem; cursor: pointer; box-shadow: 0 4px 0 #DCDFF0 !important; }
+.ln-ab-btn.right { border-color: #2E8B57 !important; background: #E3F3E8 !important; }
+.ln-ab-btn.wrong { border-color: #C0392B !important; background: #FDECEA !important; }
+.ln-ab-btn:disabled { cursor: default; }
+.ln-code { padding: 12px 14px; border-radius: 12px; background: #F3F4FA !important; border: 1px solid #DCDFF0 !important; color: #23264F !important; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 1.05rem; font-weight: 700; word-break: break-all; user-select: all; }
+.ln-h3 { margin: 10px 0 0; font-size: 1.05rem; color: #23264F !important; }
+.ln-code-row { display: flex; justify-content: flex-end; margin: 8px 0 4px; }
+.ln-code-err { margin: 4px 0 0; min-height: 1.2em; color: #A63A3A !important; font-weight: 700; }
+@media (max-width: 520px) {
+  .ln-boxes { gap: 5px; }
+  .ln-box { padding: 8px 2px; }
+  .ln-box-n { font-size: 1.3rem; }
+  .ln-box-l { font-size: 0.7rem; }
+  .ln-opt-l { min-width: 0; flex-basis: 100%; }
+  .ln-type { flex-direction: column; }
+}
+
+@media (hover: none) { .kbd-only { display: none; } }
+
 </style>
 </head>
 <body>
@@ -17860,7 +17919,7 @@ function endCard() {
     </tbody></table></div>
     ${g.goals ? `<p class="step-sub">Geheimaufträge: ${['A', 'B'].filter((s) => g.goals[s]).map((s) => `${esc(shortName(s))}: ${esc(g.goals[s].text)} (${g.goals[s].done ? 'erfüllt' : 'nicht erfüllt'})`).join(' · ')}</p>` : ''}
     <section class="repeat"><h3>Zum Wiederholen</h3>${rep.length ? `<p class="step-sub">Begriffe, die nur mit Hilfe oder gar nicht geklappt haben.</p><ul class="rep-list">${rep.map((t) => `<li><b>${esc(t.term)}</b><span>${esc(t.expl)}</span>${t.feats.length ? `<em>Kernmerkmale: ${esc(t.feats.join(' · '))}</em>` : ''}</li>`).join('')}</ul>` : '<p class="step-sub">Alle gespielten Begriffe saßen ohne Hilfe.</p>'}</section>
-    <div class="card-actions">${rep.length ? '<button type="button" class="btn" data-act="copy-repeat">Liste kopieren</button>' : ''}<button type="button" class="btn" data-act="view-board">Brett ansehen</button><button type="button" class="btn" data-act="home">Startseite</button>${seriesGo ? '<button type="button" class="btn primary big" data-act="next-round" data-primary>Nächste Runde</button>' : '<button type="button" class="btn primary big" data-act="rematch" data-primary>Revanche</button>'}</div>
+    <div class="card-actions">${rep.length ? '<button type="button" class="btn" data-act="copy-repeat">Liste kopieren</button>' : ''}${typeof gameRepeatKeys === 'function' && gameRepeatKeys().length ? (g.repSaved ? `<button type="button" class="btn" data-act="learn-open" data-id="${esc(g.packId)}">In der Lernkartei: jetzt üben</button>` : '<button type="button" class="btn" data-act="rep-kartei">In die Lernkartei</button>') : ''}<button type="button" class="btn" data-act="view-board">Brett ansehen</button><button type="button" class="btn" data-act="home">Startseite</button>${seriesGo ? '<button type="button" class="btn primary big" data-act="next-round" data-primary>Nächste Runde</button>' : '<button type="button" class="btn primary big" data-act="rematch" data-primary>Revanche</button>'}</div>
   </div>`;
 }
 /* Geheimauftrag: nur die eigene Seite schaut hin */
@@ -18136,7 +18195,7 @@ function renderStart() {
         <div class="carousel" id="carousel">${list.map(skCard).join('')}<button type="button" class="sk sk-add" data-act="ws-new-start"><span class="sk-plus">+</span><span class="sk-title">Eigenes Paket</span><span class="sk-blurb">Begriffe eintippen oder aus einer Tabelle einfügen</span></button></div>
         <button type="button" class="car-arrow" data-act="car" data-d="1" aria-label="weiter">${iconArrow(1)}</button>
       </div>
-      <div class="st3-cta"><span class="cta-note">${esc(pack.title)} · ${playable(pack).length} Begriffe${pack.edited ? ' · von dir angepasst' : pack.checked ? '' : ' · KI-Entwurf, noch nicht fachlich geprüft'}</span><button type="button" class="btn ghost cta-adapt" data-act="learn-open" data-id="${esc(pack.id)}">Karten üben</button><button type="button" class="btn ghost cta-adapt" data-act="${pack.own || pack.edited ? 'ws-play-edit' : 'ws-adapt-start'}" data-id="${esc(pack.id)}">${pack.own || pack.edited ? 'Bearbeiten' : 'Anpassen'}</button><button type="button" class="btn cta" data-act="st-step" data-v="2" data-primary>Weiter zur Spielform${iconNext()}</button></div>`;
+      <div class="st3-cta"><span class="cta-note">${esc(pack.title)} · ${playable(pack).length} Begriffe${pack.edited ? ' · von dir angepasst' : pack.checked ? '' : ' · KI-Entwurf, noch nicht fachlich geprüft'}</span><button type="button" class="btn ghost cta-adapt" data-act="learn-open" data-id="${esc(pack.id)}">Karten üben${(() => { const nd = typeof learnDueCount === 'function' ? learnDueCount(pack) : 0; return nd ? `<span class="due-pill">${nd} fällig</span>` : ''; })()}</button><button type="button" class="btn ghost cta-adapt" data-act="${pack.own || pack.edited ? 'ws-play-edit' : 'ws-adapt-start'}" data-id="${esc(pack.id)}">${pack.own || pack.edited ? 'Bearbeiten' : 'Anpassen'}</button><button type="button" class="btn cta" data-act="st-step" data-v="2" data-primary>Weiter zur Spielform${iconNext()}</button></div>`;
   } else if (startStep === 2) {
     const papier = s.mode === 'papier';
     main = `<div class="st3-hero"><h1>Wie wollt ihr spielen?</h1><p>An der Tafel gegeneinander, zu zweit, allein gegen den Klangbot oder ausgedruckt auf Papier.</p></div>
@@ -22284,14 +22343,47 @@ const ROOM_ACTIONS = {
 };
 
 /* Vierklang · Teil 10: Karten üben
-   Lernkartei zum gewählten Paket: Begriff vorn, Erklärung und Merkmale hinten, „kann ich“ oder „noch nicht“.
-   Der Stand liegt nur in diesem Browser. Abgrenzungspaare hängen als eigene Karten hinten an. */
+   Lernkartei mit Fächern nach Leitner. Neue und falsch beantwortete Karten liegen in Fach 1, richtig beantwortete
+   rücken weiter und kommen nach 3 Tagen, einer Woche und vier Wochen wieder. Richtung wählbar (Begriff zur Erklärung,
+   Erklärung zum Begriff, gemischt; Hör- und Notenfelder immer vom Klang zum Begriff). Antwort im Kopf mit Selbstcheck an
+   den Kernmerkmalen oder als eingetippter Begriff. Dazu „A oder B?“ für Abgrenzungspaare, Begriffshilfen auf der
+   Rückseite und der Lernstand als Code. Der Stand liegt nur in diesem Browser. */
 
-const KEY_LEARN = 'vierklang-ueben-v1';
+const KEY_KARTEI = 'vierklang-kartei-v2';
+const KEY_LEARN = 'vierklang-ueben-v1';      /* alter Stand („kann ich“ / „noch nicht“), wird beim ersten Öffnen übernommen */
+const LN_DAYS = [0, 0, 3, 7, 28];             /* nach einem Treffer: Fach 2 nach 3 Tagen, Fach 3 nach 7, „sitzt“ nach 28 */
+const LN_BOX = ['Neu', 'Fach 1', 'Fach 2', 'Fach 3', 'Sitzt'];
 let learn = null;
-function learnStore() { const o = store.get(KEY_LEARN, {}); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }
-function learnMarks(packId) { const all = learnStore(); const m = all[packId]; return m && typeof m === 'object' ? m : {}; }
-function learnMark(packId, key, v) { const all = learnStore(); const m = all[packId] = all[packId] || {}; if (v) m[key] = v; else delete m[key]; store.set(KEY_LEARN, all); }
+
+/* ---------- Speicher ---------- */
+function lnDay(n) { const d = new Date(); d.setDate(d.getDate() + (n || 0)); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function karteiAll() {
+  const o = store.get(KEY_KARTEI, null);
+  return o && typeof o === 'object' && o.packs && typeof o.packs === 'object' ? o : { v: 2, opt: {}, packs: {} };
+}
+function karteiPack(packId, all) {
+  all = all || karteiAll();
+  let k = all.packs[packId];
+  if (!k || typeof k !== 'object' || !k.cards) {
+    k = { cards: {} };
+    const old = store.get(KEY_LEARN, {}), m = old && old[packId];
+    if (m && typeof m === 'object') Object.keys(m).forEach((key) => { k.cards[key] = { box: m[key] === 'ok' ? 2 : 1, due: lnDay(0), n: 1 }; });
+  }
+  return k;
+}
+function karteiWrite(packId, fn) {
+  const all = karteiAll(), k = karteiPack(packId, all);
+  fn(k);
+  all.packs[packId] = k;
+  store.set(KEY_KARTEI, all);
+}
+function learnOpt() {
+  const o = karteiAll().opt || {};
+  return { pick: o.pick || 'faellig', dir: ['vor', 'rueck', 'mix'].includes(o.dir) ? o.dir : 'vor', ans: o.ans === 'tippen' ? 'tippen' : 'kopf', size: [10, 20, 0].includes(o.size) ? o.size : 10 };
+}
+function learnOptSave() { const all = karteiAll(); all.opt = Object.assign({}, learn.opt); store.set(KEY_KARTEI, all); }
+
+/* ---------- Karten ---------- */
 function learnCards(pack) {
   const cards = playable(pack).map((t) => ({ key: t.id, kind: 'term', t }));
   (pack.pairs || []).forEach((q) => {
@@ -22300,98 +22392,516 @@ function learnCards(pack) {
   });
   return cards;
 }
-function learnDeck(onlyNo) {
-  const p = findPack(learn.packId); if (!p) return;
-  const cards = learnCards(p), marks = learnMarks(p.id);
-  const list = onlyNo ? cards.filter((c) => marks[c.key] === 'no') : cards;
-  learn.order = shuffle(list).map((c) => c.key);
-  learn.i = 0; learn.flipped = false; learn.done = { ok: 0, no: 0 }; learn.onlyNo = !!onlyNo; learn.total = cards.length;
+function lnState(k, key) { const s = k.cards[key]; return s && s.box ? s : null; }
+function learnCounts(pack) {
+  const k = karteiPack(pack.id), t = lnDay(0), c = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, due: 0, total: 0 };
+  learnCards(pack).forEach((card) => {
+    const s = lnState(k, card.key); c.total++;
+    if (!s) { c[0]++; return; }
+    c[s.box]++; if (s.due <= t) c.due++;
+  });
+  return c;
 }
+function learnDueCount(pack) { try { return pack ? learnCounts(pack).due : 0; } catch (e) { return 0; } }
+function learnPickList(pack, pick) {
+  const k = karteiPack(pack.id), t = lnDay(0), cards = learnCards(pack);
+  if (pick === 'faellig') return cards.filter((c) => { const s = lnState(k, c.key); return s && s.due <= t; });
+  if (pick === 'neu') return cards.filter((c) => !lnState(k, c.key));
+  if (pick === 'fach1') return cards.filter((c) => { const s = lnState(k, c.key); return s && s.box === 1; });
+  return cards;
+}
+function learnFindCard(key) { const p = findPack(learn.packId); return p ? learnCards(p).find((c) => c.key === key) || null : null; }
+
+/* ---------- Öffnen und Durchgang ---------- */
 function openLearn(packId) {
   const p = findPack(packId || settings.packId); if (!p || !playable(p).length) { toast('Dieses Paket hat noch keine Begriffe.'); return; }
-  learn = { packId: p.id };
-  learnDeck(false);
+  glossIdx = null;
+  learn = { packId: p.id, view: 'setup', opt: learnOpt() };
+  const c = learnCounts(p);
+  if (learn.opt.pick === 'faellig' && !c.due) learn.opt.pick = c[0] ? 'neu' : 'alle';
   show('learn');
 }
-function learnCard() {
-  const p = findPack(learn.packId); if (!p) return null;
-  const key = learn.order[learn.i]; if (!key) return null;
-  return learnCards(p).find((c) => c.key === key) || null;
+function learnDir(card) {
+  if (card.kind === 'pair') return 'paar';
+  if (isMedia(card.t)) return 'medium';
+  const d = learn.opt.dir;
+  return d === 'mix' ? (Math.random() < 0.5 ? 'vor' : 'rueck') : d;
 }
-function learnAnswer(v) {
-  const card = learnCard(); if (!card || !learn.flipped) return;
-  learnMark(learn.packId, card.key, v);
-  learn.done[v]++;
-  learn.i++; learn.flipped = false;
-  if (v === 'ok') Sound.tick(); else Sound.no();
+function learnStart() {
+  const p = findPack(learn.packId); if (!p) return;
+  let list = shuffle(learnPickList(p, learn.opt.pick));
+  if (learn.opt.size) list = list.slice(0, learn.opt.size);
+  if (!list.length) { toast('In dieser Auswahl liegen gerade keine Karten.'); return; }
+  learn.queue = list.map((c) => ({ key: c.key, dir: learnDir(c), retry: 0, counted: false }));
+  learn.i = 0; learn.done = { ok: 0, no: 0 }; learn.wrong = [];
+  learnResetCard();
+  learn.view = 'cards';
   renderLearn();
 }
-function learnFrontHTML(card) {
-  if (card.kind === 'pair') return `<div class="ln-kind">Zwei Begriffe, die man leicht verwechselt</div><h2 class="ln-term ln-pair"><span>${esc(card.a.term)}</span><i>oder</i><span>${esc(card.b.term)}</span></h2><p class="ln-q">Worin unterscheiden sich die beiden? Erst überlegen, dann umdrehen.</p>`;
-  const t = card.t, media = isMedia(t);
-  const title = media ? `<h2 class="ln-term">${t.kind === 'hoeren' ? 'Hörfeld' : esc(t.label || 'Bildfeld')}</h2>` : `<h2 class="ln-term">${esc(t.term)}</h2>`;
-  const m = media ? (t.kind === 'hoeren' ? `<div class="media"><button type="button" class="btn play" data-act="ln-play">${playSVG()} Abspielen</button></div>` : mediaHTML(t)) : '';
-  return `<div class="ln-kind">${esc(KIND_LABEL[t.kind] || 'Begriff')}${t.family ? ` · ${esc(t.family)}` : ''}<span class="kind-diff">${DIFF_LABEL[t.diff]}</span></div>${title}${m}<p class="ln-q">${media ? 'Wie heißt der Begriff? Erst überlegen, dann umdrehen.' : t.zeig ? 'Erkläre den Begriff oder mach ihn vor. Dann umdrehen.' : 'Erkläre den Begriff in Gedanken oder laut. Dann umdrehen.'}</p>`;
+function learnResetCard() { learn.flipped = false; learn.ticks = []; learn.res = null; learn.gloss = null; }
+function learnItem() { return learn && learn.queue ? learn.queue[learn.i] || null : null; }
+function learnCardNow() { const it = learnItem(); return it ? learnFindCard(it.key) : null; }
+function learnTyping(it) { return learn.opt.ans === 'tippen' && it && (it.dir === 'rueck' || it.dir === 'medium'); }
+
+/* Antwort verbuchen: die erste Antwort im Durchgang bewegt die Karte zwischen den Fächern */
+function learnCommit(ok) {
+  const it = learnItem(); if (!it) return;
+  if (!it.counted) {
+    it.counted = true;
+    karteiWrite(learn.packId, (k) => {
+      const s = lnState(k, it.key), n = s && s.n ? s.n + 1 : 1;
+      if (ok) { const box = Math.min(4, Math.max(1, s ? s.box : 0) + 1); k.cards[it.key] = { box, due: lnDay(LN_DAYS[box]), n }; }
+      else k.cards[it.key] = { box: 1, due: lnDay(0), n };
+    });
+    learn.done[ok ? 'ok' : 'no']++;
+    if (!ok) learn.wrong.push(it.key);
+  }
+  /* Falsch Beantwortetes kommt im selben Durchgang noch einmal, höchstens zweimal */
+  if (!ok && it.retry < 2) learn.queue.splice(Math.min(learn.queue.length, learn.i + 4), 0, { key: it.key, dir: it.dir, retry: it.retry + 1, counted: true });
+  if (ok) Sound.tick(); else Sound.no();
+  learn.i++;
+  learnResetCard();
+  if (!learnItem()) learn.view = 'end';
+  renderLearn();
 }
-function learnBackHTML(card) {
-  if (card.kind === 'pair') {
-    const q = card.q;
-    return `<div class="ln-kind">Unterschied</div><h2 class="ln-term ln-pair"><span>${esc(card.a.term)}</span><i>oder</i><span>${esc(card.b.term)}</span></h2><p class="ln-expl">${esc(q[2])}</p>
-      <ul class="ln-feats"><li><b>${esc(card.a.term)}:</b> ${esc(q[3] || '')}</li><li><b>${esc(card.b.term)}:</b> ${esc(q[4] || '')}</li></ul>`;
+function learnNeed(card, it) {
+  if (it.dir === 'paar') return 3;
+  const f = card.t.feats || [];
+  return f.length ? Math.min(2, f.length) : 0;
+}
+
+/* ---------- Begriff eintippen ---------- */
+function lnNorm(s) {
+  return String(s || '').toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’'`´„“"»«‚‘().,;:!?*]/g, '').replace(/[-–—/]+/g, ' ')
+    .replace(/\s+/g, ' ').trim().replace(/^(der|die|das|ein|eine|einen|the) /, '');
+}
+function lnDist(a, b) {
+  if (a === b) return 0;
+  const m = a.length, n = b.length; if (!m) return n; if (!n) return m;
+  let prev = range(0, n), cur = new Array(n + 1);
+  for (let i = 1; i <= m; i++) {
+    cur[0] = i;
+    for (let j = 1; j <= n; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur.slice();
+  }
+  return prev[n];
+}
+function lnTol(len) { return len <= 4 ? 0 : len <= 8 ? 1 : len <= 14 ? 2 : 3; }
+function lnForms(t) {
+  const out = new Set(), base = String(t.term || '');
+  out.add(lnNorm(base));
+  out.add(lnNorm(base.replace(/\s*\([^)]*\)\s*/g, ' ')));
+  base.split(/\s+(?:oder|bzw\.)\s+|\s*\/\s*/).forEach((x) => out.add(lnNorm(x)));
+  if (t.kind === 'person') { const w = lnNorm(base).split(' '); if (w.length > 1 && w[w.length - 1].length >= 4) out.add(w[w.length - 1]); }
+  out.delete('');
+  return Array.from(out);
+}
+function lnMatch(typed, t) {
+  const x = lnNorm(typed); if (!x) return -1;
+  let best = -1;
+  lnForms(t).forEach((f) => { const d = lnDist(x, f); if (d <= lnTol(f.length) && (best < 0 || d < best)) best = d; });
+  return best;
+}
+function learnCheckTyped() {
+  const it = learnItem(), card = learnCardNow(); if (!it || !card || learn.res) return;
+  const inp = document.getElementById('ln-input'); const typed = inp ? inp.value : '';
+  if (!String(typed).trim()) { toast('Erst etwas eintippen.'); if (inp) inp.focus(); return; }
+  const d = lnMatch(typed, card.t);
+  let other = null;
+  if (d < 0) {
+    const p = findPack(learn.packId);
+    const hit = playable(p).find((t) => t.id !== card.t.id && lnMatch(typed, t) >= 0);
+    if (hit) other = hit.term;
+  }
+  learn.res = { ok: d >= 0, exact: d === 0, typed: String(typed).trim(), other };
+  learn.flipped = true;
+  if (learn.res.ok) Sound.tick(); else Sound.no();
+  renderLearn();
+}
+
+/* ---------- Begriffshilfen ---------- */
+let glossIdx = null;
+function glossIndex() {
+  if (glossIdx) return glossIdx;
+  const map = new Map();
+  BUILTIN.concat(ownPacks || []).forEach((p) => {
+    const gr = p.grades && p.grades.length ? Math.min.apply(null, p.grades) : 99;
+    (p.terms || []).forEach((t) => {
+      if (!t || !t.term || !t.expl) return;
+      const k = String(t.term).toLowerCase().replace(/\s+/g, ' ').trim();
+      if (k.length < 4) return;
+      if (!map.has(k)) map.set(k, []);
+      map.get(k).push({ term: t.term, expl: t.expl, packId: p.id, packTitle: p.title, grade: gr });
+    });
+  });
+  glossIdx = map;
+  return map;
+}
+function glossEntry(key) {
+  const list = glossIndex().get(key); if (!list || !list.length) return null;
+  const p = findPack(learn.packId), g = p && p.grades && p.grades.length ? Math.min.apply(null, p.grades) : 99;
+  const same = list.find((e) => e.packId === learn.packId); if (same) return same;
+  const below = list.filter((e) => e.grade <= g).sort((a, b) => b.grade - a.grade);
+  return below[0] || list.slice().sort((a, b) => a.grade - b.grade)[0];
+}
+/* Fachbegriffe im Text als Hilfe-Knöpfe; die gesuchten Begriffe der Karte bleiben unverlinkt */
+function glossHTML(text, ctx) {
+  const src = String(text || ''), map = glossIndex(), words = [], re = /[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu;
+  let m; while ((m = re.exec(src))) words.push({ s: m.index, e: m.index + m[0].length, w: m[0] });
+  let out = '', pos = 0;
+  for (let i = 0; i < words.length; i++) {
+    if (ctx.n >= 5) break;
+    let found = null;
+    for (let L = Math.min(4, words.length - i); L >= 1 && !found; L--) {
+      let ok = true;
+      for (let j = i; j < i + L - 1; j++) if (!/^\s+$/.test(src.slice(words[j].e, words[j + 1].s))) { ok = false; break; }
+      if (!ok) continue;
+      const phrase = src.slice(words[i].s, words[i + L - 1].e), key = phrase.toLowerCase().replace(/\s+/g, ' ');
+      const tryKey = (k) => (map.has(k) && !ctx.skip.has(k) && !ctx.used.has(k) ? k : null);
+      let k = tryKey(key);
+      if (!k && L === 1) ['ern', 'en', 'er', 'es', 'ns', 'e', 'n', 's'].some((suf) => key.length - suf.length >= 4 && key.endsWith(suf) && (k = tryKey(key.slice(0, -suf.length))));
+      if (k) found = { L, k, phrase };
+    }
+    if (!found) continue;
+    out += esc(src.slice(pos, words[i].s)) + `<button type="button" class="ln-gl" data-act="ln-gloss" data-k="${esc(found.k)}">${esc(found.phrase)}</button>`;
+    pos = words[i + found.L - 1].e;
+    ctx.used.add(found.k); ctx.n++;
+    i += found.L - 1;
+  }
+  return out + esc(src.slice(pos));
+}
+function glossCtx(card) {
+  const skip = new Set();
+  const add = (t) => { if (t && t.term) skip.add(String(t.term).toLowerCase().replace(/\s+/g, ' ').trim()); };
+  if (card.kind === 'pair') { add(card.a); add(card.b); } else add(card.t);
+  return { skip, used: new Set(), n: 0 };
+}
+function glossBoxHTML() {
+  if (!learn.gloss) return '';
+  const e = glossEntry(learn.gloss); if (!e) return '';
+  const short = (String(e.expl).match(/[^.!?]+[.!?]+/g) || [String(e.expl)]).slice(0, 2).join(' ').trim();
+  return `<div class="ln-glossbox" role="note"><div><b>${esc(e.term)}</b> ${esc(short)}${e.packId !== learn.packId ? `<small>aus „${esc(e.packTitle)}“</small>` : ''}</div><button type="button" class="btn ghost sm" data-act="ln-gloss-close">Schließen</button></div>`;
+}
+
+/* ---------- Lernstand als Code ---------- */
+const LN_B32 = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+function lnBitsToB32(bits) { let s = ''; while (bits.length % 5) bits += '0'; for (let i = 0; i < bits.length; i += 5) s += LN_B32[parseInt(bits.slice(i, i + 5), 2)]; return s; }
+function lnB32ToBits(s) { let b = ''; for (const ch of s) { const v = LN_B32.indexOf(ch); if (v < 0) return null; b += v.toString(2).padStart(5, '0'); } return b; }
+function lnSum(vals) { return vals.reduce((a, v, i) => (a + v * ((i % 30) + 1)) % 31, vals.length % 31); }
+function learnCodeMake(pack) {
+  const k = karteiPack(pack.id), t = lnDay(0), cards = learnCards(pack);
+  let bits = '';
+  const vals = cards.map((c) => {
+    const s = lnState(k, c.key);
+    const v = !s ? 0 : s.box === 1 ? 1 : (s.box - 1) * 2 + (s.due <= t ? 0 : 1);
+    bits += v.toString(2).padStart(3, '0'); return v;
+  });
+  const body = LN_B32[(cards.length >> 5) & 31] + LN_B32[cards.length & 31] + lnBitsToB32(bits) + LN_B32[lnSum(vals)];
+  return pack.id + '/' + body.replace(/(.{4})(?=.)/g, '$1-');
+}
+function learnCodeRead(code) {
+  const raw = String(code || '').trim(); const cut = raw.lastIndexOf('/');
+  if (cut < 1) return { err: 'Der Code beginnt mit dem Paket, dann folgt ein Schrägstrich.' };
+  const packId = raw.slice(0, cut).trim(), body = raw.slice(cut + 1).toUpperCase().replace(/[\s-]+/g, '').replace(/O/g, '0').replace(/[IL]/g, '1');
+  const pack = findPack(packId) || findPack(packId.toLowerCase()); if (!pack) return { err: 'Dieses Paket gibt es auf diesem Gerät nicht.' };
+  const cards = learnCards(pack);
+  if (body.length < 4) return { err: 'Der Code ist zu kurz.' };
+  const n = LN_B32.indexOf(body[0]) * 32 + LN_B32.indexOf(body[1]);
+  if (n !== cards.length) return { err: 'Das Paket hat sich verändert, der Code passt nicht mehr dazu.' };
+  const bits = lnB32ToBits(body.slice(2, -1)); if (!bits || bits.length < cards.length * 3) return { err: 'Der Code ist nicht vollständig oder enthält einen Tippfehler.' };
+  const vals = cards.map((c, i) => parseInt(bits.slice(i * 3, i * 3 + 3), 2));
+  if (lnSum(vals) !== LN_B32.indexOf(body[body.length - 1]) || /[^0]/.test(bits.slice(cards.length * 3))) return { err: 'Der Code ist nicht vollständig oder enthält einen Tippfehler.' };
+  return { pack, cards, vals };
+}
+function learnCodeApply(r) {
+  const later = [0, 0, 0, 2, 0, 4, 0, 14];
+  karteiWrite(r.pack.id, (k) => {
+    k.cards = {};
+    r.cards.forEach((c, i) => {
+      const v = r.vals[i]; if (!v) return;
+      const box = v === 1 ? 1 : Math.floor(v / 2) + 1;
+      k.cards[c.key] = { box, due: lnDay(v % 2 && v > 1 ? later[v] : 0), n: 1 };
+    });
+  });
+}
+function codeModalHTML() {
+  const p = findPack(learn.packId); const code = learnCodeMake(p);
+  return `<h2>Lernstand mitnehmen</h2>
+    <p class="step-sub">Der Code enthält nur, in welchem Fach jede Karte liegt. Namen stehen nicht darin. Auf einem anderen Gerät öffnest du dasselbe Paket unter „Karten üben“ und gibst den Code ein.</p>
+    <div class="ln-code" id="ln-code">${esc(code)}</div>
+    <div class="ln-code-row"><button type="button" class="btn sm" data-act="ln-code-copy">Code kopieren</button></div>
+    <h3 class="ln-h3">Code eingeben</h3>
+    <p class="step-sub">Ersetzt den Lernstand dieses Pakets auf diesem Gerät.</p>
+    <input id="ln-code-in" class="ln-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z. B. ${esc(p.id)}/0K12-…" aria-label="Lernstand-Code">
+    <p class="ln-code-err" id="ln-code-err" role="alert"></p>
+    <div class="modal-actions"><button type="button" class="btn ghost" data-act="modal-close">Schließen</button><span class="spacer"></span><button type="button" class="btn primary" data-act="ln-code-load">Übernehmen</button></div>`;
+}
+
+/* ---------- Spielende: zum Wiederholen in Fach 1 ---------- */
+function gameRepeatKeys() {
+  if (!game || !game.log) return [];
+  const p = findPack(game.packId); if (!p) return [];
+  const keys = new Set(learnCards(p).map((c) => c.key)), out = [];
+  game.log.forEach((x) => {
+    if (x.connect || (x.ok && !x.helped) || (game.mode === 'solo' && x.side !== 'A')) return;
+    if (keys.has(x.tid) && !out.includes(x.tid)) out.push(x.tid);
+  });
+  return out;
+}
+function repeatToKartei() {
+  const keys = gameRepeatKeys(); if (!keys.length || !game) return;
+  karteiWrite(game.packId, (k) => { keys.forEach((key) => { const s = k.cards[key]; k.cards[key] = { box: 1, due: lnDay(0), n: s && s.n ? s.n : 0 }; }); });
+  game.repSaved = true;
+  toast(keys.length === 1 ? 'Eine Karte liegt jetzt in Fach 1 von „Karten üben“.' : `${keys.length} Karten liegen jetzt in Fach 1 von „Karten üben“.`);
+  if (typeof renderOverlay === 'function') renderOverlay();
+}
+
+/* ---------- A oder B? ---------- */
+function abStart() {
+  const p = findPack(learn.packId); if (!p) return;
+  const items = [];
+  (p.pairs || []).forEach((q) => {
+    const a = p.terms.find((t) => t.id === q[0]), b = p.terms.find((t) => t.id === q[1]); if (!a || !b) return;
+    const pk = 'paar:' + q[0] + '|' + q[1];
+    if (q[3]) items.push({ pk, a, b, q, side: 'a', text: q[3], what: 'Merkmal' });
+    if (q[4]) items.push({ pk, a, b, q, side: 'b', text: q[4], what: 'Merkmal' });
+    if (a.expl) items.push({ pk, a, b, q, side: 'a', text: a.expl, what: 'Erklärung' });
+    if (b.expl) items.push({ pk, a, b, q, side: 'b', text: b.expl, what: 'Erklärung' });
+  });
+  if (!items.length) { toast('Dieses Paket hat keine Abgrenzungspaare.'); return; }
+  learn.ab = { items: shuffle(items).slice(0, 10), i: 0, pick: null, ok: 0, wrong: [] };
+  learn.view = 'ab';
+  renderLearn();
+}
+function abPick(side) {
+  const ab = learn.ab, it = ab && ab.items[ab.i]; if (!it || ab.pick) return;
+  ab.pick = side;
+  if (side === it.side) { ab.ok++; Sound.tick(); }
+  else {
+    Sound.no();
+    if (!ab.wrong.includes(it.pk)) ab.wrong.push(it.pk);
+    karteiWrite(learn.packId, (k) => { const s = k.cards[it.pk]; k.cards[it.pk] = { box: 1, due: lnDay(0), n: s && s.n ? s.n + 1 : 1 }; });
+  }
+  renderLearn();
+}
+function abNext() { const ab = learn.ab; if (!ab || !ab.pick) return; ab.i++; ab.pick = null; if (ab.i >= ab.items.length) learn.view = 'abend'; renderLearn(); }
+
+/* ---------- Darstellung ---------- */
+function lnSeg(k, opts, v) {
+  return `<div class="seg">${opts.map((o) => `<button type="button" class="seg-btn${String(o[0]) === String(v) ? ' on' : ''}" data-act="ln-opt" data-k="${k}" data-v="${o[0]}" aria-pressed="${String(o[0]) === String(v)}"${o[2] ? ' disabled' : ''}>${o[1]}</button>`).join('')}</div>`;
+}
+function lnBoxesHTML(c) {
+  return `<div class="ln-boxes">${[0, 1, 2, 3, 4].map((b) => `<div class="ln-box b${b}"><span class="ln-box-n">${c[b]}</span><span class="ln-box-l">${LN_BOX[b]}</span></div>`).join('')}</div>`;
+}
+function learnHead(p) {
+  const c = learnCounts(p);
+  return `<header class="ln-top"><button type="button" class="btn ghost" data-act="ln-back">${iconArrow(-1)}${learn.view === 'setup' ? 'Startseite' : 'Auswahl'}</button><div class="ln-title">${logoSVG('logo-sm')}<span><b>Karten üben</b><small>${esc(p.title)}</small></span></div><div class="ln-stat"><span class="due">${c.due} heute fällig</span><span>${c[4]} sitzen</span><span>${c[0]} neu</span></div></header>`;
+}
+function setupHTML(p) {
+  const c = learnCounts(p), o = learn.opt;
+  const n = { faellig: c.due, neu: c[0], fach1: c[1], alle: c.total };
+  const count = Math.min(n[o.pick] || 0, o.size || Infinity);
+  const hasPairs = !!(p.pairs && p.pairs.length);
+  return `<section class="ln-setup">
+    ${lnBoxesHTML(c)}
+    <p class="ln-note">Neue und falsch beantwortete Karten liegen in Fach 1. Richtig beantwortete rücken ein Fach weiter und kommen nach 3 Tagen, nach einer Woche und nach vier Wochen wieder.</p>
+    <div class="ln-opt"><span class="ln-opt-l">Auswahl</span>${lnSeg('pick', [['faellig', `Heute fällig (${c.due})`, !c.due], ['neu', `Neue (${c[0]})`, !c[0]], ['fach1', `Fach 1 (${c[1]})`, !c[1]], ['alle', `Alle (${c.total})`]], o.pick)}</div>
+    <div class="ln-opt"><span class="ln-opt-l">Richtung</span>${lnSeg('dir', [['vor', 'Begriff → Erklärung'], ['rueck', 'Erklärung → Begriff'], ['mix', 'Gemischt']], o.dir)}</div>
+    <div class="ln-opt"><span class="ln-opt-l">Antwort</span>${lnSeg('ans', [['kopf', 'Im Kopf, dann selbst prüfen'], ['tippen', 'Begriff eintippen']], o.ans)}<small class="ln-opt-s">${o.ans === 'tippen' ? 'Eingetippt wird bei Karten, auf denen der Begriff gesucht ist: Erklärung → Begriff, Hör- und Notenfelder.' : 'Nach dem Umdrehen hakst du ab, welche Kernmerkmale du genannt hast. Zwei von drei zählen als gewusst.'}</small></div>
+    <div class="ln-opt"><span class="ln-opt-l">Umfang</span>${lnSeg('size', [[10, '10 Karten'], [20, '20 Karten'], [0, 'alle']], o.size)}</div>
+    <div class="ln-actions"><button type="button" class="btn ghost" data-act="ln-code">Lernstand mitnehmen</button>${hasPairs ? '<button type="button" class="btn" data-act="ln-ab">Abgrenzen: A oder B?</button>' : ''}<button type="button" class="btn primary big" data-act="ln-start" data-primary${count ? '' : ' disabled'}>${count ? `Los geht’s · ${count === 1 ? 'eine Karte' : count + ' Karten'}` : 'Keine Karten in dieser Auswahl'}</button></div>
+    <p class="ln-keys"><button type="button" class="btn ghost sm" data-act="ln-reset">Lernstand dieses Pakets löschen</button></p>
+  </section>`;
+}
+function kindLine(t, extra) { return `<div class="ln-kind">${esc(KIND_LABEL[t.kind] || 'Begriff')}${t.family ? ` · ${esc(t.family)}` : ''}<span class="kind-diff">${DIFF_LABEL[t.diff]}</span>${extra || ''}</div>`; }
+function lnInputHTML(it) {
+  const r = learn.res;
+  return `<div class="ln-type"><input id="ln-input" class="ln-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Begriff eintippen" aria-label="Begriff eintippen"${r ? ` value="${esc(r.typed)}" disabled` : ''}>${r ? '' : '<button type="button" class="btn primary" data-act="ln-check">Prüfen</button>'}</div>`;
+}
+function frontHTML(card, it) {
+  if (it.dir === 'paar') return `<div class="ln-kind">Zwei Begriffe, die man leicht verwechselt</div><h2 class="ln-term ln-pair"><span>${esc(card.a.term)}</span><i>oder</i><span>${esc(card.b.term)}</span></h2><p class="ln-q">Was haben beide gemeinsam, und woran unterscheidet man sie? Erst überlegen, dann umdrehen.</p>`;
+  const t = card.t;
+  if (it.dir === 'medium') {
+    const m = t.kind === 'hoeren' ? `<div class="media"><button type="button" class="btn play" data-act="ln-play">${playSVG()} Abspielen</button></div>` : mediaHTML(t);
+    return `<div class="ln-kind">${t.kind === 'hoeren' ? 'Hörfeld' : 'Notenbild'}${t.family ? ` · ${esc(t.family)}` : ''}</div><h2 class="ln-term">${t.kind === 'hoeren' ? 'Was hörst du?' : esc(t.label || 'Was siehst du?')}</h2>${m}${learnTyping(it) ? lnInputHTML(it) : '<p class="ln-q">Wie heißt der Begriff? Erst überlegen, dann umdrehen.</p>'}`;
+  }
+  if (it.dir === 'rueck') return `<div class="ln-kind">Gesucht ist der Begriff${t.family ? ` · ${esc(t.family)}` : ''}<span class="kind-diff">${DIFF_LABEL[t.diff]}</span></div><p class="ln-expl ln-big">${esc(t.expl)}</p>${learnTyping(it) ? lnInputHTML(it) : '<p class="ln-q">Welcher Begriff ist gemeint? Erst überlegen, dann umdrehen.</p>'}`;
+  return `${kindLine(t)}<h2 class="ln-term">${esc(t.term)}</h2><p class="ln-q">${t.zeig ? 'Erkläre den Begriff oder mach ihn vor. Was ist es, woran erkennt man es? Dann umdrehen.' : 'Erkläre den Begriff laut oder in Gedanken. Was ist es, woran erkennt man es? Dann umdrehen.'}</p>`;
+}
+function tickRows(rows) {
+  return `<div class="ln-check"><div class="ln-check-h">Was hattest du genannt?</div>${rows.map((r, i) => `<button type="button" class="ln-tick${learn.ticks[i] ? ' on' : ''}" data-act="ln-tick" data-i="${i}" aria-pressed="${!!learn.ticks[i]}"><span class="ln-box-ck" aria-hidden="true">${learn.ticks[i] ? '✓' : ''}</span><span>${r}</span></button>`).join('')}</div>`;
+}
+function backHTML(card, it) {
+  const g = glossCtx(card);
+  if (it.dir === 'paar') {
+    const q = card.q, common = typeof pairCommon === 'function' ? pairCommon(card.a, card.b) : '';
+    return `<div class="ln-kind">Gemeinsamkeit und Unterschied</div><h2 class="ln-term ln-pair"><span>${esc(card.a.term)}</span><i>oder</i><span>${esc(card.b.term)}</span></h2>
+      <p class="ln-expl">${glossHTML(q[2], g)}</p>
+      ${tickRows([`Gemeinsamkeit${common ? `: ${esc(common)}` : ''}`, `<b>${esc(card.a.term)}:</b> ${esc(q[3] || '')}`, `<b>${esc(card.b.term)}:</b> ${esc(q[4] || '')}`])}`;
   }
   const t = card.t;
-  return `<div class="ln-kind">${esc(KIND_LABEL[t.kind] || 'Begriff')}${t.family ? ` · ${esc(t.family)}` : ''}</div><h2 class="ln-term">${esc(t.term)}</h2><p class="ln-expl">${esc(t.expl)}</p>
-    ${t.feats.length ? `<ul class="ln-feats">${t.feats.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` : ''}
-    ${t.hints.beispiel ? `<p class="ln-ex"><b>Beispiel</b> ${esc(t.hints.beispiel)}</p>` : ''}
+  const body = `<p class="ln-expl">${glossHTML(t.expl, g)}</p>
+    ${t.hints.beispiel ? `<p class="ln-ex"><b>Beispiel</b> ${glossHTML(t.hints.beispiel, g)}</p>` : ''}
     ${t.zeig ? `<p class="ln-ex"><b>Zeigen</b> ${esc(t.zeig.auftrag)}</p>` : ''}`;
+  if (learnTyping(it) && learn.res) {
+    const r = learn.res;
+    const verdict = r.ok ? `<div class="ln-res ok">${r.exact ? 'Richtig' : 'Richtig, kleine Abweichung in der Schreibweise'}</div>`
+      : `<div class="ln-res no">Gesucht war <b>${esc(t.term)}</b>.${r.other ? (lnNorm(r.typed) === lnNorm(r.other) ? ` „${esc(r.other)}“ ist ein eigener Begriff aus dem Paket.` : ` Deine Eingabe passt eher zu „${esc(r.other)}“, einem anderen Begriff aus dem Paket.`) : ''}</div>`;
+    return `${kindLine(t)}<h2 class="ln-term">${esc(t.term)}</h2>${verdict}${body}${t.feats.length ? `<ul class="ln-feats">${t.feats.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` : ''}`;
+  }
+  if (it.dir === 'vor' && t.feats.length) return `${kindLine(t)}<h2 class="ln-term">${esc(t.term)}</h2>${body}${tickRows(t.feats.map((f) => esc(f)))}`;
+  return `${kindLine(t)}<h2 class="ln-term">${esc(t.term)}</h2>${body}${t.feats.length ? `<ul class="ln-feats">${t.feats.map((f) => `<li>${glossHTML(f, g)}</li>`).join('')}</ul>` : ''}`;
+}
+function cardActionsHTML(card, it) {
+  if (!learn.flipped) {
+    if (learnTyping(it)) return '<p class="ln-keys kbd-only">Mit der Eingabetaste prüfen.</p>';
+    return '<div class="ln-actions"><button type="button" class="btn primary big" data-act="ln-flip" data-primary>Umdrehen</button></div>';
+  }
+  const back = '<button type="button" class="btn ghost" data-act="ln-flipback">Vorderseite</button>';
+  if (learnTyping(it) && learn.res) {
+    return `<div class="ln-actions">${back}${learn.res.ok ? '' : '<button type="button" class="btn" data-act="ln-override">Zählt doch</button>'}<button type="button" class="btn primary big" data-act="ln-next" data-primary>Weiter</button></div>`;
+  }
+  const need = learnNeed(card, it);
+  if ((it.dir === 'vor' && need) || it.dir === 'paar') {
+    const have = learn.ticks.filter(Boolean).length, ok = have >= need;
+    return `<div class="ln-verdict${ok ? ' ok' : ''}">${have} von ${it.dir === 'paar' ? 3 : card.t.feats.length} · ${ok ? 'zählt als gewusst' : it.dir === 'paar' ? 'alle drei Punkte nötig' : `${need} nötig`}</div><div class="ln-actions">${back}<button type="button" class="btn primary big" data-act="ln-next" data-primary>Weiter</button></div>`;
+  }
+  return `<div class="ln-actions">${back}<button type="button" class="btn big" data-act="ln-no">Nicht gewusst</button><button type="button" class="btn primary big" data-act="ln-ok" data-primary>Gewusst</button></div>`;
+}
+function cardsHTML() {
+  const it = learnItem(), card = learnCardNow();
+  if (!it || !card) return '';
+  const pos = `Karte ${learn.i + 1} von ${learn.queue.length}${it.retry ? ' · noch einmal' : ''}`;
+  const body = learn.flipped ? backHTML(card, it) : frontHTML(card, it), glossUsed = /class="ln-gl[" ]/.test(body);
+  return `<div class="ln-pos">${pos}</div><div class="ln-bar"><i style="width:${Math.round(100 * learn.i / Math.max(1, learn.queue.length))}%"></i></div>
+    <div class="ln-card${learn.flipped ? ' back' : ''}">${body}</div>
+    ${learn.flipped ? glossBoxHTML() : ''}
+    ${cardActionsHTML(card, it)}
+    <p class="ln-keys"><span class="kbd-only">${learn.flipped ? 'Leertaste dreht zurück, Ziffern haken ab, Eingabetaste geht weiter.' : 'Leertaste dreht um.'}</span>${learn.flipped && glossUsed ? ' Unterstrichene Wörter erklären sich beim Antippen.' : ''}</p>`;
+}
+function endHTML(p) {
+  const d = learn.done, c = learnCounts(p);
+  const wrong = learn.wrong.map((k) => learnFindCard(k)).filter(Boolean).map((cd) => cd.kind === 'pair' ? `${cd.a.term} oder ${cd.b.term}` : cd.t.term);
+  return `<div class="ln-card ln-end"><h2 class="ln-term">Durchgang geschafft</h2>
+    <p class="ln-expl">${d.ok} von ${d.ok + d.no} Karten gewusst.${d.no ? ` ${d.no === 1 ? 'Eine Karte liegt' : d.no + ' Karten liegen'} jetzt in Fach 1.` : ''}</p>
+    ${wrong.length ? `<p class="ln-ex"><b>Noch einmal ansehen</b> ${esc(wrong.join(' · '))}</p>` : ''}
+    ${lnBoxesHTML(c)}
+    <p class="step-sub">${c.due ? `Heute ${c.due === 1 ? 'ist noch eine Karte' : `sind noch ${c.due} Karten`} fällig.` : 'Für heute ist nichts mehr fällig. Die nächsten Karten kommen in den nächsten Tagen wieder.'}</p>
+    <div class="ln-actions">${c.due ? `<button type="button" class="btn primary big" data-act="ln-again-due" data-primary>Fällige üben (${c.due})</button>` : ''}<button type="button" class="btn big" data-act="ln-setup">Andere Auswahl</button><button type="button" class="btn ghost" data-act="ln-home">Startseite</button></div></div>`;
+}
+function abHTML() {
+  const ab = learn.ab, it = ab.items[ab.i];
+  const btn = (side, t) => {
+    const st = !ab.pick ? '' : side === it.side ? ' right' : side === ab.pick ? ' wrong' : '';
+    return `<button type="button" class="ln-ab-btn${st}" data-act="ln-ab-pick" data-v="${side}"${ab.pick ? ' disabled' : ''}>${esc(t.term)}</button>`;
+  };
+  const common = typeof pairCommon === 'function' ? pairCommon(it.a, it.b) : '';
+  const fb = ab.pick ? `<div class="ln-res ${ab.pick === it.side ? 'ok' : 'no'}">${ab.pick === it.side ? 'Richtig' : `Das gehört zu <b>${esc((it.side === 'a' ? it.a : it.b).term)}</b>`}</div>
+      <p class="ln-ex">${common ? `<b>Gemeinsam</b> ${esc(common)}. ` : ''}${esc(it.q[2])}</p>` : '';
+  return `<div class="ln-pos">Abgrenzen · ${ab.i + 1} von ${ab.items.length}</div><div class="ln-bar"><i style="width:${Math.round(100 * ab.i / ab.items.length)}%"></i></div>
+    <div class="ln-card"><div class="ln-kind">${it.what === 'Merkmal' ? 'Zu welchem Begriff gehört dieses Merkmal?' : 'Welcher Begriff ist hier erklärt?'}</div>
+      <p class="ln-expl ln-big">${esc(it.text)}</p>
+      <div class="ln-ab">${btn('a', it.a)}<span>oder</span>${btn('b', it.b)}</div>${fb}</div>
+    <div class="ln-actions">${ab.pick ? '<button type="button" class="btn primary big" data-act="ln-ab-next" data-primary>Weiter</button>' : ''}</div>
+    <p class="ln-keys kbd-only">Taste A oder 1 und B oder 2 wählen, Eingabetaste geht weiter.</p>`;
+}
+function abEndHTML() {
+  const ab = learn.ab;
+  const names = ab.wrong.map((k) => learnFindCard(k)).filter(Boolean).map((cd) => `${cd.a.term} oder ${cd.b.term}`);
+  return `<div class="ln-card ln-end"><h2 class="ln-term">${ab.ok} von ${ab.items.length} richtig</h2>
+    <p class="ln-expl">${names.length ? 'Verwechselt hast du' : 'Keine Verwechslung.'}${names.length ? ` ${esc(names.join(' · '))}. Diese Paare liegen jetzt in Fach 1.` : ''}</p>
+    <div class="ln-actions"><button type="button" class="btn primary big" data-act="ln-ab" data-primary>Noch eine Runde</button><button type="button" class="btn big" data-act="ln-setup">Zur Auswahl</button></div></div>`;
 }
 function renderLearn() {
   const el = $('#v-learn'); if (!el || !learn) return;
   const p = findPack(learn.packId); if (!p) { el.innerHTML = ''; return; }
-  const marks = learnMarks(p.id), all = learnCards(p);
-  const nOk = all.filter((c) => marks[c.key] === 'ok').length, nNo = all.filter((c) => marks[c.key] === 'no').length;
-  const head = `<header class="ln-top"><button type="button" class="btn ghost" data-act="ln-back">${iconArrow(-1)}Startseite</button><div class="ln-title">${logoSVG('logo-sm')}<span><b>Karten üben</b><small>${esc(p.title)}</small></span></div><div class="ln-stat"><span class="ok">${nOk} kann ich</span><span class="no">${nNo} noch nicht</span><span>${all.length - nOk - nNo} offen</span></div></header>`;
-  const card = learnCard();
-  let body;
-  if (!card) {
-    const d = learn.done;
-    const noLeft = all.filter((c) => marks[c.key] === 'no').length;
-    body = `<div class="ln-card ln-end"><h2 class="ln-term">${learn.order.length ? 'Durch!' : 'Keine Karten'}</h2>
-      ${learn.order.length ? `<p class="ln-expl">${d.ok} von ${learn.order.length} Karten kannst du${d.no ? `, ${d.no} kommen noch einmal` : ''}.</p>` : '<p class="ln-expl">Alle Karten sind als „kann ich“ markiert.</p>'}
-      <div class="ln-bar"><i style="width:${all.length ? Math.round(100 * nOk / all.length) : 0}%"></i></div><p class="step-sub">${nOk} von ${all.length} Karten im Paket sitzen.</p>
-      <div class="ln-actions">${noLeft ? `<button type="button" class="btn primary big" data-act="ln-again-no" data-primary>${noLeft === 1 ? 'Die eine Karte' : `Die ${noLeft} Karten`} noch einmal</button>` : ''}<button type="button" class="btn big" data-act="ln-again">Alle Karten von vorn</button><button type="button" class="btn ghost" data-act="ln-reset">Stand löschen</button></div></div>`;
-  } else {
-    const pos = `${learn.i + 1} von ${learn.order.length}${learn.onlyNo ? ' · Wiederholung' : ''}`;
-    body = `<div class="ln-pos">${pos}</div><div class="ln-bar"><i style="width:${Math.round(100 * learn.i / Math.max(1, learn.order.length))}%"></i></div>
-      <div class="ln-card${learn.flipped ? ' back' : ''}">${learn.flipped ? learnBackHTML(card) : learnFrontHTML(card)}</div>
-      <div class="ln-actions">${learn.flipped
-        ? `<button type="button" class="btn big" data-act="ln-no">Noch nicht</button><button type="button" class="btn primary big" data-act="ln-ok" data-primary>Kann ich</button>`
-        : `<button type="button" class="btn primary big" data-act="ln-flip" data-primary>Umdrehen</button>`}</div>
-      <p class="ln-keys">Leertaste dreht um, Pfeil rechts „kann ich“, Pfeil links „noch nicht“.</p>`;
+  let body = '';
+  if (learn.view === 'setup') body = setupHTML(p);
+  else if (learn.view === 'cards') body = cardsHTML() || endHTML(p);
+  else if (learn.view === 'end') body = endHTML(p);
+  else if (learn.view === 'ab') body = abHTML();
+  else if (learn.view === 'abend') body = abEndHTML();
+  el.innerHTML = `<div class="ln">${learnHead(p)}${body}</div>`;
+  const inp = document.getElementById('ln-input');
+  if (inp && !inp.disabled) {
+    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); learnCheckTyped(); } });
+    try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); }
   }
-  el.innerHTML = `<div class="ln">${head}${body}</div>`;
 }
+
+/* ---------- Tastatur ---------- */
 function learnKey(e) {
   if (!learn) return false;
   const tag = (document.activeElement && document.activeElement.tagName) || '';
   if (/INPUT|TEXTAREA|SELECT/.test(tag)) return false;
-  const card = learnCard();
-  if (e.key === 'Escape') { show('start'); return true; }
-  if (!card) return false;
-  if (e.key === ' ' || e.key === 'Enter') { if (!learn.flipped) { learn.flipped = true; renderLearn(); } return true; }
-  if (e.key === 'ArrowRight') { if (learn.flipped) learnAnswer('ok'); else { learn.flipped = true; renderLearn(); } return true; }
-  if (e.key === 'ArrowLeft') { if (learn.flipped) learnAnswer('no'); return true; }
+  if (e.key === 'Escape') { if (learn.view === 'setup') { LEARN_ACTIONS['ln-home'](); } else { learn.view = 'setup'; renderLearn(); } return true; }
+  if (learn.view === 'ab') {
+    const k = e.key.toLowerCase();
+    if (k === 'a' || k === '1') { abPick('a'); return true; }
+    if (k === 'b' || k === '2') { abPick('b'); return true; }
+    if (e.key === 'Enter' || e.key === ' ') { abNext(); return true; }
+    return false;
+  }
+  if (learn.view !== 'cards') return false;
+  const it = learnItem(), card = learnCardNow(); if (!it || !card) return false;
+  if (e.key === ' ') { if (learnTyping(it) && !learn.res) return false; learn.flipped = !learn.flipped; renderLearn(); return true; }
+  if (!learn.flipped) { if (e.key === 'Enter' || e.key === 'ArrowRight') { if (!learnTyping(it)) { learn.flipped = true; renderLearn(); } return true; } return false; }
+  if (/^[1-3]$/.test(e.key) && $('.ln-tick')) { LEARN_ACTIONS['ln-tick']({ dataset: { i: String(Number(e.key) - 1) } }); return true; }
+  if (e.key === 'Enter') { const b = $('#v-learn [data-act="ln-next"]') || $('#v-learn [data-act="ln-ok"]'); if (b) b.click(); return true; }
+  if (e.key === 'ArrowRight') { const b = $('#v-learn [data-act="ln-ok"]') || $('#v-learn [data-act="ln-next"]'); if (b) b.click(); return true; }
+  if (e.key === 'ArrowLeft') { const b = $('#v-learn [data-act="ln-no"]'); if (b) { b.click(); return true; } }
   return false;
 }
+
 const LEARN_ACTIONS = {
+  'ln-opt': (el) => {
+    if (!learn) return;
+    const k = el.dataset.k, v = el.dataset.v;
+    learn.opt[k] = k === 'size' ? Number(v) : v;
+    learnOptSave(); renderLearn();
+  },
+  'ln-start': () => { if (learn) learnStart(); },
   'ln-flip': () => { if (learn) { learn.flipped = true; Sound.tick(); renderLearn(); } },
-  'ln-ok': () => learnAnswer('ok'),
-  'ln-no': () => learnAnswer('no'),
-  'ln-again': () => { if (learn) { learnDeck(false); renderLearn(); } },
-  'ln-again-no': () => { if (learn) { learnDeck(true); renderLearn(); } },
-  'ln-reset': () => { if (!learn) return; confirmBox('Den Übungsstand für dieses Paket löschen?', 'Löschen', () => { const all = learnStore(); delete all[learn.packId]; store.set(KEY_LEARN, all); closeModal(); learnDeck(false); renderLearn(); }); },
-  'ln-back': () => { learn = null; startStep = 1; carouselFocus = true; show('start'); },
-  'ln-play': () => { const card = learnCard(); const t = card && card.t; if (!t || !t.media) return; if (t.media.type === 'synth') Sound.play(t.media.id); else if (t.media.type === 'audio') Sound.playSrc(t.media.src); }
+  'ln-flipback': () => { if (learn) { learn.flipped = false; renderLearn(); } },
+  'ln-tick': (el) => { if (!learn) return; const i = Number(el.dataset.i); learn.ticks[i] = !learn.ticks[i]; renderLearn(); },
+  'ln-next': () => {
+    const it = learnItem(), card = learnCardNow(); if (!it || !card) return;
+    if (learnTyping(it) && learn.res) { learnCommit(!!learn.res.ok); return; }
+    learnCommit(learn.ticks.filter(Boolean).length >= learnNeed(card, it));
+  },
+  'ln-override': () => { if (learn && learn.res) { learn.res.ok = true; learnCommit(true); } },
+  'ln-check': () => learnCheckTyped(),
+  'ln-ok': () => learnCommit(true),
+  'ln-no': () => learnCommit(false),
+  'ln-gloss': (el) => { if (!learn) return; learn.gloss = learn.gloss === el.dataset.k ? null : el.dataset.k; renderLearn(); },
+  'ln-gloss-close': () => { if (learn) { learn.gloss = null; renderLearn(); } },
+  'ln-again-due': () => { if (!learn) return; learn.opt.pick = 'faellig'; learnOptSave(); learnStart(); },
+  'ln-setup': () => { if (learn) { learn.view = 'setup'; renderLearn(); } },
+  'ln-ab': () => { if (learn) abStart(); },
+  'ln-ab-pick': (el) => abPick(el.dataset.v),
+  'ln-ab-next': () => abNext(),
+  'ln-code': () => { if (!learn) return; modalCtx = { learnCode: true }; openModal(codeModalHTML(), 'ln-code-modal'); },
+  'ln-code-copy': () => { if (!learn) return; copyText(learnCodeMake(findPack(learn.packId)), 'Code kopiert.'); },
+  'ln-code-load': () => {
+    const inp = document.getElementById('ln-code-in'), err = document.getElementById('ln-code-err');
+    const r = learnCodeRead(inp ? inp.value : '');
+    if (r.err) { if (err) err.textContent = r.err; return; }
+    if (learn && r.pack.id !== learn.packId) { if (err) err.textContent = `Der Code gehört zum Paket „${r.pack.title}“. Öffne dort „Karten üben“.`; return; }
+    learnCodeApply(r); closeModal(); toast('Lernstand übernommen.'); renderLearn();
+  },
+  'ln-reset': () => {
+    if (!learn) return;
+    confirmBox('Den Lernstand für dieses Paket löschen? Alle Karten liegen dann wieder bei „Neu“.', 'Löschen', () => {
+      karteiWrite(learn.packId, (k) => { k.cards = {}; });
+      const old = store.get(KEY_LEARN, {}); if (old && old[learn.packId]) { delete old[learn.packId]; store.set(KEY_LEARN, old); }
+      closeModal(); renderLearn();
+    });
+  },
+  'ln-back': () => { if (!learn) return; if (learn.view === 'setup') LEARN_ACTIONS['ln-home'](); else { learn.view = 'setup'; renderLearn(); } },
+  'ln-home': () => { learn = null; startStep = 1; carouselFocus = true; show('start'); },
+  'rep-kartei': () => repeatToKartei(),
+  'ln-play': () => { const card = learnCardNow(); const t = card && card.t; if (!t || !t.media) return; if (t.media.type === 'synth') Sound.play(t.media.id); else if (t.media.type === 'audio') Sound.playSrc(t.media.src); }
 };
 
 /* Vierklang · Teil 11: Album
@@ -22508,7 +23018,7 @@ const TEACHER_TEXT = {
     <p class="tq-lead">Vierklang ist forschungsbasiert gestaltet, eine eigene Wirksamkeitsstudie gibt es nicht. Die Regeln greifen Lernaktivitäten auf, die in Metaanalysen gut untersucht sind, meist in anderen Fächern und mit älteren Lernenden. Die Übertragung auf den Musikunterricht ist begründet, geprüft ist sie nicht.</p>
     <ul class="tq-list">
       <li><b>In eigenen Worten erklären</b> (Erklärrunde, Konter, Solo). Sich selbst und anderen etwas zu erklären fördert das Verstehen, besonders, wenn das Erklären angekündigt ist und ein Gegenüber nachfragt (Bisra u. a. 2018; Kobayashi 2019). Bloßes Aufsagen bringt wenig (Roscoe und Chi 2007). Deshalb verlangen „Mit Beispiel“, „erläutern“ und der Vernetzungszug mehr als einen Merksatz.</li>
-      <li><b>Abrufen und verteilt wiederholen</b> (jeder Zug, „Karten üben“). Abruf aus dem Gedächtnis sichert Wissen besser als erneutes Lesen, auch im Klassenzimmer (Yang u. a. 2021), verteiltes Üben besser als geballtes (Cepeda u. a. 2006).</li>
+      <li><b>Abrufen und verteilt wiederholen</b> (jeder Zug, „Karten üben“). Abruf aus dem Gedächtnis sichert Wissen besser als erneutes Lesen, auch im Klassenzimmer (Yang u. a. 2021), verteiltes Üben besser als geballtes (Cepeda u. a. 2006). Die Fächer von „Karten üben“ folgen der Lernkartei nach Leitner (1972).</li>
       <li><b>Kriterien sichtbar machen, gegenseitig prüfen</b> (Prüfkarte, Schätzung im Duell). Rückmeldung unter Lernenden verbessert die Leistung im Mittel (Double u. a. 2020). Sie ist nur so gut wie die Kriterien, daher Prüfkarte und Schiedsregel.</li>
       <li><b>Abgrenzen durch Vergleich</b> (Abgrenzungsfelder, Operator „vergleichen“). Fälle zu vergleichen wirkt besser als Einzelfälle, besonders mit Blick auf die Gemeinsamkeit (Alfieri u. a. 2013). Abgrenzungsfelder verlangen darum zuerst die Gemeinsamkeit, dann die beiden Unterscheidungsmerkmale.</li>
       <li><b>Zeigen und handeln</b> (Zeigefelder). Selbst ausgeführte Handlungen bleiben besser im Gedächtnis als nur verbal gelernte (Roberts u. a. 2022). Musikpädagogisch ist Bewegung ein Weg vom Tun zum Begriff (Juntunen und Hyvönen 2004).</li>
@@ -22532,6 +23042,7 @@ const TEACHER_TEXT = {
       <li>Double, K. S., McGrane, J. A. und Hopfenbeck, T. N. (2020). The impact of peer assessment on academic performance. A meta-analysis of control group studies. Educational Psychology Review.</li>
       <li>Gruhn, W. (1998, Neuausgabe 2014). Der Musikverstand. Neurobiologische Grundlagen des musikalischen Denkens, Hörens und Lernens. Olms.</li>
       <li>Juntunen, M.-L. und Hyvönen, L. (2004). Embodiment in musical knowing. How body movement facilitates learning within Dalcroze Eurhythmics. British Journal of Music Education.</li>
+      <li>Leitner, S. (1972). So lernt man lernen.</li>
       <li>Kobayashi, K. (2019). Learning by preparing-to-teach and teaching. A meta-analysis. Japanese Psychological Research.</li>
       <li>Roberts, B. R. T., MacLeod, C. M. und Fernandes, M. A. (2022). The enactment effect. A systematic review and meta-analysis of behavioral, neuroimaging, and patient studies. Psychological Bulletin.</li>
       <li>Roscoe, R. D. und Chi, M. T. H. (2007). Understanding tutor learning. Knowledge-building and knowledge-telling in peer tutors’ explanations and questions. Review of Educational Research.</li>
@@ -22570,7 +23081,7 @@ const TEACHER_TEXT = {
       <li><b>Sprachstufe.</b> Regeln, Karten und Druck gibt es einfach, mittel und für die Oberstufe. Für eine sprachlich schwache Klasse 8 kannst du die einfache Fassung wählen, der Inhalt bleibt derselbe.</li>
       <li><b>Zeigefelder.</b> Wer sich mündlich schwertut, kann klatschen, singen oder zeichnen. Das sind vollwertige Felder mit eigener Beobachtungskarte.</li>
       <li><b>Paket anpassen.</b> Jedes Paket lässt sich in der Werkstatt kürzen, erweitern oder umformulieren. Für eine Lerngruppe mit Förderbedarf: Begriffe streichen, Erklärungen vereinfachen, Zeigeaufträge ergänzen.</li>
-      <li><b>Karten üben.</b> Die Lernkartei zum Paket ist der Weg für alle, die vor dem Spiel noch Sicherheit brauchen. Sie läuft auf jedem Handy.</li>
+      <li><b>Karten üben.</b> Die Lernkartei zum Paket arbeitet mit Fächern: Neue und falsch beantwortete Karten liegen in Fach 1, richtig beantwortete kommen nach 3 Tagen, einer Woche und vier Wochen wieder. Wählbar sind die Richtung (Begriff zur Erklärung oder umgekehrt), der Selbstcheck an den Kernmerkmalen oder das Eintippen des Begriffs und „A oder B?“ für Abgrenzungspaare. Unterstrichene Fachwörter auf der Rückseite erklären sich beim Antippen. Der Lernstand lässt sich als Code auf ein anderes Gerät mitnehmen, und die Liste „Zum Wiederholen“ am Spielende wandert auf Knopfdruck in Fach 1. Das läuft auf jedem Handy.</li>
     </ul>`,
   bewertung: `
     <p class="tq-lead">Das Spiel ist keine Leistungskontrolle. Es liefert aber Beobachtungen, die sich für formatives Feedback eignen.</p>
