@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Vierklang: Erklärspiel für den Musikunterricht. Fachbegriffe auf dem Würfelbrett erklären, an der Tafel, zu zweit, allein gegen den Klangbot oder als Druckversion. 65 Pakete für Klasse 5 bis 12, eigene Pakete in der Werkstatt.">
+<meta name="description" content="Vierklang: Erklärspiel für den Musikunterricht. Fachbegriffe auf dem Würfelbrett erklären, an der Tafel, zu zweit, allein gegen den Klangbot, als Kreuzworträtsel oder als Druckversion. 66 Pakete für Klasse 5 bis 12, eigene Pakete in der Werkstatt.">
 <meta name="color-scheme" content="light">
 <title>Vierklang · Erklärspiel für den Musikunterricht</title>
 <script defer src="lib/jspdf.umd.min.js"></script>
@@ -1486,6 +1486,161 @@ select.field { appearance: auto; }
   .note-box { padding: 10px 12px; }
 }
 
+/* ---------- Rätsel: Spielform, Einrichtung, Gitter, Lösen ---------- */
+.md-row { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 1240px) { .md-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .md-row { grid-template-columns: 1fr 1fr; } .md-row > .md:last-child:nth-child(odd) { grid-column: 1 / -1; } }
+
+/* Einrichtung */
+.kr-sum0 { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+.kr-setup { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; align-items: start; }
+.kr-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.kr-box { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 16px 18px; border-radius: 20px; background: #FFFFFF !important; box-shadow: 0 5px 0 #DCDFF0 !important; }
+.kr-box h3 { margin: 0; font-family: 'Vierklang Display', 'Lilita One', 'Trebuchet MS', system-ui, sans-serif; font-weight: 400; font-size: 1.2rem; line-height: 1.15; color: #23264F !important; }
+.kr-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.kr-l { min-width: 92px; font-weight: 800; color: #23264F !important; }
+.kr-note { margin: 0; color: #5A5F86 !important; font-size: 0.9rem; line-height: 1.45; }
+.kr-warn { margin: 0; padding: 8px 12px; border-radius: 10px; background: #FFF3D6 !important; color: #5A4300 !important; font-weight: 700; font-size: 0.9rem; }
+.kr-chips { display: flex; flex-wrap: wrap; gap: 6px; max-height: 268px; overflow: auto; padding: 2px; }
+.kr-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 5px 12px; border-radius: 999px; border: 1.5px solid #D3D6EA !important; background: #F4F6FB !important; color: #3A3F7A !important; font: inherit; font-weight: 700; font-size: 0.92rem; cursor: pointer; }
+.kr-chip:hover { border-color: #2B2E8C !important; }
+.kr-chip.on { background: #2B2E8C !important; border-color: #2B2E8C !important; color: #FFFFFF !important; }
+.kr-chip:focus-visible, .kr-c:focus-visible, .kr-li:focus-visible, .kr-step:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 2px; }
+.kr-chip-m { padding: 1px 7px; border-radius: 999px; background: #6A3BB5 !important; color: #FFFFFF !important; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.04em; }
+.kr-chip.on .kr-chip-m { background: #FFB020 !important; color: #23264F !important; }
+.kr-solsel { max-width: 100%; min-height: 40px; }
+.kr-box .sw { padding: 8px 0; }
+.kr-prev-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.kr-media-list { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.kr-media-list .btn .ic { width: 1em; height: 1em; }
+.kr-media-list .btn .ic-fill { fill: #6A3BB5 !important; }
+.kr-media-list small { flex-basis: 100%; color: #5A5F86 !important; }
+.kr-cta .btn.ghost .ti { color: #4C4FD8 !important; }
+@media (max-width: 900px) { .kr-setup { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .kr-sum0 { grid-template-columns: minmax(0, 1fr); } .kr-l { min-width: 0; flex-basis: 100%; } }
+
+/* Gitter */
+.kr-board { container-type: inline-size; width: 100%; min-width: 0; }
+.kr-grid { display: grid; grid-template-columns: repeat(var(--kr-w), minmax(0, 1fr)); width: min(100%, calc(var(--kr-w) * 46px)); margin: 0 auto; padding: 1px 0 0 1px; }
+.kr-grid.prev { width: min(100%, calc(var(--kr-w) * 32px)); }
+.kr-x { aspect-ratio: 1; }
+.kr-c { position: relative; aspect-ratio: 1; min-width: 0; display: grid; place-items: center; margin: -1px 0 0 -1px; padding: 0; border: 1.5px solid #23264F !important; border-radius: 0; background: #FFFFFF !important; color: #23264F !important; font: inherit; line-height: 1; cursor: pointer; }
+.kr-grid.prev .kr-c { cursor: default; border-width: 1.2px; }
+.kr-c b { position: relative; z-index: 1; font-weight: 900; font-size: min(24px, calc(100cqw / var(--kr-w) * 0.54)); line-height: 1; color: #23264F !important; }
+.kr-n { position: absolute; z-index: 2; top: 1px; left: 2px; font-style: normal; font-weight: 800; font-size: max(7px, min(11px, calc(100cqw / var(--kr-w) * 0.27))); line-height: 1; color: #4A4F7A !important; }
+.kr-s { position: absolute; z-index: 2; right: 2px; bottom: 1px; font-style: normal; font-weight: 900; font-size: max(7px, min(10px, calc(100cqw / var(--kr-w) * 0.24))); line-height: 1; color: #A86A00 !important; }
+.kr-c.sol::before { content: ""; position: absolute; inset: 13%; border-radius: 50%; border: 1.5px solid #F4A51C !important; background: #FFF4D6 !important; }
+.kr-c.act { background: #E6E7FB !important; }
+.kr-c.lock b { color: #1F6A3E !important; }
+.kr-c.first b { color: #6A3BB5 !important; }
+.kr-c.conf { background: #FBE2E4 !important; border-color: #D9434E !important; z-index: 1; }
+.kr-c.wb-r { box-shadow: inset -3px 0 0 #23264F !important; }
+.kr-c.wb-b { box-shadow: inset 0 -3px 0 #23264F !important; }
+.kr-c.wb-r.wb-b { box-shadow: inset -3px 0 0 #23264F, inset 0 -3px 0 #23264F !important; }
+
+/* Lösen */
+#v-cross { background: #F4F6FB !important; overflow: auto; }
+.ln.kr { max-width: 1120px; }
+.kr-top { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
+.kr-top-row { display: flex; align-items: center; gap: 10px 14px; flex: 1 1 360px; min-width: 0; }
+.kr-steps { flex: 0 0 auto; }
+.kr-top-row .ln-title { min-width: 0; }
+.kr-top-row .ln-title small { overflow-wrap: anywhere; }
+.kr-info { margin-left: auto; }
+.kr .ln-actions .btn.big { flex: 0 1 auto; min-width: 220px; }
+.kr-steps { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; order: 2; }
+.kr-step { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 4px 12px 4px 5px; border-radius: 999px; border: 1.5px solid #D3D6EA !important; background: #FFFFFF !important; color: #3A3F7A !important; font: inherit; font-weight: 800; font-size: 0.88rem; cursor: pointer; }
+.kr-step span { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #EEF0FA !important; color: #3A3F7A !important; font-weight: 900; }
+.kr-step.on { background: #2B2E8C !important; border-color: #2B2E8C !important; color: #FFFFFF !important; }
+.kr-step.on span { background: #FFB020 !important; color: #23264F !important; }
+.kr-lead { margin: 0; color: #3A3E6B !important; font-size: 1rem; line-height: 1.45; }
+.kr-lead b { color: #23264F !important; }
+.kr-play { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(300px, 1fr); grid-template-areas: "board act" "board side"; gap: 16px; align-items: start; }
+.kr-play .kr-board { grid-area: board; }
+.kr-play .kr-act { grid-area: act; }
+.kr-play .kr-side { grid-area: side; }
+.kr-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.kr-act { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 16px; border-radius: 20px; background: #FFFFFF !important; border: 1px solid #DCDFF0 !important; box-shadow: 0 10px 28px rgba(35, 38, 79, 0.08) !important; }
+.kr-act-h { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.kr-num { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; padding: 2px 9px; border-radius: 999px; background: #2B2E8C !important; color: #FFFFFF !important; font-weight: 900; font-size: 0.88rem; white-space: nowrap; }
+.kr-len { color: #5A5F86 !important; font-weight: 700; font-size: 0.88rem; }
+.kr-tag { padding: 2px 9px; border-radius: 999px; font-size: 0.78rem; font-weight: 800; }
+.kr-tag.ok { background: #E1F2E4 !important; color: #1F6A3E !important; }
+.kr-tag.shown { background: #FFF3D6 !important; color: #8A5A00 !important; }
+.kr-clue { margin: 0; font-size: 1.06rem; line-height: 1.45; color: #23264F !important; font-weight: 600; }
+.kr-media { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-weight: 700; color: #3A3E6B !important; }
+.kr-media .btn.play { min-height: 44px; font-size: 1rem; padding: 0.5em 1em; }
+.kr-img { max-width: 320px; padding: 6px; border-radius: 12px; border: 1px solid #E3E5F2 !important; background: #FBFAF7 !important; }
+.kr-img .notation { max-width: 300px; }
+.kr-helps { margin: 0; padding: 10px 12px 10px 28px; border-radius: 12px; background: #F5F0FF !important; display: flex; flex-direction: column; gap: 4px; color: #3A3E6B !important; line-height: 1.4; }
+.kr-helps b { margin-right: 4px; color: #6A3BB5 !important; }
+.kr-type { margin-top: 0; }
+.kr-fb { padding: 10px 12px; border-radius: 12px; font-weight: 600; line-height: 1.45; }
+.kr-fb.ok { background: #EFF9F2 !important; color: #1F4D30 !important; border: 1px solid #B9DEC6 !important; }
+.kr-fb.shown, .kr-fb.near { background: #FFF9EC !important; color: #5C3F00 !important; border: 1px solid #F3D9A2 !important; }
+.kr-fb.no { background: #FFF4F2 !important; color: #8E2A22 !important; border: 1px solid #F2B8B0 !important; }
+.kr-act-a { display: flex; flex-wrap: wrap; gap: 8px; }
+.kr-conf { margin: 0; padding: 8px 12px; border-radius: 10px; background: #FBE2E4 !important; color: #8E2A22 !important; font-weight: 700; }
+.kr-bank { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 12px; border-radius: 14px; background: #FFFFFF !important; border: 1px dashed #C9CDE4 !important; }
+.kr-bank-h { flex-basis: 100%; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #5A5F86 !important; }
+.kr-bw { padding: 3px 10px; border-radius: 999px; background: #F4F6FB !important; color: #23264F !important; font-weight: 700; font-size: 0.9rem; }
+.kr-bw.done { text-decoration: line-through; color: #8B90B5 !important; }
+.kr-lists { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.kr-lists h3 { margin: 0 0 6px; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #5A5F86 !important; }
+.kr-li { display: flex; align-items: flex-start; gap: 8px; width: 100%; margin-bottom: 4px; padding: 7px 8px; border: 1px solid transparent !important; border-radius: 10px; background: transparent !important; color: #23264F !important; font: inherit; text-align: left; cursor: pointer; }
+.kr-li:hover { background: #FFFFFF !important; border-color: #DCDFF0 !important; }
+.kr-li.on { background: #E6E7FB !important; border-color: #C9CBF4 !important; }
+.kr-li .kr-num { min-width: 26px; padding: 1px 6px; font-size: 0.78rem; }
+.kr-li-t { flex: 1; min-width: 0; font-size: 0.88rem; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.kr-dot { flex: none; width: 10px; height: 10px; margin-top: 5px; border-radius: 50%; background: #E3E5F2 !important; }
+.kr-li.s-e .kr-dot { background: #9EA3CC !important; }
+.kr-li.s-o .kr-dot { background: #36B176 !important; }
+.kr-li.s-h .kr-dot { background: #8CC63F !important; }
+.kr-li.s-r .kr-dot { background: #F4A51C !important; }
+.kr-li.s-x .kr-dot { background: #D9434E !important; }
+
+/* Schritt 1 */
+.kr-qlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.kr-q { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: 18px; background: #FFFFFF !important; border: 1px solid #DCDFF0 !important; }
+.kr-qh { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.kr-in { width: 100%; }
+
+/* Weiterdenken */
+.kr-sbs { display: flex; flex-wrap: wrap; gap: 8px; }
+.kr-sb { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 2px solid #F4A51C !important; background: #FFF4D6 !important; }
+.kr-sb em { position: absolute; right: -3px; bottom: -5px; min-width: 16px; padding: 0 3px; border-radius: 999px; background: #FFFFFF !important; font-style: normal; font-size: 0.7rem; font-weight: 900; color: #A86A00 !important; text-align: center; }
+.kr-sb b { font-size: 1.3rem; font-weight: 900; color: #23264F !important; }
+.kr-cmp { padding: 10px 12px; border-radius: 12px; background: #F4F6FB !important; color: #23264F !important; line-height: 1.45; }
+.kr-cmp b { margin-right: 6px; }
+.kr-task textarea.field { min-height: 84px; resize: vertical; font: inherit; line-height: 1.4; }
+.kr-sumrow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.kr-sn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 4px; border-radius: 14px; border: 1px solid #DCDFF0 !important; background: #FFFFFF !important; }
+.kr-sn b { font-family: 'Vierklang Display', 'Lilita One', 'Trebuchet MS', system-ui, sans-serif; font-weight: 400; font-size: 1.6rem; line-height: 1; color: #23264F !important; }
+.kr-sn span { font-size: 0.78rem; font-weight: 800; color: #5A5F86 !important; text-align: center; }
+.kr-sn.s-o { background: #EFF9F2 !important; border-color: #B9DEC6 !important; }
+.kr-sn.s-h { background: #F4F9EA !important; border-color: #CFE3A8 !important; }
+.kr-sn.s-r { background: #FFF9EC !important; border-color: #F3D9A2 !important; }
+.kr-sn.s-x { background: #FFF4F2 !important; border-color: #F2B8B0 !important; }
+.kr-expl { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; line-height: 1.45; color: #23264F !important; }
+.kr-expl li.s-x b, .kr-expl li.s-r b { color: #A63A3A !important; }
+
+@media (max-width: 900px) {
+  .kr-play { grid-template-columns: minmax(0, 1fr); grid-template-areas: "act" "board" "side"; }
+  .kr-top-row { flex-basis: 100%; }
+  .kr-info { margin-left: auto; }
+  .kr-steps { margin-left: 0; width: 100%; flex-wrap: nowrap; }
+}
+@media (max-width: 520px) {
+  .kr-lists { grid-template-columns: minmax(0, 1fr); }
+  .kr-step { gap: 4px; min-height: 34px; padding: 3px 8px 3px 4px; font-size: 0.76rem; white-space: nowrap; }
+  .kr-step span { width: 24px; height: 24px; }
+  .kr-top-row .btn.ghost { padding-left: 4px; padding-right: 6px; }
+  .kr-top-row .logo-sm { display: none; }
+  .kr .ln-actions .btn.big { flex: 1 1 auto; min-width: 0; }
+  .kr-sumrow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kr-act, .kr-q { padding: 12px; }
+}
+
 </style>
 </head>
 <body>
@@ -1496,6 +1651,7 @@ select.field { appearance: auto; }
   <section id="v-phone" class="view" hidden></section>
   <section id="v-album" class="view" hidden></section>
   <section id="v-learn" class="view" hidden></section>
+  <section id="v-cross" class="view" hidden></section>
 </div>
 <div id="overlay" class="overlay" hidden></div>
 <div id="modal" class="modal" hidden><div class="modal-card" role="dialog" aria-modal="true"></div></div>
@@ -15587,7 +15743,8 @@ const DEFAULTS = {
   nameA: 'Team Quadrat', nameB: 'Team Raute', duoA: 'Quadrat', duoB: 'Raute', playersA: 12, playersB: 12,
   soloName: '', levelSolo: 2, botLevel: 'mittel', showRules: true, gradeFilter: 'auto', lang: 'auto',
   zeig: true, pairs: true, ops: 'auto', pasch: 'ereignis', geheim: false, blitz: false, album: true,
-  packView: 'klasse', topicFilter: 'all', gradeSub: 'all', topicSub: 'all', linkBase: 'web', mitspiel: true, notiz: true, protokoll: false
+  packView: 'klasse', topicFilter: 'all', gradeSub: 'all', topicSub: 'all', linkBase: 'web', mitspiel: true, notiz: true, protokoll: false,
+  krLevel: 'mittel', krCount: 10, krKopf: true
 };
 /* Themen der Pakete: feste Zuordnung über die Paket-id, sonst Schlüsselwörter aus Titel und Lehrplanbezug */
 const TOPICS = [
@@ -18457,12 +18614,14 @@ const MODE_ICON = {
   tafel: '<svg viewBox="0 0 64 44" aria-hidden="true"><rect x="3" y="3" width="58" height="30" rx="5" class="mi-board"/><rect x="11" y="10" width="11" height="11" rx="2.5" class="mi-a"/><polygon points="41,8 48,15.5 41,23 34,15.5" class="mi-b"/><rect x="27" y="33" width="10" height="8" class="mi-board"/></svg>',
   duell: '<svg viewBox="0 0 64 44" aria-hidden="true"><rect x="4" y="7" width="56" height="30" rx="6" class="mi-board"/><rect x="13" y="16" width="12" height="12" rx="2.5" class="mi-a"/><polygon points="45,14 52,22 45,30 38,22" class="mi-b"/></svg>',
   solo: '<svg viewBox="0 0 64 44" aria-hidden="true"><circle cx="18" cy="14" r="7" class="mi-a"/><path d="M6 38c0-8 5.4-13 12-13s12 5 12 13z" class="mi-a"/><rect x="38" y="9" width="20" height="16" rx="5" class="mi-b"/><circle cx="44" cy="17" r="2.4" class="mi-eye"/><circle cx="52" cy="17" r="2.4" class="mi-eye"/><rect x="46.5" y="4" width="3" height="5" rx="1.5" class="mi-b"/><rect x="40" y="27" width="16" height="11" rx="3" class="mi-b"/></svg>',
+  raetsel: '<svg viewBox="0 0 64 44" aria-hidden="true"><rect x="6" y="16" width="11" height="11" rx="2" class="mi-board"/><rect x="18" y="16" width="11" height="11" rx="2" class="mi-board"/><rect x="30" y="16" width="11" height="11" rx="2" class="mi-a"/><rect x="42" y="16" width="11" height="11" rx="2" class="mi-board"/><rect x="30" y="4" width="11" height="11" rx="2" class="mi-board"/><rect x="30" y="28" width="11" height="11" rx="2" class="mi-board"/><rect x="18" y="28" width="11" height="11" rx="2" class="mi-b"/><rect x="18" y="40" width="11" height="3" rx="1" class="mi-board"/></svg>',
   papier: '<svg viewBox="0 0 64 44" aria-hidden="true"><rect x="12" y="4" width="34" height="36" rx="3" class="mi-paper"/><rect x="18" y="4" width="34" height="36" rx="3" class="mi-board"/><rect x="23" y="10" width="7" height="7" rx="1.5" class="mi-a"/><rect x="33" y="10" width="7" height="7" rx="1.5" class="mi-paper"/><rect x="23" y="20" width="7" height="7" rx="1.5" class="mi-paper"/><polygon points="36.5,19.5 40.5,23.5 36.5,27.5 32.5,23.5" class="mi-b"/><path d="M45 34l8-8" class="mi-cut"/></svg>'
 };
 const MODE_TEXT = {
   tafel: ['Tafel', 'Zwei Teams an Tafel oder Beamer. Die App ruft auf, wer erklärt.'],
   duell: ['Duell', 'Zu zweit an einem iPad oder Handy. Ihr prüft euch gegenseitig.'],
   solo: ['Solo', 'Allein gegen den Klangbot, in drei Stufen. Mit Prüffragen zum Ankreuzen und Abhaken und mit Lernbilanz.'],
+  raetsel: ['Rätsel', 'Kreuzworträtsel aus den Begriffen: erst aus dem Kopf, dann ins Gitter. Am Gerät, per QR-Code oder gedruckt.'],
   papier: ['Auf Papier', 'Spielplan, Prüfkarten, Steine und Spielkarte als PDF zum Ausdrucken.']
 };
 function modeCard(m) {
@@ -18488,6 +18647,9 @@ function modeSettings() {
       ${rule('Deine Stufe', seg('levelSolo', lv, s.levelSolo), ({ 1: 'Die passende Erklärung wählen, dann die richtigen Merkmale abhaken.', 2: 'Laut erklären, dann Erklärung wählen und Merkmale abhaken.', 3: 'Mit Beispiel erklären, dann Erklärung, Merkmale und Beispiel prüfen.' })[s.levelSolo])}
       ${rule('Klangbot', seg('botLevel', [['entspannt', 'entspannt'], ['mittel', 'mittel'], ['stark', 'stark']], s.botLevel), 'Je stärker, desto öfter erklärt er richtig und desto klüger setzt er.')}
     </div>`;
+  if (s.mode === 'raetsel') return `<ul class="ms-list">
+      <li>Kreuzworträtsel mit 5 bis 15 Begriffen dieses Pakets, gemischt nach Themen und Schwierigkeit</li><li>Hinweise in drei Stufen zum selben Gitter, mit Hörbeispielen und Notenbildern</li><li>Drei Schritte: aus dem Kopf, ins Gitter, weiterdenken</li><li>Hier lösen, per Link und QR-Code an die Klasse geben oder als PDF drucken</li>
+    </ul><p class="ms-note">Im nächsten Schritt wählst du die Wörter und stellst Hinweise und Lösungswort ein.</p>`;
   return `<ul class="ms-list">
       <li>Spielplan mit Würfelraster und Begriffen</li><li>Prüfkarten im Sammelkartenformat</li><li>Spielsteine und Würfelnetze zum Ausschneiden</li><li>Spielkarte mit Nachschlageblatt, Lehrkraftblatt, Lernkarten und Lösungsübersicht</li>
     </ul><p class="ms-note">Im nächsten Fenster passt du den Druck an deine Lerngruppe an: Klasse, Brettgröße, Spielform auf Papier und Zahl der Sätze.</p>`;
@@ -18495,7 +18657,7 @@ function modeSettings() {
 
 /* ---------- Startseite ---------- */
 function startTop() {
-  const steps = [[1, 'Paket'], [2, 'Spielform'], [3, settings.mode === 'papier' ? 'Drucken' : 'Los!']];
+  const steps = [[1, 'Paket'], [2, 'Spielform'], [3, settings.mode === 'papier' ? 'Drucken' : settings.mode === 'raetsel' ? 'Rätsel' : 'Los!']];
   return `<header class="st3-top">
     <div class="st3-brand">${logoSVG('logo-sm')}<span class="st3-name">Vierklang</span></div>
     <nav class="st3-steps" aria-label="Schritte">${steps.map((x, i) => `${i ? '<span class="st3-dash" aria-hidden="true"></span>' : ''}<button type="button" class="st3-step${startStep === x[0] ? ' on' : ''}${startStep > x[0] ? ' done' : ''}" data-act="st-step" data-v="${x[0]}" aria-current="${startStep === x[0] ? 'step' : 'false'}"><span class="st3-num">${x[0]}</span><span class="st3-lbl">${x[1]}</span></button>`).join('')}</nav>
@@ -18576,12 +18738,14 @@ function renderStart() {
       <div class="st3-cta"><span class="cta-note">${esc(pack.title)} · ${playable(pack).length} Begriffe${pack.edited ? ' · von dir angepasst' : pack.checked ? '' : ' · KI-Entwurf, noch nicht fachlich geprüft'}</span><button type="button" class="btn ghost cta-adapt" data-act="learn-open" data-id="${esc(pack.id)}">Karten üben${(() => { const nd = typeof learnDueCount === 'function' ? learnDueCount(pack) : 0; return nd ? `<span class="due-pill">${nd} fällig</span>` : ''; })()}</button><button type="button" class="btn ghost cta-adapt" data-act="${pack.own || pack.edited ? 'ws-play-edit' : 'ws-adapt-start'}" data-id="${esc(pack.id)}">${pack.own || pack.edited ? 'Bearbeiten' : 'Anpassen'}</button>${typeof openLinkModal === 'function' ? `<button type="button" class="btn ghost cta-adapt cta-link" data-act="dl-open" data-id="${esc(pack.id)}" aria-label="Link und QR-Code zu diesem Paket">${lgIcon('link')}<span>Link</span></button>` : ''}<button type="button" class="btn cta" data-act="st-step" data-v="2" data-primary>Weiter zur Spielform${iconNext()}</button></div>`;
   } else if (startStep === 2) {
     const papier = s.mode === 'papier';
-    main = `<div class="st3-hero"><h1>Wie wollt ihr spielen?</h1><p>An der Tafel gegeneinander, zu zweit, allein gegen den Klangbot oder ausgedruckt auf Papier.</p></div>
-      <div class="md-row">${['tafel', 'duell', 'solo', 'papier'].map(modeCard).join('')}</div>
+    main = `<div class="st3-hero"><h1>Wie wollt ihr spielen?</h1><p>An der Tafel gegeneinander, zu zweit, allein gegen den Klangbot, als Rätsel oder ausgedruckt auf Papier.</p></div>
+      <div class="md-row">${['tafel', 'duell', 'solo', 'raetsel', 'papier'].map(modeCard).join('')}</div>
       <section class="ms">${modeSettings()}</section>
       <div class="st3-cta"><button type="button" class="btn ghost" data-act="st-step" data-v="1">${iconArrow(-1)}Zurück</button>${papier
         ? `<button type="button" class="btn cta" data-act="print-start" data-primary${sizes.length ? '' : ' disabled'}>Druckwerkstatt öffnen${iconNext()}</button>`
         : `<button type="button" class="btn cta" data-act="st-step" data-v="3" data-primary>Weiter${iconNext()}</button>`}</div>`;
+  } else if (s.mode === 'raetsel' && typeof krSetupHTML === 'function') {
+    main = krSetupHTML(pack);
   } else {
     const duo = s.mode !== 'tafel';
     const nTerms = playable(pack).length;
@@ -18661,6 +18825,7 @@ function scrollCarousel(d) {
 
 /* ---------- Regeln als Fenster ---------- */
 function helpHTML() {
+  if (!game && settings.mode === 'raetsel' && typeof krInfoHTML === 'function') return krInfoHTML();
   const pack = game ? findPack(game.packId) : findPack(settings.packId);
   const L = game && game.cfg && game.cfg.lang ? game.cfg.lang : langFor(pack);
   const mode = game ? game.mode : settings.mode;
@@ -18775,7 +18940,7 @@ function placeCoach(el, r) {
 function show(v) {
   view = v;
   if (typeof mitStop === 'function') mitStop(true);
-  ['start', 'game', 'ws', 'phone', 'album', 'learn'].forEach((k) => { const el = $('#v-' + k); if (el) el.hidden = k !== v; });
+  ['start', 'game', 'ws', 'phone', 'album', 'learn', 'cross'].forEach((k) => { const el = $('#v-' + k); if (el) el.hidden = k !== v; });
   document.body.dataset.view = v;
   if (v !== 'game') { Timer.clear(); coach = null; renderCoach(); const ov = $('#overlay'); ov.hidden = true; ov.innerHTML = ''; ov.dataset.key = ''; document.body.classList.remove('ov-open'); }
   if (v === 'start') { renderStart(); $('#v-start').scrollTop = 0; }
@@ -18783,11 +18948,13 @@ function show(v) {
   else if (v === 'phone') { if (typeof phoneRender === 'function') phoneRender(); const el = $('#v-phone'); if (el) el.scrollTop = 0; }
   else if (v === 'album') { if (typeof renderAlbum === 'function') renderAlbum(); const el = $('#v-album'); if (el) el.scrollTop = 0; }
   else if (v === 'learn') { if (typeof renderLearn === 'function') renderLearn(); const el = $('#v-learn'); if (el) el.scrollTop = 0; }
+  else if (v === 'cross') { const el = $('#v-cross'); if (el) el.scrollTop = 0; if (typeof krRender === 'function') krRender(); }
   else if (v === 'game') renderGame();
 }
 let coachPending = false;
 function startNewGame(again, carry) {
   if (settings.mode === 'papier') { openPrintFromStart(); return; }
+  if (settings.mode === 'raetsel') { if (typeof krSetupPack === 'function') { const p = krSetupPack(); krBegin(p, krCfg(p), krLevelNow(), settings.krKopf !== false, 'setup'); } return; }
   if (!createGame(carry)) return;
   if (typeof lgRememberStart === 'function') lgRememberStart();
   closeModal(); show('game'); startTurn(); requestWakeLock();
@@ -23609,7 +23776,7 @@ const ALBUM_ACTIONS = {
    Kurze Einsatzhinweise im Spiel selbst: wann das Spiel in die Stunde passt, was die Forschung zu den Spielelementen sagt,
    wie eine Zehn-Minuten-Runde geht, Klassenführung, Differenzierung, Bewertung, Koppeln, Druck und TPACK und SAMR. */
 
-const TEACHER_TABS = [['einsatz', 'Einsatz'], ['forschung', 'Forschung'], ['zehn', 'Zehn Minuten'], ['fuehrung', 'Klassenführung'], ['differenz', 'Differenzierung'], ['bewertung', 'Bewertung'], ['koppeln', 'Koppeln'], ['druck', 'Drucken'], ['theorie', 'TPACK und SAMR']];
+const TEACHER_TABS = [['einsatz', 'Einsatz'], ['raetsel', 'Rätsel'], ['forschung', 'Forschung'], ['zehn', 'Zehn Minuten'], ['fuehrung', 'Klassenführung'], ['differenz', 'Differenzierung'], ['bewertung', 'Bewertung'], ['koppeln', 'Koppeln'], ['druck', 'Drucken'], ['theorie', 'TPACK und SAMR']];
 const TEACHER_TEXT = {
   einsatz: `
     <p class="tq-lead">Vierklang ist ein Übungs- und Sicherungsspiel. Die Begriffe ordnen, was die Klasse vorher gehört, gesungen und gespielt hat. Als Erstbegegnung mit neuen Fachwörtern taugt es deshalb nicht.</p>
@@ -23640,6 +23807,7 @@ const TEACHER_TEXT = {
       <li><b>Verknüpfen</b> (Vernetzungszug). Begriffe selbst zu verbinden, wie beim Concept Mapping, fördert das Lernen (Schroeder u. a. 2018). Der Vernetzungszug ist eine kleine Form davon, ein eigener Effekt ist nicht untersucht.</li>
       <li><b>Spiel und Wettbewerb.</b> Spielelemente wirken im Mittel klein bis mittel, ihr Einfluss auf die Motivation ist unsicher (Wouters u. a. 2013; Sailer und Homner 2020). Teamwettbewerb trägt am ehesten mit Gruppenziel und individueller Verantwortlichkeit (Slavin 1995). Beides übernehmen Beratung und Zufallsnummer.</li>
       <li><b>Gestufte Hilfen.</b> Gestufte Lernhilfen verbesserten in naturwissenschaftlichen Studien Lernerfolg und Lernerleben (Schmidt-Weigand u. a. 2008). Der Wackelstein hält den Anreiz wach, ohne Hilfe zu erklären.</li>
+      <li><b>Kreuzworträtsel</b> (Spielform Rätsel). Zu Kreuzworträtseln selbst gibt es nur wenige kleine Studien. In einer davon, mit Studierenden, blieben Wörter, die mit leichten Buchstabenhinweisen geübt wurden, auch nach mehrfacher Wiederholung kaum hängen, mit schwereren Hinweisen geübte eher (Mueller und Veinott 2018). Deshalb schreiben die Lernenden zuerst aus dem Kopf, und der Anfangsbuchstabe ist die letzte Hilfe.</li>
     </ul>
     <h3>Grenzen</h3>
     <ul class="tq-list">
@@ -23660,6 +23828,7 @@ const TEACHER_TEXT = {
       <li>Leitner, S. (1972). So lernt man lernen.</li>
       <li>Kobayashi, K. (2005). What limits the encoding effect of note-taking? A meta-analytic examination. Contemporary Educational Psychology.</li>
       <li>Kobayashi, K. (2019). Learning by preparing-to-teach and teaching. A meta-analysis. Japanese Psychological Research.</li>
+      <li>Mueller, S. T. und Veinott, E. S. (2018). Testing the effectiveness of crossword games on immediate and delayed memory for scientific vocabulary and concepts. Proceedings of the Annual Meeting of the Cognitive Science Society.</li>
       <li>Roberts, B. R. T., MacLeod, C. M. und Fernandes, M. A. (2022). The enactment effect. A systematic review and meta-analysis of behavioral, neuroimaging, and patient studies. Psychological Bulletin.</li>
       <li>Roscoe, R. D. und Chi, M. T. H. (2007). Understanding tutor learning. Knowledge-building and knowledge-telling in peer tutors’ explanations and questions. Review of Educational Research.</li>
       <li>Sailer, M. und Homner, L. (2020). The gamification of learning. A meta-analysis. Educational Psychology Review.</li>
@@ -23668,6 +23837,25 @@ const TEACHER_TEXT = {
       <li>Slavin, R. E. (1995). Cooperative Learning. Theory, Research, and Practice. Allyn and Bacon.</li>
       <li>Wouters, P., van Nimwegen, C., van Oostendorp, H. und van der Spek, E. D. (2013). A meta-analysis of the cognitive and motivational effects of serious games. Journal of Educational Psychology.</li>
       <li>Yang, C., Luo, L., Vadillo, M. A., Yu, R. und Shanks, D. R. (2021). Testing (quizzing) boosts classroom learning. A systematic and meta-analytic review. Psychological Bulletin.</li>
+    </ul>`,
+  raetsel: `
+    <p class="tq-lead">Das Rätsel ist eine Abrufübung für die Zeit nach der Erarbeitung. Aus den Begriffen eines Pakets entsteht ein Kreuzworträtsel mit drei Schritten: aus dem Kopf, ins Gitter, weiterdenken.</p>
+    <ul class="tq-list">
+      <li><b>Aus dem Kopf.</b> Zuerst schreiben alle ohne Gitter auf, was ihnen zu jedem Hinweis einfällt. Erst danach tragen sie ein. Die Kreuzungsbuchstaben dienen dann der Selbstkontrolle. Abrufen sichert Wissen auch im Klassenzimmer (Yang u. a. 2021). Mit leichten Buchstabenhilfen geübte Wörter blieben in einer kleinen Studie kaum hängen (Mueller und Veinott 2018, siehe Forschung).</li>
+      <li><b>Ins Gitter.</b> Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe. Passt es dort nicht, stimmt eines der Wörter noch nicht. Am Gerät zeigt „Prüfen“ das Ergebnis und danach die Erklärung zum Wort.</li>
+      <li><b>Weiterdenken.</b> Ein weiterer Begriff des Pakets steckt als Lösungswort in den Kreisen. Die Lernenden erklären ihn und verbinden ihn in einem Satz mit zwei Rätselwörtern. Sich etwas selbst zu erklären fördert das Verstehen (Bisra u. a. 2018).</li>
+      <li><b>Hinweisstufen.</b> Leicht heißt Erklärung in einem Satz und Wortspeicher, mittel nur die Erklärung, schwer nur typische Merkmale. Alle Stufen haben dasselbe Gitter und dieselbe Lösung. Hör- und Notenbegriffe erscheinen in jeder Stufe als Klang oder Bild.</li>
+      <li><b>Gestufte Hilfen.</b> Je Wort drei Hilfen: Oberbegriff, Beispiel, Anfangsbuchstabe. Am Gerät per Knopf, auf Papier als Hilfekarten zum Ausschneiden (Schmidt-Weigand u. a. 2008). Wörter mit Hilfe kommen am Ende in „Karten üben“.</li>
+      <li><b>Einsatz.</b> Exit-Rätsel mit fünf Wörtern, Übung mit acht bis zehn Wörtern, Wiederholung vor einer Lernkontrolle mit zwölf bis fünfzehn. Eine Woche später dasselbe Rätsel mit einer anderen Hinweisstufe lösen lassen.</li>
+      <li><b>Link und QR-Code.</b> Der Link öffnet genau dieses Rätsel, auf jedem Gerät mit demselben Gitter. Für Differenzierung lassen sich drei Links mit verschiedenen Hinweisstufen erzeugen. Eigene Pakete und Anpassungen liegen nur im eigenen Browser.</li>
+      <li><b>Drucken.</b> Rätselblatt mit Antwortlinien für Schritt 1, wahlweise in allen drei Stufen, dazu Hilfekarten, Lösung und ein Lehrkraftblatt mit Ablauf, Fallstricken und QR-Code. Hörbeispiele spielst du in der Einrichtung unter der Vorschau vor.</li>
+      <li><b>Was ins Gitter passt.</b> Begriffe mit 3 bis 14 Buchstaben aus höchstens drei Teilen. Werktitel und Begriffe mit Alternativen oder Sonderzeichen bleiben draußen, lange Namen stehen mit dem Nachnamen. Ä, Ö, Ü und ß stehen in einem Kästchen. Bei mehrteiligen Begriffen nennt die Klammer die Längen, im Gitter trennt ein dicker Strich die Teile.</li>
+    </ul>
+    <h3>Grenzen</h3>
+    <ul class="tq-list">
+      <li><b>Begriffswissen.</b> Das Rätsel sichert Namen und Merkmale. Ob jemand ein Ostinato hört oder spielt, zeigt sich beim Hören und Musizieren.</li>
+      <li><b>Wortspeicher ohne Artikel.</b> Die Pakete enthalten keine Artikel. Für Sprachbildung lohnt es sich, die Artikel beim Besprechen zu ergänzen.</li>
+      <li><b>Schreibweise.</b> Am Gerät zählt nur die genaue Schreibweise, ae, oe und ue gelten dabei für Ä, Ö und Ü. Kleine Tippfehler meldet die App als „fast“.</li>
     </ul>`,
   zehn: `
     <p class="tq-lead">Die Blitzrunde ist die kleinste sinnvolle Einheit: 4 × 4 Felder, 45 Sekunden je Erklärung, kurze Beratung, drei Runden.</p>
@@ -23732,6 +23920,7 @@ const TEACHER_TEXT = {
       <li><b>Operatorenkarten:</b> In der mittleren und der Oberstufenfassung liegt eine Seite mit Operatorenkarten bei. Vor dem Erklären zieht das andere Team eine Karte oder würfelt den Operator aus.</li>
       <li><b>Pasch-Ereignisse</b> stehen bei „alle Regeln“ als kleine Tabelle auf dem Nachschlageblatt. Ein Würfel bestimmt das Ereignis.</li>
       <li><b>Album:</b> Die gesammelten Karten einer Gruppe lassen sich als PDF ausgeben, zum Aushängen oder Mitgeben.</li>
+      <li><b>Rätsel:</b> Die Spielform Rätsel hat einen eigenen Druck mit Rätselblatt, Hilfekarten, Lösung und Lehrkraftblatt. Mehr dazu im Reiter „Rätsel“.</li>
       <li><b>Hörprotokoll:</b> Ein Bogen für acht Züge zum Kopieren. Wer zuhört, notiert bis zu drei Stichwörter, hakt nach dem Aufdecken ab, was auf der Prüfkarte steht, und ergänzt, was gefehlt hat. Im Gruppenspiel schreibt das andere Team mit, im Partnerspiel notiert die prüfende Person erst und schaut dann auf die Karte. In der Druckwerkstatt ist das Hörprotokoll anfangs nicht angekreuzt.</li>
     </ul>`,
   theorie: `
@@ -24031,13 +24220,16 @@ function deepLinkParse(hash) {
   const s = decodeURIComponent(String(hash || '').replace(/^#/, '')).trim();
   if (!s || s === 'mitspielen') return null;
   const p = findPack(s); if (p) return { packId: p.id, what: '' };
+  const kr = s.match(/^(.+)-raetsel(?:-([0-9A-Za-z]+))?$/);
+  if (kr && findPack(kr[1])) return { packId: findPack(kr[1]).id, what: 'raetsel', code: kr[2] || '' };
   const m = s.match(/^(.+)-(ueben|solo|duell|tafel)$/);
   if (m && findPack(m[1])) return { packId: findPack(m[1]).id, what: m[2] };
   if (/^own-/.test(s)) return { missing: true };
   return null;
 }
 function deepLinkApply(L) {
-  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* Adresse bleibt */ }
+  /* Ein Rätsellink bleibt in der Adresse, damit Neuladen dasselbe Rätsel mit dem gespeicherten Stand öffnet */
+  if (!(L.what === 'raetsel' && L.code)) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* Adresse bleibt */ } }
   if (L.missing) { toast('Dieses eigene Paket gibt es in diesem Browser nicht.'); return false; }
   const p = findPack(L.packId); if (!p) return false;
   settings.packId = p.id;
@@ -24046,12 +24238,16 @@ function deepLinkApply(L) {
   else if (settings.mode === 'papier' && L.what !== 'ueben') settings.mode = 'tafel';
   saveSettings(); closeModal();
   if (L.what === 'ueben') { openLearn(p.id); return true; }
+  if (L.what === 'raetsel') {
+    if (L.code && typeof krOpenCode === 'function' && krOpenCode(p.id, L.code)) return true;
+    settings.mode = 'raetsel'; saveSettings(); startStep = 3; carouselFocus = true; show('start'); return true;
+  }
   startStep = L.what ? 3 : 2; carouselFocus = true; show('start');
   return true;
 }
 function deepLinkBoot() { const L = deepLinkParse(location.hash); return L ? deepLinkApply(L) : false; }
 window.addEventListener('hashchange', () => {
-  if (view === 'game' || view === 'phone') return;
+  if (view === 'game' || view === 'phone' || view === 'cross') return;
   const L = deepLinkParse(location.hash); if (L) deepLinkApply(L);
 });
 
@@ -24760,6 +24956,1326 @@ const NOTE_ACTIONS = {
   'proto-pdf': (el) => printProtokoll((el && el.dataset && el.dataset.id) || settings.packId, 'tafel')
 };
 
+/* Vierklang · Teil 16: Rätsel
+   Kreuzworträtsel aus den Begriffen eines Pakets. Lernende rufen zuerst aus dem Gedächtnis ab, tragen dann ins Gitter ein
+   (die Kreuzungen dienen der Selbstkontrolle) und denken zum Schluss weiter: Lösungswort erklären und mit Rätselwörtern
+   verbinden. Hinweise in drei Stufen zum selben Gitter, gestufte Hilfen (Oberbegriff, Beispiel, Anfangsbuchstabe),
+   Hör- und Notenbegriffe mit Klang oder Bild. Das Gitter entsteht aus Wortauswahl und Startzahl auf jedem Gerät gleich,
+   der Direktlink enthält beides als Code. Der Druck steht in Teil 17. */
+
+const KEY_KR = 'vierklang.raetsel.v1';
+const KEY_KR_RUN = 'vierklang.raetsel.lauf.v1';
+const KR_COUNTS = [[5, '5 · Exit'], [8, '8'], [10, '10'], [12, '12'], [15, '15']];
+const KR_LEVELS = [['leicht', 'leicht'], ['mittel', 'mittel'], ['schwer', 'schwer']];
+const KR_LEVEL_TEXT = {
+  leicht: 'Jeder Hinweis ist eine Erklärung in einem Satz. Dazu kommt ein Wortspeicher mit allen Wörtern.',
+  mittel: 'Jeder Hinweis ist eine Erklärung in einem Satz, ohne Wortspeicher.',
+  schwer: 'Die Hinweise nennen nur typische Merkmale. Gesucht ist der Begriff, der dazu passt.'
+};
+const KR_MAX = 14, KR_DIM = 17, KR_DIM_MAX = 19;
+let kreuz = null;
+let krSetupView = { sol: false };
+let krModelCache = { key: '', model: null };
+
+/* ---------- Lösungswörter ---------- */
+function krChar(ch) {
+  if (ch === 'ß' || ch === 'ẞ') return 'ß';
+  const lo = ch.toLowerCase();
+  if (lo === 'ä') return 'Ä'; if (lo === 'ö') return 'Ö'; if (lo === 'ü') return 'Ü';
+  const b = lo.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+  return /^[A-Z]$/.test(b) ? b : '';
+}
+/* Lösungsform eines Begriffs: Großbuchstaben, Umlaute in einem Kästchen, bis drei Wortteile, 3 bis 14 Buchstaben.
+   Werktitel und Begriffe mit Alternativen oder Sonderzeichen passen nicht ins Gitter; lange Namen stehen mit dem Nachnamen. */
+function krAnswer(t) {
+  if (!t || !t.term || t.kind === 'werk') return null;
+  let base = String(t.term).replace(/\s*\([^)]*\)/g, '').replace(/\s+/g, ' ').trim();
+  if (!base || /\/|\s(oder|bzw\.?)\s/i.test(base)) return null;
+  let nach = false;
+  if (t.kind === 'person') {
+    const words = base.split(' '), flat = base.replace(/[\s-]/g, '');
+    const whole = words.length <= 2 && flat.length <= KR_MAX && Array.from(flat).every((c) => krChar(c));
+    if (!whole) { base = words[words.length - 1]; nach = words.length > 1; }
+  }
+  const parts = [], seps = [];
+  let cur = [];
+  for (const ch of base) {
+    if (ch === ' ' || ch === '-') { if (!cur.length) return null; parts.push(cur); seps.push(ch); cur = []; continue; }
+    const L = krChar(ch); if (!L) return null;
+    cur.push(L);
+  }
+  if (!cur.length) return null;
+  parts.push(cur);
+  const letters = [].concat.apply([], parts);
+  if (letters.length < 3 || letters.length > KR_MAX || parts.length > 3) return null;
+  return { id: t.id, letters, lens: parts.map((p) => p.length), seps, shown: base, nach };
+}
+function krStructure(a) {
+  if (!a || a.lens.length < 2) return '';
+  let s = String(a.lens[0]);
+  for (let i = 1; i < a.lens.length; i++) s += (a.seps[i - 1] === '-' ? '-' : ', ') + a.lens[i];
+  return '(' + s + ')';
+}
+function krLenText(a) { const n = a.letters.length; return `${n} Buchstaben${a.lens.length > 1 ? ' ' + krStructure(a) : ''}${a.nach ? ', Nachname' : ''}`; }
+function krEligible(pack) { return pack ? playable(pack).map((t) => ({ t, a: krAnswer(t) })).filter((x) => x.a) : []; }
+
+/* ---------- Hinweise und Hilfen ---------- */
+function krCap(s) { s = String(s || '').trim(); const i = s.search(/[A-Za-zÄÖÜäöüß]/); return i < 0 ? s : s.slice(0, i) + s.charAt(i).toUpperCase() + s.slice(i + 1); }
+function krFirst(t) {
+  const e = String(t.expl || '').trim();
+  const f = typeof prFirstSentence === 'function' ? prFirstSentence(e) : '';
+  return f || e;
+}
+function krWords(t, a) { return String(a.shown + ' ' + t.term).split(/[^A-Za-zÄÖÜäöüß]+/).filter((w) => w.length >= 3); }
+function krReEsc(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+/* Verrät der Text das gesuchte Wort? Lange Wörter auch als Wortteil, kurze am Wortanfang */
+function krLeaks(text, t, a) {
+  const low = String(text || '').toLowerCase(); if (!low) return false;
+  if (typeof leaks === 'function' && leaks(text, t.term)) return true;
+  return krWords(t, a).some((w) => {
+    const s = w.toLowerCase();
+    if (s.length >= 5) return low.includes(s.slice(0, Math.max(5, s.length - 2)));
+    return new RegExp('(^|[^a-zäöüß])' + krReEsc(s)).test(low);
+  });
+}
+function krMask(text, t, a) {
+  let s = String(text || '');
+  krWords(t, a).forEach((w) => {
+    const L = 'A-Za-zÄÖÜäöüß';
+    if (w.length >= 5) s = s.replace(new RegExp(`[${L}]*${krReEsc(w.slice(0, Math.max(5, w.length - 2)))}[${L}]*`, 'gi'), '…');
+    else s = s.replace(new RegExp(`(^|[^${L}])${krReEsc(w)}[${L}]*`, 'gi'), '$1…');
+  });
+  return s;
+}
+function krMediaPrompt(t) {
+  if (t.kind === 'hoeren') return t.prompt || 'Hör genau hin. Wie heißt das?';
+  return t.prompt || 'Was zeigt das Notenbild?';
+}
+/* Hinweis je Stufe: leicht und mittel die Erklärung in einem Satz, schwer nur die Merkmale ohne das erste */
+function krClue(t, a, level) {
+  if (isMedia(t)) return { media: t.kind, text: krMediaPrompt(t), src: 'media' };
+  const first = krFirst(t), feats = (t.feats || []).filter(Boolean);
+  const all = feats.join(' · '), hard = feats.length >= 3 ? feats.slice(1).join(' · ') : all;
+  const order = level === 'schwer' ? [['feats', hard], ['expl', first], ['feats', all]] : [['expl', first], ['feats', all]];
+  for (const o of order) if (o[1] && o[1].length <= 260 && !krLeaks(o[1], t, a)) return { text: krCap(o[1]), src: o[0] };
+  const o = order.find((x) => x[1]) || ['expl', t.expl];
+  return { text: krCap(krMask(o[1], t, a)), src: o[0], masked: true };
+}
+/* Drei Hilfen: zwei inhaltliche, zuletzt der Anfangsbuchstabe */
+function krHelps(t, a, level) {
+  const clue = krClue(t, a, level), out = [];
+  const add = (k, label, text) => { text = String(text || '').trim(); if (!text || out.length >= 2 || out.some((x) => x.text === text) || text === clue.text) return; out.push({ k, label, text: krCap(krLeaks(text, t, a) ? krMask(text, t, a) : text) }); };
+  add('ober', 'Oberbegriff', t.hints && t.hints.ober);
+  if (isMedia(t)) add('expl', 'Erklärung', krFirst(t));
+  add('bsp', 'Beispiel', t.hints && t.hints.beispiel);
+  (t.feats || []).forEach((f) => add('merk', 'Merkmal', f));
+  add('expl', 'Erklärung', krFirst(t));
+  out.push({ k: 'abc', label: 'Anfangsbuchstabe', text: `Das Wort beginnt mit ${a.letters[0]}.` });
+  return out;
+}
+
+/* ---------- Zufall mit Startzahl: auf jedem Gerät dieselbe Folge ---------- */
+function krRng(seed) {
+  let s = (seed >>> 0) || 1;
+  return function () {
+    s = (s + 0x6D2B79F5) >>> 0;
+    let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function krShuffle(arr, rnd) { const b = arr.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); const x = b[i]; b[i] = b[j]; b[j] = x; } return b; }
+function krHash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function krNewSeed() { return 1 + Math.floor(Math.random() * 65534); }
+
+/* ---------- Wortauswahl: gemischt nach Familie und Schwierigkeit, Hör- und Notenbegriffe zuerst ---------- */
+function krPick(pack, n, seed, keep) {
+  const el = krEligible(pack); if (!el.length) return [];
+  const rnd = krRng(seed), pick = [], kept = new Set(keep || []);
+  el.forEach((x) => { if (kept.has(x.t.id) && pick.length < n) pick.push(x); });
+  const has = new Set(pick.map((x) => x.t.id));
+  const free = el.filter((x) => !has.has(x.t.id));
+  const media = krShuffle(free.filter((x) => isMedia(x.t)), rnd);
+  const wantMedia = n <= 5 ? 1 : 2;
+  while (pick.filter((x) => isMedia(x.t)).length < wantMedia && media.length && pick.length < n) pick.push(media.shift());
+  const fams = {};
+  krShuffle(free.filter((x) => !isMedia(x.t) && !pick.includes(x)), rnd).forEach((x) => { const f = x.t.family || '·'; (fams[f] = fams[f] || []).push(x); });
+  const keys = krShuffle(Object.keys(fams), rnd), target = { 1: 0.3, 2: 0.4, 3: 0.3 };
+  let i = 0, guard = 0;
+  while (pick.length < n && keys.some((k) => fams[k].length) && guard++ < 999) {
+    const k = keys[i++ % keys.length], list = fams[k]; if (!list.length) continue;
+    const cnt = { 1: 0, 2: 0, 3: 0 }; pick.forEach((x) => { cnt[x.t.diff] = (cnt[x.t.diff] || 0) + 1; });
+    const need = (x) => cnt[x.t.diff] / (target[x.t.diff] * Math.max(1, pick.length + 1)) + (n >= 12 && x.a.letters.length > 10 ? 0.6 : 0);
+    let best = 0; list.forEach((x, j) => { if (need(x) < need(list[best])) best = j; });
+    pick.push(list.splice(best, 1)[0]);
+  }
+  media.forEach((x) => { if (pick.length < n) pick.push(x); });
+  return pick;
+}
+
+/* ---------- Gitter ---------- */
+function krTry(order, rnd, dim) {
+  const g = new Map(), key = (r, c) => r + ',' + c, at = (r, c) => g.get(key(r, c));
+  const placed = [];
+  let minR = 0, maxR = 0, minC = 0, maxC = 0;
+  const fits = (L, r, c, dir) => {
+    const dr = dir === 'd' ? 1 : 0, dc = dir === 'a' ? 1 : 0, n = L.length;
+    if (at(r - dr, c - dc) || at(r + dr * n, c + dc * n)) return -1;
+    let cross = 0;
+    for (let i = 0; i < n; i++) {
+      const rr = r + dr * i, cc = c + dc * i, cell = at(rr, cc);
+      if (cell) { if (cell.ch !== L[i] || cell[dir] >= 0) return -1; cross++; }
+      else if (dir === 'a' ? (at(rr - 1, cc) || at(rr + 1, cc)) : (at(rr, cc - 1) || at(rr, cc + 1))) return -1;
+    }
+    return cross;
+  };
+  const put = (w, r, c, dir) => {
+    const dr = dir === 'd' ? 1 : 0, dc = dir === 'a' ? 1 : 0, idx = placed.length;
+    w.L.forEach((ch, i) => { const k = key(r + dr * i, c + dc * i); let cell = g.get(k); if (!cell) { cell = { ch, a: -1, d: -1 }; g.set(k, cell); } cell[dir] = idx; });
+    placed.push({ w, r, c, dir });
+    if (placed.length === 1) { minR = maxR = r; minC = maxC = c; }
+    minR = Math.min(minR, r); minC = Math.min(minC, c);
+    maxR = Math.max(maxR, r + dr * (w.L.length - 1)); maxC = Math.max(maxC, c + dc * (w.L.length - 1));
+  };
+  const cands = (w) => {
+    const out = [], seen = new Set();
+    placed.forEach((p) => {
+      const nd = p.dir === 'a' ? 'd' : 'a';
+      p.w.L.forEach((ch, i) => {
+        w.L.forEach((ch2, j) => {
+          if (ch !== ch2) return;
+          const r = p.dir === 'a' ? p.r - j : p.r + i, c = p.dir === 'a' ? p.c + i : p.c - j, k = r + ',' + c + nd;
+          if (seen.has(k)) return; seen.add(k);
+          const cr = fits(w.L, r, c, nd); if (cr < 1) return;
+          const r2 = r + (nd === 'd' ? w.L.length - 1 : 0), c2 = c + (nd === 'a' ? w.L.length - 1 : 0);
+          const h = Math.max(maxR, r2) - Math.min(minR, r) + 1, wd = Math.max(maxC, c2) - Math.min(minC, c) + 1;
+          if (h > dim || wd > dim) return;
+          out.push({ r, c, dir: nd, cr, h, wd });
+        });
+      });
+    });
+    return out;
+  };
+  put(order[0], 0, 0, 'a');
+  let pending = order.slice(1);
+  for (let pass = 0; pass < 4 && pending.length; pass++) {
+    const next = [];
+    pending.forEach((w) => {
+      const cs = cands(w); if (!cs.length) { next.push(w); return; }
+      const area = (maxR - minR + 1) * (maxC - minC + 1);
+      let bc = null, bs = -Infinity;
+      cs.forEach((c) => { const s = c.cr * 3 - (c.h * c.wd - area) * 0.14 - Math.max(0, c.h - c.wd) * 0.7 - Math.max(0, c.wd - 1.6 * c.h) * 0.3 + rnd() * 1.6; if (s > bs) { bs = s; bc = c; } });
+      put(w, bc.r, bc.c, bc.dir);
+    });
+    pending = next;
+  }
+  const H = maxR - minR + 1, W = maxC - minC + 1;
+  let cross = 0; g.forEach((cell) => { if (cell.a >= 0 && cell.d >= 0) cross++; });
+  const score = placed.length * 1000 + cross * 4 - W * H * 0.5 - Math.max(0, H - W) * 6 - Math.max(0, W - 1.8 * H) * 3;
+  return { placed, g, minR, minC, W, H, score, rest: pending };
+}
+/* words: [{ id, L }] in fester Reihenfolge; Ergebnis hängt nur von Wörtern und Startzahl ab */
+function krLayout(words, seed) {
+  if (!words.length) return null;
+  let best = krLayoutRun(words, seed, KR_DIM);
+  /* Passt nicht alles in 17 × 17, darf das Gitter bis 19 × 19 wachsen */
+  if (best.rest.length) { const big = krLayoutRun(words, seed, KR_DIM_MAX); if (big.placed.length > best.placed.length) best = big; }
+  return krLayoutFinish(best, words);
+}
+function krLayoutRun(words, seed, dim) {
+  let best = null;
+  /* Wörter, die in einem Versuch übrig blieben, kommen im nächsten früher an die Reihe */
+  const boost = {}, tries = words.length <= 6 ? 40 : words.length <= 10 ? 70 : 110;
+  for (let t = 0; t < tries; t++) {
+    const rnd = krRng((Math.imul(seed >>> 0, 2654435761) + Math.imul(t + 1, 40503)) >>> 0);
+    const keyed = words.map((w, i) => ({ w, k: w.L.length + rnd() * 3.2 + (boost[w.id] || 0), i }));
+    keyed.sort((x, y) => (y.k - x.k) || (x.i - y.i));
+    const res = krTry(keyed.map((x) => x.w), rnd, dim);
+    res.rest.forEach((w) => { boost[w.id] = (boost[w.id] || 0) + 2.5; });
+    if (!best || res.score > best.score) best = res;
+  }
+  return best;
+}
+function krLayoutFinish(best, words) {
+  const cells = []; for (let r = 0; r < best.H; r++) cells.push(new Array(best.W).fill(null));
+  best.g.forEach((cell, k) => { const p = k.split(','), r = Number(p[0]) - best.minR, c = Number(p[1]) - best.minC; cells[r][c] = { ch: cell.ch, a: cell.a, d: cell.d }; });
+  const items = best.placed.map((p, i) => ({ idx: i, id: p.w.id, L: p.w.L, r: p.r - best.minR, c: p.c - best.minC, dir: p.dir, num: 0 }));
+  let num = 0;
+  for (let r = 0; r < best.H; r++) for (let c = 0; c < best.W; c++) {
+    const starts = items.filter((it) => it.r === r && it.c === c);
+    if (starts.length) { num++; starts.forEach((it) => { it.num = num; }); }
+  }
+  items.sort((x, y) => (x.num - y.num) || (x.dir === 'a' ? -1 : 1));
+  const placedIds = new Set(items.map((it) => it.id));
+  return { W: best.W, H: best.H, cells, items, missing: words.filter((w) => !placedIds.has(w.id)).map((w) => w.id) };
+}
+/* Lösungswort: Kästchen mit passenden Buchstaben, möglichst aus verschiedenen Wörtern */
+function krSolCells(lay, L, seed) {
+  const rnd = krRng(seed), all = [];
+  lay.cells.forEach((row, r) => row.forEach((cell, c) => { if (cell) all.push({ r, c, ch: cell.ch, w: [cell.a, cell.d].filter((x) => x >= 0) }); }));
+  const used = new Set(), useW = {}, out = [];
+  for (let k = 0; k < L.length; k++) {
+    let opts = all.filter((x) => x.ch === L[k] && !used.has(x.r + ',' + x.c));
+    if (!opts.length) return null;
+    opts = krShuffle(opts, rnd);
+    const cost = (x) => x.w.reduce((s, wi) => s + (useW[wi] || 0), 0) * 3 + (out.length && Math.abs(out[out.length - 1][0] - x.r) + Math.abs(out[out.length - 1][1] - x.c) <= 1 ? 2 : 0);
+    let best = opts[0]; opts.forEach((x) => { if (cost(x) < cost(best)) best = x; });
+    used.add(best.r + ',' + best.c); best.w.forEach((wi) => { useW[wi] = (useW[wi] || 0) + 1; }); out.push([best.r, best.c]);
+  }
+  return out;
+}
+function krSolCandidates(el, sel, seed) {
+  const inSel = new Set(sel.map((x) => x.t.id)), fams = new Set(sel.map((x) => x.t.family));
+  const list = krShuffle(el.filter((x) => !inSel.has(x.t.id) && x.a.lens.length === 1 && x.a.letters.length >= 4 && x.a.letters.length <= 10), krRng(seed ^ 0x51ED));
+  const rank = (x) => (fams.has(x.t.family) ? 0 : 4) + (x.t.diff === 2 ? 0 : 1) + (x.a.letters.length >= 5 && x.a.letters.length <= 8 ? 0 : 2);
+  return list.map((x, i) => ({ x, r: rank(x), i })).sort((p, q) => (p.r - q.r) || (p.i - q.i)).map((p) => p.x);
+}
+
+/* ---------- Rätsel aus Paket und Einstellung ---------- */
+function krModel(pack, cfg) {
+  const el = krEligible(pack), byId = {}, chosen = new Set(cfg.ids);
+  el.forEach((x) => { byId[x.t.id] = x; });
+  const sel = el.filter((x) => chosen.has(x.t.id));
+  const key = [pack.id, krHash(el.map((x) => x.t.id + ':' + x.a.letters.join('') + ':' + x.t.expl.length).join('|')), sel.map((x) => x.t.id).join(','), cfg.seed, cfg.sol].join('|');
+  if (krModelCache.key === key && krModelCache.model) return krModelCache.model;
+  const lay = krLayout(sel.map((x) => ({ id: x.t.id, L: x.a.letters })), cfg.seed);
+  let sol = null;
+  if (lay && cfg.sol !== '') {
+    const list = cfg.sol && cfg.sol !== 'auto' ? [byId[cfg.sol]].filter(Boolean) : krSolCandidates(el, sel, cfg.seed);
+    for (const x of list.slice(0, 60)) {
+      if (chosen.has(x.t.id)) continue;
+      const cells = krSolCells(lay, x.a.letters, (cfg.seed ^ krHash(x.t.id)) >>> 0);
+      if (cells) { sol = { id: x.t.id, t: x.t, a: x.a, cells }; break; }
+    }
+  }
+  const items = lay ? lay.items.map((it) => Object.assign({}, it, { t: byId[it.id].t, a: byId[it.id].a })) : [];
+  const model = { packId: pack.id, lay, sol, items, missing: lay ? lay.missing.map((id) => byId[id] && byId[id].t.term).filter(Boolean) : [] };
+  krModelCache = { key, model };
+  return model;
+}
+function krSolOptions(pack, cfg, lay) {
+  if (!lay) return [];
+  const el = krEligible(pack), chosen = new Set(cfg.ids);
+  return krSolCandidates(el, el.filter((x) => chosen.has(x.t.id)), cfg.seed).filter((x) => krSolCells(lay, x.a.letters, (cfg.seed ^ krHash(x.t.id)) >>> 0)).slice(0, 40);
+}
+
+/* ---------- Einstellung je Paket ---------- */
+function krStoreAll() { const o = store.get(KEY_KR, {}); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }
+function krCfg(pack) {
+  const s = krStoreAll()[pack.id], ok = new Set(krEligible(pack).map((x) => x.t.id));
+  if (s && Array.isArray(s.ids)) {
+    const ids = s.ids.filter((id) => ok.has(id));
+    if (ids.length >= 2) return { ids, seed: (s.seed >>> 0) % 65536 || 1, sol: typeof s.sol === 'string' ? s.sol : 'auto' };
+  }
+  const cfg = { ids: krPick(pack, settings.krCount || 10, krNewSeed()).map((x) => x.t.id), seed: krNewSeed(), sol: 'auto' };
+  krAutoSeed(pack, cfg); krCfgSave(pack, cfg);
+  return cfg;
+}
+/* Neue Startzahl, bis alle Wörter ins Gitter passen (höchstens vier Versuche) */
+function krAutoSeed(pack, cfg) {
+  for (let i = 0; i < 4; i++) { if (!krModel(pack, cfg).missing.length) return; cfg.seed = krNewSeed(); }
+}
+function krCfgSave(pack, cfg) { const all = krStoreAll(); all[pack.id] = { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }; store.set(KEY_KR, all); }
+
+/* ---------- Code für Direktlink und QR ---------- */
+function krCodeMake(pack, cfg, solId, level, kopf) {
+  const el = krEligible(pack); if (el.length > 255) return '';
+  const set = new Set(cfg.ids), lv = Math.max(0, ['leicht', 'mittel', 'schwer'].indexOf(level));
+  const si = solId ? el.findIndex((x) => x.t.id === solId) + 1 : 0;
+  const sig = krHash(el.filter((x) => set.has(x.t.id)).map((x) => x.a.letters.join('')).join('|')) & 1023;
+  let bits = '';
+  const put = (v, n) => { bits += (v >>> 0).toString(2).padStart(n, '0').slice(-n); };
+  put(1, 2); put(lv, 2); put(kopf ? 1 : 0, 1); put(si, 8); put(cfg.seed, 16); put(sig, 10); put(el.length, 8);
+  el.forEach((x) => { bits += set.has(x.t.id) ? '1' : '0'; });
+  const body = lnBitsToB32(bits);
+  return body + LN_B32[lnSum(Array.from(body).map((ch) => LN_B32.indexOf(ch)))];
+}
+function krCodeRead(pack, code) {
+  const s = String(code || '').toUpperCase().replace(/[^0-9A-Z]/g, '').replace(/O/g, '0').replace(/[IL]/g, '1');
+  if (s.length < 10) return { err: 'Der Rätselcode ist zu kurz.' };
+  const body = s.slice(0, -1), vals = Array.from(body).map((ch) => LN_B32.indexOf(ch));
+  if (vals.some((v) => v < 0) || LN_B32[lnSum(vals)] !== s.slice(-1)) return { err: 'Der Rätselcode ist nicht vollständig.' };
+  const bits = lnB32ToBits(body); if (!bits) return { err: 'Der Rätselcode ist nicht vollständig.' };
+  let p = 0; const get = (n) => { const v = parseInt(bits.slice(p, p + n), 2); p += n; return v; };
+  if (get(2) !== 1) return { err: 'Dieser Rätselcode stammt aus einer anderen Fassung.' };
+  const lv = get(2), kopf = get(1) === 1, si = get(8), seed = get(16), sig = get(10), n = get(8);
+  const el = krEligible(pack);
+  if (n !== el.length || bits.length < p + n) return { err: 'Das Rätsel passt nicht zur Fassung des Pakets auf diesem Gerät.' };
+  const ids = el.filter((x, i) => bits[p + i] === '1').map((x) => x.t.id), set = new Set(ids);
+  if ((krHash(el.filter((x) => set.has(x.t.id)).map((x) => x.a.letters.join('')).join('|')) & 1023) !== sig) return { err: 'Das Rätsel passt nicht zur Fassung des Pakets auf diesem Gerät.' };
+  const sol = si && el[si - 1] ? el[si - 1].t.id : '';
+  return { cfg: { ids, seed: seed || 1, sol }, level: ['leicht', 'mittel', 'schwer'][lv] || 'mittel', kopf };
+}
+function krURL(pack, code) { return lkBase() + '#' + pack.id + '-raetsel-' + code; }
+
+/* ---------- Gitter als HTML ---------- */
+function krWordCells(it) { const out = []; for (let i = 0; i < it.L.length; i++) out.push((it.r + (it.dir === 'd' ? i : 0)) + ',' + (it.c + (it.dir === 'a' ? i : 0))); return out; }
+function krGridHTML(m, opt) {
+  opt = opt || {};
+  const lay = m.lay; if (!lay) return '';
+  const solIdx = {}, nums = {}, wb = {};
+  if (m.sol) m.sol.cells.forEach((rc, i) => { solIdx[rc[0] + ',' + rc[1]] = i + 1; });
+  m.items.forEach((it) => {
+    nums[it.r + ',' + it.c] = it.num;
+    let pos = 0;
+    it.a.lens.slice(0, -1).forEach((len) => { pos += len; const k = krWordCells(it)[pos - 1]; wb[k] = (wb[k] || '') + (it.dir === 'a' ? ' wb-r' : ' wb-b'); });
+  });
+  const act = new Set(opt.act || []);
+  let html = '';
+  for (let r = 0; r < lay.H; r++) for (let c = 0; c < lay.W; c++) {
+    const cell = lay.cells[r][c];
+    if (!cell) { html += '<span class="kr-x" aria-hidden="true"></span>'; continue; }
+    const k = r + ',' + c, L = opt.solution ? { ch: cell.ch, lock: true } : opt.letters ? opt.letters[k] : null;
+    const cls = (wb[k] || '') + (solIdx[k] ? ' sol' : '') + (act.has(k) ? ' act' : '') + (L && L.conflict ? ' conf' : '') + (L && L.lock ? ' lock' : '') + (L && L.first ? ' first' : '');
+    const inner = `${nums[k] ? `<i class="kr-n">${nums[k]}</i>` : ''}${solIdx[k] ? `<em class="kr-s">${solIdx[k]}</em>` : ''}<b>${L && L.ch ? esc(L.ch) : ''}</b>`;
+    html += opt.preview ? `<span class="kr-c${cls}">${inner}</span>`
+      : `<button type="button" class="kr-c${cls}" data-act="kr-cell" data-r="${r}" data-c="${c}" aria-label="Zeile ${r + 1}, Spalte ${c + 1}${nums[k] ? ', Nummer ' + nums[k] : ''}${L && L.ch ? ', ' + esc(L.ch) : ', leer'}">${inner}</button>`;
+  }
+  return `<div class="kr-grid${opt.preview ? ' prev' : ''}" style="--kr-w:${lay.W};--kr-h:${lay.H}">${html}</div>`;
+}
+
+/* ---------- Einrichtung (Startseite, Schritt 3) ---------- */
+function krLevelNow() { return KR_LEVELS.some((x) => x[0] === settings.krLevel) ? settings.krLevel : 'mittel'; }
+function krMediaChip(t) { return isMedia(t) ? `<span class="kr-chip-m">${t.kind === 'hoeren' ? 'Klang' : 'Bild'}</span>` : ''; }
+function krSetupHTML(pack) {
+  const el = krEligible(pack);
+  const back = `<button type="button" class="btn ghost" data-act="st-step" data-v="2">${iconArrow(-1)}Zurück</button>`;
+  if (el.length < 3) return `<div class="st3-hero"><h1>Rätsel</h1><p>In diesem Paket passen zu wenige Begriffe in ein Kreuzworträtsel. Werktitel, sehr lange Begriffe und Begriffe mit Sonderzeichen bleiben draußen.</p></div><div class="st3-cta">${back}</div>`;
+  const cfg = krCfg(pack), m = krModel(pack, cfg), lv = krLevelNow(), chosen = new Set(cfg.ids), cnt = cfg.ids.length;
+  const nOut = playable(pack).length - el.length;
+  const seg = (act, opts, cur, dis) => `<div class="seg">${opts.map((o) => `<button type="button" class="seg-btn${String(cur) === String(o[0]) ? ' on' : ''}" data-act="${act}" data-v="${o[0]}" aria-pressed="${String(cur) === String(o[0])}"${dis && dis(o[0]) ? ' disabled' : ''}>${o[1]}</button>`).join('')}</div>`;
+  const chips = el.map((x) => `<button type="button" class="kr-chip${chosen.has(x.t.id) ? ' on' : ''}" data-act="kr-tog" data-id="${esc(x.t.id)}" aria-pressed="${chosen.has(x.t.id)}">${esc(x.a.shown)}${krMediaChip(x.t)}</button>`).join('');
+  const solOpts = m.lay ? krSolOptions(pack, cfg, m.lay) : [];
+  const solCur = cfg.sol === '' ? '' : cfg.sol && cfg.sol !== 'auto' ? cfg.sol : 'auto';
+  const solSel = `<select class="fl-sel kr-solsel" data-kr-sol aria-label="Lösungswort">
+      <option value="auto"${solCur === 'auto' ? ' selected' : ''}>automatisch${solCur === 'auto' && m.sol ? ': ' + esc(m.sol.a.shown) : ''}</option>
+      <option value=""${solCur === '' ? ' selected' : ''}>ohne Lösungswort</option>
+      ${solOpts.map((x) => `<option value="${esc(x.t.id)}"${solCur === x.t.id ? ' selected' : ''}>${esc(x.a.shown)}</option>`).join('')}
+    </select>`;
+  const media = m.items.filter((it) => it.t.kind === 'hoeren' && isMedia(it.t));
+  const warn = m.missing.length ? `<p class="kr-warn">Nicht ins Gitter gepasst: ${esc(m.missing.join(', '))}. Tausche ${m.missing.length === 1 ? 'das Wort' : 'die Wörter'} aus oder ordne neu an.</p>` : '';
+  const cv = packCover(pack), col = COVER[cv.color] || COVER.indigo;
+  return `<div class="st3-hero"><h1>Rätsel einrichten</h1><p>Wörter wählen, Hinweise einstellen. Dann hier lösen, als Link an die Klasse geben oder ausdrucken.</p></div>
+    <div class="sum kr-sum0">
+      <div class="sum-pack"><span class="sum-cover" style="background:linear-gradient(160deg, ${col[0]}, ${col[1]})">${coverIcon(cv.icon, cv.color)}</span><span class="sum-t"><b>${esc(pack.title)}</b><small>${esc(gradeLabel(pack))}${gradeLabel(pack) ? ' · ' : ''}${el.length} von ${playable(pack).length} Begriffen passen ins Gitter</small></span></div>
+      <div class="sum-mode"><span class="sum-mi">${MODE_ICON.raetsel}</span><span class="sum-t"><b>Rätsel</b><small>${m.items.length} Wörter · Hinweise ${esc(lv)}${m.sol ? ' · Lösungswort' : ''}</small></span></div>
+    </div>
+    <div class="kr-setup">
+      <div class="kr-col">
+        <section class="kr-box">
+          <h3>Wörter</h3>
+          <div class="kr-row"><span class="kr-l">Anzahl</span>${seg('kr-count', KR_COUNTS, cnt, (v) => el.length < v)}</div>
+          <div class="kr-chips" role="group" aria-label="Wörter im Rätsel">${chips}</div>
+          <p class="kr-note">${cnt} gewählt. Antippen nimmt ein Wort dazu oder heraus.${nOut ? ` ${nOut} Begriffe passen nicht ins Gitter: Werktitel, sehr lange Begriffe und Begriffe mit Sonderzeichen.` : ''}</p>
+          <div class="kr-row"><button type="button" class="btn sm" data-act="kr-mix">Neu mischen</button><button type="button" class="btn sm" data-act="kr-arrange">Neu anordnen</button></div>
+        </section>
+        <section class="kr-box">
+          <h3>Hinweise und Ablauf</h3>
+          <div class="kr-row"><span class="kr-l">Hinweise</span>${seg('kr-level', KR_LEVELS, lv)}</div>
+          <p class="kr-note">${KR_LEVEL_TEXT[lv]} Hör- und Notenbegriffe erscheinen in jeder Stufe als Klang oder Bild. Zu jedem Wort gibt es drei Hilfen: Oberbegriff, Beispiel, Anfangsbuchstabe.</p>
+          ${sw('krKopf', 'Erst aus dem Kopf', 'Schritt 1 ohne Gitter: alle Wörter notieren, dann eintragen. Die Kreuzungen dienen danach der Selbstkontrolle.')}
+          <div class="kr-row"><span class="kr-l">Lösungswort</span>${solSel}</div>
+          <p class="kr-note">Ein weiterer Begriff aus dem Paket, versteckt in den Kreisen. Am Ende erklären die Lernenden ihn und verbinden ihn mit zwei Rätselwörtern.</p>
+        </section>
+      </div>
+      <div class="kr-col">
+        <section class="kr-box kr-prev">
+          <div class="kr-prev-h"><h3>Vorschau</h3><button type="button" class="btn sm ghost" data-act="kr-prevsol" aria-pressed="${!!krSetupView.sol}">${krSetupView.sol ? 'Lösung ausblenden' : 'Lösung zeigen'}</button></div>
+          <div class="kr-board prev">${krGridHTML(m, { preview: true, solution: !!krSetupView.sol })}</div>
+          ${warn}
+          ${krSetupView.sol && m.sol ? `<p class="kr-note">Lösungswort: <b>${esc(m.sol.a.shown)}</b></p>` : ''}
+          ${media.length ? `<div class="kr-media-list"><span class="kr-l">Hörbeispiele</span>${media.map((it) => `<button type="button" class="btn sm" data-act="kr-play" data-id="${esc(it.id)}">${playSVG()} ${it.num} ${it.dir === 'a' ? '→' : '↓'}</button>`).join('')}<small>Beim Lösen auf Papier spielst du sie hier vor.</small></div>` : ''}
+        </section>
+      </div>
+    </div>
+    <div class="st3-cta kr-cta">${back}<button type="button" class="btn ghost cta-adapt" data-act="kr-link"${m.items.length < 2 ? ' disabled' : ''}>${lgIcon('link')}<span>Link und QR</span></button><button type="button" class="btn ghost cta-adapt" data-act="kr-print"${m.items.length < 2 ? ' disabled' : ''}>Als PDF</button><button type="button" class="btn cta go" data-act="kr-start" data-primary${m.items.length < 2 ? ' disabled' : ''}>Hier lösen${iconNext()}</button></div>`;
+}
+function krSetupPack() { return findPack(settings.packId) || BUILTIN[0]; }
+function krSetupChange(fn) {
+  const pack = krSetupPack(), cfg = krCfg(pack);
+  if (fn(cfg, pack) === false) return;
+  krCfgSave(pack, cfg); renderStart();
+}
+
+/* ---------- Lösen ---------- */
+function krPack() { return kreuz ? findPack(kreuz.packId) : null; }
+function krM() { const p = krPack(); return p ? krModel(p, kreuz.cfg) : null; }
+function krItem(id) { const m = krM(); return m ? m.items.find((it) => it.id === id) || null : null; }
+function krSt(id) { if (!kreuz.st[id]) kreuz.st[id] = { res: '', tries: 0, helps: 0, shown: false }; return kreuz.st[id]; }
+function krRunKey(pack, cfg, level, kopf) { return [pack.id, cfg.ids.join(','), cfg.seed, cfg.sol, level, kopf ? 1 : 0].join('|'); }
+function krBegin(pack, cfg, level, kopf, from) {
+  const m = krModel(pack, cfg);
+  if (!m.lay || m.items.length < 2) { toast('Für ein Rätsel braucht es mindestens zwei Wörter im Gitter.'); return false; }
+  const key = krRunKey(pack, cfg, level, kopf);
+  kreuz = { packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level, kopf, from, key, phase: kopf ? 'kopf' : 'gitter', ent: {}, st: {}, act: m.items[0].id, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false };
+  const saved = store.get(KEY_KR_RUN, null);
+  if (saved && saved.key === key) ['phase', 'ent', 'st', 'act', 'solTyped', 'solOk', 'solShown', 'sent', 'saved'].forEach((k) => { if (saved[k] !== undefined) kreuz[k] = saved[k]; });
+  if (!kopf && kreuz.phase === 'kopf') kreuz.phase = 'gitter';
+  if (!m.items.some((it) => it.id === kreuz.act)) kreuz.act = m.items[0].id;
+  closeModal(); show('cross'); requestWakeLock();
+  return true;
+}
+function krSaveNow() { if (!kreuz) return; const k = kreuz; store.set(KEY_KR_RUN, { key: k.key, phase: k.phase, ent: k.ent, st: k.st, act: k.act, solTyped: k.solTyped, solOk: k.solOk, solShown: k.solShown, sent: k.sent, saved: k.saved }); }
+const krSaveSoon = debounce(krSaveNow, 300);
+function krCmp(s) { return (typeof lnNorm === 'function' ? lnNorm(s) : String(s || '').toLowerCase()).replace(/\s+/g, ''); }
+function krRight(it, typed) {
+  const x = krCmp(typed); if (!x) return false;
+  const forms = [krCmp(it.a.shown), krCmp(it.t.term)].concat(typeof lnForms === 'function' ? lnForms(it.t).map((f) => f.replace(/\s+/g, '')) : []);
+  if (forms.includes(x)) return true;
+  return it.t.kind === 'person' && x.length > krCmp(it.a.shown).length && x.endsWith(krCmp(it.a.shown));
+}
+function krNear(it, typed) { const x = krCmp(typed), f = krCmp(it.a.shown); return !!x && typeof lnDist === 'function' && lnDist(x, f) <= Math.max(1, lnTol(f.length)); }
+function krEntryLetters(it, typed) {
+  if (!typed || !String(typed).trim()) return [];
+  if (krRight(it, typed)) return it.a.letters.slice();
+  const out = [];
+  for (const ch of String(typed)) { if (ch === ' ' || ch === '-') continue; const L = krChar(ch); if (L) out.push(L); }
+  return out.slice(0, it.L.length);
+}
+function krDone(id) { const st = kreuz.st[id]; return !!(st && (st.res === 'ok' || st.shown)); }
+function krStatus(it) {
+  const st = kreuz.st[it.id] || {};
+  if (st.shown) return 'r';
+  if (st.res === 'ok') return st.helps ? 'h' : 'o';
+  if (st.res === 'no' || st.res === 'near') return 'x';
+  return String(kreuz.ent[it.id] || '').trim() ? 'e' : '';
+}
+function krGridLetters(m) {
+  const out = {};
+  /* das gerade gewählte Wort zuletzt, damit seine Buchstaben an Widersprüchen sichtbar bleiben */
+  m.items.filter((it) => it.id !== kreuz.act).concat(m.items.filter((it) => it.id === kreuz.act)).forEach((it) => {
+    const st = kreuz.st[it.id] || {}, lock = st.res === 'ok' || !!st.shown;
+    let letters = lock ? it.a.letters.slice() : krEntryLetters(it, kreuz.ent[it.id]);
+    const keys = krWordCells(it);
+    if (!lock && st.helps >= 3) { while (letters.length < 1) letters.push(''); letters[0] = it.a.letters[0]; }
+    letters.forEach((ch, i) => {
+      if (!ch || !keys[i]) return;
+      const k = keys[i], cur = out[k], first = !lock && st.helps >= 3 && i === 0;
+      if (!cur) out[k] = { ch, lock, first };
+      else if (cur.ch !== ch) { if (!cur.lock) out[k] = { ch, lock, conflict: true }; else cur.conflict = true; }
+      else { if (lock) cur.lock = true; if (first) cur.first = true; }
+    });
+  });
+  return out;
+}
+function krClueHTML(it) {
+  const c = krClue(it.t, it.a, kreuz ? kreuz.level : krLevelNow());
+  if (c.media === 'hoeren') return `<div class="kr-clue kr-media"><button type="button" class="btn play sm" data-act="kr-play" data-id="${esc(it.id)}">${playSVG()} Anhören</button><span>${esc(c.text)}</span></div>`;
+  if (c.media === 'bild') return `<div class="kr-clue kr-media"><div class="kr-img">${it.t.media.type === 'svg' && NOTATION[it.t.media.id] ? NOTATION[it.t.media.id]() : `<img src="${esc(it.t.media.src)}" alt="Bild zum Hinweis">`}</div><span>${esc(c.text)}</span></div>`;
+  return `<p class="kr-clue">${esc(c.text)}</p>`;
+}
+function krArrow(it) { return it.dir === 'a' ? '→' : '↓'; }
+function krBankHTML(m) {
+  if (!kreuz || kreuz.level !== 'leicht') return '';
+  const list = m.items.map((it) => ({ w: it.a.shown, done: krDone(it.id) })).sort((x, y) => x.w.localeCompare(y.w, 'de'));
+  return `<div class="kr-bank"><span class="kr-bank-h">Wortspeicher</span>${list.map((x) => `<span class="kr-bw${x.done ? ' done' : ''}">${esc(x.w)}</span>`).join('')}</div>`;
+}
+function krHead(pack) {
+  const k = kreuz, steps = (k.kopf ? [['kopf', 'Aus dem Kopf']] : []).concat([['gitter', 'Ins Gitter'], ['weiter', 'Weiterdenken']]);
+  return `<header class="kr-top">
+    <div class="kr-top-row"><button type="button" class="btn ghost" data-act="kr-back">${iconArrow(-1)}${k.from === 'setup' ? 'Einrichtung' : 'Startseite'}</button>
+    <div class="ln-title">${logoSVG('logo-sm')}<span><b>Rätsel</b><small>${esc(pack.title)} · Hinweise ${esc(k.level)}</small></span></div>
+    <button type="button" class="tool icon kr-info" data-act="kr-info" aria-label="So geht das Rätsel">${iconQ()}</button></div>
+    <nav class="kr-steps" aria-label="Schritte">${steps.map((s, i) => `<button type="button" class="kr-step${k.phase === s[0] ? ' on' : ''}" data-act="kr-phase" data-v="${s[0]}" aria-current="${k.phase === s[0] ? 'step' : 'false'}"><span>${i + 1}</span>${s[1]}</button>`).join('')}</nav>
+  </header>`;
+}
+function krKopfHTML(m) {
+  return `<section class="kr-kopf">
+    <p class="kr-lead"><b>Schritt 1.</b> Schreib zu jedem Hinweis das Wort, das dir einfällt. Lücken sind erlaubt. Danach trägst du alles ins Gitter ein.</p>
+    ${krBankHTML(m)}
+    <ol class="kr-qlist">${m.items.map((it) => `<li class="kr-q"><div class="kr-qh"><span class="kr-num">${it.num} ${krArrow(it)}</span><span class="kr-len">${esc(krLenText(it.a))}</span></div>${krClueHTML(it)}<input class="ln-input kr-in" data-kr-in="${esc(it.id)}" type="text" value="${esc(kreuz.ent[it.id] || '')}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Dein Wort" aria-label="Wort zu ${it.num} ${it.dir === 'a' ? 'waagerecht' : 'senkrecht'}"></li>`).join('')}</ol>
+    <div class="ln-actions"><button type="button" class="btn primary big" data-act="kr-phase" data-v="gitter" data-primary>Ins Gitter${iconNext()}</button></div>
+  </section>`;
+}
+function krActHTML(m, it) {
+  const st = krSt(it.id), helps = krHelps(it.t, it.a, kreuz.level), shownHelps = helps.slice(0, st.helps), done = krDone(it.id);
+  const tag = st.shown ? 'aufgedeckt' : st.res === 'ok' ? (st.helps ? 'mit Hilfe richtig' : 'richtig') : '';
+  let fb = '';
+  if (st.res === 'ok') fb = `<div class="kr-fb ok"><b>Richtig.</b> ${esc(it.t.expl)}</div>`;
+  else if (st.shown) fb = `<div class="kr-fb shown"><b>${esc(it.a.shown)}.</b> ${esc(it.t.expl)}</div>`;
+  else if (st.res === 'near') fb = '<div class="kr-fb near">Fast. Prüf die Schreibweise.</div>';
+  else if (st.res === 'no') fb = `<div class="kr-fb no">Das passt noch nicht. ${st.tries >= 2 ? 'Du kannst dir die Lösung zeigen lassen.' : 'Nimm eine Hilfe oder schau auf die Kreuzungen.'}</div>`;
+  const canShow = !done && (st.tries >= 2 || st.helps >= 3);
+  return `<div class="kr-act" id="kr-act">
+    <div class="kr-act-h"><span class="kr-num">${it.num} ${it.dir === 'a' ? '→ waagerecht' : '↓ senkrecht'}</span><span class="kr-len">${esc(krLenText(it.a))}</span>${tag ? `<span class="kr-tag ${st.shown ? 'shown' : 'ok'}">${tag}</span>` : ''}</div>
+    ${krClueHTML(it)}
+    ${shownHelps.length ? `<ul class="kr-helps">${shownHelps.map((h) => `<li><b>${esc(h.label)}</b> ${esc(h.text)}</li>`).join('')}</ul>` : ''}
+    <div class="ln-type kr-type"><input id="kr-act-in" class="ln-input" type="text" value="${esc(done ? it.a.shown : kreuz.ent[it.id] || '')}"${done ? ' disabled' : ''} autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Wort eintippen" aria-label="Wort zu ${it.num} ${it.dir === 'a' ? 'waagerecht' : 'senkrecht'}">${done ? '' : '<button type="button" class="btn primary" data-act="kr-check">Prüfen</button>'}</div>
+    ${fb}
+    <div class="kr-act-a">${done ? '' : `<button type="button" class="btn sm" data-act="kr-help"${st.helps >= 3 ? ' disabled' : ''}>${st.helps >= 3 ? 'Alle Hilfen genutzt' : `Hilfe ${st.helps + 1} von 3`}</button>`}${canShow ? '<button type="button" class="btn sm ghost" data-act="kr-show">Lösung zeigen</button>' : ''}<button type="button" class="btn sm ghost" data-act="kr-next">Nächstes Wort${iconNext()}</button></div>
+  </div>`;
+}
+function krListsHTML(m) {
+  const row = (it) => {
+    const c = krClue(it.t, it.a, kreuz.level), s = krStatus(it);
+    const txt = c.media === 'hoeren' ? 'Hörbeispiel' : c.media === 'bild' ? 'Notenbild' : c.text;
+    return `<button type="button" class="kr-li s-${s || 'none'}${kreuz.act === it.id ? ' on' : ''}" data-act="kr-act" data-id="${esc(it.id)}"><span class="kr-num">${it.num}</span><span class="kr-li-t">${esc(txt)}</span><span class="kr-dot" aria-hidden="true"></span></button>`;
+  };
+  const A = m.items.filter((it) => it.dir === 'a'), D = m.items.filter((it) => it.dir === 'd');
+  return `<div class="kr-lists"><div><h3>Waagerecht →</h3>${A.map(row).join('')}</div><div><h3>Senkrecht ↓</h3>${D.map(row).join('')}</div></div>`;
+}
+function krConflicts(letters) { return Object.keys(letters).some((k) => letters[k].conflict); }
+function krGitterHTML(m) {
+  const it = m.items.find((x) => x.id === kreuz.act) || m.items[0];
+  const letters = krGridLetters(m);
+  return `<p class="kr-lead"><b>Schritt ${kreuz.kopf ? 2 : 1}.</b> Tipp ein Kästchen oder einen Hinweis an und trag das Wort ein. Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe.</p>
+    <section class="kr-play">
+      ${krActHTML(m, it)}
+      <div class="kr-board" id="kr-board">${krGridHTML(m, { letters, act: krWordCells(it) })}</div>
+      <div class="kr-side">${krBankHTML(m)}${krListsHTML(m)}</div>
+    </section>
+    <p class="kr-conf" id="kr-conf"${krConflicts(letters) ? '' : ' hidden'}>An den rot markierten Kreuzungen passen die Buchstaben nicht zusammen. Eines der beiden Wörter stimmt noch nicht.</p>
+    <div class="ln-actions"><button type="button" class="btn" data-act="kr-checkall">Alle prüfen</button><button type="button" class="btn primary big" data-act="kr-phase" data-v="weiter" data-primary>Weiterdenken${iconNext()}</button></div>`;
+}
+function krCounts(m) { const c = { o: 0, h: 0, r: 0, x: 0 }; m.items.forEach((it) => { const s = krStatus(it); c[s === 'o' || s === 'h' || s === 'r' ? s : 'x']++; }); return c; }
+function krRepeatIds(m) { return m.items.filter((it) => krStatus(it) !== 'o').map((it) => it.id); }
+function krSentCheck(text, m) {
+  const has = (t, shown) => (typeof lkHas === 'function' ? lkHas(text, t.term) || lkHas(text, shown) : String(text).toLowerCase().includes(String(shown).toLowerCase()));
+  const words = m.items.filter((it) => has(it.t, it.a.shown)).map((it) => it.a.shown);
+  const sol = m.sol ? has(m.sol.t, m.sol.a.shown) : true;
+  const rel = /\b(weil|denn|dadurch|deshalb|daher|darum|wodurch|sodass|indem|wenn|damit|obwohl|während|also)\b/i.test(text);
+  return { words, sol, rel };
+}
+function krWeiterHTML(m) {
+  const sol = m.sol, letters = krGridLetters(m);
+  let solBox = '';
+  if (sol) {
+    const fromGrid = sol.cells.map((rc) => (letters[rc[0] + ',' + rc[1]] || {}).ch || '');
+    const showAll = kreuz.solOk || kreuz.solShown;
+    const boxes = sol.cells.map((rc, i) => `<span class="kr-sb${showAll || fromGrid[i] ? ' on' : ''}"><em>${i + 1}</em><b>${esc(showAll ? sol.a.letters[i] : fromGrid[i])}</b></span>`).join('');
+    solBox = `<section class="kr-box kr-solw"><h3>Lösungswort</h3><p class="kr-note">Die Buchstaben aus den Kreisen im Gitter, der Reihe nach.</p><div class="kr-sbs">${boxes}</div>
+      ${showAll ? `<div class="kr-fb ${kreuz.solOk ? 'ok' : 'shown'}"><b>${esc(sol.a.shown)}.</b> ${kreuz.solOk ? 'Richtig.' : 'Das ist das Lösungswort.'}</div>`
+        : `<div class="ln-type kr-type"><input id="kr-sol-in" class="ln-input" type="text" value="${esc(kreuz.solTyped || fromGrid.join(''))}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Lösungswort" aria-label="Lösungswort"><button type="button" class="btn primary" data-act="kr-solcheck">Prüfen</button></div>${kreuz.solRes === 'no' ? '<div class="kr-fb no">Das passt noch nicht. Prüf die Buchstaben in den Kreisen.</div>' : ''}<div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="kr-solshow">Lösungswort zeigen</button></div>`}
+    </section>`;
+  }
+  const solName = sol && (kreuz.solOk || kreuz.solShown) ? `„${sol.a.shown}“` : '';
+  const task = sol ? `Erkläre das Lösungswort ${solName} in einem Satz. Verbinde es dabei mit zwei Wörtern aus dem Rätsel.` : 'Verbinde zwei Wörter aus dem Rätsel in einem Satz, der zeigt, wie sie zusammenhängen.';
+  let sfb = '';
+  const r = kreuz.sentRes;
+  if (r) {
+    const need = Math.max(0, 2 - r.words.length);
+    if (!r.sol) sfb = '<div class="kr-fb no">Im Satz fehlt noch das Lösungswort.</div>';
+    else if (need) sfb = `<div class="kr-fb no">Nimm noch ${need === 1 ? 'ein Wort' : 'zwei Wörter'} aus dem Rätsel dazu.</div>`;
+    else sfb = `<div class="kr-fb ok">Dein Satz verbindet ${sol ? 'das Lösungswort mit ' : ''}${esc(prList(r.words.slice(0, 3).map((w) => '„' + w + '“')))}. ${r.rel ? (sol && (kreuz.solOk || kreuz.solShown) ? 'Vergleiche ihn mit der Erklärung.' : 'Lies ihn jemandem vor und frag, ob der Zusammenhang klar wird.') : 'Zeigt er auch, wie die Begriffe zusammenhängen? Wörter wie „weil“ oder „dadurch“ helfen dabei.'}</div>`;
+  }
+  const cmp = r && sol && (kreuz.solOk || kreuz.solShown) ? `<div class="kr-cmp"><b>Zum Vergleich</b> ${esc(sol.t.expl)}</div>` : '';
+  const c = krCounts(m), rep = krRepeatIds(m);
+  const lbl = { o: 'ohne Hilfe', h: 'mit Hilfe', r: 'aufgedeckt', x: 'noch offen' };
+  const explList = kreuz.showAll ? `<ul class="kr-expl">${m.items.map((it) => `<li class="s-${krStatus(it) || 'none'}"><b>${esc(it.a.shown)}</b> ${esc(it.t.expl)}</li>`).join('')}</ul>` : '';
+  return `<p class="kr-lead"><b>Schritt ${kreuz.kopf ? 3 : 2}.</b> Weiterdenken: Aus den Wörtern wird ein Zusammenhang.</p>
+    ${solBox}
+    <section class="kr-box kr-task"><h3>Erklären und verbinden</h3><p>${esc(task)}</p>
+      <textarea id="kr-sent-in" class="field" rows="3" maxlength="400" placeholder="Dein Satz">${esc(kreuz.sent || '')}</textarea>
+      <div class="kr-act-a"><button type="button" class="btn" data-act="kr-sent">Satz prüfen</button></div>${sfb}${cmp}
+      <p class="kr-note">Zu zweit geht es auch mündlich: Erklärt euch abwechselnd zwei Wörter aus dem Rätsel, ohne sie zu nennen.</p>
+    </section>
+    <section class="kr-box kr-bil"><h3>Deine Bilanz</h3>
+      <div class="kr-sumrow">${['o', 'h', 'r', 'x'].map((k) => `<div class="kr-sn s-${k}"><b>${c[k]}</b><span>${lbl[k]}</span></div>`).join('')}</div>
+      ${rep.length ? `<p class="kr-note">Wörter mit Hilfe, aufgedeckt oder noch offen kommen in „Karten üben“ in Fach 1 und werden dort wiederholt.</p><div class="kr-act-a"><button type="button" class="btn" data-act="kr-kartei"${kreuz.saved ? ' disabled' : ''}>${kreuz.saved ? 'Liegt in „Karten üben“' : (rep.length === 1 ? 'Ein Wort' : rep.length + ' Wörter') + ' in „Karten üben“ legen'}</button>${kreuz.saved ? '<button type="button" class="btn ghost" data-act="kr-learn">Karten üben öffnen</button>' : ''}</div>` : '<p class="kr-note">Alle Wörter ohne Hilfe gelöst.</p>'}
+      <div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="kr-explall" aria-expanded="${!!kreuz.showAll}">${kreuz.showAll ? 'Erklärungen ausblenden' : 'Alle Erklärungen ansehen'}</button></div>${explList}
+    </section>
+    <div class="ln-actions"><button type="button" class="btn ghost" data-act="kr-phase" data-v="gitter">${iconArrow(-1)}Zurück ins Gitter</button><button type="button" class="btn" data-act="kr-again">Noch einmal</button><button type="button" class="btn primary" data-act="kr-back">${kreuz.from === 'setup' ? 'Zur Einrichtung' : 'Fertig'}</button></div>`;
+}
+function krRender() {
+  const el = $('#v-cross'); if (!el) return;
+  const pack = krPack(), m = krM();
+  if (!kreuz || !pack || !m || !m.lay) { el.innerHTML = ''; return; }
+  const top = el.scrollTop;
+  const body = kreuz.phase === 'kopf' ? krKopfHTML(m) : kreuz.phase === 'weiter' ? krWeiterHTML(m) : krGitterHTML(m);
+  el.innerHTML = `<div class="ln kr kr-p-${kreuz.phase}">${krHead(pack)}${body}</div>`;
+  el.scrollTop = top;
+}
+function krRefreshBoard() {
+  const m = krM(), b = $('#kr-board'); if (!m || !b) return;
+  const it = m.items.find((x) => x.id === kreuz.act) || m.items[0], letters = krGridLetters(m);
+  b.innerHTML = krGridHTML(m, { letters, act: krWordCells(it) });
+  const cf = $('#kr-conf'); if (cf) cf.hidden = !krConflicts(letters);
+}
+function krFocusInput() {
+  setTimeout(() => { const inp = document.getElementById('kr-act-in'); if (inp && !inp.disabled) { try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); } } }, 20);
+}
+function krSetPhase(p) {
+  if (!kreuz) return;
+  if (p === 'kopf' && !kreuz.kopf) p = 'gitter';
+  kreuz.phase = ['kopf', 'gitter', 'weiter'].includes(p) ? p : 'gitter';
+  krSaveNow(); krRender(); const el = $('#v-cross'); if (el) el.scrollTop = 0;
+}
+function krCheck(id) {
+  const it = krItem(id); if (!it || krDone(id)) return;
+  const typed = String(kreuz.ent[id] || '').trim();
+  if (!typed) { toast('Erst ein Wort eintippen.'); krFocusInput(); return; }
+  const st = krSt(id); st.tries++;
+  if (krRight(it, typed)) { st.res = 'ok'; Sound.tick(); }
+  else { st.res = krNear(it, typed) ? 'near' : 'no'; Sound.no(); }
+  krSaveNow(); krRender();
+  if (st.res !== 'ok') krFocusInput();
+  else { const nb = $('#v-cross [data-act="kr-next"]'); if (nb) nb.focus({ preventScroll: true }); }
+}
+function krCheckAll() {
+  const m = krM(); if (!m) return;
+  let n = 0, ok = 0;
+  m.items.forEach((it) => {
+    if (krDone(it.id)) return;
+    const typed = String(kreuz.ent[it.id] || '').trim(); if (!typed) return;
+    const st = krSt(it.id); st.tries++; n++;
+    if (krRight(it, typed)) { st.res = 'ok'; ok++; } else st.res = krNear(it, typed) ? 'near' : 'no';
+  });
+  if (!n) { toast('Es gibt nichts Neues zu prüfen.'); return; }
+  if (ok) Sound.tick(); else Sound.no();
+  toast(`${ok} von ${n} ${n === 1 ? 'Wort' : 'Wörtern'} richtig.`);
+  krSaveNow(); krRender();
+}
+function krNextId(m) {
+  const i = m.items.findIndex((x) => x.id === kreuz.act);
+  for (let k = 1; k <= m.items.length; k++) { const it = m.items[(i + k) % m.items.length]; if (!krDone(it.id)) return it.id; }
+  return null;
+}
+function krToKartei() {
+  const m = krM(); if (!m || !kreuz) return;
+  const ids = krRepeatIds(m); if (!ids.length) return;
+  if (typeof karteiWrite === 'function') karteiWrite(kreuz.packId, (k) => { ids.forEach((id) => { const s = k.cards[id]; k.cards[id] = { box: 1, due: lnDay(0), n: s && s.n ? s.n : 0 }; }); });
+  kreuz.saved = true; krSaveNow();
+  toast(ids.length === 1 ? 'Ein Wort liegt jetzt in Fach 1 von „Karten üben“.' : `${ids.length} Wörter liegen jetzt in Fach 1 von „Karten üben“.`);
+  krRender();
+}
+function krPlay(id) {
+  const pack = view === 'cross' ? krPack() : krSetupPack(); if (!pack) return;
+  const t = pack.terms.find((x) => x.id === id); if (!t || !t.media) return;
+  if (t.media.type === 'synth') Sound.play(t.media.id); else if (t.media.type === 'audio') Sound.playSrc(t.media.src);
+}
+function krOpenCode(packId, code) {
+  const pack = findPack(packId); if (!pack) { toast('Dieses Paket gibt es auf diesem Gerät nicht.'); return false; }
+  const r = krCodeRead(pack, code);
+  if (r.err) { toast(r.err); return false; }
+  settings.packId = pack.id; saveSettings();
+  return krBegin(pack, r.cfg, r.level, r.kopf, 'link');
+}
+
+/* ---------- Link und QR ---------- */
+let krLk = { level: '' };
+function krLinkHTML() {
+  const pack = krSetupPack(), cfg = krCfg(pack), m = krModel(pack, cfg);
+  const level = krLk.level || krLevelNow();
+  const code = krCodeMake(pack, cfg, m.sol ? m.sol.id : '', level, settings.krKopf !== false);
+  if (!code) return `<h2>Link zum Rätsel</h2><p>Dieses Paket hat zu viele Begriffe für einen Rätsellink. Drucke das Rätsel aus oder teile es aus einem kleineren Paket.</p><div class="modal-actions"><button type="button" class="btn primary" data-act="modal-close">Schließen</button></div>`;
+  const url = krURL(pack, code), qr = typeof qrSVG === 'function' ? qrSVG(url) : '';
+  const bk = settings.linkBase && LK_BASE[settings.linkBase] ? settings.linkBase : 'web';
+  const base = typeof lkLocal === 'function' && lkLocal() ? '' : `<div class="dl-base"><span class="dl-l">Adresse</span><div class="seg">${Object.keys(LK_BASE).map((k) => `<button type="button" class="seg-btn${bk === k ? ' on' : ''}" data-act="kr-lk-base" data-v="${k}" aria-pressed="${bk === k}">${LK_BASE[k][0]}</button>`).join('')}</div><small>${LK_BASE[bk][1]}</small></div>`;
+  const warn = pack.own ? '<p class="dl-warn">Eigene Pakete liegen nur in diesem Browser. Auf anderen Geräten öffnet der Link das Rätsel nicht. Drucke es aus oder gib das Paket in der Werkstatt als Datei weiter.</p>'
+    : pack.edited ? '<p class="dl-warn">Deine Anpassungen an diesem Paket liegen nur in diesem Browser. Passt die Fassung auf einem anderen Gerät nicht, meldet der Link das.</p>' : '';
+  return `<h2>Rätsel für die Klasse</h2>
+    <p class="ms-note">Der Link öffnet genau dieses Rätsel: dieselben Wörter, dasselbe Gitter. Für Differenzierung lassen sich drei Links mit verschiedenen Hinweisstufen erzeugen.</p>
+    <div class="dl-what seg" role="group" aria-label="Hinweisstufe">${KR_LEVELS.map((x) => `<button type="button" class="seg-btn${level === x[0] ? ' on' : ''}" data-act="kr-lk-level" data-v="${x[0]}" aria-pressed="${level === x[0]}">Hinweise ${x[1]}</button>`).join('')}</div>
+    <div class="dl-row"><input id="kr-url" class="field mono" readonly value="${esc(url)}" aria-label="Link"><button type="button" class="btn" data-act="kr-lk-copy">Kopieren</button></div>
+    ${qr ? `<div class="dl-qr">${qr}</div>` : ''}
+    ${base}${warn}
+    <div class="modal-actions">${qr && downloads ? '<button type="button" class="btn" data-act="kr-lk-save">QR-Code als Bild speichern</button>' : ''}<button type="button" class="btn primary" data-act="modal-close" autofocus>Fertig</button></div>`;
+}
+function krLinkOpen() { krLk = { level: krLevelNow() }; modalCtx = { krLink: true }; openModal(krLinkHTML()); }
+function krLinkRefresh() { const card = document.querySelector('#modal .modal-card'); if (card && modalCtx && modalCtx.krLink) card.innerHTML = krLinkHTML(); }
+
+/* ---------- Hilfe ---------- */
+function krInfoHTML() {
+  return `<h2>So geht das Rätsel</h2>
+    <ol class="rules-list">
+      <li><b>Aus dem Kopf.</b> Lies jeden Hinweis und schreib das Wort auf, das dir einfällt. Noch ohne Gitter. Lücken sind erlaubt.</li>
+      <li><b>Ins Gitter.</b> Trag die Wörter ein. Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe. Passt es dort nicht, stimmt eines der beiden Wörter noch nicht.</li>
+      <li><b>Hilfen.</b> Zu jedem Wort gibt es drei Hilfen: erst den Oberbegriff, dann ein Beispiel, zuletzt den Anfangsbuchstaben. Probier es zuerst ohne.</li>
+      <li><b>Prüfen.</b> „Prüfen“ zeigt, ob ein Wort stimmt. Ist es richtig, liest du die Erklärung dazu. Nach zwei Versuchen kannst du dir die Lösung zeigen lassen.</li>
+      <li><b>Weiterdenken.</b> Die Buchstaben in den Kreisen ergeben das Lösungswort. Erkläre es in einem Satz und verbinde es mit zwei Wörtern aus dem Rätsel.</li>
+      <li><b>Üben.</b> Wörter, die du nur mit Hilfe geschafft hast, kannst du am Ende in „Karten üben“ legen.</li>
+    </ol>
+    <p class="ms-note">Ä, Ö und Ü stehen in einem Kästchen. Beim Eintippen gehen auch ae, oe und ue. Bei Wörtern aus mehreren Teilen nennt die Klammer die Längen, zum Beispiel (5, 4) für „Halbe Note“. Im Gitter trennt ein dicker Strich die Teile.</p>
+    <div class="modal-actions"><button type="button" class="btn primary" data-act="modal-close">Verstanden</button></div>`;
+}
+
+/* ---------- Bedienung ---------- */
+const KR_ACTIONS = {
+  'kr-count': (el) => krSetupChange((cfg, pack) => {
+    const n = Number(el.dataset.v) || 10; settings.krCount = n; saveSettings();
+    if (n > cfg.ids.length) cfg.ids = krPick(pack, n, krNewSeed(), cfg.ids).map((x) => x.t.id);
+    else cfg.ids = cfg.ids.slice(0, n);
+    krAutoSeed(pack, cfg);
+  }),
+  'kr-tog': (el) => krSetupChange((cfg) => {
+    const id = el.dataset.id, i = cfg.ids.indexOf(id);
+    if (i >= 0) { if (cfg.ids.length <= 2) { toast('Ein Rätsel braucht mindestens zwei Wörter.'); return false; } cfg.ids.splice(i, 1); }
+    else { if (cfg.ids.length >= 20) { toast('Mehr als 20 Wörter machen das Gitter unübersichtlich.'); return false; } cfg.ids.push(id); }
+    if (cfg.sol === id) cfg.sol = 'auto';
+  }),
+  'kr-mix': () => krSetupChange((cfg, pack) => { cfg.ids = krPick(pack, cfg.ids.length || settings.krCount || 10, krNewSeed()).map((x) => x.t.id); cfg.seed = krNewSeed(); if (cfg.sol !== '') cfg.sol = 'auto'; krAutoSeed(pack, cfg); }),
+  'kr-arrange': () => krSetupChange((cfg) => { cfg.seed = krNewSeed(); }),
+  'kr-level': (el) => { settings.krLevel = el.dataset.v; saveSettings(); renderStart(); },
+  'kr-prevsol': () => { krSetupView.sol = !krSetupView.sol; renderStart(); },
+  'kr-play': (el) => krPlay(el.dataset.id),
+  'kr-link': () => krLinkOpen(),
+  'kr-lk-level': (el) => { krLk.level = el.dataset.v; krLinkRefresh(); },
+  'kr-lk-base': (el) => { settings.linkBase = el.dataset.v; saveSettings(); krLinkRefresh(); },
+  'kr-lk-copy': () => { const u = $('#kr-url'); if (u) copyText(u.value, 'Link kopiert.'); },
+  'kr-lk-save': () => {
+    const u = $('#kr-url'); if (!u || typeof qrPNG !== 'function') return;
+    const pack = krSetupPack();
+    qrPNG(u.value).then((b) => saveFile(`vierklang-raetsel-${slug(pack.title)}-${krLk.level || krLevelNow()}_${today()}.png`, b, 'Das Bild ließ sich hier nicht speichern.'), () => toast('Der QR-Code ließ sich nicht erzeugen.'));
+  },
+  'kr-print': () => { if (typeof krPrintOpen === 'function') krPrintOpen(); else toast('Der Druck ist in dieser Fassung nicht verfügbar.'); },
+  'kr-start': () => { const pack = krSetupPack(); krBegin(pack, krCfg(pack), krLevelNow(), settings.krKopf !== false, 'setup'); },
+  'kr-info': () => openModal(krInfoHTML(), 'wide'),
+  'kr-back': () => {
+    const from = kreuz ? kreuz.from : 'setup';
+    krSaveNow();
+    if (from === 'setup') { settings.mode = 'raetsel'; saveSettings(); startStep = 3; }
+    else { startStep = 1; carouselFocus = true; if (/-raetsel-/.test(location.hash)) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* Adresse bleibt */ } } }
+    show('start');
+  },
+  'kr-phase': (el) => krSetPhase(el.dataset.v),
+  'kr-cell': (el) => {
+    const m = krM(); if (!m) return;
+    const r = Number(el.dataset.r), c = Number(el.dataset.c), k = r + ',' + c;
+    const hits = m.items.filter((it) => krWordCells(it).includes(k));
+    if (!hits.length) return;
+    const cur = hits.findIndex((it) => it.id === kreuz.act);
+    kreuz.act = (cur >= 0 && hits.length > 1 ? hits[(cur + 1) % hits.length] : hits[0]).id;
+    krSaveSoon(); krRender(); krFocusInput();
+  },
+  'kr-act': (el) => {
+    if (!kreuz) return;
+    kreuz.act = el.dataset.id; krSaveSoon(); krRender();
+    const a = $('#kr-act'); if (a && a.getBoundingClientRect().top < 0) a.scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' });
+    krFocusInput();
+  },
+  'kr-check': () => { if (kreuz) krCheck(kreuz.act); },
+  'kr-checkall': () => krCheckAll(),
+  'kr-help': () => {
+    if (!kreuz) return; const st = krSt(kreuz.act); if (st.helps >= 3 || krDone(kreuz.act)) return;
+    st.helps++; Sound.tick(); krSaveNow(); krRender(); krFocusInput();
+  },
+  'kr-show': () => {
+    if (!kreuz) return; const it = krItem(kreuz.act); if (!it) return;
+    const st = krSt(it.id); st.shown = true; st.res = ''; kreuz.ent[it.id] = it.a.shown; kreuz.saved = false;
+    krSaveNow(); krRender();
+  },
+  'kr-next': () => {
+    const m = krM(); if (!m) return;
+    const id = krNextId(m);
+    if (!id) { toast('Alle Wörter sind gelöst. Weiter geht es mit dem Weiterdenken.'); krSetPhase('weiter'); return; }
+    kreuz.act = id; krSaveSoon(); krRender(); krFocusInput();
+  },
+  'kr-solcheck': () => {
+    const m = krM(); if (!m || !m.sol) return;
+    const typed = String(kreuz.solTyped || ($('#kr-sol-in') || {}).value || '').trim();
+    if (!typed) { toast('Erst das Lösungswort eintippen.'); return; }
+    kreuz.solTyped = typed;
+    if (krCmp(typed) === krCmp(m.sol.a.shown)) { kreuz.solOk = true; kreuz.solRes = 'ok'; Sound.chime ? Sound.chime() : Sound.tick(); }
+    else { kreuz.solRes = 'no'; Sound.no(); }
+    krSaveNow(); krRender();
+  },
+  'kr-solshow': () => { if (!kreuz) return; kreuz.solShown = true; krSaveNow(); krRender(); },
+  'kr-sent': () => {
+    const m = krM(); if (!m) return;
+    const ta = $('#kr-sent-in'); if (ta) kreuz.sent = ta.value;
+    if (!String(kreuz.sent || '').trim()) { toast('Erst einen Satz schreiben.'); return; }
+    kreuz.sentRes = krSentCheck(kreuz.sent, m); krSaveNow(); krRender();
+  },
+  'kr-kartei': () => krToKartei(),
+  'kr-learn': () => { if (kreuz && typeof openLearn === 'function') { krSaveNow(); openLearn(kreuz.packId); } },
+  'kr-explall': () => { if (!kreuz) return; kreuz.showAll = !kreuz.showAll; krRender(); },
+  'kr-again': () => confirmBox('Das Rätsel neu beginnen?', 'Neu beginnen', () => {
+    closeModal(); if (!kreuz) return;
+    Object.assign(kreuz, { phase: kreuz.kopf ? 'kopf' : 'gitter', ent: {}, st: {}, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false });
+    const m = krM(); if (m && m.items[0]) kreuz.act = m.items[0].id;
+    krSaveNow(); krRender(); const el = $('#v-cross'); if (el) el.scrollTop = 0;
+  }, 'Deine Einträge in diesem Rätsel werden gelöscht.')
+};
+document.addEventListener('input', (e) => {
+  const el = e.target; if (!kreuz || view !== 'cross' || !el) return;
+  if (el.dataset && el.dataset.krIn) { kreuz.ent[el.dataset.krIn] = el.value; const st = kreuz.st[el.dataset.krIn]; if (st && st.res !== 'ok') st.res = ''; krSaveSoon(); return; }
+  if (el.id === 'kr-act-in') { kreuz.ent[kreuz.act] = el.value; const st = kreuz.st[kreuz.act]; if (st && st.res !== 'ok' && st.res) { st.res = ''; const fb = $('#kr-act .kr-fb'); if (fb) fb.remove(); } krSaveSoon(); krRefreshBoard(); return; }
+  if (el.id === 'kr-sol-in') { kreuz.solTyped = el.value; krSaveSoon(); return; }
+  if (el.id === 'kr-sent-in') { kreuz.sent = el.value; krSaveSoon(); }
+});
+document.addEventListener('change', (e) => {
+  const el = e.target; if (!el || !el.dataset || el.dataset.krSol === undefined || view !== 'start') return;
+  krSetupChange((cfg) => { cfg.sol = el.value; });
+});
+document.addEventListener('keydown', (e) => {
+  if (view !== 'cross' || !kreuz || e.key !== 'Enter' || e.isComposing) return;
+  const el = e.target; if (!el) return;
+  if (el.dataset && el.dataset.krIn) {
+    e.preventDefault();
+    const ins = $$('#v-cross [data-kr-in]'), i = ins.indexOf(el);
+    if (ins[i + 1]) ins[i + 1].focus(); else { const b = $('#v-cross [data-act="kr-phase"][data-v="gitter"][data-primary]'); if (b) b.focus(); }
+    return;
+  }
+  if (el.id === 'kr-act-in') { e.preventDefault(); krCheck(kreuz.act); return; }
+  if (el.id === 'kr-sol-in') { e.preventDefault(); KR_ACTIONS['kr-solcheck'](); }
+});
+
+/* Vierklang · Teil 17: Rätsel drucken
+   Rätselblatt je Hinweisstufe (Gitter, Antwortlinien für Schritt 1, Lösungswort, Weiterdenken), Hilfekarten zum
+   Ausschneiden, Lösung und Lehrkraftblatt. Gezeichnet mit dem Druckbaukasten aus Teil 7, dasselbe Gitter wie am Gerät. */
+
+const KEY_KR_PR = 'vierklang.raetsel.druck.v1';
+const KR_PR_PARTS = [
+  ['lehrkraft', 'Lehrkraftblatt', 'Ablauf, dieses Rätsel, Fallstricke, QR-Code'],
+  ['blatt', 'Rätselblatt', 'Gitter, Hinweise, Lösungswort, Weiterdenken'],
+  ['hilfe', 'Hilfekarten', 'drei gestufte Hilfen je Wort zum Ausschneiden'],
+  ['loesung', 'Lösung', 'ausgefülltes Gitter und alle Wörter']
+];
+let krPr = null;
+function krPrLoad() {
+  const s = store.get(KEY_KR_PR, {}) || {}, parts = {};
+  KR_PR_PARTS.forEach((p) => { parts[p[0]] = s.parts && typeof s.parts[p[0]] === 'boolean' ? s.parts[p[0]] : p[0] !== 'hilfe'; });
+  return { parts, stufen: s.stufen === 'alle' ? 'alle' : 'eine', color: s.color === 'spar' ? 'spar' : 'farbig', status: '' };
+}
+function krPrSave() { if (krPr) store.set(KEY_KR_PR, { parts: krPr.parts, stufen: krPr.stufen, color: krPr.color }); }
+
+/* ---------- Dialog ---------- */
+function krPrintHTML() {
+  const pack = krSetupPack(), cfg = krCfg(pack), m = krModel(pack, cfg), cov = prPackCover(pack), lv = krLevelNow();
+  const seg2 = (key, opts, val) => `<div class="seg pr-seg" role="radiogroup">${opts.map((o) => { const on = String(o[0]) === String(val); return `<button type="button" role="radio" class="seg-btn${on ? ' on' : ''}" aria-checked="${on}" data-act="kr-pr-set" data-k="${key}" data-v="${esc(o[0])}">${esc(o[1])}</button>`; }).join('')}</div>`;
+  const tick = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const nBl = krPr.stufen === 'alle' ? 3 : 1;
+  const pagesOf = { lehrkraft: '1 Seite', blatt: nBl === 1 ? '1 bis 2 Seiten' : 'je Stufe 1 bis 2 Seiten', hilfe: `etwa ${Math.max(1, Math.ceil(m.items.length / 6))} ${m.items.length > 6 ? 'Seiten' : 'Seite'}`, loesung: '1 Seite' };
+  const parts = KR_PR_PARTS.map((p) => { const on = !!krPr.parts[p[0]]; return `<button type="button" class="pr-part${on ? ' on' : ''}" role="checkbox" aria-checked="${on}" data-act="kr-pr-part" data-k="${p[0]}"><span class="pr-box">${on ? tick : ''}</span><span class="pr-part-t"><b>${esc(p[1])}</b><small>${esc(p[2])} · ${esc(pagesOf[p[0]])}</small></span></button>`; }).join('');
+  const any = KR_PR_PARTS.some((p) => krPr.parts[p[0]]);
+  return `<div class="pr-head">
+      <span class="pr-badge" style="background:linear-gradient(160deg, ${cov.pal.g0}, ${cov.pal.g1});box-shadow:0 4px 0 ${prMix(cov.pal.g1, '#000000', 0.2)}">${coverIconSVG(cov.icon, cov.pal.on, 'pr-badge-ic')}</span>
+      <div class="pr-head-t"><h2>Rätsel drucken</h2><p class="pr-sub"><b>${esc(pack.title)}</b> · ${m.items.length} Wörter · Hinweise ${esc(lv)}</p></div>
+    </div>
+    <p class="pr-intro">Dasselbe Gitter wie am Gerät und im Link. Für Differenzierung gibt es das Rätselblatt in allen drei Hinweisstufen, die Lösung ist überall gleich.</p>
+    <div class="pr-grid">
+      <div class="pr-col">
+        <div class="pr-row"><div class="pr-l">Rätselblatt<small>${krPr.stufen === 'alle' ? 'Je ein Blatt mit leichten, mittleren und schweren Hinweisen.' : `Nur die eingestellte Stufe: ${esc(lv)}.`}</small></div>${seg2('stufen', [['eine', 'eine Stufe'], ['alle', 'alle drei']], krPr.stufen)}</div>
+        <div class="pr-row"><div class="pr-l">Farbe</div>${seg2('color', [['farbig', 'farbig'], ['spar', 'tintensparend']], krPr.color)}</div>
+        <p class="kr-note">${settings.krKopf !== false ? 'Mit Antwortlinien für Schritt 1: erst aus dem Kopf, dann ins Gitter.' : 'Ohne Antwortlinien, weil „Erst aus dem Kopf“ ausgeschaltet ist.'}</p>
+      </div>
+      <div class="pr-col"><div class="pr-row pr-parts-row"><div class="pr-l pr-l-flex"><span>Inhalte</span></div><div class="pr-parts">${parts}</div></div></div>
+    </div>
+    <div class="pr-sum"><b>${any ? 'PDF zum Ausdrucken' : 'Nichts ausgewählt'}</b><span>${m.items.length} Wörter · ${krPr.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + esc(lv)} · ${krPr.color === 'spar' ? 'tintensparend' : 'farbig'}</span>${pack.checked ? '' : '<span class="pr-ki">Die Inhalte sind ein KI-Entwurf. Die Fußzeile weist darauf hin.</span>'}</div>
+    <div class="modal-actions pr-actions"><p class="pr-status" id="kr-pr-status" role="status" aria-live="polite">${esc(krPr.status || '')}</p><button type="button" class="btn" data-act="modal-close">Schließen</button><button type="button" class="btn primary pr-make" id="kr-pr-make" data-act="kr-pr-make"${any && !prBusy ? '' : ' disabled'}>${prBusy ? 'PDF wird erstellt …' : 'PDF erstellen'}</button></div>`;
+}
+function krPrintOpen() {
+  const pack = krSetupPack(), m = krModel(pack, krCfg(pack));
+  if (!m.lay || m.items.length < 2) { toast('Für ein Rätsel braucht es mindestens zwei Wörter im Gitter.'); return; }
+  krPr = krPrLoad(); modalCtx = { krPrint: true };
+  openModal(krPrintHTML(), 'wide pr-modal');
+}
+function krPrRender() {
+  const md = $('#modal'), card = md && md.querySelector('.modal-card');
+  if (!krPr || !card || md.hidden || !modalCtx || !modalCtx.krPrint) return;
+  const top = card.scrollTop; card.innerHTML = krPrintHTML(); card.scrollTop = top;
+}
+function krPrStatus(text, busy) {
+  if (krPr) krPr.status = text;
+  const el = $('#kr-pr-status'); if (el) el.textContent = text;
+  const b = $('#kr-pr-make'); if (b) { b.disabled = !!busy || !(krPr && KR_PR_PARTS.some((p) => krPr.parts[p[0]])); b.textContent = busy ? 'PDF wird erstellt …' : 'PDF erstellen'; }
+}
+
+/* ---------- Bausteine ---------- */
+async function krPrImages(m) {
+  const img = {};
+  for (const it of m.items) {
+    if (it.t.kind !== 'bild' || !isMedia(it.t)) continue;
+    try { img[it.id] = it.t.media.type === 'svg' ? await prSvgToPng(NOTATION[it.t.media.id](), 0, 900) : await prImageToJpeg(it.t.media.src); } catch (e) { /* ohne Bild */ }
+  }
+  return img;
+}
+function krPrDirWord(it) { return it.dir === 'a' ? 'waagerecht' : 'senkrecht'; }
+/* Gitter zeichnen; o.letters: Lösung eintragen */
+function krGridDraw(ctx, x0, y0, cs, o) {
+  const K = ctx.K, doc = K.doc, m = ctx.m, lay = m.lay; o = o || {};
+  const solIdx = {}, nums = {};
+  if (m.sol) m.sol.cells.forEach((rc, i) => { solIdx[rc[0] + ',' + rc[1]] = i + 1; });
+  m.items.forEach((it) => { nums[it.r + ',' + it.c] = it.num; });
+  K.dash(null);
+  for (let r = 0; r < lay.H; r++) for (let c = 0; c < lay.W; c++) {
+    if (!lay.cells[r][c]) continue;
+    K.fillC('#FFFFFF'); K.drawC(PR_C.ink); K.lw(0.32); K.rect(x0 + c * cs, y0 + r * cs, cs, cs, 'FD');
+  }
+  Object.keys(solIdx).forEach((k) => {
+    const p = k.split(','), r = Number(p[0]), c = Number(p[1]), cx = x0 + c * cs + cs / 2, cy = y0 + r * cs + cs / 2;
+    K.lw(0.35); K.drawC(ctx.spar ? PR_C.ink : PR_C.goldDark); K.fillC(ctx.spar ? '#FFFFFF' : PR_C.goldLight);
+    doc.circle(cx, cy, cs * 0.37, 'FD');
+    K.text(String(solIdx[k]), x0 + c * cs + cs - 0.7, y0 + r * cs + cs - 0.7, 'n9', Math.max(4.6, cs * 0.62), ctx.spar ? PR_C.ink : PR_C.goldDark, { align: 'right' });
+  });
+  Object.keys(nums).forEach((k) => {
+    const p = k.split(','), r = Number(p[0]), c = Number(p[1]);
+    K.text(String(nums[k]), x0 + c * cs + 0.7, y0 + r * cs + 0.6 + K.cap(Math.max(5, cs * 0.78)), 'n8', Math.max(5, cs * 0.78), PR_C.muted);
+  });
+  if (o.letters) {
+    const fs = cs * 1.75;
+    for (let r = 0; r < lay.H; r++) for (let c = 0; c < lay.W; c++) {
+      const cell = lay.cells[r][c]; if (!cell) continue;
+      K.text(cell.ch, x0 + c * cs + cs / 2, y0 + r * cs + cs / 2 + K.cap(fs) / 2 + cs * 0.06, 'n9', fs, PR_C.ink, { align: 'center' });
+    }
+  }
+  /* Wortgrenzen in Begriffen aus mehreren Teilen */
+  K.drawC(PR_C.ink); K.lw(Math.max(0.8, cs * 0.11));
+  m.items.forEach((it) => {
+    let pos = 0;
+    it.a.lens.slice(0, -1).forEach((len) => {
+      pos += len; const i = pos - 1, r = it.r + (it.dir === 'd' ? i : 0), c = it.c + (it.dir === 'a' ? i : 0);
+      if (it.dir === 'a') doc.line(x0 + (c + 1) * cs, y0 + r * cs, x0 + (c + 1) * cs, y0 + (r + 1) * cs);
+      else doc.line(x0 + c * cs, y0 + (r + 1) * cs, x0 + (c + 1) * cs, y0 + (r + 1) * cs);
+    });
+  });
+}
+function krPrSuffix(a) { const s = krStructure(a); return (s ? ' ' + s : '') + (a.nach ? ' (Nachname)' : ''); }
+/* Hinweisblock für eine Spalte */
+function krClueBlock(ctx, it, lv, fs, colW) {
+  const K = ctx.K, c = krClue(it.t, it.a, lv), bd = 5.2, tw = colW - bd - 2.4;
+  const main = c.media === 'hoeren' ? 'Hörbeispiel. Die Lehrkraft spielt es vor.' : c.text;
+  const r = K.rich([[main, 'n6', PR_C.ink], [krPrSuffix(it.a), 'n8', PR_C.muted]], fs, tw, { lh: 1.24 });
+  const im = c.media === 'bild' ? ctx.img[it.id] : null, imH = im ? 11 : 0;
+  const lineH = ctx.kopf ? 6.4 : 0;
+  const h = Math.max(bd, r.h) + (imH ? imH + 1.2 : 0) + lineH + 2.6;
+  return {
+    h, draw: (x, y) => {
+      prNumBadge(ctx, x, y + Math.max(0, (r.lh - bd) / 2), bd, it.num, ctx.spar ? PR_C.ink : PR_C.accent);
+      r.draw(x + bd + 2.4, y);
+      let yy = y + Math.max(bd, r.h);
+      if (im) { const w = Math.min(tw, imH * im.ratio); K.doc.addImage(im.data, im.fmt, x + bd + 2.4, yy + 1.2, w, imH, 'vk-kr-' + it.id, 'FAST'); yy += imH + 1.2; }
+      if (lineH) { K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); K.doc.line(x + bd + 2.4, yy + 5, x + colW - 2, yy + 5); }
+    }
+  };
+}
+/* Hinweise in zwei Spalten: Waagerecht, dann Senkrecht, an der günstigsten Stelle geteilt */
+function krClueFlow(ctx, lv, fs, colW) {
+  const K = ctx.K, m = ctx.m, seq = [];
+  const head = (t) => ({ head: true, title: t, h: 7, draw: (x, y) => K.text(t, x, y + K.cap(10.4), 't', 10.4, PR_C.ink) });
+  [['a', 'Waagerecht'], ['d', 'Senkrecht']].forEach((d) => {
+    const list = m.items.filter((it) => it.dir === d[0]); if (!list.length) return;
+    seq.push(head(d[1])); list.forEach((it) => seq.push(krClueBlock(ctx, it, lv, fs, colW)));
+  });
+  const pre = [0]; seq.forEach((b, i) => pre.push(pre[i] + b.h));
+  let best = { k: seq.length, h: pre[seq.length] };
+  for (let k = 1; k < seq.length; k++) {
+    if (seq[k - 1].head) continue;
+    const h = Math.max(pre[k], pre[seq.length] - pre[k] + (seq[k].head ? 0 : 7));
+    if (h < best.h) best = { k, h };
+  }
+  const c1 = seq.slice(0, best.k), c2 = seq.slice(best.k);
+  if (c2.length && !c2[0].head) { const last = c1.filter((b) => b.head).pop(); c2.unshift(head((last ? last.title : 'Hinweise') + ', weiter')); }
+  const sum = (a) => a.reduce((s, b) => s + b.h, 0);
+  return { c1, c2, h: Math.max(sum(c1), sum(c2)) };
+}
+function krWeiterBlock(ctx, w) {
+  const K = ctx.K, m = ctx.m;
+  const task = m.sol ? 'Erkläre das Lösungswort in einem Satz. Verbinde es dabei mit zwei Wörtern aus dem Rätsel.' : 'Verbinde zwei Wörter aus dem Rätsel in einem Satz, der zeigt, wie sie zusammenhängen.';
+  const r = K.rich([['Weiterdenken. ', 'n9', PR_C.ink], [task, 'n6', PR_C.ink]], 8.6, w - 8, { lh: 1.28 });
+  const h = 4 + r.h + 3 * 7 + 3;
+  return { h, draw: (x, y) => {
+    prPanel(ctx, x, y, w, h, 'indigo');
+    r.draw(x + 4, y + 3.4);
+    K.drawC(ctx.spar ? PR_C.faint : '#B9BCE8'); K.lw(0.3); K.dash(null);
+    for (let i = 1; i <= 3; i++) K.doc.line(x + 4, y + 3.4 + r.h + i * 7, x + w - 4, y + 3.4 + r.h + i * 7);
+  } };
+}
+function krBankBlock(ctx, w) {
+  const K = ctx.K, words = ctx.m.items.map((it) => it.a.shown).sort((a, b) => a.localeCompare(b, 'de'));
+  const r = K.rich([['Wortspeicher   ', 'n9', PR_C.muted], [words.join('   ·   '), 'n8', PR_C.ink]], 8.8, w - 8, { lh: 1.4 });
+  const h = r.h + 6;
+  return { h, draw: (x, y) => { K.fillC('#FFFFFF'); K.drawC(PR_C.cut); K.lw(0.35); K.dash([1.4, 1.1]); K.rr(x, y, w, h, 2.6, 'FD'); K.dash(null); r.draw(x + 4, y + 3); } };
+}
+function krSolRow(ctx, y) {
+  const K = ctx.K, m = ctx.m; if (!m.sol) return 0;
+  const n = m.sol.cells.length, d = 7.2, gap = 1.6, lw = K.tw('Lösungswort', 't', 10.4) + 4;
+  const total = lw + n * d + (n - 1) * gap, x0 = 12 + (186 - total) / 2;
+  K.text('Lösungswort', x0, y + d / 2 + K.cap(10.4) / 2, 't', 10.4, PR_C.ink);
+  for (let i = 0; i < n; i++) {
+    const cx = x0 + lw + i * (d + gap) + d / 2, cy = y + d / 2;
+    K.lw(0.4); K.drawC(ctx.spar ? PR_C.ink : PR_C.goldDark); K.fillC(ctx.spar ? '#FFFFFF' : PR_C.goldLight); K.doc.circle(cx, cy, d / 2, 'FD');
+    K.text(String(i + 1), cx + d / 2 - 0.2, cy + d / 2 + 0.4, 'n9', 5.2, ctx.spar ? PR_C.ink : PR_C.goldDark, { align: 'right' });
+  }
+  return d + 4;
+}
+
+/* ---------- Rätselblatt ---------- */
+function krPageBlatt(ctx, lv) {
+  const K = ctx.K, doc = K.doc, m = ctx.m, lay = m.lay;
+  const colW = 89, X2 = 12 + colW + 8, BOTTOM = 284;
+  const steps = (ctx.kopf ? [['Aus dem Kopf.', 'Schreib zu jedem Hinweis das Wort auf die Linie.']] : [])
+    .concat([['Ins Gitter.', 'Trag die Wörter ein. Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe.'], ['Weiterdenken.', m.sol ? 'Finde das Lösungswort und erkläre es.' : 'Verbinde zwei Wörter in einem Satz.']]);
+  const sw = (186 - 8 - (steps.length - 1) * 3) / steps.length;
+  const stepR = steps.map((s) => K.rich([[s[0] + ' ', 'n9', PR_C.ink], [s[1], 'n6', PR_C.ink]], 8, sw - 7.4, { lh: 1.26 }));
+  const ph = Math.max(...stepR.map((r) => r.h)) + 6;
+  const top = 32 + 10 + ph + 4;
+  const maxCs = Math.min(10.5, 186 / lay.W);
+  const bank = lv === 'leicht' ? krBankBlock(ctx, 186) : null, weiter = krWeiterBlock(ctx, 186);
+  const solH = m.sol ? 11.2 : 0, bankH = bank ? bank.h + 4 : 0;
+  let plan = null;
+  for (const cs of [10.5, 9.6, 8.8, 8, 7.2, 6.6, 6]) {
+    const c = Math.min(cs, maxCs);
+    for (const fs of [9, 8.4, 7.8]) {
+      const fl = krClueFlow(ctx, lv, fs, colW);
+      const h = top + lay.H * c + 4 + solH + fl.h + 2 + bankH + weiter.h;
+      if (h <= BOTTOM) { plan = { cs: c, fs, fl, one: true }; break; }
+    }
+    if (plan) break;
+  }
+  const head = () => {
+    K.page('portrait');
+    return prHeader(ctx, 'Kreuzworträtsel', null, { chip: 'Hinweise ' + lv });
+  };
+  let y = head();
+  /* Name, Klasse, Datum */
+  let x = 12; const fy = y + 4.4;
+  [['Name', 88], ['Klasse', 40], ['Datum', 46]].forEach((f) => {
+    const lw = K.text(f[0], x, fy, 'n9', 8, PR_C.muted);
+    K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); doc.line(x + lw + 2, fy + 0.9, x + f[1], fy + 0.9);
+    x += f[1] + 6;
+  });
+  y = fy + 5.6;
+  /* drei Schritte */
+  prPanel(ctx, 12, y, 186, ph, 'gold');
+  steps.forEach((s, i) => { const sx = 16 + i * (sw + 3); prNumBadge(ctx, sx, y + 3, 5, i + 1, ctx.spar ? PR_C.goldDark : PR_C.goldDark); stepR[i].draw(sx + 7, y + 3); });
+  y += ph + 4;
+  /* Gitter */
+  const cs = plan ? plan.cs : Math.min(maxCs, Math.max(6, (BOTTOM - y - solH - bankH - weiter.h - 4) / lay.H));
+  krGridDraw(ctx, 12 + (186 - lay.W * cs) / 2, y, cs);
+  y += lay.H * cs + 4;
+  if (m.sol) y += krSolRow(ctx, y);
+  if (plan) {
+    let y1 = y, y2 = y;
+    plan.fl.c1.forEach((b) => { b.draw(12, y1); y1 += b.h; });
+    plan.fl.c2.forEach((b) => { b.draw(X2, y2); y2 += b.h; });
+    y += plan.fl.h + 2;
+    if (bank) { bank.draw(12, y); y += bank.h + 4; }
+    weiter.draw(12, Math.max(y, BOTTOM - weiter.h));
+    return;
+  }
+  /* zu viel für eine Seite: Hinweise auf der Rückseite */
+  if (bank) { bank.draw(12, y); y += bank.h + 4; }
+  weiter.draw(12, Math.min(BOTTOM - weiter.h, y));
+  let fl = null;
+  for (const fs of [9, 8.4, 7.8, 7.2]) { fl = krClueFlow(ctx, lv, fs, colW); if (32 + 2 + fl.h <= BOTTOM) break; }
+  K.page('portrait');
+  y = prHeader(ctx, 'Hinweise zum Kreuzworträtsel', null, { chip: 'Hinweise ' + lv }) + 2;
+  if (y + fl.h > BOTTOM) K.warn.push('Rätselblatt zu voll: ' + ctx.pack.title);
+  let y1 = y, y2 = y;
+  fl.c1.forEach((b) => { b.draw(12, y1); y1 += b.h; });
+  fl.c2.forEach((b) => { b.draw(X2, y2); y2 += b.h; });
+}
+
+/* ---------- Hilfekarten ---------- */
+function krPagesHilfe(ctx, lv) {
+  const K = ctx.K, doc = K.doc, m = ctx.m, W = 62, BOTTOM = 284;
+  const rows = m.items.map((it) => {
+    const hs = krHelps(it.t, it.a, lv);
+    const rs = hs.map((h) => K.rich([[h.text, 'n6', PR_C.ink]], 8.2, W - 8, { lh: 1.26 }));
+    return { it, hs, rs, h: Math.max(...rs.map((r) => r.h)) + 12 };
+  });
+  let y = 0;
+  const page = () => {
+    K.page('portrait');
+    y = prHeader(ctx, 'Hilfekarten', null, { chip: 'zum Ausschneiden' });
+    const r = K.rich([['Ausschneiden und am Pult auslegen, nach Wörtern sortiert. Erst Hilfe 1 nehmen, dann Hilfe 2, zuletzt Hilfe 3.', 'n6', PR_C.muted]], 8.4, 186, { lh: 1.3 });
+    r.draw(12, y); y += r.h + 3;
+  };
+  page();
+  rows.forEach((row) => {
+    if (y + row.h > BOTTOM) page();
+    row.hs.forEach((h, i) => {
+      const x = 12 + i * W;
+      if (!ctx.spar) { K.fillC(i === 2 ? PR_C.goldLight : PR_C.panel); K.rr(x + 1, y + 1, W - 2, row.h - 2, 2.4, 'F'); }
+      K.text(`${row.it.num} ${krPrDirWord(row.it)}`, x + 4, y + 6, 'n9', 7.6, PR_C.ink);
+      K.text(`Hilfe ${i + 1} · ${h.label}`, x + W - 4, y + 6, 'n8', 6.6, i === 2 ? PR_C.goldDark : PR_C.muted, { align: 'right' });
+      row.rs[i].draw(x + 4, y + 8.6);
+    });
+    K.drawC(PR_C.cut); K.lw(0.3); K.dash([1.6, 1.2]);
+    doc.line(12, y, 198, y); doc.line(12, y + row.h, 198, y + row.h);
+    [12, 12 + W, 12 + 2 * W, 198].forEach((xx) => doc.line(xx, y, xx, y + row.h));
+    K.dash(null);
+    y += row.h;
+  });
+}
+
+/* ---------- Lösung ---------- */
+function krPageLoesung(ctx) {
+  const K = ctx.K, m = ctx.m, lay = m.lay;
+  K.page('portrait');
+  let y = prHeader(ctx, 'Lösung zum Kreuzworträtsel', null, { chip: 'für die Lehrkraft' });
+  const cs = Math.min(11, 186 / lay.W, 150 / lay.H);
+  krGridDraw(ctx, 12 + (186 - lay.W * cs) / 2, y, cs, { letters: true });
+  y += lay.H * cs + 6;
+  if (m.sol) { K.text('Lösungswort', 12, y + K.cap(10.4), 't', 10.4, PR_C.ink); K.text(m.sol.a.shown, 12 + K.tw('Lösungswort', 't', 10.4) + 4, y + K.cap(10.4), 'n9', 10.4, PR_C.goldDark); y += 8; }
+  const col = (dir, title, x) => {
+    let yy = y; K.text(title, x, yy + K.cap(10.4), 't', 10.4, PR_C.ink); yy += 7;
+    m.items.filter((it) => it.dir === dir).forEach((it) => {
+      const r = K.rich([[it.num + '   ', 'n9', PR_C.accent], [it.a.shown, 'n9', PR_C.ink], [it.a.shown !== it.t.term ? '  (' + it.t.term + ')' : '', 'n6', PR_C.muted]], 9, 88, { lh: 1.3 });
+      r.draw(x, yy); yy += r.h + 1.2;
+    });
+    return yy;
+  };
+  const e = Math.max(col('a', 'Waagerecht', 12), col('d', 'Senkrecht', 109));
+  if (e > 284) K.warn.push('Lösung zu voll: ' + ctx.pack.title);
+}
+
+/* ---------- Lehrkraftblatt ---------- */
+function krTeacherTexts(ctx, o) {
+  const m = ctx.m, pack = ctx.pack, n = m.items.length;
+  const musik = !pack.subject || /musik/i.test(pack.subject);
+  const L = {};
+  L.chips = [pack.grade, `${n} Wörter`, o.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + o.level, ctx.kopf ? 'erst aus dem Kopf' : '', m.sol ? 'mit Lösungswort' : ''].filter(Boolean);
+  L.einordnung = (musik ? 'Abruf- und Sicherungsübung für die Zeit nach der musikalischen Erarbeitung. Das Rätsel ruft Begriffe ab, die die Klasse vorher gehört, gesungen und gespielt hat.'
+    : 'Abruf- und Sicherungsübung für die Zeit nach der Erarbeitung. Das Rätsel ruft Begriffe ab, die die Klasse vorher kennengelernt hat.') + ' Verstanden ist ein Begriff, wenn er erklärt und mit anderen verbunden wird. Dafür gibt es den Schritt Weiterdenken.';
+  L.module = pack.module || '';
+  const t1 = Math.max(3, Math.round(n * 0.6)), t2 = Math.max(4, Math.round(n * 0.8)), t3 = n <= 5 ? 3 : 7;
+  L.ablauf = [];
+  if (n > 5) L.ablauf.push([3, 'Einführen', 'Die Schritte zeigen. Klären, dass Ä, Ö, Ü und ß in ein Kästchen kommen und Wörter aus mehreren Teilen eine Längenangabe haben.']);
+  if (ctx.kopf) L.ablauf.push([t1, 'Aus dem Kopf', 'Alle schreiben allein auf die Linien, noch ohne Gitter. Lücken sind erlaubt.']);
+  L.ablauf.push([t2, 'Ins Gitter', `Eintragen und an den Kreuzungen prüfen. ${o.parts.hilfe ? 'Wer feststeckt, holt sich eine Hilfekarte.' : 'Wer feststeckt, fragt nach einer Hilfe, erst nach dem Oberbegriff, dann nach einem Beispiel, zuletzt nach dem Anfangsbuchstaben.'}`]);
+  L.ablauf.push([t3, 'Weiterdenken', m.sol ? 'Lösungswort erklären und mit zwei Rätselwörtern verbinden. Danach zu zweit vergleichen.' : 'Zwei Rätselwörter in einem Satz verbinden, danach zu zweit vergleichen.']);
+  if (n > 5) L.ablauf.push([5, 'Auswerten', 'Zwei oder drei Sätze vorlesen lassen. Welche Wörter brauchten Hilfe?']);
+  L.total = L.ablauf.reduce((s, a) => s + a[0], 0);
+  L.diff = [
+    'Leicht heißt Erklärung und Wortspeicher, mittel nur die Erklärung, schwer nur typische Merkmale.',
+    'Alle Stufen haben dasselbe Gitter und dieselbe Lösung. So lässt sich gemeinsam vergleichen.',
+    o.parts.hilfe ? 'Die Hilfekarten bieten je Wort drei Stufen. Wer eine Karte nimmt, markiert das Wort und wiederholt es später.' : ''
+  ].filter(Boolean);
+  const hear = m.items.filter((it) => it.t.kind === 'hoeren' && isMedia(it.t)), bild = m.items.filter((it) => it.t.kind === 'bild' && isMedia(it.t));
+  L.board = [['Wörter', prList(m.items.map((it) => it.a.shown)) + '.']];
+  if (hear.length) L.board.push(['Hörbeispiele', `${hear.map((it) => `${it.num} ${krPrDirWord(it)}`).join(', ')}. Vorspielen in Vierklang: Spielform Rätsel, Schritt 3, unter der Vorschau.`]);
+  if (bild.length) L.board.push(['Notenbilder', `${bild.length}, als Bild beim Hinweis.`]);
+  if (m.sol) L.board.push(['Lösungswort', m.sol.a.shown + '.']);
+  if (m.missing.length) L.board.push(['Nicht im Gitter', prList(m.missing) + '.']);
+  const F = [];
+  if (!pack.checked) F.push(['KI-Entwurf', 'Lies die Hinweise vor dem Einsatz. Fehler prägen sich beim Abrufen ein.']);
+  F.push(['Raten', ctx.kopf ? 'Kreuzungen verraten Buchstaben. Wer nur Muster füllt, rät. Deshalb zuerst aus dem Kopf schreiben lassen und erst dann eintragen.' : 'Kreuzungen verraten Buchstaben. Mit „Erst aus dem Kopf“ schreiben alle zuerst ohne Gitter.']);
+  F.push(['Nur benennen', 'Das Gitter zeigt, ob ein Wort bekannt ist. Verstehen zeigt sich beim Erklären, deshalb den Schritt Weiterdenken nicht streichen.']);
+  F.push(['Schreibweise', 'Ä, Ö, Ü und ß stehen in einem Kästchen. Wörter aus mehreren Teilen haben eine Längenangabe wie (5, 4).']);
+  if (hear.length) F.push(['Hörbeispiele', 'Auf Papier fehlt der Klang. Die Beispiele zweimal vorspielen, bevor alle schreiben.']);
+  L.fallen = F.slice(0, 5);
+  L.sicherung = ['Die Wörter, die Hilfe brauchten, sind der Einstieg in die nächste Stunde.', 'Am Gerät legt ein Klick sie in „Karten üben“.', o.parts.loesung ? 'Die Lösung liegt bei, mit allen Wörtern.' : ''].filter(Boolean);
+  const code = !pack.own && typeof krCodeMake === 'function' ? krCodeMake(pack, o.cfg, m.sol ? m.sol.id : '', o.level, ctx.kopf) : '';
+  L.qr = code ? { url: krURL(pack, code), note: pack.edited ? 'Der Link passt nur zu einer Fassung mit deinen Anpassungen.' : '' } : null;
+  L.own = String(pack.lk || '').trim();
+  return L;
+}
+function krPageLehrkraft(ctx, o) {
+  const K = ctx.K, L = krTeacherTexts(ctx, o), W = 89, X2 = 109;
+  K.page('portrait');
+  let y0 = prHeader(ctx, 'Für die Lehrkraft', null, { chip: 'Rätsel' });
+  let cx = 12;
+  L.chips.forEach((ch) => {
+    const w = K.tw(ch, 'n9', 7) + 6; if (cx + w > 198) return;
+    K.fillC(ctx.spar ? '#FFFFFF' : PR_C.panel); K.drawC(PR_C.line); K.lw(0.25); K.rr(cx, y0 - 1.5, w, 5.8, 2.9, ctx.spar ? 'FD' : 'F');
+    K.text(ch, cx + w / 2, y0 - 1.5 + 2.9 + K.cap(7) / 2, 'n9', 7, PR_C.muted, { align: 'center' });
+    cx += w + 2;
+  });
+  y0 += 7.5;
+  const lay = (sc) => {
+    const b = 8.3 * sc, sm = 7.3 * sc;
+    const gap = (h) => ({ h, draw: () => {} });
+    const sec = (title) => ({ h: 7 * sc, draw: (x, y) => K.text(title, x, y + K.cap(10.8 * sc), 't', 10.8 * sc, PR_C.ink) });
+    const rich = (segs, size, w) => K.rich(segs, size, w, { lh: 1.3 });
+    const bullet = (t, col) => { const r = rich([[t, 'n6']], b, W - 4); return { h: r.h + 1.2, draw: (x, y) => { K.fillC(col || PR_C.accent); K.doc.circle(x + 1, y + r.lh / 2, 0.8, 'F'); r.draw(x + 4, y); } }; };
+    const left = [], right = [];
+    left.push(sec('Einordnung'), rich([[L.einordnung, 'n6']], b, W));
+    if (L.module) left.push(gap(1.2), rich((/^lehrplan/i.test(L.module) ? [] : [['Lehrplan ', 'n9', PR_C.muted]]).concat([[L.module, 'n8', PR_C.muted]]), sm, W));
+    left.push(gap(4), sec(`Ablauf, etwa ${L.total} Minuten`));
+    L.ablauf.forEach((a) => {
+      const r = rich([[a[1] + '. ', 'n9'], [a[2], 'n6']], b, W - 15);
+      left.push({ h: Math.max(6, r.h) + 1.8, draw: (x, y) => {
+        K.fillC(ctx.spar ? '#FFFFFF' : PR_C.goldLight); K.drawC(PR_C.goldDark); K.lw(0.25); K.rr(x, y + 0.2, 12.4, 5.2, 2, 'FD');
+        K.text(a[0] + ' Min.', x + 6.2, y + 0.2 + 2.6 + K.cap(6.4 * sc) / 2, 'n9', 6.4 * sc, PR_C.goldDark, { align: 'center' });
+        r.draw(x + 15, y);
+      } });
+    });
+    left.push(gap(3), sec('Differenzierung'));
+    L.diff.forEach((t) => left.push(bullet(t)));
+    right.push(sec('Dieses Rätsel'));
+    L.board.forEach((r0) => { const r = rich([[r0[0] + '. ', 'n9'], [r0[1], 'n6']], b, W); right.push(r, gap(1.4)); });
+    right.push(gap(2.6), sec('Fallstricke'));
+    L.fallen.forEach((f) => {
+      const r = rich([[f[0] + '. ', 'n9', '#B8431F'], [f[1], 'n6']], b, W - 4);
+      right.push({ h: r.h + 1.6, draw: (x, y) => { K.fillC('#B8431F'); K.doc.circle(x + 1, y + r.lh / 2, 0.8, 'F'); r.draw(x + 4, y); } });
+    });
+    right.push(gap(2.6), sec('Sicherung'));
+    L.sicherung.forEach((t) => right.push(bullet(t)));
+    if (L.qr) {
+      const qs = 24 * Math.max(0.9, sc);
+      const cap = rich([['Dasselbe Rätsel am Gerät. ', 'n9'], ['QR-Code scannen oder den Link aufrufen, ohne Konto. Eintippen, prüfen, Hilfen, Lösungswort.', 'n6']], sm + 0.4, W - qs - 4);
+      const url = K.rich([[L.qr.url, 'n8', PR_C.muted]], 6 * sc, W - qs - 4, { lh: 1.2 });
+      const note = L.qr.note ? K.rich([[L.qr.note, 'n6', PR_C.muted]], 6.4 * sc, W - qs - 4, { lh: 1.2 }) : null;
+      const h = Math.max(qs, cap.h + 1.4 + url.h + (note ? 1 + note.h : 0));
+      right.push(gap(1.6), { h, draw: (x, y) => {
+        prQR(ctx, L.qr.url, x, y, qs);
+        K.drawC(PR_C.line); K.lw(0.25); K.rr(x, y, qs, qs, 1.2, 'S');
+        let ty = y + 1; cap.draw(x + qs + 4, ty); ty += cap.h + 1.4; url.draw(x + qs + 4, ty); ty += url.h + 1; if (note) note.draw(x + qs + 4, ty);
+      } });
+    }
+    if (L.own) {
+      const r = rich([[L.own, 'n6']], b, W - 8);
+      right.push(gap(3.4), { h: 10 + r.h + 3, draw: (x, y) => {
+        prPanel(ctx, x, y, W, 10 + r.h + 3, 'indigo');
+        K.text('Dein Hinweis zum Paket', x + 4, y + 6.6, 't', 10.4 * sc, PR_C.accentDark);
+        r.draw(x + 4, y + 9.6);
+      } });
+    }
+    const sum = (arr) => arr.reduce((a, bl) => a + bl.h, 0);
+    return { left, right, h: Math.max(sum(left), sum(right)) };
+  };
+  let Lay = null;
+  for (let sc = 1; sc >= 0.8; sc -= 0.02) { Lay = lay(sc); if (y0 + Lay.h <= 284) break; }
+  if (y0 + Lay.h > 284) K.warn.push('Lehrkraftblatt zu voll: ' + ctx.pack.title);
+  let y = y0; Lay.left.forEach((bl) => { bl.draw(12, y); y += bl.h; });
+  y = y0; Lay.right.forEach((bl) => { bl.draw(X2, y); y += bl.h; });
+  K.drawC(PR_C.line); K.lw(0.25); K.dash(null); K.doc.line(X2 - 4, y0, X2 - 4, y0 + Lay.h);
+}
+
+/* ---------- PDF ---------- */
+async function buildKrPdf(JsPDF, o) {
+  const pack = findPack(o.packId); if (!pack) throw new Error('pack');
+  const m = krModel(pack, o.cfg); if (!m.lay) throw new Error('lay');
+  const level = langFor(pack);
+  const ctx = { pack: Object.assign({}, pack), cover: prPackCover(pack), spar: o.color === 'spar', group: '', multi: false, famColor: {}, o: { parts: {} }, level, easy: level === 'easy', hard: level === 'hard', m, kopf: !!o.kopf };
+  ctx.K = prKit(JsPDF, ctx.spar);
+  ctx.img = await krPrImages(m);
+  if (o.parts.lehrkraft) krPageLehrkraft(ctx, o);
+  if (o.parts.blatt) (o.stufen === 'alle' ? ['leicht', 'mittel', 'schwer'] : [o.level]).forEach((lv) => krPageBlatt(ctx, lv));
+  if (o.parts.hilfe) krPagesHilfe(ctx, o.level);
+  if (o.parts.loesung) krPageLoesung(ctx);
+  prFooters(ctx);
+  return { buf: prFixPdf(ctx.K.doc.output('arraybuffer')), pages: ctx.K.pages(), warnings: ctx.K.warn.slice() };
+}
+async function krPrMake() {
+  if (prBusy || !krPr) return;
+  const pack = krSetupPack(), cfg = krCfg(pack);
+  const o = { packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level: krLevelNow(), kopf: settings.krKopf !== false, parts: Object.assign({}, krPr.parts), stufen: krPr.stufen, color: krPr.color };
+  if (!KR_PR_PARTS.some((p) => o.parts[p[0]])) { toast('Bitte mindestens einen Inhalt ankreuzen.'); return; }
+  prBusy = true; krPrStatus('PDF-Werkzeug wird geladen …', true);
+  try {
+    const JsPDF = await ensureJsPDF();
+    krPrStatus('PDF wird erstellt …', true);
+    const res = await buildKrPdf(JsPDF, o);
+    if (!downloads || location.protocol === 'file:') window.__vkLastPdf = res.buf;
+    window.__vkLastPdfInfo = { pages: res.pages, bytes: res.buf.byteLength, warnings: res.warnings, raetsel: pack.id };
+    const kb = Math.round(res.buf.byteLength / 1024);
+    if (downloads) {
+      krPrStatus(`Fertig: ${res.pages} ${res.pages === 1 ? 'Seite' : 'Seiten'}, ${kb} KB. Abfrage zum Speichern …`, true);
+      await saveFile(`vierklang-raetsel-${slug(pack.title)}_${today()}.pdf`, new Blob([res.buf], { type: 'application/pdf' }), 'Das PDF ließ sich hier nicht speichern. Bitte später noch einmal versuchen.');
+      krPrStatus(`Fertig: ${res.pages} ${res.pages === 1 ? 'Seite' : 'Seiten'}, ${kb} KB.`, false);
+    } else krPrStatus(`Fertig: ${res.pages} ${res.pages === 1 ? 'Seite' : 'Seiten'}, ${kb} KB. Speichern ist in dieser Vorschau nicht möglich.`, false);
+  } catch (err) {
+    krPrStatus(err && err.message === 'jspdf' ? 'Das PDF-Werkzeug ließ sich nicht laden. Bitte mit Internetverbindung noch einmal versuchen.' : 'Das PDF ließ sich nicht erstellen.', false);
+    if (window.console && console.error) console.error(err);
+  } finally {
+    prBusy = false;
+    if (krPr) krPrStatus(krPr.status, false);
+  }
+}
+Object.assign(KR_ACTIONS, {
+  'kr-pr-set': (el) => {
+    if (!krPr || prBusy) return;
+    const k = el.dataset.k, v = el.dataset.v;
+    if (k === 'stufen') krPr.stufen = v === 'alle' ? 'alle' : 'eine';
+    else if (k === 'color') krPr.color = v === 'spar' ? 'spar' : 'farbig';
+    krPr.status = ''; krPrSave(); krPrRender();
+  },
+  'kr-pr-part': (el) => { if (!krPr || prBusy) return; const k = el.dataset.k; if (!(k in krPr.parts)) return; krPr.parts[k] = !krPr.parts[k]; krPr.status = ''; krPrSave(); krPrRender(); },
+  'kr-pr-make': () => krPrMake()
+});
+
 /* Vierklang · Teil 6: Bedienung und Start */
 
 const ACTIONS = {
@@ -24910,6 +26426,7 @@ if (typeof LEARN_ACTIONS === 'object' && LEARN_ACTIONS) Object.assign(ACTIONS, L
 if (typeof KLASSE_ACTIONS === 'object' && KLASSE_ACTIONS) Object.assign(ACTIONS, KLASSE_ACTIONS);
 if (typeof MIT_ACTIONS === 'object' && MIT_ACTIONS) Object.assign(ACTIONS, MIT_ACTIONS);
 if (typeof NOTE_ACTIONS === 'object' && NOTE_ACTIONS) Object.assign(ACTIONS, NOTE_ACTIONS);
+if (typeof KR_ACTIONS === 'object' && KR_ACTIONS) Object.assign(ACTIONS, KR_ACTIONS);
 document.addEventListener('click', (e) => {
   const el = e.target.closest('[data-act]');
   if (!el || el.disabled) return;
@@ -25002,7 +26519,7 @@ function boot(data) {
 }
 /* Testzugang nur bei lokal geöffneter Datei */
 try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__mitVoice = (e, t, spb, sc) => mitVoice(e, t, spb, sc); } catch (e) { /* ohne */ }
-try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i), noteInfo: (c, t) => noteInfo(c, t), noteSame: (a, b) => noteSame(a, b), protoNumbers: (s) => protoNumbers(s), buildProtokollPdf: (J, id, v) => buildProtokollPdf(J, id, v), ensureJsPDF: () => ensureJsPDF() }; } catch (e) { /* ohne Testzugang */ }
+try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i), noteInfo: (c, t) => noteInfo(c, t), noteSame: (a, b) => noteSame(a, b), protoNumbers: (s) => protoNumbers(s), buildProtokollPdf: (J, id, v) => buildProtokollPdf(J, id, v), ensureJsPDF: () => ensureJsPDF(), kr: { get state() { return kreuz; }, eligible: (id) => krEligible(findPack(id)), answer: (t) => krAnswer(t), clue: (t, a, l) => krClue(t, a, l), helps: (t, a, l) => krHelps(t, a, l), pick: (id, n, s) => krPick(findPack(id), n, s).map((x) => x.t.id), model: (id, cfg) => { const m = krModel(findPack(id), cfg); return m && m.lay ? { W: m.lay.W, H: m.lay.H, cells: m.lay.cells.map((r) => r.map((c) => (c ? c.ch : ''))), items: m.items.map((it) => ({ id: it.id, num: it.num, dir: it.dir, r: it.r, c: it.c, L: it.L.join('') })), missing: m.missing, sol: m.sol ? { id: m.sol.id, cells: m.sol.cells } : null } : null; }, code: (id, cfg, sol, lv, kopf) => krCodeMake(findPack(id), cfg, sol, lv, kopf), read: (id, code) => krCodeRead(findPack(id), code), cfg: (id) => krCfg(findPack(id)), build: (J, o) => (typeof buildKrPdf === 'function' ? buildKrPdf(J, o) : null) } }; } catch (e) { /* ohne Testzugang */ }
 (function () {
   const hot = window.claude && window.claude.hot;
   try { if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ game, view, settings, ws: { packId: ws.packId } })); } catch (e) { /* ohne Übernahme */ }
