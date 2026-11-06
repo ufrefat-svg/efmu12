@@ -490,6 +490,7 @@ select.field { appearance: auto; }
 @media (max-width: 620px) {
   .opts, .conn-terms { grid-template-columns: 1fr; }
   .card { padding: 14px 16px 16px; }
+  .card-actions { bottom: -16px; margin: 2px -16px -16px; padding: 10px 16px 16px; }
   .where { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1438,6 +1439,47 @@ select.field { appearance: auto; }
 @media (max-width: 640px) {
   .mit-tempo { margin-left: 0; }
   .mb-d { width: 13px; height: 13px; }
+}
+
+/* Vierklang · Mitschreiben und Hörprotokoll
+   Farben: Notiz #8A5A00 / #FFF6DF / #F3D58F · Treffer #1E5A36 / #DDF0E3 */
+
+.note-ic { width: 1.25em; height: 1.25em; flex: none; fill: none !important; stroke: #8A5A00 !important; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+.note-box { display: flex; flex-direction: column; gap: 8px; margin: 0 0 12px; padding: 12px 14px; border-radius: 14px; background: #FFF6DF !important; border: 1.5px solid #F3D58F !important; }
+.note-head { display: flex; align-items: center; gap: 8px; font-size: 1.02rem; line-height: 1.35; color: #23264F !important; }
+.note-head b { font-weight: 800; }
+.note-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.note-in { min-height: 44px; font-size: max(16px, 1.05rem); font-weight: 700; border-color: #E9C46A !important; }
+.note-in::placeholder { color: #9A8452 !important; font-weight: 400; }
+.note-in:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 1px; border-color: #C98500 !important; }
+.note-sub { margin: 0; color: #6B5A2E !important; font-size: 0.86rem; }
+
+.note-sum { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 10px; padding: 9px 12px; border-radius: 12px; background: #FFF6DF !important; border: 1.5px solid #F3D58F !important; }
+.note-sum-k { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; color: #8A5A00 !important; }
+.note-chips { display: inline-flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.note-chip { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 3px 10px; border-radius: 999px; background: #FFFFFF !important; border: 1.5px solid #E9C46A !important; color: #23264F !important; font-weight: 700; overflow-wrap: anywhere; }
+.note-chip.hit { background: #DDF0E3 !important; border-color: #7CC496 !important; color: #1E5A36 !important; }
+.note-chip .ck { width: 1em; height: 1em; flex: none; }
+.note-chip .ck-line { stroke: #1E5A36 !important; }
+.note-sum-sub { flex-basis: 100%; color: #6B5A2E !important; font-size: 0.84rem; }
+
+.pk-noted { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: #FFF6DF !important; border: 1px solid #F3D58F !important; color: #8A5A00 !important; font-size: 0.76rem; font-weight: 800; white-space: nowrap; vertical-align: 0.12em; }
+.pk-noted .note-ic { width: 1em; height: 1em; }
+
+.proto-line { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 9px 12px; border-radius: 12px; background: #FFF6DF !important; border: 1.5px solid #F3D58F !important; color: #23264F !important; font-size: 1.02rem; line-height: 1.35; }
+.proto-line b { font-weight: 800; }
+.proto-line .note-ic { width: 1.4em; height: 1.4em; }
+.proto-read { margin: 0 0 10px; }
+.proto-sub { display: flex; align-items: center; gap: 8px; }
+.proto-sub b { color: #23264F !important; }
+
+.acc-row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 4px 0 12px; border-bottom: 1px solid #E3E5F2 !important; }
+.acc-row small { color: #5A5F86 !important; font-size: 0.86rem; }
+
+@media (max-width: 560px) {
+  .note-fields { grid-template-columns: minmax(0, 1fr); }
+  .note-box { padding: 10px 12px; }
 }
 
 </style>
@@ -15541,7 +15583,7 @@ const DEFAULTS = {
   nameA: 'Team Quadrat', nameB: 'Team Raute', duoA: 'Quadrat', duoB: 'Raute', playersA: 12, playersB: 12,
   soloName: '', levelSolo: 2, botLevel: 'mittel', showRules: true, gradeFilter: 'auto', lang: 'auto',
   zeig: true, pairs: true, ops: 'auto', pasch: 'ereignis', geheim: false, blitz: false, album: true,
-  packView: 'klasse', topicFilter: 'all', linkBase: 'web', mitspiel: true
+  packView: 'klasse', topicFilter: 'all', linkBase: 'web', mitspiel: true, notiz: true, protokoll: false
 };
 /* Themen der Pakete: feste Zuordnung über die Paket-id, sonst Schlüsselwörter aus Titel und Lehrplanbezug */
 const TOPICS = [
@@ -16087,6 +16129,8 @@ TX.easy = {
     ['Vierklang', 'Vier Steine in einer Reihe? Super! Jetzt kommt der letzte Schritt. Nehmt zwei von den vier Begriffen. Sagt einen Satz, der zeigt, wie die beiden zusammengehören. Stimmt der Satz, habt ihr gewonnen.'],
     o.mode === 'tafel' ? ['An der Tafel', 'Euer Team bespricht sich kurz. Dann sagt die App eine Nummer. Wer die Nummer hat, erklärt. Findet das andere Team, dass etwas gefehlt hat? Dann darf es kontern und selbst erklären.'] : null,
     o.mode === 'duell' ? ['Zu zweit', 'Die andere Person rät vor dem Aufdecken: Reicht die Erklärung? Wer richtig rät, bekommt einen Joker.'] : null,
+    o.notiz ? ['Mitschreiben', 'Nach der Erklärung schreibt die andere Person bis zu drei Wörter auf, die sie gehört hat. Beim Aufdecken zeigt die Prüfkarte, welche davon dort stehen. Abgehakt wird trotzdem von Hand.'] : null,
+    o.protokoll ? ['Hörprotokoll', 'Bei jedem Zug sagt die App zwei Nummern aus dem anderen Team. Diese beiden schreiben auf ihrem Hörprotokoll mit. Vor dem Prüfen lesen sie vor, was sie aufgeschrieben haben.'] : null,
     o.mode === 'solo' ? ['Allein', 'Du spielst gegen den Klangbot. Zu jedem Feld gibt es Fragen: Du wählst die richtige Erklärung und hakst die richtigen Punkte an. Wenn der Klangbot dran ist, erklärt er, und du prüfst: Stimmt das? Am Ende siehst du, was du noch üben kannst.'] : null,
     o.zeig ? ['Zeigefelder', 'Manche Felder haben eine kleine Hand. Hier macht ihr etwas vor, statt es zu erklären: klatschen, singen, dirigieren oder an die Tafel zeichnen. Das andere Team schaut genau hin. Auf der Karte stehen drei Dinge, die man sehen oder hören muss. Zwei davon reichen.'] : null,
     o.mit ? ['Mitspielfelder', o.mode === 'solo' ? 'Felder mit dem Metronom sind Höraufgaben. Die App spielt eine Begleitung und ein Muster dazu. Du hörst genau hin und wählst den passenden Begriff.' : 'Felder mit dem Metronom sind Mitspielfelder. Die App zählt ein und spielt eine Begleitung. Ihr spielt dazu, was auf der Karte steht. Beim Aufdecken könnt ihr ein Muster zum Vergleich anhören.'] : null,
@@ -16109,6 +16153,8 @@ TX.easy = {
     bot: 'Nach dir kommt der Klangbot. Er erklärt laut, aber nicht immer richtig. Du prüfst ihn: Stimmt die Erklärung? Erkennst du einen Fehler, bekommt er keinen Stein.',
     zeig: 'Felder mit der kleinen Hand sind Zeigefelder. Hier macht ihr etwas vor: klatschen, singen, dirigieren oder zeichnen. Die anderen schauen genau hin.',
     mit: o.du ? 'Felder mit dem Metronom sind Höraufgaben. Du hörst eine Begleitung und ein Muster darüber und wählst den passenden Begriff.' : 'Felder mit dem Metronom sind Mitspielfelder. Die App zählt ein und spielt eine Begleitung. Ihr spielt dazu, was auf der Karte steht.',
+    notiz: 'Nach der Erklärung schreibt die andere Person bis zu drei Wörter auf. Beim Aufdecken zeigt die Prüfkarte, welche davon dort stehen.',
+    proto: 'Zwei aus dem anderen Team schreiben auf dem Hörprotokoll mit. Vor dem Prüfen lesen sie vor.',
     pair: 'Auf manchen Feldern stehen zwei Begriffe. Sagt, was beide gemeinsam haben, und zu jedem, woran man ihn erkennt. Nur dann gibt es den Stein.',
     goal: (connect, diag, du) => (connect ? `Vier Steine in einer Reihe${diag ? ', auch schräg' : ''}. Dann ${du ? 'sagst du' : 'sagt ihr'} einen Satz mit zwei von den Begriffen. Stimmt der Satz, ist der Vierklang geschafft.` : `Vier Steine in einer Reihe${diag ? ', auch schräg' : ''} gewinnen sofort.`)
   })
@@ -16165,6 +16211,8 @@ TX.mid = {
     ['Vernetzungszug', 'Vier Steine in einer Reihe reichen noch nicht. Zwei der vier Begriffe müssen in einem fachlich stimmigen Satz verbunden werden, dann ist der Vierklang komplett.'],
     o.mode === 'tafel' ? ['Tafel', 'Das Team berät kurz, dann nennt die App die Nummer, die erklärt. Hält das andere Team die Erklärung für unvollständig, kann es vor dem Aufdecken kontern.'] : null,
     o.mode === 'duell' ? ['Duell', 'Vor dem Aufdecken schätzt das Gegenüber, ob die Erklärung reicht. Richtig geschätzt ergibt einen Joker.'] : null,
+    o.notiz ? ['Mitschreiben', 'Nach der Erklärung notiert das Gegenüber bis zu drei Stichwörter. Beim Aufdecken markiert die Prüfkarte, welche davon dort stehen. Abgehakt wird weiterhin von Hand.'] : null,
+    o.protokoll ? ['Hörprotokoll', 'Bei jedem Zug ruft die App zwei Nummern aus dem anderen Team auf. Sie notieren Stichwörter auf dem Hörprotokoll und lesen sie vor dem Abhaken vor.'] : null,
     o.mode === 'solo' ? ['Solo', 'Du spielst gegen den Klangbot. Zu jedem Feld beantwortest du Prüffragen: Du wählst die passende Erklärung, hakst die richtigen Merkmale ab und findest auf der Stufe Mit Beispiel das passende Beispiel. Ist der Klangbot dran, erklärt er sichtbar, und du prüfst ihn. Am Ende zeigt die Lernbilanz, was du wiederholen solltest.'] : null,
     o.zeig ? ['Zeigefelder', 'Felder mit Handsymbol werden vorgemacht statt erklärt: klatschen, singen, dirigieren, an der Tafel skizzieren. Das andere Team beobachtet. Die Karte nennt drei Beobachtungsmerkmale, zwei davon ergeben den Stein. Hilfen gibt es hier keine, der Stein steht fest.'] : null,
     o.mit ? ['Mitspielfelder', o.mode === 'solo' ? 'Felder mit Metronom sind Höraufgaben. Über einer Begleitung erklingt ein Muster. Du ordnest ihm den passenden Begriff zu und hakst danach die Merkmale ab.' : 'Felder mit Metronom sind Mitspielfelder. Die App zählt ein und spielt Grundschlag oder Groove, das Team führt den Auftrag dazu aus. Geprüft wird wie beim Zeigefeld. Das Muster zum Vergleich gibt es erst beim Aufdecken.'] : null,
@@ -16187,6 +16235,8 @@ TX.mid = {
     bot: 'Nach dir ist der Klangbot dran. Er erklärt sichtbar, aber nicht immer richtig. Du prüfst ihn wie eine Spielleitung: Nur was du durchwinkst oder was stimmt, bringt ihm einen Stein.',
     zeig: 'Felder mit Handsymbol sind Zeigefelder: vormachen statt erklären. Die andere Seite beobachtet anhand von drei Merkmalen, zwei reichen. Keine Hilfen, fester Stein.',
     mit: o.du ? 'Felder mit Metronom sind Höraufgaben. Über einer Begleitung erklingt ein Muster, du ordnest ihm den passenden Begriff zu.' : 'Felder mit Metronom sind Mitspielfelder. Die App zählt ein und spielt Grundschlag oder Groove, das Team spielt den Begriff dazu. Beobachtet wird wie beim Zeigefeld.',
+    notiz: 'Nach der Erklärung tippt das Gegenüber bis zu drei Stichwörter ein. Beim Aufdecken markiert die Prüfkarte, was davon dort steht.',
+    proto: 'Zwei Nummern aus dem anderen Team schreiben auf dem Hörprotokoll mit und lesen vor dem Abhaken vor.',
     pair: 'Felder mit zwei Begriffen sind Abgrenzungsfelder. Den Stein gibt es nur, wenn die Gemeinsamkeit und für beide das unterscheidende Merkmal genannt werden.',
     goal: (connect, diag, du) => (connect ? `Vier Steine in einer Reihe${diag ? ', auch schräg' : ''}. Dann ${du ? 'verbindest du' : 'verbindet ihr'} zwei der Begriffe in einem stimmigen Satz, und der Vierklang ist geschafft.` : `Vier Steine in einer Reihe${diag ? ', auch schräg' : ''} gewinnen sofort.`)
   })
@@ -16243,6 +16293,8 @@ TX.hard = {
     ['Vernetzungszug', 'Vier Steine in einer Reihe eröffnen den Vernetzungszug. Zwei der vier Begriffe werden in einem Satz verknüpft, der eine Beziehung benennt und begründet (Ursache, Funktion, Gegensatz, Entwicklung, Teil und Ganzes). Gelingt das, ist der Vierklang komplett.'],
     o.mode === 'tafel' ? ['Tafel', 'Kurze Beratung, dann bestimmt die App per Nummer, wer erläutert. Das andere Team kann vor dem Aufdecken kontern.'] : null,
     o.mode === 'duell' ? ['Duell', 'Vor dem Aufdecken schätzt das Gegenüber, ob die Erläuterung den Kriterien genügt. Eine zutreffende Einschätzung bringt einen Joker.'] : null,
+    o.notiz ? ['Mitschreiben', 'Nach der Erläuterung notiert das Gegenüber bis zu drei Stichwörter. Beim Aufdecken markiert die Prüfkarte die Kriterien, die in der Notiz vorkommen; abgehakt wird weiterhin von Hand.'] : null,
+    o.protokoll ? ['Hörprotokoll', 'Pro Zug ruft die App zwei Nummern aus dem anderen Team auf. Sie protokollieren die Erläuterung in Stichwörtern und tragen sie vor dem Abhaken vor.'] : null,
     o.mode === 'solo' ? ['Solo', 'Gegen den Klangbot. Je Feld folgen Prüffragen: zutreffende Erläuterung wählen, Merkmale markieren, auf der Stufe Mit Beispiel das belegende Beispiel bestimmen. Die Erläuterungen des Klangbots werden geprüft. Die Lernbilanz weist Wiederholungsbedarf aus.'] : null,
     o.zeig ? ['Zeigefelder', 'Felder mit Handsymbol werden ausgeführt statt erläutert (klatschen, singen, dirigieren, skizzieren). Das andere Team beobachtet anhand von drei Merkmalen, zwei genügen. Keine Hilfen, der Stein steht fest.'] : null,
     o.mit ? ['Mitspielfelder', o.mode === 'solo' ? 'Felder mit Metronom sind Höraufgaben. Ein Muster über der Begleitung wird dem passenden Begriff zugeordnet, danach folgen die Merkmale.' : 'Felder mit Metronom sind Mitspielfelder. Die App zählt ein und begleitet, das Team führt den Auftrag aus. Geprüft wird wie beim Zeigefeld, das Vergleichsmuster erklingt erst beim Aufdecken.'] : null,
@@ -16265,6 +16317,8 @@ TX.hard = {
     bot: 'Nach dir zieht der Klangbot. Seine Erläuterungen enthalten mitunter Fehler. Du prüfst sie: Eine durchgewinkte falsche Erläuterung bringt ihm den Stein, eine erkannte nicht.',
     zeig: 'Zeigefelder (Handsymbol) werden ausgeführt statt erläutert; beobachtet wird anhand von drei Merkmalen, zwei genügen. Keine Hilfen, fester Stein.',
     mit: o.du ? 'Metronom: Höraufgabe. Das Muster über der Begleitung wird dem passenden Begriff zugeordnet.' : 'Felder mit Metronom sind Mitspielfelder. Die App zählt ein und begleitet, das Team führt den Auftrag aus. Geprüft wird wie beim Zeigefeld.',
+    notiz: 'Nach der Erläuterung notiert das Gegenüber bis zu drei Stichwörter; die Prüfkarte markiert beim Aufdecken die Treffer.',
+    proto: 'Zwei Nummern aus dem anderen Team protokollieren und tragen vor dem Abhaken vor.',
     pair: 'Abgrenzungsfelder tragen zwei Begriffe. Der Stein setzt die Gemeinsamkeit und beide Unterscheidungsmerkmale voraus.',
     goal: (connect, diag, du) => (connect ? `Vier Steine in einer Reihe${diag ? ', auch diagonal' : ''} eröffnen den Vernetzungszug: Zwei Begriffe in einem Satz verknüpfen, der die Beziehung benennt und begründet.` : `Vier Steine in einer Reihe${diag ? ', auch diagonal' : ''} gewinnen sofort.`)
   })
@@ -16891,7 +16945,8 @@ function createGame(carry) {
       select: s.select, explainTime: blitz ? 45 : s.explainTime, consultTime: duo ? 0 : (blitz ? 10 : s.consultTime), gameTime: blitz ? 0 : s.gameTime,
       connect: s.connect, diagonals: s.diagonals, hints: s.hints, konter: !duo && s.konter,
       level: solo ? { A: clamp(parseInt(s.levelSolo, 10) || 2, 1, 3), B: 2 } : { A: s.levelA, B: s.levelB },
-      lang, zeig: !!s.zeig, pairs: pairTerms.length > 0, ops: !!ops, pasch: s.pasch === 'ereignis' ? 'ereignis' : 'wahl', geheim: !!s.geheim, album: s.album !== false, blitz
+      lang, zeig: !!s.zeig, pairs: pairTerms.length > 0, ops: !!ops, pasch: s.pasch === 'ereignis' ? 'ereignis' : 'wahl', geheim: !!s.geheim, album: s.album !== false, blitz,
+      notiz: s.mode === 'duell' && s.notiz !== false, protokoll: s.mode === 'tafel' && !!s.protokoll
     },
     bot: solo ? { level: s.botLevel, p: ({ entspannt: 0.45, mittel: 0.62, stark: 0.8 })[s.botLevel] || 0.62 } : null,
     terms,
@@ -17156,7 +17211,12 @@ function go(step, full) {
   persist();
   if (full) renderGame(); else { renderOverlay(); renderStatus(); }
 }
-function announce() { const c = game.cur; c.num = nextNumber(c.side); Sound.chime(); go('explain'); }
+function announce() {
+  const c = game.cur; c.num = nextNumber(c.side);
+  /* Hörprotokoll: zwei Nummern aus dem anderen Team schreiben mit */
+  if (typeof protoActive === 'function' && protoActive(c)) c.proto = { side: other(c.side), nums: protoNumbers(other(c.side)) };
+  Sound.chime(); go('explain');
+}
 function hintList(t, level, media) {
   const list = [];
   if (game && game.cur && game.cur.noHints) return list;
@@ -17247,7 +17307,8 @@ function finish(winner) {
   }
   if (c.event === 'nochmal' && winner === T) { g.extraTurn = true; extra += ` Ereignis „Noch mal“: ${isYou(T) ? 'du bist' : tn(T) + ' ist'} gleich wieder dran.`; }
   g.event = null;
-  g.log.push({ tid: t.id, side: T, type: c.type, level: c.level, helped, ok: winner === T, counter: c.counter ? c.counter.side : null, counterOk: !!(c.counter && winner === O), qs: c.qs ? c.qs.map((q) => ({ k: q.kind, ok: !!q.ok })) : undefined, op: c.op || undefined, zeig: c.zeig || undefined, pair: t.kind === 'paar' || undefined });
+  const nl = typeof noteLogInfo === 'function' ? noteLogInfo(c, t) : null;
+  g.log.push({ tid: t.id, side: T, type: c.type, level: c.level, helped, ok: winner === T, counter: c.counter ? c.counter.side : null, counterOk: !!(c.counter && winner === O), qs: c.qs ? c.qs.map((q) => ({ k: q.kind, ok: !!q.ok })) : undefined, op: c.op || undefined, zeig: c.zeig || undefined, pair: t.kind === 'paar' || undefined, nn: nl ? nl.n : undefined, nh: nl ? nl.h : undefined });
   /* Album: feste Steine werden zu Sammelkarten, hilfefrei erklärte zu Goldkarten */
   if (placed && cell.solid && t.kind !== 'paar' && g.cfg.album !== false && !(g.mode === 'solo' && placed === 'B') && typeof albumRecord === 'function') {
     const gold = !helped && c.type === 'normal';
@@ -18019,12 +18080,13 @@ function pruefkarte(t, c) {
   const rows0 = curRows(c);
   const tick = (s, kind, i, on, label) => `<button type="button" class="tick tick-${s}${on ? ' on' : ''}" data-act="tick" data-side="${s}" data-kind="${kind}" data-i="${i}" aria-pressed="${on}" aria-label="${esc(label + ', ' + shortName(s))}">${checkSVG()}</button>`;
   const infoOnly = c.media && c.level < 3;
+  const marks = typeof noteRowMarks === 'function' ? noteRowMarks(c, t) : null;
   let rows = '';
   if (c.media) rows += `<div class="pk-row pk-key"><span class="pk-feat">Begriff genannt: <b>${esc(t.term)}</b></span>${sides.map((s) => tick(s, 'extra', 0, !!c.extra[s], 'Begriff genannt')).join('')}</div>`;
   const feats = c.media ? t.feats : rows0.map((r) => r.text);
   feats.forEach((f, i) => {
     const must = !c.media && rows0[i] && rows0[i].must;
-    rows += infoOnly ? `<div class="pk-row pk-info"><span class="pk-feat">${esc(f)}</span></div>` : `<div class="pk-row${must ? ' pk-must' : ''}"><span class="pk-feat">${esc(f)}${must ? '<small>Pflichtpunkt</small>' : ''}</span>${sides.map((s) => tick(s, 'feat', i, !!(c.checks[s] || [])[i], f)).join('')}</div>`;
+    rows += infoOnly ? `<div class="pk-row pk-info"><span class="pk-feat">${esc(f)}</span></div>` : `<div class="pk-row${must ? ' pk-must' : ''}"><span class="pk-feat">${esc(f)}${marks && marks[i] ? noteMarkHTML() : ''}${must ? '<small>Pflichtpunkt</small>' : ''}</span>${sides.map((s) => tick(s, 'feat', i, !!(c.checks[s] || [])[i], f)).join('')}</div>`;
   });
   if (needsExample(c, true)) rows += `<div class="pk-row pk-extra"><span class="pk-feat">passendes Beispiel genannt<small>gilt für ${esc(shortName(T))}${c.op === 'erlaeutern' ? ' beim Erläutern' : ' auf der Stufe Mit Beispiel'}</small></span>${tick(T, 'extra', 0, !!c.extra[T], 'Beispiel genannt')}${two ? '<span class="tick-gap"></span>' : ''}</div>`;
   const head = two ? `<div class="pk-row pk-headrow"><span></span>${sides.map((s) => `<span class="pk-col">${shapeSVG(s, false, 'pk-shape')}${esc(shortName(s))}</span>`).join('')}</div>` : '';
@@ -18065,7 +18127,7 @@ function termCard() {
   } else if (c.step === 'explain') {
     const verb = c.mit ? 'spielt mit' : c.zeig ? 'zeigt' : pair ? 'unterscheidet' : c.level === 1 ? 'wählt' : (c.media ? 'nennt den Begriff' : c.op === 'vergleichen' ? 'vergleicht' : c.op === 'einordnen' ? 'ordnet ein' : c.op === 'erlaeutern' ? 'erläutert' : 'erklärt');
     const soloText = c.zeig ? tx('soloZeig') : pair ? tx('soloPair', c.level === 1) : (c.level === 1 ? (c.media ? tx('quizName') : tx('quizExpl', t.term)) + (c.qs && c.qs.length > 1 ? ` <span class="q-more">${tx('moreQ', c.qs.length - 1)}</span>` : '') : tx('soloExplain', c.level, c.media, c.qs ? c.qs.length : 2));
-    const nb = g.mode === 'tafel' ? numBanner(T, c.num, verb)
+    const nb = g.mode === 'tafel' ? numBanner(T, c.num, verb) + (typeof protoCallHTML === 'function' ? protoCallHTML(c) : '')
       : g.mode === 'solo' ? `<p class="step-text">${soloText}</p>`
       : `<p class="step-text">${c.zeig ? tx('duellZeig', tm.name, tn(O)) : tx('duellExplain', tm.name, tn(O))}</p>`;
     if (c.level === 1) {
@@ -18076,14 +18138,14 @@ function termCard() {
       actions = `<button type="button" class="btn primary big" data-act="explained" data-primary>${c.zeig ? 'Gezeigt, weiter' : 'Erklärung fertig'}</button>`;
     }
   } else if (c.step === 'counterAsk') {
-    body = `<p class="step-text">${tx('counterAsk', tn(O))}</p>`;
+    body = `<p class="step-text">${tx('counterAsk', tn(O))}</p>${typeof protoCounterHTML === 'function' ? protoCounterHTML(c) : ''}`;
     actions = `<button type="button" class="btn big" data-act="no-counter" data-primary>Kein Konter, aufdecken</button><button type="button" class="btn big side-${O}" data-act="counter">Konter ansagen</button>`;
   } else if (c.step === 'counter') {
     body = numBanner(O, c.counter.num, c.mit ? 'spielt mit' : c.zeig ? 'zeigt' : 'erklärt', `Konter · ${tn(O)} · Nummer`) + task + `<p class="step-sub">${tx('counterSub')}</p>`;
     actions = '<button type="button" class="btn primary big" data-act="counter-done" data-primary>Konter fertig, aufdecken</button>';
   } else if (c.step === 'estimate') {
     const q = c.zeig ? tx('estimateZeig') : tx('estimateQ', c.level);
-    body = `${c.level === 1 ? optionsHTML(c, false, false) : ''}<p class="step-text"><b>${esc(tn(O))}</b> schätzt vor dem Aufdecken: ${q}</p><p class="step-sub">${tx('estimateSub', g.cfg.select === 'wuerfel' ? 'freie Feldwahl' : 'eine Hilfe ohne Wackelstein')}</p>`;
+    body = `${c.level === 1 ? optionsHTML(c, false, false) : ''}${typeof noteFieldsHTML === 'function' ? noteFieldsHTML(c) : ''}<p class="step-text"><b>${esc(tn(O))}</b> schätzt vor dem Aufdecken: ${q}</p><p class="step-sub">${tx('estimateSub', g.cfg.select === 'wuerfel' ? 'freie Feldwahl' : 'eine Hilfe ohne Wackelstein')}</p>`;
     actions = `<button type="button" class="btn big" data-act="estimate" data-v="0">${c.level === 1 ? 'Falsch' : 'Reicht nicht'}</button><button type="button" class="btn primary big" data-act="estimate" data-v="1">${c.level === 1 ? 'Richtig' : 'Reicht'}</button>`;
   } else if (c.step === 'quiz' && c.qs) {
     const q = soloQ(c), prev = c.qi > 0 ? c.qs[c.qi - 1] : null;
@@ -18101,7 +18163,7 @@ function termCard() {
       body = `<div class="reveal ${ok ? 'good' : 'bad'}">${ok ? 'Richtig gewählt.' : 'Das war nicht die passende Antwort.'}</div>${optionsHTML(c, false, true)}${c.media ? `<p class="pk-expl">${esc(t.expl)}</p>` : ''}`;
       actions = `<button type="button" class="btn primary big" data-act="finish" data-v="${ok ? T : ''}" data-primary>${ok ? stoneLabel(c) : 'Weiter'}</button>`;
     } else {
-      body = pruefkarte(t, c);
+      body = (typeof protoReadHTML === 'function' ? protoReadHTML(c) : '') + (typeof noteCheckHTML === 'function' ? noteCheckHTML(c, t) : '') + pruefkarte(t, c);
       const w = decided();
       actions = `<button type="button" class="btn ghost" data-act="override" aria-expanded="${c.override}">${c.override ? 'Auswahl schließen' : 'Anders entscheiden'}</button><button type="button" class="btn primary big" data-act="finish" data-v="${w || ''}" data-primary>${w === T ? stoneLabel(c) : w ? `Konter zählt: Stein für ${esc(shortName(w))}` : 'Kein Stein, weiter'}</button>`;
       if (c.override) actions += `<div class="override"><span>Die Spielleitung entscheidet:</span><button type="button" class="btn sm" data-act="finish" data-v="${T}">Stein für ${esc(shortName(T))}</button>${c.counter ? `<button type="button" class="btn sm" data-act="finish" data-v="${O}">Stein für ${esc(shortName(O))}</button>` : ''}<button type="button" class="btn sm" data-act="finish" data-v="">Kein Stein</button></div>`;
@@ -18194,7 +18256,7 @@ function endCard() {
     ${solo && sum && sum.tip ? `<div class="banner firm">${esc(sum.tip)}</div>` : ''}${solo && sum && sum.breakdown ? `<p class="qs-break">${esc(sum.breakdown)}</p>` : ''}
     ${albumLine}${g.lgInfo && g.lgInfo.group !== ALBUM_DEFAULT && typeof lgLabel === 'function' ? `<div class="album-news lg-news">${lgIcon('bild')}<span>Im Klassenbild von ${esc(lgLabel(g.lgInfo.group))} gespeichert${g.lgInfo.shaky ? `, ${plural(g.lgInfo.shaky, 'Begriff wackelt', 'Begriffe wackeln')}` : ', alles hat geklappt'}.</span></div>` : ''}
     <div class="table-wrap"><table class="stats"><thead><tr><th></th><th scope="col">${shapeSVG('A', false, 'pk-shape')}${esc(shortName('A'))}</th><th scope="col">${shapeSVG('B', false, 'pk-shape')}${esc(shortName('B'))}</th></tr></thead><tbody>
-      ${row('Steine', a.total, b.total)}${bonus ? row('Bonus durch Geheimauftrag', g.teams.A.bonus || 0, g.teams.B.bonus || 0) : ''}${row('davon wackelnd', a.hollow, b.hollow)}${row('ohne Hilfe geschafft', sa.sure, sb.sure)}${row('mit Hilfe geschafft', sa.help, sb.help)}${row('nicht geschafft', sa.fail, sb.fail)}${g.cfg.konter ? row('Konter gewonnen', sa.konter, sb.konter) : ''}
+      ${row('Steine', a.total, b.total)}${bonus ? row('Bonus durch Geheimauftrag', g.teams.A.bonus || 0, g.teams.B.bonus || 0) : ''}${row('davon wackelnd', a.hollow, b.hollow)}${row('ohne Hilfe geschafft', sa.sure, sb.sure)}${row('mit Hilfe geschafft', sa.help, sb.help)}${row('nicht geschafft', sa.fail, sb.fail)}${g.cfg.konter ? row('Konter gewonnen', sa.konter, sb.konter) : ''}${typeof noteEndRows === 'function' ? noteEndRows(row) : ''}
     </tbody></table></div>
     ${g.goals ? `<p class="step-sub">Geheimaufträge: ${['A', 'B'].filter((s) => g.goals[s]).map((s) => `${esc(shortName(s))}: ${esc(g.goals[s].text)} (${g.goals[s].done ? 'erfüllt' : 'nicht erfüllt'})`).join(' · ')}</p>` : ''}
     <section class="repeat"><h3>Zum Wiederholen</h3>${rep.length ? `<p class="step-sub">Begriffe, die nur mit Hilfe oder gar nicht geklappt haben.</p><ul class="rep-list">${rep.map((t) => `<li><b>${esc(t.term)}</b><span>${esc(t.expl)}</span>${t.feats.length ? `<em>Kernmerkmale: ${esc(t.feats.join(' · '))}</em>` : ''}</li>`).join('')}</ul>` : '<p class="step-sub">Alle gespielten Begriffe saßen ohne Hilfe.</p>'}</section>
@@ -18223,9 +18285,11 @@ function renderOverlay() {
   if (!html) { ov.hidden = true; ov.innerHTML = ''; ov.dataset.key = ''; document.body.classList.remove('ov-open'); return; }
   const old = ov.querySelector('.card'); const keep = old && ov.dataset.key === key ? old.scrollTop : 0;
   const stepChanged = ov.dataset.key !== key;
+  const ae = document.activeElement, nf = !stepChanged && ae && ae.dataset && ae.dataset.note != null && ov.contains(ae) ? { i: ae.dataset.note, s: ae.selectionStart } : null;
   ov.innerHTML = html; ov.hidden = false; ov.dataset.key = key; document.body.classList.add('ov-open');
   const card = ov.querySelector('.card'); if (card) card.scrollTop = keep;
   Timer.paint();
+  if (nf) { const el = ov.querySelector(`[data-note="${nf.i}"]`); if (el) { try { el.focus({ preventScroll: true }); el.setSelectionRange(nf.s, nf.s); } catch (e) { el.focus(); } } }
   if (stepChanged) { const p = ov.querySelector('[data-primary]:not([disabled])') || ov.querySelector('button:not([disabled])'); if (p) { try { p.focus({ preventScroll: true }); } catch (e) { p.focus(); } } }
 }
 
@@ -18504,6 +18568,9 @@ function renderStart() {
       sw('connect', 'Vernetzungszug', 'Vier in einer Reihe zählen erst, wenn zwei der Begriffe in einem stimmigen Satz verbunden sind.'),
       sw('hints', 'Gestufte Hilfen', 'Oberbegriff, Beispiel, Satzanfang. Mit Hilfe gibt es nur einen Wackelstein.'),
       s.mode === 'tafel' ? sw('konter', 'Konter', 'Vor dem Aufdecken darf das andere Team selbst erklären.') : '',
+      s.mode === 'tafel' ? sw('protokoll', 'Hörprotokoll', 'Bei jedem Zug ruft die App zwei Nummern aus dem anderen Team auf. Sie schreiben Stichwörter mit und lesen sie vor dem Abhaken vor.') : '',
+      s.mode === 'tafel' && s.protokoll ? `<div class="acc-row proto-print"><button type="button" class="btn sm" data-act="proto-pdf" data-id="${esc(pack.id)}">Hörprotokoll als PDF</button><small>Eine Seite für acht Züge, für jede Person einmal kopieren.</small></div>` : '',
+      s.mode === 'duell' ? sw('notiz', 'Mitschreiben', 'Nach jeder Erklärung tippt die Person, die zugehört hat, bis zu drei Stichwörter ein. Beim Aufdecken markiert die Prüfkarte, was davon dort steht.') : '',
       sw('media', 'Hör- und Notenfelder', 'Klang oder Notenbild statt Begriff; gesucht ist der Begriff.'),
       sw('diagonals', 'Diagonalen zählen', 'Vier in einer Reihe auch schräg.'),
       sw('showRules', 'Kurzanleitung vor dem Start', 'Erklärt in vier Schritten, wie eine Runde läuft.')
@@ -18531,7 +18598,7 @@ function renderStart() {
         <div class="sum-mode"><span class="sum-mi">${MODE_ICON[s.mode] || MODE_ICON.tafel}</span><span class="sum-t"><b>${esc((MODE_TEXT[s.mode] || MODE_TEXT.tafel)[0])}</b><small>${s.mode === 'tafel' ? `${esc(s.nameA)} gegen ${esc(s.nameB)}` : s.mode === 'duell' ? `${esc(s.duoA)} gegen ${esc(s.duoB)}` : `Stufe ${esc(LEVELS[s.levelSolo])} · Klangbot ${esc(s.botLevel)}`}</small></span></div>
         <div class="sum-size"><span class="sum-t"><b>${s.blitz ? 'Blitzrunde 4 × 4' : sizes.length ? s.size + ' × ' + s.size : 'zu wenige Begriffe'}</b><small>${s.select === 'wuerfel' ? 'Würfeln' : s.select === 'mix' ? 'Würfeln mit Wahl' : 'Frei wählen'}${s.connect ? ' · Vernetzung an' : ''}${s.geheim ? ' · Geheimauftrag' : ''}</small></span></div>
       </div>
-      <div class="accs">${acc('brett', 'Brett und Begriffe', 'Feld bestimmen, Größe, Auswahl, Anordnung', brett)}${acc('zeit', 'Zeit', 'Erklärzeit, Beratung, Spielzeit', zeit)}${acc('extra', 'Sonderregeln', 'Vernetzung, Hilfen, Konter, Hörfelder', extra)}${acc('aufgaben', 'Aufgabenarten', `Zeigefelder${nZeig && s.zeig ? (nMit && s.mitspiel !== false ? ' und Mitspielfelder an' : ' an') : ' aus'}, Abgrenzung${nPairs && s.pairs ? ' an' : ' aus'}, Operatoren ${s.mode === 'solo' ? 'ohne' : s.ops}`, aufgaben)}${acc('spiel', 'Spielwürze', `Pasch ${s.pasch === 'ereignis' && s.select === 'wuerfel' ? 'mit Ereignis' : 'freie Wahl'}${s.geheim ? ', Geheimauftrag' : ''}${s.blitz ? ', Blitzrunde' : ''}${s.album ? ', Album' : ''}`, spiel)}${acc('lang', 'Sprache der Anleitung', `${LANG_LABEL[langFor(pack)]}${s.lang === 'auto' ? ', passend zur Klassenstufe' : ', von dir gewählt'}`, rule('Regeln, Kurzanleitung und Spielkarten', seg('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], s.lang), `${LANG_SUB[langFor(pack)]}. ${s.lang === 'auto' ? 'Die Stufe folgt der Klassenstufe des Pakets.' : 'Automatisch hieße hier: ' + LANG_LABEL[langFromGrades(pack.grades)] + '.'}`))}</div>
+      <div class="accs">${acc('brett', 'Brett und Begriffe', 'Feld bestimmen, Größe, Auswahl, Anordnung', brett)}${acc('zeit', 'Zeit', 'Erklärzeit, Beratung, Spielzeit', zeit)}${acc('extra', 'Sonderregeln', s.mode === 'tafel' ? `Vernetzung, Hilfen, Konter, Hörfelder${s.protokoll ? ', Hörprotokoll' : ''}` : s.mode === 'duell' ? `Vernetzung, Hilfen, Hörfelder${s.notiz !== false ? ', Mitschreiben' : ''}` : 'Vernetzung, Hilfen, Hörfelder', extra)}${acc('aufgaben', 'Aufgabenarten', `Zeigefelder${nZeig && s.zeig ? (nMit && s.mitspiel !== false ? ' und Mitspielfelder an' : ' an') : ' aus'}, Abgrenzung${nPairs && s.pairs ? ' an' : ' aus'}, Operatoren ${s.mode === 'solo' ? 'ohne' : s.ops}`, aufgaben)}${acc('spiel', 'Spielwürze', `Pasch ${s.pasch === 'ereignis' && s.select === 'wuerfel' ? 'mit Ereignis' : 'freie Wahl'}${s.geheim ? ', Geheimauftrag' : ''}${s.blitz ? ', Blitzrunde' : ''}${s.album ? ', Album' : ''}`, spiel)}${acc('lang', 'Sprache der Anleitung', `${LANG_LABEL[langFor(pack)]}${s.lang === 'auto' ? ', passend zur Klassenstufe' : ', von dir gewählt'}`, rule('Regeln, Kurzanleitung und Spielkarten', seg('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], s.lang), `${LANG_SUB[langFor(pack)]}. ${s.lang === 'auto' ? 'Die Stufe folgt der Klassenstufe des Pakets.' : 'Automatisch hieße hier: ' + LANG_LABEL[langFromGrades(pack.grades)] + '.'}`))}</div>
       <div class="st3-cta"><button type="button" class="btn ghost" data-act="st-step" data-v="2">${iconArrow(-1)}Zurück</button><button type="button" class="btn cta go" data-act="start" data-primary${sizes.length ? '' : ' disabled'}>Los geht’s!${iconNext()}</button></div>`;
   }
   const foot = IS_WEB ? `<footer class="st3-foot"><span><b>Vierklang</b> · Uli Frefat · <a href="https://ulifrefat.de" target="_blank" rel="noopener">ulifrefat.de</a> · gebaut mit Claude (Anthropic)</span><span>KI-Assistent für neue Pakete und Handys koppeln: <a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Fassung auf claude.ai</a> (Claude-Konto nötig). Alles andere läuft hier, ohne Konto; Einstellungen, eigene Pakete, Lerngruppen und das Album bleiben in diesem Browser.</span></footer>` : '';
@@ -18573,7 +18640,8 @@ function helpHTML() {
     mode: mode === 'papier' ? 'tafel' : mode, select: sel,
     zeig: cfg ? cfg.zeig && hasZeig : settings.zeig && hasZeig, pairs: cfg ? cfg.pairs : settings.pairs && hasPairs,
     ops: cfg ? cfg.ops : opsActive(settings, L, mode), pasch: (cfg ? cfg.pasch === 'ereignis' : settings.pasch === 'ereignis') && sel === 'wuerfel',
-    geheim: cfg ? !!cfg.geheim : !!settings.geheim, series: cfg ? !!cfg.blitz : !!settings.blitz, mit: hasMit
+    geheim: cfg ? !!cfg.geheim : !!settings.geheim, series: cfg ? !!cfg.blitz : !!settings.blitz, mit: hasMit,
+    notiz: cfg ? !!cfg.notiz : mode === 'duell' && settings.notiz !== false, protokoll: cfg ? !!cfg.protokoll : mode === 'tafel' && !!settings.protokoll
   });
   const lv = ['easy', 'mid', 'hard'].map((k) => `<button type="button" class="seg-btn${L === k ? ' on' : ''}" data-act="help-lang" data-v="${k}" aria-pressed="${L === k}">${LANG_LABEL[k]}</button>`).join('');
   return `<h2>So geht Vierklang</h2>
@@ -18615,12 +18683,12 @@ function coachSteps() {
   }
   if (g.mode === 'duell') {
     return [s1,
-      { sel: '#status', title: 'Erklären und schätzen', text: C.explainDuell },
+      { sel: '#status', title: 'Erklären und schätzen', text: C.explainDuell, tip: g.cfg.notiz ? C.notiz : '' },
       { sel: '#team-A', title: 'Prüfen', text: C.checkDuell }].concat(sx, [s4]);
   }
   return [s1,
     { sel: '#status', title: 'Beraten und erklären', text: C.explainTafel + (g.cfg.explainTime ? ` ${gameLang() === 'easy' ? 'Dafür gibt es' : 'Zeit:'} ${g.cfg.explainTime} Sekunden.` : ''), tip: g.cfg.konter ? (gameLang() === 'easy' ? 'Das andere Team hört zu. Fehlt etwas, darf es kontern.' : 'Das andere Team hört mit und darf kontern, wenn etwas fehlt.') : '' },
-    { sel: '#team-A', title: 'Prüfen', text: C.checkTafel }].concat(sx, [s4]);
+    { sel: '#team-A', title: 'Prüfen', text: C.checkTafel, tip: g.cfg.protokoll ? C.proto : '' }].concat(sx, [s4]);
 }
 function startCoach() { if (!game) return; closeModal(); coach = { i: 0, steps: coachSteps() }; renderCoach(); }
 function endCoach() { coach = null; renderCoach(); }
@@ -19611,7 +19679,8 @@ const PR_PARTS = [
   ['loesung', 'Lösungsübersicht', 'für die Lehrkraft'],
   ['satz', 'Satzbaukasten', 'Satzmuster zum Vernetzen'],
   ['paare', 'Abgrenzungskarten', 'zwei Begriffe, den Unterschied nennen'],
-  ['operatoren', 'Operatorenkarten', 'Aufgabenwörter mit Prüfkriterien']
+  ['operatoren', 'Operatorenkarten', 'Aufgabenwörter mit Prüfkriterien'],
+  ['protokoll', 'Hörprotokoll', 'zum Mitschreiben beim Zuhören', false]
 ];
 let pr = null;
 let prBusy = false;
@@ -19623,7 +19692,7 @@ function openPrintStudio(packId) {
   if (!sizes.length) { toast('Dieses Paket hat zu wenige Begriffe. Für das kleinste Brett braucht es 16.'); return; }
   const s = store.get(PR_KEY, {}) || {};
   const parts = {};
-  PR_PARTS.forEach((p) => { parts[p[0]] = s.parts && typeof s.parts[p[0]] === 'boolean' ? s.parts[p[0]] : true; });
+  PR_PARTS.forEach((p) => { parts[p[0]] = s.parts && typeof s.parts[p[0]] === 'boolean' ? s.parts[p[0]] : p[3] !== false; });
   const keep = pr && pr.packId === pack.id ? pr.size : 0;
   pr = {
     packId: pack.id, group: String(s.group || '').slice(0, 24), form: s.form === 'partner' ? 'partner' : 'gruppe',
@@ -19643,7 +19712,7 @@ function prPageEstimate(o, pack) {
   const ids = new Set(playable(pack).map((t) => t.id)), k = Math.min(1, (n * n) / Math.max(1, ids.size));
   const links = Math.round((pack.links || []).filter((l) => ids.has(l[0]) && ids.has(l[1])).length * k * k);
   const solMM = 52 + n * (n >= 6 ? 9.6 : n === 5 ? 10.8 : 12.4) + n * n * 9.4 + (links ? 16 + links * 4.6 : 0);
-  return per * o.sets + (P.lern ? Math.ceil(n * n / 8) : 0) + (P.loesung ? o.sets * Math.max(1, Math.ceil(solMM / 252)) : 0) + (P.paare && pack.pairs && pack.pairs.length ? Math.ceil(pack.pairs.length / 9) : 0) + (P.operatoren ? 1 : 0);
+  return per * o.sets + (P.lern ? Math.ceil(n * n / 8) : 0) + (P.loesung ? o.sets * Math.max(1, Math.ceil(solMM / 252)) : 0) + (P.paare && pack.pairs && pack.pairs.length ? Math.ceil(pack.pairs.length / 9) : 0) + (P.operatoren ? 1 : 0) + (P.protokoll ? 1 : 0);
 }
 function prIconForm(kind) {
   const sq = (x, y, s, c) => `<rect x="${x}" y="${y}" width="${s}" height="${s}" rx="${s * 0.18}" fill="${c}"/>`;
@@ -19661,7 +19730,7 @@ function printStudioHTML() {
   const form = (v, title, text) => { const on = pr.form === v; return `<button type="button" class="pr-form${on ? ' on' : ''}" role="radio" aria-checked="${on}" data-act="pr-set" data-k="form" data-v="${v}"><span class="pr-form-ic">${prIconForm(v)}</span><span class="pr-form-t">${esc(title)}</span><span class="pr-form-x">${esc(text)}</span></button>`; };
   const tick = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const nPairs = (pack.pairs || []).length, nZeig = playable(pack).filter((t) => t.zeig).length, nMitP = playable(pack).filter((t) => t.zeig && t.mit).length;
-  const pagesOf = { anleitung: '2 bis 3 Seiten je Satz', plan: '1 Seite je Satz', pruef: `${Math.ceil(k / 9)} Seiten je Satz`, steine: '1 Seite je Satz', wuerfel: '1 Seite je Satz', lern: `${Math.ceil(k / 8)} Seiten, einmal`, loesung: 'je Satz', satz: '1 Seite je Satz', paare: `${Math.ceil(nPairs / 9)} ${Math.ceil(nPairs / 9) === 1 ? 'Seite' : 'Seiten'}, einmal`, operatoren: '1 Seite, einmal' };
+  const pagesOf = { anleitung: '2 bis 3 Seiten je Satz', plan: '1 Seite je Satz', pruef: `${Math.ceil(k / 9)} Seiten je Satz`, steine: '1 Seite je Satz', wuerfel: '1 Seite je Satz', lern: `${Math.ceil(k / 8)} Seiten, einmal`, loesung: 'je Satz', satz: '1 Seite je Satz', paare: `${Math.ceil(nPairs / 9)} ${Math.ceil(nPairs / 9) === 1 ? 'Seite' : 'Seiten'}, einmal`, operatoren: '1 Seite, einmal', protokoll: '1 Seite zum Kopieren' };
   const parts = PR_PARTS.filter((p) => p[0] !== 'paare' || nPairs).map((p) => { const on = !!pr.parts[p[0]]; return `<button type="button" class="pr-part${on ? ' on' : ''}" role="checkbox" aria-checked="${on}" data-act="pr-part" data-k="${p[0]}"><span class="pr-box">${on ? tick : ''}</span><span class="pr-part-t"><b>${esc(p[1])}</b><small>${esc(p[2])} · ${esc(pagesOf[p[0]])}</small></span></button>`; }).join('');
   const partList = PR_PARTS.filter((p) => p[0] !== 'paare' || nPairs);
   const any = partList.some((p) => pr.parts[p[0]]), all = partList.every((p) => pr.parts[p[0]]);
@@ -20744,6 +20813,7 @@ function prRuleTexts(ctx) {
   if (P.satz) T.material.push(pick('Satzbaukasten für den Satz am Schluss', 'Satzbaukasten für den Vernetzungszug', 'Satzbaukasten für den Vernetzungszug'));
   if (P.paare && ctx.pairs.length) T.material.push(pick('Abgrenzungskarten (für den Pasch)', 'Abgrenzungskarten als Stapel', 'Abgrenzungskarten als Stapel'));
   if (P.operatoren) T.material.push(pick('Operatorenkarten', 'Operatorenkarten als Stapel', 'Operatorenkarten als Stapel'));
+  if (P.protokoll) T.material.push(pick('Hörprotokolle zum Mitschreiben', 'Hörprotokolle für alle, die zuhören', 'Hörprotokolle für die Zuhörenden'));
   if (ctx.pasch) T.material.push(pick('ein Würfel für den Pasch', 'ein Würfel für Pasch-Ereignisse', 'ein Würfel für Pasch-Ereignisse'));
   if (P.steine || P.wuerfel) T.material.push('Schere und Klebstoff zum Basteln');
   T.setup = G
@@ -20769,7 +20839,10 @@ function prRuleTexts(ctx) {
   const check = (G
     ? pick('Die Spielleitung schaut auf die Prüfkarte. Habt ihr zwei von drei Punkten genannt? Dann bekommt ihr den Stein. Ihr müsst nicht genau dieselben Wörter sagen.', 'Die Spielleitung liest auf der Prüfkarte zum Feld mit und hakt die Kernmerkmale ab. Zwei von drei reichen für den Stein. Der genaue Wortlaut ist egal.', 'Die Spielleitung hakt die Kernmerkmale auf der Prüfkarte ab. Zwei von drei, sinngemäß und fachlich korrekt, ergeben den Stein.')
     : pick('Die andere Person schaut auf die Prüfkarte. Wurden zwei von drei Punkten genannt? Dann gibt es den Stein. Es müssen nicht genau dieselben Wörter sein.', 'Die andere Person nimmt die Prüfkarte zum Feld, hört zu und hakt die Kernmerkmale ab. Zwei von drei reichen für den Stein. Der genaue Wortlaut ist egal.', 'Das Gegenüber hakt die Kernmerkmale auf der Prüfkarte ab. Zwei von drei, sinngemäß und fachlich korrekt, ergeben den Stein.'))
-    + (ctx.hasBild ? pick(' Beim Notenbild reicht der richtige Name.', ' Bei Notenbildern reicht der richtige Begriff.', ' Bei Notenbildern genügt der Begriff.') : '');
+    + (ctx.hasBild ? pick(' Beim Notenbild reicht der richtige Name.', ' Bei Notenbildern reicht der richtige Begriff.', ' Bei Notenbildern genügt der Begriff.') : '')
+    + (P.protokoll ? (G
+      ? pick(' Das andere Team schreibt auf dem Hörprotokoll mit und liest vor der Entscheidung vor.', ' Das andere Team schreibt auf dem Hörprotokoll mit und liest die Stichwörter vor der Entscheidung vor.', ' Das andere Team protokolliert mit und trägt die Stichwörter vor der Entscheidung vor.')
+      : pick(' Mit Hörprotokoll schreibt die prüfende Person erst bis zu drei Wörter auf. Dann schaut sie auf die Prüfkarte.', ' Mit Hörprotokoll notiert die prüfende Person erst bis zu drei Stichwörter und schaut dann auf die Prüfkarte.', ' Mit Hörprotokoll: erst bis zu drei Stichwörter notieren, dann die Prüfkarte aufdecken.')) : '');
   const place = G ? pick('Geschafft? Dann legt ihr einen Stein auf das Feld. Sonst bleibt das Feld frei. Dann ist das andere Team dran.', 'Geschafft? Dann legt einen festen Stein auf das Feld. Sonst bleibt es frei. Danach ist das andere Team am Zug.', 'Bei Erfolg kommt ein fester Stein aufs Feld, sonst bleibt es frei. Danach ist das andere Team am Zug.')
     : pick('Geschafft? Dann kommt ein Stein auf das Feld. Sonst bleibt das Feld frei. Dann ist die andere Person dran.', 'Geschafft? Dann kommt ein fester Stein auf das Feld. Sonst bleibt es frei. Danach ist die andere Person am Zug.', 'Bei Erfolg kommt ein fester Stein aufs Feld, sonst bleibt es frei. Danach ist die andere Person am Zug.');
   T.steps = [['wuerfeln', 'Würfeln', dice]];
@@ -21235,6 +21308,7 @@ async function buildPrintPdf(JsPDF, o, progress) {
   });
   if (P.paare && ctx.pairs.length) jobs.push(() => pagesPaare(ctx));
   if (P.operatoren) jobs.push(() => pageOperatoren(ctx));
+  if (P.protokoll && typeof pageProtokoll === 'function') jobs.push(() => pageProtokoll(ctx, ctx.gruppe ? 'gruppe' : 'partner'));
   if (P.lern) jobs.push(() => pagesLern(ctx));
   if (P.loesung) ctx.sets.forEach((set) => jobs.push(() => pagesLoesung(ctx, set)));
   if (!jobs.length) throw new Error('leer');
@@ -23317,6 +23391,7 @@ const TEACHER_TEXT = {
       <li><b>Klassenbild als Einstieg.</b> Nach jedem Spiel zeigt das Klassenbild, welche Begriffe der Lerngruppe sitzen und welche noch wackeln. „An die Tafel“ zeigt die wackelnden Begriffe groß für den Einstieg der nächsten Stunde, „Damit spielen“ legt sie sicher aufs nächste Brett.</li>
       <li><b>Direktlink und QR-Code.</b> „Link“ unter den Paketen erzeugt einen Link mit QR-Code: für die Stunde, für „Karten üben“ zu Hause oder für Solo. Er passt auf eine Folie, ins Padlet oder aufs Arbeitsblatt. Eigene Pakete und Anpassungen liegen nur im eigenen Browser, andere Geräte öffnen die mitgelieferte Fassung.</li>
       <li><b>Mitspielfelder.</b> Manche Zeigefelder haben eine Begleitung aus der App. An der Tafel zählt die App ein und spielt Grundschlag oder Groove, das Team führt den Auftrag dazu aus, die Klasse prüft mit der Beobachtungskarte. Das Muster zum Vergleich gibt es erst beim Aufdecken, damit vorher niemand nur nachahmt. Im Duell sind die Durchgänge kürzer. Im Solo wird aus Feldern mit eindeutigem Muster eine Höraufgabe, die übrigen bleiben Zeigefelder. Auf Papier übernimmt eine Person die Begleitung, die Prüfkarte sagt wie.</li>
+      <li><b>Mitschreiben und Hörprotokoll.</b> Im Duell tippt die Person, die zugehört hat, nach jeder Erklärung bis zu drei Stichwörter ein. Beim Aufdecken markiert die Prüfkarte, was davon dort steht, abgehakt wird weiterhin von Hand. An der Tafel ruft die App mit dem Hörprotokoll bei jedem Zug zwei Nummern aus dem anderen Team auf. Sie schreiben auf dem ausgedruckten Bogen mit und lesen vor dem Abhaken vor. Das PDF gibt es in Schritt 3 unter „Sonderregeln“, für Papier in der Druckwerkstatt. Wer mehr Beteiligung will, lässt das ganze andere Team mitschreiben, vorgelesen wird von den aufgerufenen Nummern.</li>
       <li><b>Paket vor dem Einsatz prüfen.</b> Die mitgelieferten Pakete sind KI-Entwürfe und noch nicht durchgehend fachlich geprüft. Was im Spiel immer wieder abgerufen und geprüft wird, prägt sich ein, ein Fehler auf einer Prüfkarte also auch. In der Werkstatt lässt sich jedes Paket korrigieren.</li>
     </ul>
     <p>Der Mehrwert liegt in der <b>Erklärsprache</b>: Lernende müssen Fachbegriffe mündlich, kriteriengeleitet und mit Beispiel erklären, und die Klasse hört zu. Das Spiel ersetzt kein Hören und kein Musizieren. Zeige-, Hör- und Notenfelder holen beides ins Spiel, deshalb kommen sie mit mindestens einem Viertel der Felder aufs Brett, soweit das Paket sie hat. Spiele die Hörbeispiele aus deinem Unterricht dazu, wo die App nur synthetische Klänge hat.</p>`,
@@ -23326,6 +23401,7 @@ const TEACHER_TEXT = {
       <li><b>In eigenen Worten erklären</b> (Erklärrunde, Konter, Solo). Sich selbst und anderen etwas zu erklären fördert das Verstehen, besonders, wenn das Erklären angekündigt ist und ein Gegenüber nachfragt (Bisra u. a. 2018; Kobayashi 2019). Bloßes Aufsagen bringt wenig (Roscoe und Chi 2007). Deshalb verlangen „Mit Beispiel“, „erläutern“ und der Vernetzungszug mehr als einen Merksatz.</li>
       <li><b>Abrufen und verteilt wiederholen</b> (jeder Zug, „Karten üben“). Abruf aus dem Gedächtnis sichert Wissen besser als erneutes Lesen, auch im Klassenzimmer (Yang u. a. 2021), verteiltes Üben besser als geballtes (Cepeda u. a. 2006). Die Fächer von „Karten üben“ folgen der Lernkartei nach Leitner (1972).</li>
       <li><b>Kriterien sichtbar machen, gegenseitig prüfen</b> (Prüfkarte, Schätzung im Duell). Rückmeldung unter Lernenden verbessert die Leistung im Mittel (Double u. a. 2020). Sie ist nur so gut wie die Kriterien, daher Prüfkarte und Schiedsregel.</li>
+      <li><b>Mitschreiben</b> (Notiz im Duell, Hörprotokoll). Wer beim Zuhören Stichwörter notiert, behält im Mittel etwas mehr als beim bloßen Zuhören, der Effekt ist klein (Kobayashi 2005). Im Spiel kommt der Abgleich mit der Prüfkarte hinzu, er lenkt den Blick auf die Kriterien. Für diese Form gibt es keinen eigenen Beleg.</li>
       <li><b>Abgrenzen durch Vergleich</b> (Abgrenzungsfelder, Operator „vergleichen“). Fälle zu vergleichen wirkt besser als Einzelfälle, besonders mit Blick auf die Gemeinsamkeit (Alfieri u. a. 2013). Abgrenzungsfelder verlangen darum zuerst die Gemeinsamkeit, dann die beiden Unterscheidungsmerkmale.</li>
       <li><b>Zeigen und handeln</b> (Zeigefelder). Selbst ausgeführte Handlungen bleiben besser im Gedächtnis als nur verbal gelernte (Roberts u. a. 2022). Musikpädagogisch ist Bewegung ein Weg vom Tun zum Begriff (Juntunen und Hyvönen 2004).</li>
       <li><b>Verknüpfen</b> (Vernetzungszug). Begriffe selbst zu verbinden, wie beim Concept Mapping, fördert das Lernen (Schroeder u. a. 2018). Der Vernetzungszug ist eine kleine Form davon, ein eigener Effekt ist nicht untersucht.</li>
@@ -23349,6 +23425,7 @@ const TEACHER_TEXT = {
       <li>Gruhn, W. (1998, Neuausgabe 2014). Der Musikverstand. Neurobiologische Grundlagen des musikalischen Denkens, Hörens und Lernens. Olms.</li>
       <li>Juntunen, M.-L. und Hyvönen, L. (2004). Embodiment in musical knowing. How body movement facilitates learning within Dalcroze Eurhythmics. British Journal of Music Education.</li>
       <li>Leitner, S. (1972). So lernt man lernen.</li>
+      <li>Kobayashi, K. (2005). What limits the encoding effect of note-taking? A meta-analytic examination. Contemporary Educational Psychology.</li>
       <li>Kobayashi, K. (2019). Learning by preparing-to-teach and teaching. A meta-analysis. Japanese Psychological Research.</li>
       <li>Roberts, B. R. T., MacLeod, C. M. und Fernandes, M. A. (2022). The enactment effect. A systematic review and meta-analysis of behavioral, neuroimaging, and patient studies. Psychological Bulletin.</li>
       <li>Roscoe, R. D. und Chi, M. T. H. (2007). Understanding tutor learning. Knowledge-building and knowledge-telling in peer tutors’ explanations and questions. Review of Educational Research.</li>
@@ -23373,7 +23450,7 @@ const TEACHER_TEXT = {
     <p class="tq-lead">Das Spiel trägt die Stunde nur, wenn Regeln und Rollen klar sind. Was sich bewährt:</p>
     <ul class="tq-list">
       <li><b>Nummern verteilen die Beiträge.</b> Die App bestimmt, wer erklärt. So trägt jede Person Verantwortung für das Team. Die Beratung davor ist Pflicht, damit niemand allein dasteht. Wer unsicher ist, nimmt eine Hilfe.</li>
-      <li><b>Das andere Team hat einen Auftrag.</b> Beim Erklären prüft es mit, beim Zeigefeld beobachtet es anhand der Merkmale, beim Konter darf es selbst ran. Zuhören gehört zum Spiel.</li>
+      <li><b>Das andere Team hat einen Auftrag.</b> Beim Erklären prüft es mit, beim Zeigefeld beobachtet es anhand der Merkmale, beim Konter darf es selbst ran. Zuhören gehört zum Spiel. Mit dem Hörprotokoll bekommen zwei Nummern je Zug eine feste Rolle: mitschreiben und vor dem Abhaken vorlesen.</li>
       <li><b>Schiedsregel vorher klären.</b> Gezählt wird, was sinngemäß auf der Prüfkarte steht, der Wortlaut ist frei. Bei Streit entscheidet die Spielleitung kurz und mit Blick auf die Karte, die fachliche Klärung folgt nach dem Zug. Im Wettbewerb prüfen Teams die Gegenseite gern streng, auch das gehört in die Absprache.</li>
       <li><b>Signale nutzen.</b> Erklärzeit mit Gong, Nummernansage mit Ton. Bei Unruhe die Spielzeit auf 15 Minuten setzen, dann hat das Spiel ein sichtbares Ende.</li>
       <li><b>Klicker oder Pfeiltaste.</b> Der nächste Schritt lässt sich mit einem Präsentations-Klicker auslösen. So bleibst du bei der Klasse und nicht am Rechner.</li>
@@ -23419,6 +23496,7 @@ const TEACHER_TEXT = {
       <li><b>Operatorenkarten:</b> In der mittleren und der Oberstufenfassung liegt eine Seite mit Operatorenkarten bei. Vor dem Erklären zieht das andere Team eine Karte oder würfelt den Operator aus.</li>
       <li><b>Pasch-Ereignisse</b> stehen als kleine Tabelle in der Anleitung: Mit einem Würfel wird das Ereignis bestimmt.</li>
       <li><b>Album:</b> Die gesammelten Karten einer Gruppe lassen sich als PDF ausgeben, zum Aushängen oder Mitgeben.</li>
+      <li><b>Hörprotokoll:</b> Ein Bogen für acht Züge zum Kopieren. Wer zuhört, notiert bis zu drei Stichwörter, hakt nach dem Aufdecken ab, was auf der Prüfkarte steht, und ergänzt, was gefehlt hat. Im Gruppenspiel schreibt das andere Team mit, im Partnerspiel notiert die prüfende Person erst und schaut dann auf die Karte. In der Druckwerkstatt ist das Hörprotokoll anfangs nicht angekreuzt.</li>
     </ul>`,
   theorie: `
     <p class="tq-lead">Zwei Modelle helfen, den Einsatz einzuordnen. Beide dienen der Orientierung, über die Qualität einer Stunde sagen sie wenig.</p>
@@ -23462,7 +23540,7 @@ const WEB_URL = 'https://ufrefat-svg.github.io/efmu12/vierklang.html';
 const HOME_URL = 'https://ulifrefat.de/apps/vierklang/';
 /* Einstellungen, die eine Lerngruppe für „Wie letztes Mal“ übernimmt; Namen bleiben bewusst draußen */
 const LG_KEYS = ['mode', 'size', 'select', 'mix', 'layout', 'explainTime', 'consultTime', 'gameTime', 'connect', 'hints', 'konter', 'media', 'diagonals',
-  'zeig', 'pairs', 'ops', 'pasch', 'geheim', 'blitz', 'album', 'lang', 'playersA', 'playersB', 'levelA', 'levelB', 'levelSolo', 'botLevel'];
+  'zeig', 'pairs', 'ops', 'pasch', 'geheim', 'blitz', 'album', 'lang', 'playersA', 'playersB', 'levelA', 'levelB', 'levelSolo', 'botLevel', 'mitspiel', 'notiz', 'protokoll'];
 const LG_MON = ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'];
 const LG_RES = { o: 'ohne Hilfe geschafft', h: 'mit Hilfe geschafft', n: 'nicht geschafft' };
 
@@ -24174,6 +24252,278 @@ function wsMitHTML(t) {
     <p class="ws-note">Ein Muster passt nur zu einer Begleitung mit gleich vielen Schlägen pro Takt. Mit Muster wird das Feld im Solo zur Höraufgabe.</p></div></fieldset>`;
 }
 
+/* Vierklang · Teil 15: Mitschreiben im Duell, Hörprotokoll an der Tafel und auf Papier */
+
+const NOTE_N = 3;
+/* Füllwörter und Wörter der Prüfkarten-Vorlagen zählen beim Abgleich nicht */
+const NOTE_STOP = new Set(('und oder aber der die das den dem des ein eine einer eines einem einen ist sind war waren wird werden wurde '
+  + 'hat haben mit von vom zum zur auf aus bei fuer ueber unter nach vor wie als auch nicht kein keine sehr mehr man sich sie '
+  + 'ihr ihm ihn ihre sein seine im in an am zu so dass etwa oft meist meistens immer beim durch gegen ohne um bis noch nur '
+  + 'schon dann wenn weil hier dort etwas viel viele wenig alle jede jeder jedes beide dabei damit davon dazu kann koennen '
+  + 'muss soll gibt geht genannt nennen oberbegriff bereich kernmerkmal kernmerkmale merkmal merkmale beispiel beispiele '
+  + 'zusammenhang nachbarbegriff begriff begriffe erklaert erklaerung gemeinsamkeit unterschied jeweils').split(' '));
+
+const NOTE_TX = {
+  easy: {
+    head: (n) => `<b>${esc(n)}</b> schreibt bis zu drei Wörter auf, die in der Erklärung vorkamen.`,
+    sub: 'Rechtschreibung ist egal. Leer lassen geht auch.',
+    sumHead: (n) => `Notiz von ${n}`,
+    sumHit: 'Grün: Das steht auch auf der Prüfkarte.',
+    sumNone: 'Keins davon steht so auf der Prüfkarte. Vielleicht war es mit anderen Wörtern gemeint.',
+    mark: 'notiert',
+    call: (team, nums, one) => `<b>Hörprotokoll:</b> Nummer ${nums} aus ${esc(team)} ${one ? 'schreibt' : 'schreiben'} mit.`,
+    read: (team, nums, one) => `<b>Erst vorlesen:</b> Nummer ${nums} aus ${esc(team)} ${one ? 'liest' : 'lesen'} vor, was auf dem Hörprotokoll steht. Dann wird abgehakt.`,
+    counter: (nums) => `Schaut auf das Hörprotokoll von Nummer ${nums}. Fehlt etwas Wichtiges?`
+  },
+  mid: {
+    head: (n) => `<b>${esc(n)}</b> notiert bis zu drei Stichwörter aus der Erklärung.`,
+    sub: 'Die Rechtschreibung zählt nicht. Beim Aufdecken zeigt die Prüfkarte, was davon dort steht.',
+    sumHead: (n) => `Notiz von ${n}`,
+    sumHit: 'Grün markiert: steht so auch auf der Prüfkarte.',
+    sumNone: 'Keins davon steht so auf der Prüfkarte. Sinngemäß kann es trotzdem passen.',
+    mark: 'in der Notiz',
+    call: (team, nums, one) => `<b>Hörprotokoll:</b> Nummer ${nums} aus ${esc(team)} ${one ? 'schreibt' : 'schreiben'} mit.`,
+    read: (team, nums, one) => `<b>Protokoll vorlesen:</b> Nummer ${nums} (${esc(team)}) ${one ? 'liest' : 'lesen'} die Stichwörter vor. Dann wird abgehakt.`,
+    counter: (nums) => `Das Hörprotokoll von Nummer ${nums} hilft bei der Entscheidung.`
+  },
+  hard: {
+    head: (n) => `<b>${esc(n)}</b> notiert bis zu drei Stichwörter aus der Erläuterung.`,
+    sub: 'Orthografie ist unerheblich. Beim Aufdecken markiert die Prüfkarte, was davon dort steht.',
+    sumHead: (n) => `Notiz von ${n}`,
+    sumHit: 'Markiert: Entsprechung auf der Prüfkarte.',
+    sumNone: 'Keine wörtliche Entsprechung auf der Prüfkarte; sinngemäße Treffer zählen trotzdem.',
+    mark: 'in der Notiz',
+    call: (team, nums, one) => `<b>Protokoll:</b> ${esc(team)}, Nummer ${nums}.`,
+    read: (team, nums, one) => `<b>Protokolle:</b> Nummer ${nums} (${esc(team)}) ${one ? 'trägt' : 'tragen'} die Stichwörter vor, dann wird abgehakt.`,
+    counter: (nums) => `Die Protokolle von Nummer ${nums} helfen bei der Entscheidung.`
+  }
+};
+function ntx() { return NOTE_TX[gameLang()] || NOTE_TX.mid; }
+function pencilSVG(cls) { return `<svg viewBox="0 0 24 24" class="note-ic${cls ? ' ' + cls : ''}" aria-hidden="true"><path d="M4 20l1.2-4.6L15.6 5a2.1 2.1 0 0 1 3 0l.4.4a2.1 2.1 0 0 1 0 3L8.6 18.8z"/><path d="M13.8 6.8l3.4 3.4"/><path d="M4 20h7"/></svg>`; }
+
+/* ---------- Abgleich der Notiz mit der Prüfkarte ---------- */
+function noteTokens(s) { return lnNorm(s).split(' ').filter((w) => w.length >= 3 && !NOTE_STOP.has(w)); }
+/* gleiches Wort, gleicher Wortstamm, Teil eines zusammengesetzten Wortes oder ein Tippfehler */
+function noteSame(a, b) {
+  if (a === b) return true;
+  const m = Math.min(a.length, b.length); if (m < 4) return false;
+  let p = 0; while (p < m && a[p] === b[p]) p++;
+  if (p >= 5 || p === m) return true;
+  const lo = a.length >= b.length ? a : b, sh = lo === a ? b : a;
+  if (m >= 5 && lo.indexOf(sh) >= 0) return true;
+  return m >= 5 && Math.abs(a.length - b.length) <= 2 && lnDist(a, b) <= (m >= 9 ? 2 : 1);
+}
+function noteList(c) { return (c && Array.isArray(c.notes) ? c.notes : []).map((s) => String(s || '').replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, NOTE_N); }
+function noteInfo(c, t) {
+  const list = noteList(c); if (!list.length || !t) return null;
+  const termTok = noteTokens(t.kind === 'paar' && t.pair ? `${t.pair.an} ${t.pair.bn}` : t.term);
+  const rows = curRows(c).map((r) => noteTokens(r.text));
+  const words = list.map((text) => {
+    const tok = noteTokens(text).filter((w) => !termTok.some((x) => x === w || (Math.min(x.length, w.length) >= 5 && lnDist(x, w) <= 1)));
+    const hits = rows.map((rt) => tok.some((w) => rt.some((x) => noteSame(w, x))));
+    return { text, rows: hits, hit: hits.some(Boolean) };
+  });
+  return { words, rowHit: rows.map((_, i) => words.some((w) => w.rows[i])), n: words.length, h: words.filter((w) => w.hit).length };
+}
+
+/* ---------- Wann gilt was ---------- */
+function noteActive(c) { const g = game; return !!(g && g.mode === 'duell' && g.cfg && g.cfg.notiz && c && !c.zeig && !c.media && c.level >= 2); }
+function protoActive(c) { const g = game; return !!(g && g.mode === 'tafel' && g.cfg && g.cfg.protokoll && c && !c.zeig && !c.media && c.level >= 2); }
+/* Protokollnummern laufen reihum, getrennt von den Nummern fürs Erklären */
+function protoNumbers(side) {
+  const tm = game.teams[side], n = clamp(parseInt(tm.players, 10) || 1, 1, 40), want = Math.min(2, n), out = [];
+  for (let guard = 0; out.length < want && guard < 200; guard++) {
+    if (!tm.pbag || !tm.pbag.length) tm.pbag = shuffle(range(1, n));
+    const v = tm.pbag.pop();
+    if (out.includes(v)) { tm.pbag.unshift(v); continue; }
+    out.push(v);
+  }
+  return out.sort((a, b) => a - b);
+}
+function protoNumsHTML(nums) { return nums.map((x) => `<b>${x}</b>`).join(' und '); }
+
+/* ---------- Bausteine der Spielkarte ---------- */
+function noteFieldsHTML(c) {
+  if (!noteActive(c)) return '';
+  const T = ntx(), notes = Array.isArray(c.notes) ? c.notes : [];
+  return `<div class="note-box"><div class="note-head">${pencilSVG()}<span>${T.head(tn(other(c.side)))}</span></div>
+    <div class="note-fields">${range(0, NOTE_N - 1).map((i) => `<input class="field note-in" data-note="${i}" value="${esc(notes[i] || '')}" maxlength="40" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="${i < NOTE_N - 1 ? 'next' : 'done'}" placeholder="Stichwort ${i + 1}" aria-label="Stichwort ${i + 1}">`).join('')}</div>
+    <p class="note-sub">${esc(T.sub)}</p></div>`;
+}
+function noteCheckHTML(c, t) {
+  if (!noteActive(c)) return '';
+  const info = noteInfo(c, t); if (!info) return '';
+  const T = ntx();
+  return `<div class="note-sum"><span class="note-sum-k">${pencilSVG()}${esc(T.sumHead(tn(other(c.side))))}</span><span class="note-chips">${info.words.map((w) => `<span class="note-chip${w.hit ? ' hit' : ''}">${w.hit ? checkSVG() : ''}${esc(w.text)}</span>`).join('')}</span><span class="note-sum-sub">${esc(info.h ? T.sumHit : T.sumNone)}</span></div>`;
+}
+/* Prüfkarte: welche Zeilen in der Notiz vorkommen */
+function noteRowMarks(c, t) {
+  if (!noteActive(c)) return null;
+  const info = noteInfo(c, t); return info ? info.rowHit : null;
+}
+function noteMarkHTML() { return `<span class="pk-noted">${pencilSVG()}${esc(ntx().mark)}</span>`; }
+function protoCallHTML(c) {
+  const p = c && c.proto; if (!p || !p.nums || !p.nums.length) return '';
+  return `<div class="proto-line">${pencilSVG()}<span>${ntx().call(tn(p.side), protoNumsHTML(p.nums), p.nums.length === 1)}</span></div>`;
+}
+function protoReadHTML(c) {
+  const p = c && c.proto; if (!p || !p.nums || !p.nums.length) return '';
+  return `<div class="proto-line proto-read">${pencilSVG()}<span>${ntx().read(tn(p.side), protoNumsHTML(p.nums), p.nums.length === 1)}</span></div>`;
+}
+function protoCounterHTML(c) {
+  const p = c && c.proto; if (!p || !p.nums || !p.nums.length) return '';
+  return `<p class="step-sub proto-sub">${pencilSVG()}<span>${ntx().counter(protoNumsHTML(p.nums))}</span></p>`;
+}
+/* Eingaben direkt übernehmen, falls ein Eingabeereignis fehlte */
+function noteSync() {
+  const c = game && game.phase === 'term' ? game.cur : null; if (!c) return;
+  const els = document.querySelectorAll('#overlay [data-note]'); if (!els.length) return;
+  if (!Array.isArray(c.notes)) c.notes = range(0, NOTE_N - 1).map(() => '');
+  els.forEach((el) => { const i = parseInt(el.dataset.note, 10); if (i >= 0 && i < NOTE_N) c.notes[i] = String(el.value || '').slice(0, 40); });
+}
+/* für die Lernbilanz: Stichwörter und Treffer je Zug */
+function noteLogInfo(c, t) { if (!noteActive(c)) return null; const info = noteInfo(c, t); return info ? { n: info.n, h: info.h } : null; }
+function noteEndRows(row) {
+  const g = game; if (!g || g.mode !== 'duell') return '';
+  const L = (g.log || []).filter((x) => x.nn);
+  if (!L.length) return '';
+  const sum = (side, k) => L.filter((x) => other(x.side) === side).reduce((a, x) => a + (x[k] || 0), 0);
+  return row('Stichwörter notiert', sum('A', 'nn'), sum('B', 'nn')) + row('davon auf der Prüfkarte', sum('A', 'nh'), sum('B', 'nh'));
+}
+
+document.addEventListener('input', (e) => {
+  const el = e.target; if (!el || !el.dataset || el.dataset.note == null) return;
+  const c = game && game.phase === 'term' ? game.cur : null; if (!c) return;
+  const i = parseInt(el.dataset.note, 10); if (!(i >= 0 && i < NOTE_N)) return;
+  if (!Array.isArray(c.notes)) c.notes = range(0, NOTE_N - 1).map(() => '');
+  c.notes[i] = String(el.value || '').slice(0, 40);
+  persist();
+});
+document.addEventListener('keydown', (e) => {
+  const el = e.target; if (!el || !el.dataset || el.dataset.note == null || e.key !== 'Enter') return;
+  e.preventDefault();
+  const nx = document.querySelector(`#overlay [data-note="${(parseInt(el.dataset.note, 10) || 0) + 1}"]`);
+  if (nx) nx.focus(); else el.blur();
+});
+
+/* ---------- Hörprotokoll als PDF ---------- */
+const PROTO_PDF = {
+  easy: {
+    how: {
+      tafel: 'Ruft die App deine Nummer zum Mitschreiben auf? Dann hör genau zu und schreib bis zu drei Wörter auf. Vor dem Prüfen liest du sie vor. Danach machst du einen Haken bei jedem Wort, das auf der Prüfkarte steht. Was gefehlt hat, schreibst du rechts dazu.',
+      gruppe: 'Wenn das andere Team erklärt, hörst du genau zu und schreibst bis zu drei Wörter auf. Vor der Entscheidung liest du sie vor. Danach machst du einen Haken bei jedem Wort, das auf der Prüfkarte steht. Was gefehlt hat, schreibst du rechts dazu.',
+      partner: 'Wenn die andere Person erklärt, hörst du zu und schreibst bis zu drei Wörter auf. Erst dann drehst du die Prüfkarte um. Mach einen Haken bei jedem Wort, das dort steht. Was gefehlt hat, schreibst du rechts dazu.'
+    },
+    col: ['Begriff', 'Das habe ich gehört', 'bis zu drei Wörter', 'Auf der Karte?', 'Das fehlte noch'],
+    sum: 'Zum Schluss: Wie viele Haken hast du? ____'
+  },
+  mid: {
+    how: {
+      tafel: 'Ruft die App deine Nummer zum Mitschreiben auf, notierst du bis zu drei Stichwörter aus der Erklärung und liest sie vor dem Abhaken vor. Nach dem Aufdecken hakst du ab, welche davon auf der Prüfkarte stehen, und ergänzt, was gefehlt hat.',
+      gruppe: 'Erklärt das andere Team, notierst du bis zu drei Stichwörter und liest sie vor der Entscheidung vor. Nach dem Aufdecken hakst du ab, welche davon auf der Prüfkarte stehen, und ergänzt, was gefehlt hat.',
+      partner: 'Erklärt die andere Person, notierst du zuerst bis zu drei Stichwörter und schaust erst dann auf die Prüfkarte. Hake ab, welche davon dort stehen, und ergänze, was gefehlt hat.'
+    },
+    col: ['Begriff', 'Stichwörter', 'bis zu drei', 'Auf der Prüfkarte', 'Fehlte noch'],
+    sum: 'Bilanz: ____ Haken bei ____ Stichwörtern'
+  },
+  hard: {
+    how: {
+      tafel: 'Bei Aufruf deiner Nummer protokollierst du die Erläuterung in höchstens drei Stichwörtern und trägst sie vor dem Abhaken vor. Nach dem Aufdecken: Treffer auf der Prüfkarte abhaken, Fehlendes ergänzen.',
+      gruppe: 'Erläutert das andere Team, protokollierst du in höchstens drei Stichwörtern und trägst sie vor der Entscheidung vor. Nach dem Aufdecken: Treffer auf der Prüfkarte abhaken, Fehlendes ergänzen.',
+      partner: 'Während das Gegenüber erläutert, protokollierst du in höchstens drei Stichwörtern; erst danach wird die Prüfkarte aufgedeckt. Treffer abhaken, Fehlendes ergänzen.'
+    },
+    col: ['Begriff', 'Stichwörter', 'höchstens drei', 'Prüfkarte', 'Ergänzung'],
+    sum: 'Bilanz: ____ Treffer bei ____ Stichwörtern'
+  }
+};
+function pageProtokoll(ctx, variant) {
+  const K = ctx.K, doc = K.doc, L = PROTO_PDF[ctx.level] || PROTO_PDF.mid;
+  const v = ['tafel', 'gruppe', 'partner'].includes(variant) ? variant : 'tafel';
+  K.page('portrait');
+  let y = prHeader(ctx, 'Hörprotokoll', null, { chip: 'für jede Person kopieren' });
+  /* Kopf zum Ausfüllen */
+  const fields = v === 'tafel' ? [['Name', 88], ['Team', 52], ['Nummer', 34]] : v === 'gruppe' ? [['Name', 88], ['Team', 52], ['Datum', 34]] : [['Name', 126], ['Datum', 54]];
+  let x = 12; const fy = y + 4.4;
+  fields.forEach((f) => {
+    const lw = K.text(f[0], x, fy, 'n9', 8, PR_C.muted);
+    K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); doc.line(x + lw + 2, fy + 0.9, x + f[1], fy + 0.9);
+    x += f[1] + 6;
+  });
+  y = fy + 6;
+  /* Auftrag */
+  const r = K.rich([[L.how[v], 'n6', PR_C.ink]], 8.8, 186 - 27, { lh: 1.32 });
+  const ph = Math.max(16, r.h + 8);
+  prPanel(ctx, 12, y, 186, ph, 'gold');
+  K.icon('ear', 15.5, y + ph / 2 - 5.5, 11, PR_C.goldDark);
+  r.draw(32, y + (ph - r.h) / 2);
+  y += ph + 4.5;
+  /* Tabelle */
+  const W = [8, 40, 70, 18, 50], X = [12]; W.forEach((w, i) => X.push(X[i] + w));
+  const hh = 10.5, rows = 8, rh = 24.2, lines = [7.4, 14.6, 21.8];
+  prPanel(ctx, 12, y, 186, hh, 'plain');
+  const hy = y + hh / 2 + K.cap(7.8) / 2;
+  K.text(L.col[0], X[1] + 2.5, hy, 'n9', 7.8, PR_C.ink);
+  const w2 = K.text(L.col[1], X[2] + 2.5, hy, 'n9', 7.8, PR_C.ink);
+  K.text(L.col[2], X[2] + 2.5 + w2 + 2.2, hy, 'n8', 6.6, PR_C.muted);
+  const f3 = K.fit(L.col[3], 'n9', W[3] - 2.4, hh - 1.6, { max: 6.8, min: 5.2, lh: 1.04, maxLines: 2 });
+  K.block(f3, X[3] + 1.2, y + 0.8, W[3] - 2.4, hh - 1.6, 'center', 'middle', 'n9', PR_C.ink);
+  K.text(L.col[4], X[4] + 2.5, hy, 'n9', 7.8, PR_C.ink);
+  const top0 = y + hh, bottom = top0 + rows * rh;
+  for (let i = 0; i < rows; i++) {
+    const top = top0 + i * rh;
+    prNumBadge(ctx, X[0] + 1.5, top + 2.6, 5, i + 1, PR_C.faint);
+    K.drawC(PR_C.faint); K.lw(0.25); K.dash(null);
+    lines.slice(0, 2).forEach((ly) => doc.line(X[1] + 2.5, top + ly, X[2] - 2.5, top + ly));
+    lines.forEach((ly) => {
+      doc.line(X[2] + 2.5, top + ly, X[3] - 2.5, top + ly);
+      doc.line(X[4] + 2.5, top + ly, X[5] - 2.5, top + ly);
+    });
+    lines.forEach((ly) => K.check(X[3] + W[3] / 2 - 2.1, top + ly - 4.6, 4.2, PR_C.muted));
+    if (i < rows - 1) { K.drawC(PR_C.cut); K.lw(0.3); doc.line(12, top + rh, 198, top + rh); }
+  }
+  K.drawC(PR_C.line); K.lw(0.25);
+  [X[1], X[2], X[3], X[4]].forEach((xx) => doc.line(xx, y + 1.2, xx, bottom - 1.2));
+  K.drawC(PR_C.cut); K.lw(0.35); K.rr(12, y, 186, bottom - y, 2.6, 'S');
+  /* Bilanz mit Lücken zum Ausfüllen */
+  let bx = 12; const by = bottom + 7.5;
+  L.sum.split('____').forEach((part, i, arr) => {
+    if (part) bx += K.text(part, bx, by, 'n9', 8.4, PR_C.ink);
+    if (i < arr.length - 1) { K.drawC(PR_C.faint); K.lw(0.3); doc.line(bx + 1.5, by + 0.9, bx + 15, by + 0.9); bx += 16.5; }
+  });
+}
+async function buildProtokollPdf(JsPDF, packId, variant) {
+  const pack = findPack(packId) || BUILTIN[0];
+  const level = langFor(pack);
+  const a = typeof albumStore === 'function' ? albumStore() : null;
+  const group = a && a.current && a.current !== ALBUM_DEFAULT ? String(a.current).slice(0, 24) : '';
+  /* Der Bogen enthält keine Paketinhalte, der Hinweis auf den KI-Entwurf entfällt hier */
+  const ctx = { pack: Object.assign({}, pack, { checked: true }), cover: prPackCover(pack), spar: false, group, multi: false, famColor: {}, o: { parts: {} }, level, easy: level === 'easy', hard: level === 'hard' };
+  ctx.K = prKit(JsPDF, false);
+  pageProtokoll(ctx, variant);
+  prFooters(ctx);
+  return { buf: prFixPdf(ctx.K.doc.output('arraybuffer')), pages: ctx.K.pages(), warnings: ctx.K.warn.slice() };
+}
+async function printProtokoll(packId, variant) {
+  if (prBusy) { toast('Gerade wird ein anderes PDF erstellt.'); return; }
+  const pack = findPack(packId); if (!pack) return;
+  prBusy = true; toast('Hörprotokoll wird erstellt …');
+  try {
+    const JsPDF = await ensureJsPDF();
+    const res = await buildProtokollPdf(JsPDF, pack.id, variant);
+    if (!downloads || location.protocol === 'file:') window.__vkLastPdf = res.buf;
+    window.__vkLastPdfInfo = { pages: res.pages, bytes: res.buf.byteLength, warnings: res.warnings, protokoll: pack.id };
+    if (downloads) await saveFile(`vierklang-hoerprotokoll-${slug(pack.title)}_${today()}.pdf`, new Blob([res.buf], { type: 'application/pdf' }), 'Das PDF ließ sich hier nicht speichern.');
+    else toast('PDF erstellt. Speichern ist in dieser Vorschau nicht möglich.');
+  } catch (err) {
+    toast(err && err.message === 'jspdf' ? 'Das PDF-Werkzeug ließ sich nicht laden.' : 'Das Hörprotokoll ließ sich nicht erstellen.');
+    if (window.console && console.error) console.error(err);
+  } finally { prBusy = false; }
+}
+
+const NOTE_ACTIONS = {
+  'proto-pdf': (el) => printProtokoll((el && el.dataset && el.dataset.id) || settings.packId, 'tafel')
+};
+
 /* Vierklang · Teil 6: Bedienung und Start */
 
 const ACTIONS = {
@@ -24227,7 +24577,7 @@ const ACTIONS = {
   'no-counter': () => go('check'),
   'counter': () => startCounter(),
   'counter-done': () => go('check'),
-  'estimate': (el) => { const c = game.cur; if (!c) return; c.estimate = el.dataset.v === '1'; go('check'); },
+  'estimate': (el) => { const c = game.cur; if (!c) return; if (typeof noteSync === 'function') noteSync(); c.estimate = el.dataset.v === '1'; go('check'); },
   'tick': (el) => {
     const c = game.cur; if (!c) return;
     const s = el.dataset.side, i = parseInt(el.dataset.i, 10);
@@ -24319,6 +24669,7 @@ if (typeof ALBUM_ACTIONS === 'object' && ALBUM_ACTIONS) Object.assign(ACTIONS, A
 if (typeof LEARN_ACTIONS === 'object' && LEARN_ACTIONS) Object.assign(ACTIONS, LEARN_ACTIONS);
 if (typeof KLASSE_ACTIONS === 'object' && KLASSE_ACTIONS) Object.assign(ACTIONS, KLASSE_ACTIONS);
 if (typeof MIT_ACTIONS === 'object' && MIT_ACTIONS) Object.assign(ACTIONS, MIT_ACTIONS);
+if (typeof NOTE_ACTIONS === 'object' && NOTE_ACTIONS) Object.assign(ACTIONS, NOTE_ACTIONS);
 document.addEventListener('click', (e) => {
   const el = e.target.closest('[data-act]');
   if (!el || el.disabled) return;
@@ -24406,7 +24757,7 @@ function boot(data) {
 }
 /* Testzugang nur bei lokal geöffneter Datei */
 try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__mitVoice = (e, t, spb, sc) => mitVoice(e, t, spb, sc); } catch (e) { /* ohne */ }
-try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i) }; } catch (e) { /* ohne Testzugang */ }
+try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i), noteInfo: (c, t) => noteInfo(c, t), noteSame: (a, b) => noteSame(a, b), protoNumbers: (s) => protoNumbers(s), buildProtokollPdf: (J, id, v) => buildProtokollPdf(J, id, v), ensureJsPDF: () => ensureJsPDF() }; } catch (e) { /* ohne Testzugang */ }
 (function () {
   const hot = window.claude && window.claude.hot;
   try { if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ game, view, settings, ws: { packId: ws.packId } })); } catch (e) { /* ohne Übernahme */ }
