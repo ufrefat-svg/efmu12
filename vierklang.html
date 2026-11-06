@@ -1098,8 +1098,8 @@ select.field { appearance: auto; }
 .ct-pair { display: flex; flex-direction: column; align-items: center; gap: 0.05em; line-height: 1.08; }
 .ct-pair i { font-style: normal; font-size: 0.62em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6A3BB5 !important; }
 .cell.own-A .ct-pair i, .cell.own-B .ct-pair i { color: #FFFFFF !important; }
-.cell.pair { background: #F5F0FF !important; }
-.cell.pair.own-A, .cell.pair.own-B { background: #FFFFFF !important; }
+/* Abgrenzungsfelder: hell violett, solange sie frei sind; mit Stein gelten die Teamfarben */
+.cell.pair:not(.own-A):not(.own-B) { background: #F5F0FF !important; }
 
 /* Karte */
 .kind-zeig { color: #B8431F !important; }
@@ -1640,6 +1640,43 @@ select.field { appearance: auto; }
   .kr-sumrow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kr-act, .kr-q { padding: 12px; }
 }
+
+/* Weiterdenken: erklären und verbinden */
+.kr-tasks { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.kr-task h3 { display: flex; align-items: center; gap: 10px; }
+.kr-tn { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #2B2E8C !important; color: #FFFFFF !important; font-size: 1rem; line-height: 1; }
+.kr-ex { box-shadow: 0 5px 0 #DCDFF0, inset 0 5px 0 #1F8A96 !important; padding-top: 20px; }
+.kr-ex .kr-tn { background: #1F8A96 !important; }
+.kr-vb { box-shadow: 0 5px 0 #DCDFF0, inset 0 5px 0 #6A3BB5 !important; padding-top: 20px; }
+.kr-vb .kr-tn { background: #6A3BB5 !important; }
+.kr-how { margin: 0; padding: 10px 12px; border-radius: 12px; background: #F4F6FB !important; color: #23264F !important; font-weight: 600; line-height: 1.45; }
+.kr-tgt { margin: 0; font-family: 'Vierklang Display', 'Lilita One', 'Trebuchet MS', system-ui, sans-serif; font-weight: 400; font-size: 1.6rem; line-height: 1.1; color: #23264F !important; overflow-wrap: anywhere; }
+.kr-sug { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; background: #E6F4F5 !important; color: #17666F !important; font-style: normal; font-size: 0.75rem; font-weight: 800; white-space: nowrap; }
+.kr-check .ln-tick { min-height: 42px; }
+.kr-check .ln-tick span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.kr-pair { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.kr-pair i { font-style: normal; font-weight: 900; color: #5A5F86 !important; }
+.kr-pa, .kr-pb { max-width: 100%; padding: 6px 14px; border-radius: 999px; font-weight: 800; overflow-wrap: anywhere; }
+.kr-pa { background: #2B2E8C !important; color: #FFFFFF !important; }
+.kr-pb { border: 2px dashed #B9A6E0 !important; background: #FFFFFF !important; color: #6A3BB5 !important; }
+.kr-pb.on { border-style: solid; border-color: #6A3BB5 !important; background: #6A3BB5 !important; color: #FFFFFF !important; }
+.kr-vb .kr-chips { max-height: none; overflow: visible; }
+.kr-chip.near { border-color: #6A3BB5 !important; background: #F5F0FF !important; }
+.kr-chip.near.on { border-color: #2B2E8C !important; background: #2B2E8C !important; }
+.kr-pats { display: flex; flex-direction: column; gap: 6px; }
+.kr-pat { display: block; width: 100%; padding: 8px 12px; border-radius: 12px; border: 1.5px dashed #B9A6E0 !important; background: #FBF8FF !important; color: #3A2A6B !important; font: inherit; font-weight: 700; line-height: 1.35; text-align: left; cursor: pointer; }
+.kr-pat small { display: block; margin-bottom: 2px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #6A3BB5 !important; }
+.kr-pat:hover { border-style: solid; border-color: #6A3BB5 !important; }
+.kr-swap { align-self: flex-start; }
+.kr-pat:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 2px; }
+.kr-ref { padding: 8px 12px; border-radius: 12px; background: #F4F6FB !important; }
+.kr-ref summary { font-weight: 800; color: #3A3F7A !important; cursor: pointer; }
+.kr-ref p { margin: 8px 0 0; color: #23264F !important; line-height: 1.45; }
+.kr-judge { align-items: center; }
+.kr-judge span { flex-basis: 100%; font-weight: 800; color: #23264F !important; }
+.kr-judge .btn.on { border-color: #F4A51C !important; background: #FFF3D6 !important; color: #5C3F00 !important; }
+.kr-lock { border: 1.5px dashed #C9CDE4 !important; background: #FBFBFE !important; box-shadow: none !important; }
+@media (max-width: 900px) { .kr-tasks { grid-template-columns: minmax(0, 1fr); } }
 
 </style>
 </head>
@@ -23843,12 +23880,12 @@ const TEACHER_TEXT = {
     <ul class="tq-list">
       <li><b>Aus dem Kopf.</b> Zuerst schreiben alle ohne Gitter auf, was ihnen zu jedem Hinweis einfällt. Erst danach tragen sie ein. Die Kreuzungsbuchstaben dienen dann der Selbstkontrolle. Abrufen sichert Wissen auch im Klassenzimmer (Yang u. a. 2021). Mit leichten Buchstabenhilfen geübte Wörter blieben in einer kleinen Studie kaum hängen (Mueller und Veinott 2018, siehe Forschung).</li>
       <li><b>Ins Gitter.</b> Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe. Passt es dort nicht, stimmt eines der Wörter noch nicht. Am Gerät zeigt „Prüfen“ das Ergebnis und danach die Erklärung zum Wort.</li>
-      <li><b>Weiterdenken.</b> Ein weiterer Begriff des Pakets steckt als Lösungswort in den Kreisen. Die Lernenden erklären ihn und verbinden ihn in einem Satz mit zwei Rätselwörtern. Sich etwas selbst zu erklären fördert das Verstehen (Bisra u. a. 2018).</li>
+      <li><b>Weiterdenken.</b> Ein weiterer Begriff des Pakets steckt als Lösungswort in den Kreisen. Die Lernenden erklären ihn mit eigenen Worten und haken danach ab, welche Kernmerkmale sie genannt haben. Dann verbinden sie ihn in einem Satz mit einem Rätselwort und vergleichen mit einem Mustersatz. Zu beidem gibt es drei gestufte Hilfen, zum Erklären Oberbegriff, Beispiel und Satzanfang, zum Verbinden passende Wörter, Satzmuster und ein Beispielsatz mit anderen Wörtern. Sich etwas selbst zu erklären fördert das Verstehen (Bisra u. a. 2018).</li>
       <li><b>Hinweisstufen.</b> Leicht heißt Erklärung in einem Satz und Wortspeicher, mittel nur die Erklärung, schwer nur typische Merkmale. Alle Stufen haben dasselbe Gitter und dieselbe Lösung. Hör- und Notenbegriffe erscheinen in jeder Stufe als Klang oder Bild.</li>
       <li><b>Gestufte Hilfen.</b> Je Wort drei Hilfen: Oberbegriff, Beispiel, Anfangsbuchstabe. Am Gerät per Knopf, auf Papier als Hilfekarten zum Ausschneiden (Schmidt-Weigand u. a. 2008). Wörter mit Hilfe kommen am Ende in „Karten üben“.</li>
       <li><b>Einsatz.</b> Exit-Rätsel mit fünf Wörtern, Übung mit acht bis zehn Wörtern, Wiederholung vor einer Lernkontrolle mit zwölf bis fünfzehn. Eine Woche später dasselbe Rätsel mit einer anderen Hinweisstufe lösen lassen.</li>
       <li><b>Link und QR-Code.</b> Der Link öffnet genau dieses Rätsel, auf jedem Gerät mit demselben Gitter. Für Differenzierung lassen sich drei Links mit verschiedenen Hinweisstufen erzeugen. Eigene Pakete und Anpassungen liegen nur im eigenen Browser.</li>
-      <li><b>Drucken.</b> Rätselblatt mit Antwortlinien für Schritt 1, wahlweise in allen drei Stufen, dazu Hilfekarten, Lösung und ein Lehrkraftblatt mit Ablauf, Fallstricken und QR-Code. Hörbeispiele spielst du in der Einrichtung unter der Vorschau vor.</li>
+      <li><b>Drucken.</b> Rätselblatt mit Antwortlinien für Schritt 1, wahlweise in allen drei Stufen, dazu Hilfekarten, Lösung und ein Lehrkraftblatt mit Ablauf, Fallstricken und QR-Code. Auf Wunsch ist das Rätselblatt ausfüllbar, etwa im Acrobat Reader. Hörbeispiele spielst du in der Einrichtung unter der Vorschau vor.</li>
       <li><b>Was ins Gitter passt.</b> Begriffe mit 3 bis 14 Buchstaben aus höchstens drei Teilen. Werktitel und Begriffe mit Alternativen oder Sonderzeichen bleiben draußen, lange Namen stehen mit dem Nachnamen. Ä, Ö, Ü und ß stehen in einem Kästchen. Bei mehrteiligen Begriffen nennt die Klammer die Längen, im Gitter trennt ein dicker Strich die Teile.</li>
     </ul>
     <h3>Grenzen</h3>
@@ -25374,7 +25411,7 @@ function krSetupHTML(pack) {
           <p class="kr-note">${KR_LEVEL_TEXT[lv]} Hör- und Notenbegriffe erscheinen in jeder Stufe als Klang oder Bild. Zu jedem Wort gibt es drei Hilfen: Oberbegriff, Beispiel, Anfangsbuchstabe.</p>
           ${sw('krKopf', 'Erst aus dem Kopf', 'Schritt 1 ohne Gitter: alle Wörter notieren, dann eintragen. Die Kreuzungen dienen danach der Selbstkontrolle.')}
           <div class="kr-row"><span class="kr-l">Lösungswort</span>${solSel}</div>
-          <p class="kr-note">Ein weiterer Begriff aus dem Paket, versteckt in den Kreisen. Am Ende erklären die Lernenden ihn und verbinden ihn mit zwei Rätselwörtern.</p>
+          <p class="kr-note">Ein weiterer Begriff aus dem Paket, versteckt in den Kreisen. Am Ende erklären die Lernenden ihn und verbinden ihn in einem Satz mit einem Rätselwort.</p>
         </section>
       </div>
       <div class="kr-col">
@@ -25406,15 +25443,16 @@ function krBegin(pack, cfg, level, kopf, from) {
   const m = krModel(pack, cfg);
   if (!m.lay || m.items.length < 2) { toast('Für ein Rätsel braucht es mindestens zwei Wörter im Gitter.'); return false; }
   const key = krRunKey(pack, cfg, level, kopf);
-  kreuz = { packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level, kopf, from, key, phase: kopf ? 'kopf' : 'gitter', ent: {}, st: {}, act: m.items[0].id, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false };
+  kreuz = { packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level, kopf, from, key, phase: kopf ? 'kopf' : 'gitter', ent: {}, st: {}, act: m.items[0].id, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false, exTarget: '', exHelps: 0, exText: '', exDone: false, exTicks: [], vbPartner: '', vbHelps: 0, vbJudge: null, vbSwap: false };
   const saved = store.get(KEY_KR_RUN, null);
-  if (saved && saved.key === key) ['phase', 'ent', 'st', 'act', 'solTyped', 'solOk', 'solShown', 'sent', 'saved'].forEach((k) => { if (saved[k] !== undefined) kreuz[k] = saved[k]; });
+  if (saved && saved.key === key) KR_RUN_KEYS.forEach((k) => { if (saved[k] !== undefined) kreuz[k] = saved[k]; });
   if (!kopf && kreuz.phase === 'kopf') kreuz.phase = 'gitter';
   if (!m.items.some((it) => it.id === kreuz.act)) kreuz.act = m.items[0].id;
   closeModal(); show('cross'); requestWakeLock();
   return true;
 }
-function krSaveNow() { if (!kreuz) return; const k = kreuz; store.set(KEY_KR_RUN, { key: k.key, phase: k.phase, ent: k.ent, st: k.st, act: k.act, solTyped: k.solTyped, solOk: k.solOk, solShown: k.solShown, sent: k.sent, saved: k.saved }); }
+const KR_RUN_KEYS = ['phase', 'ent', 'st', 'act', 'solTyped', 'solOk', 'solShown', 'sent', 'saved', 'exTarget', 'exHelps', 'exText', 'exDone', 'exTicks', 'vbPartner', 'vbHelps', 'vbJudge', 'vbSwap'];
+function krSaveNow() { if (!kreuz) return; const o = { key: kreuz.key }; KR_RUN_KEYS.forEach((k) => { o[k] = kreuz[k]; }); store.set(KEY_KR_RUN, o); }
 const krSaveSoon = debounce(krSaveNow, 300);
 function krCmp(s) { return (typeof lnNorm === 'function' ? lnNorm(s) : String(s || '').toLowerCase()).replace(/\s+/g, ''); }
 function krRight(it, typed) {
@@ -25528,46 +25566,182 @@ function krGitterHTML(m) {
 }
 function krCounts(m) { const c = { o: 0, h: 0, r: 0, x: 0 }; m.items.forEach((it) => { const s = krStatus(it); c[s === 'o' || s === 'h' || s === 'r' ? s : 'x']++; }); return c; }
 function krRepeatIds(m) { return m.items.filter((it) => krStatus(it) !== 'o').map((it) => it.id); }
-function krSentCheck(text, m) {
-  const has = (t, shown) => (typeof lkHas === 'function' ? lkHas(text, t.term) || lkHas(text, shown) : String(text).toLowerCase().includes(String(shown).toLowerCase()));
-  const words = m.items.filter((it) => has(it.t, it.a.shown)).map((it) => it.a.shown);
-  const sol = m.sol ? has(m.sol.t, m.sol.a.shown) : true;
-  const rel = /\b(weil|denn|dadurch|deshalb|daher|darum|wodurch|sodass|indem|wenn|damit|obwohl|während|also)\b/i.test(text);
-  return { words, sol, rel };
-}
-function krWeiterHTML(m) {
-  const sol = m.sol, letters = krGridLetters(m);
-  let solBox = '';
-  if (sol) {
-    const fromGrid = sol.cells.map((rc) => (letters[rc[0] + ',' + rc[1]] || {}).ch || '');
-    const showAll = kreuz.solOk || kreuz.solShown;
-    const boxes = sol.cells.map((rc, i) => `<span class="kr-sb${showAll || fromGrid[i] ? ' on' : ''}"><em>${i + 1}</em><b>${esc(showAll ? sol.a.letters[i] : fromGrid[i])}</b></span>`).join('');
-    solBox = `<section class="kr-box kr-solw"><h3>Lösungswort</h3><p class="kr-note">Die Buchstaben aus den Kreisen im Gitter, der Reihe nach.</p><div class="kr-sbs">${boxes}</div>
-      ${showAll ? `<div class="kr-fb ${kreuz.solOk ? 'ok' : 'shown'}"><b>${esc(sol.a.shown)}.</b> ${kreuz.solOk ? 'Richtig.' : 'Das ist das Lösungswort.'}</div>`
-        : `<div class="ln-type kr-type"><input id="kr-sol-in" class="ln-input" type="text" value="${esc(kreuz.solTyped || fromGrid.join(''))}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Lösungswort" aria-label="Lösungswort"><button type="button" class="btn primary" data-act="kr-solcheck">Prüfen</button></div>${kreuz.solRes === 'no' ? '<div class="kr-fb no">Das passt noch nicht. Prüf die Buchstaben in den Kreisen.</div>' : ''}<div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="kr-solshow">Lösungswort zeigen</button></div>`}
-    </section>`;
+/* ---------- Weiterdenken: erklären und verbinden ---------- */
+const KR_WT = {
+  easy: {
+    exHow: 'Erkläre das Wort mit eigenen Worten. Sag, was es ist und woran man es erkennt. Ein Beispiel hilft.',
+    exStart: (w) => `${w} ist … Man erkennt es daran, dass …`,
+    exCheck: 'Was steht in deiner Erklärung? Hak ab, was du genannt hast.',
+    vbHow: 'Schreib einen Satz mit beiden Wörtern. Der Satz zeigt, wie sie zusammengehören. Das gelingt mit einem „weil“, einem Beispiel oder einem Unterschied. „Beide gehören zum Thema“ reicht nicht.',
+    vbPrint: 'Schreib einen Satz mit dem Lösungswort und einem Wort aus dem Rätsel. Zeig mit „weil“, einem Beispiel oder einem Unterschied, wie sie zusammengehören.',
+    exPrint: 'Erkläre das Lösungswort mit eigenen Worten. Was ist es, woran erkennt man es?',
+    vbMore: 'Zeigt er auch, wie sie zusammengehören? Ein „weil“, ein Beispiel oder ein Unterschied hilft dabei.',
+    vbFix: 'Ergänze ein „weil“, ein Beispiel oder einen Unterschied.'
+  },
+  mid: {
+    exHow: 'Erkläre in eigenen Worten, was der Begriff bedeutet und woran man ihn erkennt. Ein Beispiel macht die Erklärung anschaulich.',
+    exStart: (w) => `${w} bezeichnet … Typisch dafür ist …`,
+    exCheck: 'Welche Kernmerkmale nennt deine Erklärung? Hake sie ab.',
+    vbHow: 'Verbinde beide Begriffe in einem Satz, der zeigt, wie sie zusammenhängen. „Beide gehören zum Thema“ reicht nicht.',
+    vbPrint: 'Verbinde das Lösungswort mit einem Begriff aus dem Rätsel in einem Satz, der zeigt, wie beide zusammenhängen.',
+    exPrint: 'Erkläre das Lösungswort in eigenen Worten: was es bedeutet und woran man es erkennt.',
+    vbMore: 'Zeigt er auch, wie sie zusammenhängen? Ein „weil“, ein Beispiel oder ein Unterschied macht das deutlich.',
+    vbFix: 'Ergänze, wie die Begriffe zusammenhängen, etwa mit „weil“, einem Beispiel oder einem Unterschied.'
+  },
+  hard: {
+    exHow: 'Erläutere den Begriff. Bestimme ihn, nenne kennzeichnende Merkmale und belege sie mit einem Beispiel.',
+    exStart: (w) => `Unter ${w} versteht man … Kennzeichnend ist …`,
+    exCheck: 'Welche Kernmerkmale enthält deine Erläuterung? Hake sie ab.',
+    vbHow: 'Verknüpfe beide Begriffe in einem Satz, der die Beziehung benennt und begründet, etwa Ursache, Funktion, Gegensatz, Entwicklung oder Teil und Ganzes. Eine bloße Zuordnung zum Thema genügt nicht.',
+    vbPrint: 'Verknüpfe das Lösungswort mit einem Begriff aus dem Rätsel in einem Satz, der die Beziehung benennt und begründet.',
+    exPrint: 'Erläutere das Lösungswort: Bestimmung, kennzeichnende Merkmale, Beispiel.',
+    vbMore: 'Benennt er auch die Beziehung, etwa Ursache, Funktion, Gegensatz oder Entwicklung?',
+    vbFix: 'Benenne die Beziehung genauer und begründe sie.'
   }
-  const solName = sol && (kreuz.solOk || kreuz.solShown) ? `„${sol.a.shown}“` : '';
-  const task = sol ? `Erkläre das Lösungswort ${solName} in einem Satz. Verbinde es dabei mit zwei Wörtern aus dem Rätsel.` : 'Verbinde zwei Wörter aus dem Rätsel in einem Satz, der zeigt, wie sie zusammenhängen.';
-  let sfb = '';
+};
+const KR_REL = /\b(weil|denn|dadurch|deshalb|daher|darum|wodurch|sodass|indem|wenn|damit|obwohl|während|also|zum beispiel|beispiel für|teil von|bestandteil|gehört zu|gegenteil|unterschied|unterscheidet|gemeinsam|entsteht|entstand|sorgt|entwickelt|verwendet|braucht man|grundlage|voraussetzung|dient|zusammenhang)\b/i;
+function krLang(pack) { const l = typeof langFor === 'function' ? langFor(pack) : 'mid'; return KR_WT[l] ? l : 'mid'; }
+function krWt(pack) { return KR_WT[krLang(pack)]; }
+/* Satzmuster aus dem Satzbaukasten der Druckfassung, vier je Sprachstufe */
+function krPatterns(pack) {
+  const L = krLang(pack), all = typeof PR_PATTERNS === 'object' && PR_PATTERNS[L] ? PR_PATTERNS[L] : [];
+  const pick = { easy: ['Beispiel', 'Teil', 'Gemeinsam', 'Wozu', 'Gehört zu'], mid: ['Beispiel', 'Teil und Ganzes', 'Unterschied', 'Ursache und Folge', 'Entwicklung'], hard: ['Zusammenhang', 'Abgrenzung', 'Funktion', 'Grundlage', 'Entwicklung'] }[L];
+  const out = pick.map((k) => all.find((x) => x[0] === k)).filter(Boolean);
+  return (out.length ? out : all).slice(0, 5);
+}
+function iconSwap() { return '<svg viewBox="0 0 24 24" class="ti" aria-hidden="true"><path d="M5 8h13"/><path d="M15 4l4 4-4 4"/><path d="M19 16H6"/><path d="M9 12l-4 4 4 4"/></svg>'; }
+function krFill(pat, a, b) { return pat.replace('{A}', a || '___').replace('{B}', b || '___'); }
+/* Wen erklären die Lernenden? Das Lösungswort, sonst ein Rätselwort ihrer Wahl */
+function krTarget(m) {
+  if (m.sol) return { id: m.sol.id, t: m.sol.t, a: m.sol.a, sol: true };
+  const pick = (kreuz && m.items.find((it) => it.id === kreuz.exTarget)) || m.items.find((it) => ['h', 'r', 'x'].includes(krStatus(it))) || m.items[0];
+  return pick ? { id: pick.id, t: pick.t, a: pick.a, sol: false } : null;
+}
+function krLinks(m) { const p = findPack(m.packId); return p && Array.isArray(p.links) ? p.links : []; }
+function krLinkFor(m, a, b) { const l = krLinks(m).find((x) => (x[0] === a && x[1] === b) || (x[0] === b && x[1] === a)); return l ? l[2] : ''; }
+/* Rätselwörter, die eng mit dem Zielwort zusammenhängen: erst über Mustersätze, dann über dieselbe Themenfamilie */
+function krNearWords(m, tgt) {
+  const ids = new Set(m.items.map((it) => it.id)), linked = new Set();
+  krLinks(m).forEach((l) => { if (l[0] === tgt.id && ids.has(l[1])) linked.add(l[1]); if (l[1] === tgt.id && ids.has(l[0])) linked.add(l[0]); });
+  let list = m.items.filter((it) => linked.has(it.id) && it.id !== tgt.id);
+  if (list.length < 2) list = list.concat(m.items.filter((it) => it.id !== tgt.id && !linked.has(it.id) && it.t.family && it.t.family === tgt.t.family));
+  return list.slice(0, 3);
+}
+/* Beispielsatz mit anderen Wörtern: zeigt die Form, verrät aber nicht den eigenen Satz */
+function krOtherExample(m, tgt) {
+  const ids = new Set(m.items.map((it) => it.id));
+  const L = krLinks(m).filter((l) => l[0] !== tgt.id && l[1] !== tgt.id);
+  const inner = L.filter((l) => ids.has(l[0]) && ids.has(l[1]));
+  const words = (x) => String(x[2]).split(/\s+/).length;
+  const pool = (inner.length ? inner : L).slice().sort((x, y) => Math.abs(words(x) - 14) - Math.abs(words(y) - 14));
+  return pool[0] ? pool[0][2] : '';
+}
+function krExHelps(tgt, pack) {
+  const h = tgt.t.hints || {}, out = [];
+  if (h.ober) out.push({ label: 'Oberbegriff', text: krCap(h.ober) });
+  if (h.beispiel) out.push({ label: 'Beispiel', text: krCap(h.beispiel) });
+  out.push({ label: 'Satzanfang', text: h.satz ? krCap(h.satz) : krWt(pack).exStart(tgt.a.shown) });
+  return out;
+}
+function krVbHelps(m, tgt, pack) {
+  const near = krNearWords(m, tgt), ex = krOtherExample(m, tgt), out = [];
+  out.push({ label: 'Passende Wörter', text: near.length ? `Mit „${tgt.a.shown}“ ${near.length === 1 ? 'hängt' : 'hängen'} ${prList(near.map((it) => '„' + it.a.shown + '“'))} eng zusammen.` : 'Such ein Wort aus demselben Themenbereich.', ids: near.map((it) => it.id) });
+  out.push({ label: 'Satzmuster', text: 'Wähle das Muster, das zu deinen Wörtern passt. Nicht jedes passt. Angetippt kommt es in dein Feld, dann ergänzt du es.', patterns: true });
+  if (ex) out.push({ label: 'Beispielsatz mit anderen Wörtern', text: `„${ex}“` });
+  return out;
+}
+/* Welche Kernmerkmale stehen vermutlich schon in der Erklärung? Gleicher Abgleich wie beim Mitschreiben */
+function krExSuggest(text, t) {
+  if (typeof noteTokens !== 'function' || typeof noteSame !== 'function') return (t.feats || []).map(() => false);
+  const term = noteTokens(t.term), tok = noteTokens(text).filter((w) => !term.includes(w));
+  return (t.feats || []).map((f) => noteTokens(f).filter((x) => !term.includes(x)).some((x) => tok.some((w) => noteSame(w, x))));
+}
+function krHasWord(text, t, shown) { return typeof lkHas === 'function' ? lkHas(text, t.term) || lkHas(text, shown) : String(text).toLowerCase().includes(String(shown).toLowerCase()); }
+function krSentCheck(text, m, tgt, partner) {
+  const hasT = krHasWord(text, tgt.t, tgt.a.shown);
+  const hasP = partner ? krHasWord(text, partner.t, partner.a.shown) : m.items.some((it) => it.id !== tgt.id && krHasWord(text, it.t, it.a.shown));
+  return { hasT, hasP, rel: KR_REL.test(text) };
+}
+function krSolHTML(m, letters) {
+  const sol = m.sol; if (!sol) return '';
+  const fromGrid = sol.cells.map((rc) => (letters[rc[0] + ',' + rc[1]] || {}).ch || '');
+  const showAll = kreuz.solOk || kreuz.solShown;
+  const boxes = sol.cells.map((rc, i) => `<span class="kr-sb${showAll || fromGrid[i] ? ' on' : ''}"><em>${i + 1}</em><b>${esc(showAll ? sol.a.letters[i] : fromGrid[i])}</b></span>`).join('');
+  return `<section class="kr-box kr-solw"><h3>Lösungswort</h3><p class="kr-note">Die Buchstaben aus den Kreisen im Gitter, der Reihe nach.</p><div class="kr-sbs">${boxes}</div>
+    ${showAll ? `<div class="kr-fb ${kreuz.solOk ? 'ok' : 'shown'}"><b>${esc(sol.a.shown)}.</b> ${kreuz.solOk ? 'Richtig.' : 'Das ist das Lösungswort.'}</div>`
+      : `<div class="ln-type kr-type"><input id="kr-sol-in" class="ln-input" type="text" value="${esc(kreuz.solTyped || fromGrid.join(''))}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Lösungswort" aria-label="Lösungswort"><button type="button" class="btn primary" data-act="kr-solcheck">Prüfen</button></div>${kreuz.solRes === 'no' ? '<div class="kr-fb no">Das passt noch nicht. Prüf die Buchstaben in den Kreisen.</div>' : ''}<div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="kr-solshow">Lösungswort zeigen</button></div>`}
+  </section>`;
+}
+function krHelpList(list, n) { return n ? `<ul class="kr-helps">${list.slice(0, n).map((h) => `<li><b>${esc(h.label)}</b> ${esc(h.text)}</li>`).join('')}</ul>` : ''; }
+function krExHTML(m, pack, tgt) {
+  const W = krWt(pack), helps = krExHelps(tgt, pack), n = Math.min(kreuz.exHelps || 0, helps.length);
+  const feats = (tgt.t.feats || []).slice(0, 3), need = Math.min(2, feats.length);
+  const full = tgt.t.term && krCmp(tgt.t.term) !== krCmp(tgt.a.shown) ? `<p class="kr-note">Gemeint ist ${esc(tgt.t.term)}.</p>` : '';
+  const chooser = tgt.sol ? `<p class="kr-tgt">„${esc(tgt.a.shown)}“</p>${full}`
+    : `<p class="kr-note">Wähle ein Wort aus dem Rätsel, am besten eins, das dir schwerfiel.</p><div class="kr-chips">${m.items.map((it) => `<button type="button" class="kr-chip${it.id === tgt.id ? ' on' : ''}" data-act="kr-extgt" data-id="${esc(it.id)}" aria-pressed="${it.id === tgt.id}">${esc(it.a.shown)}</button>`).join('')}</div>`;
+  let check = '';
+  if (kreuz.exDone && !feats.length) check = `<div class="kr-cmp"><b>Zum Vergleich</b> ${esc(tgt.t.expl)}</div>`;
+  else if (kreuz.exDone) {
+    const sug = krExSuggest(kreuz.exText || '', tgt.t), ticks = kreuz.exTicks || [], have = feats.filter((f, i) => ticks[i]).length;
+    check = `<div class="ln-check kr-check"><div class="ln-check-h">${esc(W.exCheck)}</div>${feats.map((f, i) => `<button type="button" class="ln-tick${ticks[i] ? ' on' : ''}" data-act="kr-extick" data-i="${i}" aria-pressed="${!!ticks[i]}"><span class="ln-box-ck" aria-hidden="true">${ticks[i] ? '✓' : ''}</span><span>${esc(f)}${sug[i] ? ' <i class="kr-sug">steht vermutlich drin</i>' : ''}</span></button>`).join('')}</div>
+      <div class="ln-verdict${have >= need ? ' ok' : ''}">${have} von ${feats.length} · ${have >= need ? 'zählt als erklärt' : `${need} nötig, ergänze deine Erklärung`}</div>
+      <div class="kr-cmp"><b>Zum Vergleich</b> ${esc(tgt.t.expl)}${tgt.t.hints && tgt.t.hints.beispiel ? `<br><b>Beispiel</b> ${esc(tgt.t.hints.beispiel)}` : ''}</div>`;
+  }
+  return `<section class="kr-box kr-task kr-ex"><h3><span class="kr-tn">1</span>Erklären</h3>
+    <p class="kr-how">${esc(W.exHow)}</p>
+    ${chooser}
+    ${krHelpList(helps, n)}
+    <textarea id="kr-ex-in" class="field" rows="3" maxlength="500" placeholder="Deine Erklärung"${kreuz.exDone ? ' readonly' : ''}>${esc(kreuz.exText || '')}</textarea>
+    <div class="kr-act-a">${kreuz.exDone ? '<button type="button" class="btn sm ghost" data-act="kr-exedit">Erklärung ändern</button>' : `${n < helps.length ? `<button type="button" class="btn sm" data-act="kr-exhelp">Hilfe ${n + 1} von ${helps.length}</button>` : ''}<button type="button" class="btn primary" data-act="kr-exdone">Fertig, jetzt prüfen</button>`}</div>
+    ${check}
+  </section>`;
+}
+function krVbHTML(m, pack, tgt) {
+  const W = krWt(pack), helps = krVbHelps(m, tgt, pack), n = Math.min(kreuz.vbHelps || 0, helps.length);
+  const partner = m.items.find((it) => it.id === kreuz.vbPartner && it.id !== tgt.id) || null;
+  const star = n >= 1 ? new Set(helps[0].ids || []) : new Set();
+  const chips = m.items.filter((it) => it.id !== tgt.id).map((it) => `<button type="button" class="kr-chip${partner && partner.id === it.id ? ' on' : ''}${star.has(it.id) ? ' near' : ''}" data-act="kr-vbpartner" data-id="${esc(it.id)}" aria-pressed="${!!(partner && partner.id === it.id)}">${esc(it.a.shown)}${star.has(it.id) ? ' <span class="kr-chip-m">passt</span>' : ''}</button>`).join('');
+  const wa = partner && kreuz.vbSwap ? partner.a.shown : tgt.a.shown, wb = partner ? (kreuz.vbSwap ? tgt.a.shown : partner.a.shown) : '';
+  const pats = n >= 2 ? `<div class="kr-pats">${krPatterns(pack).map((pt, i) => `<button type="button" class="kr-pat" data-act="kr-vbpat" data-i="${i}"><small>${esc(pt[0])}</small>${esc(krFill(pt[1], wa, wb))}</button>`).join('')}${partner ? `<button type="button" class="btn sm ghost kr-swap" data-act="kr-vbswap" aria-pressed="${!!kreuz.vbSwap}">${iconSwap()}Wörter tauschen</button>` : ''}</div>` : '';
+  let fb = '';
   const r = kreuz.sentRes;
   if (r) {
-    const need = Math.max(0, 2 - r.words.length);
-    if (!r.sol) sfb = '<div class="kr-fb no">Im Satz fehlt noch das Lösungswort.</div>';
-    else if (need) sfb = `<div class="kr-fb no">Nimm noch ${need === 1 ? 'ein Wort' : 'zwei Wörter'} aus dem Rätsel dazu.</div>`;
-    else sfb = `<div class="kr-fb ok">Dein Satz verbindet ${sol ? 'das Lösungswort mit ' : ''}${esc(prList(r.words.slice(0, 3).map((w) => '„' + w + '“')))}. ${r.rel ? (sol && (kreuz.solOk || kreuz.solShown) ? 'Vergleiche ihn mit der Erklärung.' : 'Lies ihn jemandem vor und frag, ob der Zusammenhang klar wird.') : 'Zeigt er auch, wie die Begriffe zusammenhängen? Wörter wie „weil“ oder „dadurch“ helfen dabei.'}</div>`;
+    if (!r.hasT) fb = `<div class="kr-fb no">Im Satz fehlt noch „${esc(tgt.a.shown)}“.</div>`;
+    else if (!r.hasP) fb = `<div class="kr-fb no">Im Satz fehlt noch ${partner ? '„' + esc(partner.a.shown) + '“' : 'ein Wort aus dem Rätsel'}.</div>`;
+    else {
+      const model = partner ? krLinkFor(m, tgt.id, partner.id) : '';
+      const alt = !model ? (() => { const nb = krNearWords(m, tgt).find((it) => krLinkFor(m, tgt.id, it.id)); return nb ? { w: nb.a.shown, s: krLinkFor(m, tgt.id, nb.id) } : null; })() : null;
+      fb = `<div class="kr-fb ok">Beide Wörter stehen im Satz. ${!r.rel ? esc(W.vbMore) : model || alt ? 'Vergleiche ihn jetzt mit dem Mustersatz.' : 'Vergleiche ihn mit den Erklärungen zum Nachlesen.'}</div>`
+        + (model ? `<div class="kr-cmp"><b>So könnte der Satz gehen</b> ${esc(model)}</div>` : alt ? `<div class="kr-cmp"><b>Ein Mustersatz mit „${esc(alt.w)}“</b> ${esc(alt.s)}</div>` : '')
+        + `<details class="kr-ref"><summary>Erklärungen zum Nachlesen</summary><p><b>${esc(tgt.a.shown)}</b> ${esc(tgt.t.expl)}</p>${partner ? `<p><b>${esc(partner.a.shown)}</b> ${esc(partner.t.expl)}</p>` : ''}</details>`
+        + `<div class="kr-act-a kr-judge"><span>Zeigt dein Satz den Zusammenhang?</span><button type="button" class="btn sm${kreuz.vbJudge === false ? ' on' : ''}" data-act="kr-vbjudge" data-v="0" aria-pressed="${kreuz.vbJudge === false}">Ich überarbeite ihn</button><button type="button" class="btn sm${kreuz.vbJudge === true ? ' primary' : ''}" data-act="kr-vbjudge" data-v="1" aria-pressed="${kreuz.vbJudge === true}">Ja, er zeigt ihn</button></div>`
+        + (kreuz.vbJudge === true ? `<div class="kr-fb ok">Geschafft. Wer mag, verbindet „${esc(tgt.a.shown)}“ noch mit einem zweiten Wort aus dem Rätsel.</div>`
+          : kreuz.vbJudge === false ? `<div class="kr-fb near">${esc(W.vbFix)}${n < 2 ? ' Die Satzmuster in Hilfe 2 zeigen, wie das geht.' : ''} Dann prüfst du den Satz noch einmal.</div>` : '');
+    }
   }
-  const cmp = r && sol && (kreuz.solOk || kreuz.solShown) ? `<div class="kr-cmp"><b>Zum Vergleich</b> ${esc(sol.t.expl)}</div>` : '';
+  return `<section class="kr-box kr-task kr-vb"><h3><span class="kr-tn">2</span>Verbinden</h3>
+    <p class="kr-how">${esc(W.vbHow)}</p>
+    <div class="kr-pair"><span class="kr-pa">${esc(tgt.a.shown)}</span><i>+</i><span class="kr-pb${partner ? ' on' : ''}">${partner ? esc(partner.a.shown) : 'ein Wort aus dem Rätsel'}</span></div>
+    <div class="kr-chips" role="group" aria-label="Wort zum Verbinden">${chips}</div>
+    ${krHelpList(helps, n)}${pats}
+    <textarea id="kr-sent-in" class="field" rows="3" maxlength="400" placeholder="Dein Satz">${esc(kreuz.sent || '')}</textarea>
+    <div class="kr-act-a">${n < helps.length ? `<button type="button" class="btn sm" data-act="kr-vbhelp">Hilfe ${n + 1} von ${helps.length}</button>` : ''}<button type="button" class="btn primary" data-act="kr-sent">Satz prüfen</button></div>
+    ${fb}
+    <p class="kr-note">Zu zweit geht es auch mündlich: Erklärt euch abwechselnd ein Wort aus dem Rätsel, ohne es zu nennen.</p>
+  </section>`;
+}
+function krWeiterHTML(m) {
+  const pack = krPack(), letters = krGridLetters(m), tgt = krTarget(m);
+  const locked = m.sol && !(kreuz.solOk || kreuz.solShown);
   const c = krCounts(m), rep = krRepeatIds(m);
   const lbl = { o: 'ohne Hilfe', h: 'mit Hilfe', r: 'aufgedeckt', x: 'noch offen' };
   const explList = kreuz.showAll ? `<ul class="kr-expl">${m.items.map((it) => `<li class="s-${krStatus(it) || 'none'}"><b>${esc(it.a.shown)}</b> ${esc(it.t.expl)}</li>`).join('')}</ul>` : '';
-  return `<p class="kr-lead"><b>Schritt ${kreuz.kopf ? 3 : 2}.</b> Weiterdenken: Aus den Wörtern wird ein Zusammenhang.</p>
-    ${solBox}
-    <section class="kr-box kr-task"><h3>Erklären und verbinden</h3><p>${esc(task)}</p>
-      <textarea id="kr-sent-in" class="field" rows="3" maxlength="400" placeholder="Dein Satz">${esc(kreuz.sent || '')}</textarea>
-      <div class="kr-act-a"><button type="button" class="btn" data-act="kr-sent">Satz prüfen</button></div>${sfb}${cmp}
-      <p class="kr-note">Zu zweit geht es auch mündlich: Erklärt euch abwechselnd zwei Wörter aus dem Rätsel, ohne sie zu nennen.</p>
-    </section>
+  const tasks = !tgt ? '' : locked
+    ? '<section class="kr-box kr-task kr-lock"><h3>Erklären und verbinden</h3><p class="kr-note">Finde zuerst das Lösungswort. Dann erklärst du es hier und verbindest es mit einem Wort aus dem Rätsel.</p></section>'
+    : `<div class="kr-tasks">${krExHTML(m, pack, tgt)}${krVbHTML(m, pack, tgt)}</div>`;
+  return `<p class="kr-lead"><b>Schritt ${kreuz.kopf ? 3 : 2}.</b> Weiterdenken heißt erklären und verbinden. ${m.sol ? 'Zuerst kommt das Lösungswort.' : ''}</p>
+    ${krSolHTML(m, letters)}
+    ${tasks}
     <section class="kr-box kr-bil"><h3>Deine Bilanz</h3>
       <div class="kr-sumrow">${['o', 'h', 'r', 'x'].map((k) => `<div class="kr-sn s-${k}"><b>${c[k]}</b><span>${lbl[k]}</span></div>`).join('')}</div>
       ${rep.length ? `<p class="kr-note">Wörter mit Hilfe, aufgedeckt oder noch offen kommen in „Karten üben“ in Fach 1 und werden dort wiederholt.</p><div class="kr-act-a"><button type="button" class="btn" data-act="kr-kartei"${kreuz.saved ? ' disabled' : ''}>${kreuz.saved ? 'Liegt in „Karten üben“' : (rep.length === 1 ? 'Ein Wort' : rep.length + ' Wörter') + ' in „Karten üben“ legen'}</button>${kreuz.saved ? '<button type="button" class="btn ghost" data-act="kr-learn">Karten üben öffnen</button>' : ''}</div>` : '<p class="kr-note">Alle Wörter ohne Hilfe gelöst.</p>'}
@@ -25681,7 +25855,7 @@ function krInfoHTML() {
       <li><b>Ins Gitter.</b> Trag die Wörter ein. Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe. Passt es dort nicht, stimmt eines der beiden Wörter noch nicht.</li>
       <li><b>Hilfen.</b> Zu jedem Wort gibt es drei Hilfen: erst den Oberbegriff, dann ein Beispiel, zuletzt den Anfangsbuchstaben. Probier es zuerst ohne.</li>
       <li><b>Prüfen.</b> „Prüfen“ zeigt, ob ein Wort stimmt. Ist es richtig, liest du die Erklärung dazu. Nach zwei Versuchen kannst du dir die Lösung zeigen lassen.</li>
-      <li><b>Weiterdenken.</b> Die Buchstaben in den Kreisen ergeben das Lösungswort. Erkläre es in einem Satz und verbinde es mit zwei Wörtern aus dem Rätsel.</li>
+      <li><b>Weiterdenken.</b> Die Buchstaben in den Kreisen ergeben das Lösungswort. Erkläre es mit eigenen Worten und hak ab, welche Merkmale du genannt hast. Dann verbindest du es in einem Satz mit einem Wort aus dem Rätsel. Zu beidem gibt es drei Hilfen.</li>
       <li><b>Üben.</b> Wörter, die du nur mit Hilfe geschafft hast, kannst du am Ende in „Karten üben“ legen.</li>
     </ol>
     <p class="ms-note">Ä, Ö und Ü stehen in einem Kästchen. Beim Eintippen gehen auch ae, oe und ue. Bei Wörtern aus mehreren Teilen nennt die Klammer die Längen, zum Beispiel (5, 4) für „Halbe Note“. Im Gitter trennt ein dicker Strich die Teile.</p>
@@ -25773,14 +25947,52 @@ const KR_ACTIONS = {
     const m = krM(); if (!m) return;
     const ta = $('#kr-sent-in'); if (ta) kreuz.sent = ta.value;
     if (!String(kreuz.sent || '').trim()) { toast('Erst einen Satz schreiben.'); return; }
-    kreuz.sentRes = krSentCheck(kreuz.sent, m); krSaveNow(); krRender();
+    const tgt = krTarget(m); if (!tgt) return;
+    const partner = m.items.find((it) => it.id === kreuz.vbPartner && it.id !== tgt.id) || null;
+    if (!partner) { toast('Wähle zuerst ein Wort aus dem Rätsel, mit dem du verbindest.'); return; }
+    if (/___|…/.test(kreuz.sent)) {
+      toast('Im Satz ist noch eine Lücke. Ergänze sie zuerst.');
+      if (ta) { ta.focus(); const g = ta.value.indexOf('___'), i = g >= 0 ? g : ta.value.indexOf('…'); if (i >= 0) ta.setSelectionRange(i, i + (g >= 0 ? 3 : 1)); }
+      return;
+    }
+    kreuz.sentRes = krSentCheck(kreuz.sent, m, tgt, partner); kreuz.vbJudge = null; krSaveNow(); krRender();
+  },
+  'kr-extgt': (el) => { if (!kreuz) return; kreuz.exTarget = el.dataset.id; kreuz.exDone = false; kreuz.exTicks = []; kreuz.exHelps = 0; if (kreuz.vbPartner === el.dataset.id) kreuz.vbPartner = ''; kreuz.sentRes = null; krSaveNow(); krRender(); },
+  'kr-exhelp': () => { if (!kreuz) return; kreuz.exHelps = (kreuz.exHelps || 0) + 1; Sound.tick(); krSaveNow(); krRender(); },
+  'kr-exdone': () => {
+    const ta = $('#kr-ex-in'); if (ta) kreuz.exText = ta.value;
+    if (!String(kreuz.exText || '').trim()) { toast('Erst eine Erklärung schreiben.'); if (ta) ta.focus(); return; }
+    kreuz.exDone = true; kreuz.exTicks = []; Sound.tick(); krSaveNow(); krRender();
+  },
+  'kr-extick': (el) => { if (!kreuz) return; const i = Number(el.dataset.i); kreuz.exTicks = (kreuz.exTicks || []).slice(); kreuz.exTicks[i] = !kreuz.exTicks[i]; krSaveNow(); krRender(); },
+  'kr-exedit': () => { if (!kreuz) return; kreuz.exDone = false; krSaveNow(); krRender(); setTimeout(() => { const ta = $('#kr-ex-in'); if (ta) ta.focus(); }, 20); },
+  'kr-vbpartner': (el) => { if (!kreuz) return; kreuz.vbPartner = el.dataset.id; kreuz.sentRes = null; kreuz.vbJudge = null; krSaveNow(); krRender(); },
+  'kr-vbhelp': () => { if (!kreuz) return; kreuz.vbHelps = (kreuz.vbHelps || 0) + 1; Sound.tick(); krSaveNow(); krRender(); },
+  'kr-vbswap': () => { if (!kreuz) return; kreuz.vbSwap = !kreuz.vbSwap; krSaveNow(); krRender(); const b = $('#v-cross [data-act="kr-vbswap"]'); if (b) b.focus({ preventScroll: true }); },
+  'kr-vbpat': (el) => {
+    const m = krM(); if (!m || !kreuz) return;
+    const tgt = krTarget(m), partner = m.items.find((it) => it.id === kreuz.vbPartner && it.id !== tgt.id) || null;
+    const pat = krPatterns(krPack())[Number(el.dataset.i)]; if (!pat) return;
+    const a = partner && kreuz.vbSwap ? partner.a.shown : tgt.a.shown, b = partner ? (kreuz.vbSwap ? tgt.a.shown : partner.a.shown) : '';
+    const txt = krFill(pat[1], a, b);
+    const ta = $('#kr-sent-in'); const cur = String((ta && ta.value) || kreuz.sent || '').trim();
+    kreuz.sent = cur ? cur + ' ' + txt : txt; kreuz.sentRes = null; krSaveNow(); krRender();
+    setTimeout(() => {
+      const t2 = $('#kr-sent-in'); if (!t2) return; t2.focus();
+      const g = t2.value.indexOf('___'), i = g >= 0 ? g : t2.value.indexOf('…');
+      if (i >= 0) t2.setSelectionRange(i, i + (g >= 0 ? 3 : 1));
+    }, 20);
+  },
+  'kr-vbjudge': (el) => {
+    if (!kreuz) return; kreuz.vbJudge = el.dataset.v === '1'; krSaveNow(); krRender();
+    if (!kreuz.vbJudge) setTimeout(() => { const ta = $('#kr-sent-in'); if (ta) ta.focus(); }, 20);
   },
   'kr-kartei': () => krToKartei(),
   'kr-learn': () => { if (kreuz && typeof openLearn === 'function') { krSaveNow(); openLearn(kreuz.packId); } },
   'kr-explall': () => { if (!kreuz) return; kreuz.showAll = !kreuz.showAll; krRender(); },
   'kr-again': () => confirmBox('Das Rätsel neu beginnen?', 'Neu beginnen', () => {
     closeModal(); if (!kreuz) return;
-    Object.assign(kreuz, { phase: kreuz.kopf ? 'kopf' : 'gitter', ent: {}, st: {}, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false });
+    Object.assign(kreuz, { phase: kreuz.kopf ? 'kopf' : 'gitter', ent: {}, st: {}, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false, exTarget: '', exHelps: 0, exText: '', exDone: false, exTicks: [], vbPartner: '', vbHelps: 0, vbJudge: null, vbSwap: false });
     const m = krM(); if (m && m.items[0]) kreuz.act = m.items[0].id;
     krSaveNow(); krRender(); const el = $('#v-cross'); if (el) el.scrollTop = 0;
   }, 'Deine Einträge in diesem Rätsel werden gelöscht.')
@@ -25790,6 +26002,7 @@ document.addEventListener('input', (e) => {
   if (el.dataset && el.dataset.krIn) { kreuz.ent[el.dataset.krIn] = el.value; const st = kreuz.st[el.dataset.krIn]; if (st && st.res !== 'ok') st.res = ''; krSaveSoon(); return; }
   if (el.id === 'kr-act-in') { kreuz.ent[kreuz.act] = el.value; const st = kreuz.st[kreuz.act]; if (st && st.res !== 'ok' && st.res) { st.res = ''; const fb = $('#kr-act .kr-fb'); if (fb) fb.remove(); } krSaveSoon(); krRefreshBoard(); return; }
   if (el.id === 'kr-sol-in') { kreuz.solTyped = el.value; krSaveSoon(); return; }
+  if (el.id === 'kr-ex-in') { kreuz.exText = el.value; krSaveSoon(); return; }
   if (el.id === 'kr-sent-in') { kreuz.sent = el.value; krSaveSoon(); }
 });
 document.addEventListener('change', (e) => {
@@ -25810,31 +26023,36 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* Vierklang · Teil 17: Rätsel drucken
-   Rätselblatt je Hinweisstufe (Gitter, Antwortlinien für Schritt 1, Lösungswort, Weiterdenken), Hilfekarten zum
-   Ausschneiden, Lösung und Lehrkraftblatt. Gezeichnet mit dem Druckbaukasten aus Teil 7, dasselbe Gitter wie am Gerät. */
+   Rätselblatt je Hinweisstufe (Gitter, Antwortlinien für Schritt 1, Lösungswort, Erklären und Verbinden), Hilfekarten
+   zum Ausschneiden, Lösung und Lehrkraftblatt. Gezeichnet mit dem Druckbaukasten aus Teil 7, dasselbe Gitter wie am
+   Gerät. Auf Wunsch mit Formularfeldern, damit sich das Rätselblatt auch am Gerät ausfüllen lässt. */
 
 const KEY_KR_PR = 'vierklang.raetsel.druck.v1';
 const KR_PR_PARTS = [
   ['lehrkraft', 'Lehrkraftblatt', 'Ablauf, dieses Rätsel, Fallstricke, QR-Code'],
-  ['blatt', 'Rätselblatt', 'Gitter, Hinweise, Lösungswort, Weiterdenken'],
-  ['hilfe', 'Hilfekarten', 'drei gestufte Hilfen je Wort zum Ausschneiden'],
-  ['loesung', 'Lösung', 'ausgefülltes Gitter und alle Wörter']
+  ['blatt', 'Rätselblatt', 'Gitter, Hinweise, Lösungswort, Erklären und Verbinden'],
+  ['hilfe', 'Hilfekarten', 'drei gestufte Hilfen je Wort und zum Weiterdenken'],
+  ['loesung', 'Lösung', 'ausgefülltes Gitter, alle Wörter, Erwartung zum Weiterdenken']
 ];
+/* Satzmuster auf dem Rätselblatt und auf den Hilfekarten, je Sprachstufe */
+const KR_PR_PAT = { easy: ['Gemeinsam', 'Beispiel'], mid: ['Unterschied', 'Gemeinsamkeit'], hard: ['Zusammenhang', 'Abgrenzung'] };
+const KR_CARD_PAT = { easy: ['Gemeinsam', 'Beispiel', 'Teil'], mid: ['Unterschied', 'Ursache und Folge', 'Entwicklung'], hard: ['Abgrenzung', 'Funktion', 'Entwicklung'] };
+const KR_PR_START = { easy: 'Das Lösungswort ist … Man erkennt es daran, dass …', mid: 'Das Lösungswort bezeichnet … Typisch dafür ist …', hard: 'Unter dem Lösungswort versteht man … Kennzeichnend ist …' };
 let krPr = null;
 function krPrLoad() {
   const s = store.get(KEY_KR_PR, {}) || {}, parts = {};
   KR_PR_PARTS.forEach((p) => { parts[p[0]] = s.parts && typeof s.parts[p[0]] === 'boolean' ? s.parts[p[0]] : p[0] !== 'hilfe'; });
-  return { parts, stufen: s.stufen === 'alle' ? 'alle' : 'eine', color: s.color === 'spar' ? 'spar' : 'farbig', status: '' };
+  return { parts, stufen: s.stufen === 'alle' ? 'alle' : 'eine', color: s.color === 'spar' ? 'spar' : 'farbig', fill: s.fill !== false, status: '' };
 }
-function krPrSave() { if (krPr) store.set(KEY_KR_PR, { parts: krPr.parts, stufen: krPr.stufen, color: krPr.color }); }
+function krPrSave() { if (krPr) store.set(KEY_KR_PR, { parts: krPr.parts, stufen: krPr.stufen, color: krPr.color, fill: krPr.fill }); }
 
 /* ---------- Dialog ---------- */
 function krPrintHTML() {
   const pack = krSetupPack(), cfg = krCfg(pack), m = krModel(pack, cfg), cov = prPackCover(pack), lv = krLevelNow();
   const seg2 = (key, opts, val) => `<div class="seg pr-seg" role="radiogroup">${opts.map((o) => { const on = String(o[0]) === String(val); return `<button type="button" role="radio" class="seg-btn${on ? ' on' : ''}" aria-checked="${on}" data-act="kr-pr-set" data-k="${key}" data-v="${esc(o[0])}">${esc(o[1])}</button>`; }).join('')}</div>`;
   const tick = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  const nBl = krPr.stufen === 'alle' ? 3 : 1;
-  const pagesOf = { lehrkraft: '1 Seite', blatt: nBl === 1 ? '1 bis 2 Seiten' : 'je Stufe 1 bis 2 Seiten', hilfe: `etwa ${Math.max(1, Math.ceil(m.items.length / 6))} ${m.items.length > 6 ? 'Seiten' : 'Seite'}`, loesung: '1 Seite' };
+  const nBl = krPr.stufen === 'alle' ? 3 : 1, cards = m.items.length + (m.sol ? 2 : 1);
+  const pagesOf = { lehrkraft: '1 Seite', blatt: nBl === 1 ? '1 bis 2 Seiten' : 'je Stufe 1 bis 2 Seiten', hilfe: `etwa ${Math.max(1, Math.ceil(cards / 6))} ${cards > 6 ? 'Seiten' : 'Seite'}`, loesung: '1 Seite' };
   const parts = KR_PR_PARTS.map((p) => { const on = !!krPr.parts[p[0]]; return `<button type="button" class="pr-part${on ? ' on' : ''}" role="checkbox" aria-checked="${on}" data-act="kr-pr-part" data-k="${p[0]}"><span class="pr-box">${on ? tick : ''}</span><span class="pr-part-t"><b>${esc(p[1])}</b><small>${esc(p[2])} · ${esc(pagesOf[p[0]])}</small></span></button>`; }).join('');
   const any = KR_PR_PARTS.some((p) => krPr.parts[p[0]]);
   return `<div class="pr-head">
@@ -25846,11 +26064,12 @@ function krPrintHTML() {
       <div class="pr-col">
         <div class="pr-row"><div class="pr-l">Rätselblatt<small>${krPr.stufen === 'alle' ? 'Je ein Blatt mit leichten, mittleren und schweren Hinweisen.' : `Nur die eingestellte Stufe: ${esc(lv)}.`}</small></div>${seg2('stufen', [['eine', 'eine Stufe'], ['alle', 'alle drei']], krPr.stufen)}</div>
         <div class="pr-row"><div class="pr-l">Farbe</div>${seg2('color', [['farbig', 'farbig'], ['spar', 'tintensparend']], krPr.color)}</div>
+        <div class="pr-row"><div class="pr-l">Ausfüllbar<small>${krPr.fill ? 'Das Rätselblatt lässt sich auch am Gerät ausfüllen, etwa im Acrobat Reader.' : 'Nur zum Ausdrucken.'}</small></div>${seg2('fill', [['an', 'an'], ['aus', 'aus']], krPr.fill ? 'an' : 'aus')}</div>
         <p class="kr-note">${settings.krKopf !== false ? 'Mit Antwortlinien für Schritt 1: erst aus dem Kopf, dann ins Gitter.' : 'Ohne Antwortlinien, weil „Erst aus dem Kopf“ ausgeschaltet ist.'}</p>
       </div>
       <div class="pr-col"><div class="pr-row pr-parts-row"><div class="pr-l pr-l-flex"><span>Inhalte</span></div><div class="pr-parts">${parts}</div></div></div>
     </div>
-    <div class="pr-sum"><b>${any ? 'PDF zum Ausdrucken' : 'Nichts ausgewählt'}</b><span>${m.items.length} Wörter · ${krPr.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + esc(lv)} · ${krPr.color === 'spar' ? 'tintensparend' : 'farbig'}</span>${pack.checked ? '' : '<span class="pr-ki">Die Inhalte sind ein KI-Entwurf. Die Fußzeile weist darauf hin.</span>'}</div>
+    <div class="pr-sum"><b>${any ? 'PDF zum Ausdrucken' : 'Nichts ausgewählt'}</b><span>${m.items.length} Wörter · ${krPr.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + esc(lv)} · ${krPr.color === 'spar' ? 'tintensparend' : 'farbig'}${krPr.fill && krPr.parts.blatt ? ' · ausfüllbar' : ''}</span>${pack.checked ? '' : '<span class="pr-ki">Die Inhalte sind ein KI-Entwurf. Die Fußzeile weist darauf hin.</span>'}</div>
     <div class="modal-actions pr-actions"><p class="pr-status" id="kr-pr-status" role="status" aria-live="polite">${esc(krPr.status || '')}</p><button type="button" class="btn" data-act="modal-close">Schließen</button><button type="button" class="btn primary pr-make" id="kr-pr-make" data-act="kr-pr-make"${any && !prBusy ? '' : ' disabled'}>${prBusy ? 'PDF wird erstellt …' : 'PDF erstellen'}</button></div>`;
 }
 function krPrintOpen() {
@@ -25870,6 +26089,67 @@ function krPrStatus(text, busy) {
   const b = $('#kr-pr-make'); if (b) { b.disabled = !!busy || !(krPr && KR_PR_PARTS.some((p) => krPr.parts[p[0]])); b.textContent = busy ? 'PDF wird erstellt …' : 'PDF erstellen'; }
 }
 
+/* ---------- Ausfüllbare Felder ---------- */
+function krField(ctx, name, x, y, w, h, o) {
+  if (!ctx.fill) return;
+  const doc = ctx.K.doc, f = new doc.AcroFormTextField(), full = ctx.fp + name;
+  f.fieldName = full; f.x = x; f.y = y; f.width = w; f.height = h; f.fontSize = o.fs;
+  if (o.one) { f.maxLength = 1; f.textAlign = 'center'; f.doNotSpellCheck = true; }
+  if (o.multi) f.multiline = true;
+  doc.addField(f);
+  ctx.fields[full] = { fs: o.fs, tu: o.tu || '' };
+}
+/* jsPDF schreibt Textfelder ohne Schriftangabe. Ein angehängter Nachtrag ergänzt Schrift, Größe und Beschriftung,
+   der Rest der Datei bleibt unverändert. */
+function krAcroFix(buf, meta) {
+  const u8 = new Uint8Array(buf), n = u8.length;
+  let s = '';
+  for (let i = 0; i < n; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, Math.min(n, i + 0x8000)));
+  const sx = s.lastIndexOf('startxref'), tp = s.lastIndexOf('trailer', sx);
+  if (sx < 0 || tp < 0) return buf;
+  const prev = parseInt(s.slice(sx + 9, sx + 40).trim(), 10), tr = s.slice(tp, sx);
+  const size = Number((/\/Size (\d+)/.exec(tr) || [])[1]), root = (/\/Root (\d+) 0 R/.exec(tr) || [])[1];
+  const info = (/\/Info (\d+) 0 R/.exec(tr) || [])[1], id = (/\/ID\s*(\[[^\]]*\])/.exec(tr) || [])[1];
+  if (!size || !root || !(prev > 0) || s.slice(prev, prev + 4) !== 'xref') return buf;
+  const off = {}; let cur = 0;
+  s.slice(prev + 4, tp).split(/\r?\n/).forEach((l) => {
+    const t = l.trim(); let r = /^(\d{10}) (\d{5}) ([nf])$/.exec(t);
+    if (r) { if (r[3] === 'n') off[cur] = Number(r[1]); cur++; return; }
+    r = /^(\d+) (\d+)$/.exec(t); if (r) cur = Number(r[1]);
+  });
+  const body = (num) => { const o = off[num]; if (o === undefined) return ''; const a = s.indexOf('obj', o) + 3, e = s.indexOf('endobj', a); return a > 2 && e > a ? s.slice(a, e).trim() : ''; };
+  const afNum = Number((/\/AcroForm (\d+) 0 R/.exec(body(Number(root))) || [])[1]);
+  if (!afNum) return buf;
+  const refs = [];
+  ((/\/Fields\s*\[([^\]]*)\]/.exec(body(afNum)) || [])[1] || '').replace(/(\d+) 0 R/g, (x, k) => { refs.push(Number(k)); return x; });
+  if (!refs.length) return buf;
+  const hex = (t) => { let h = 'FEFF'; for (let i = 0; i < t.length; i++) h += t.charCodeAt(i).toString(16).toUpperCase().padStart(4, '0'); return '<' + h + '>'; };
+  const font = size, objs = [[font, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'],
+    [afNum, `<< /Fields [${refs.map((k) => k + ' 0 R').join(' ')}] /DR << /Font << /Helv ${font} 0 R >> >> /DA (/Helv 0 Tf 0 g) >>`]];
+  /* Mit Kompression schreibt jsPDF die Felder als leere Datenströme. Neu geschrieben werden sie als reines Wörterbuch. */
+  refs.forEach((k) => {
+    let d = body(k); if (!/^<</.test(d)) return;
+    const st = /\bstream\r?\n/.exec(d); if (st) d = d.slice(0, st.index).trim();
+    d = d.replace(/\/Filter\s*\/FlateDecode\s*/g, '').replace(/\/Length\s+\d+\s*/g, '');
+    const nm = (/\/T \(([^)]*)\)/.exec(d) || [])[1] || '', mt = meta[nm] || { fs: 10, tu: '' };
+    objs.push([k, `<< /DA (/Helv ${Number(mt.fs).toFixed(1)} Tf 0.137 0.149 0.31 rg)${mt.tu ? ' /TU ' + hex(mt.tu) : ''}${d.slice(2)}`]);
+  });
+  let add = u8[n - 1] === 10 ? '' : '\n'; const pos = {};
+  objs.forEach((o) => { pos[o[0]] = n + add.length; add += `${o[0]} 0 obj\n${o[1]}\nendobj\n`; });
+  const xo = n + add.length, nums = Object.keys(pos).map(Number).sort((a, b) => a - b);
+  add += 'xref\n';
+  for (let i = 0; i < nums.length;) {
+    let j = i; while (j + 1 < nums.length && nums[j + 1] === nums[j] + 1) j++;
+    add += `${nums[i]} ${j - i + 1}\n`;
+    for (let k = i; k <= j; k++) add += String(pos[nums[k]]).padStart(10, '0') + ' 00000 n \n';
+    i = j + 1;
+  }
+  add += `trailer\n<< /Size ${size + 1} /Root ${root} 0 R${info ? ` /Info ${info} 0 R` : ''}${id ? ` /ID ${id}` : ''} /Prev ${prev} >>\nstartxref\n${xo}\n%%EOF\n`;
+  const out = new Uint8Array(n + add.length); out.set(u8, 0);
+  for (let i = 0; i < add.length; i++) out[n + i] = add.charCodeAt(i) & 0xFF;
+  return out.buffer;
+}
+
 /* ---------- Bausteine ---------- */
 async function krPrImages(m) {
   const img = {};
@@ -25880,7 +26160,7 @@ async function krPrImages(m) {
   return img;
 }
 function krPrDirWord(it) { return it.dir === 'a' ? 'waagerecht' : 'senkrecht'; }
-/* Gitter zeichnen; o.letters: Lösung eintragen */
+/* Gitter zeichnen; o.letters: Lösung eintragen, o.fields: Formularfelder in die Kästchen */
 function krGridDraw(ctx, x0, y0, cs, o) {
   const K = ctx.K, doc = K.doc, m = ctx.m, lay = m.lay; o = o || {};
   const solIdx = {}, nums = {};
@@ -25918,6 +26198,20 @@ function krGridDraw(ctx, x0, y0, cs, o) {
       else doc.line(x0 + c * cs, y0 + (r + 1) * cs, x0 + (c + 1) * cs, y0 + (r + 1) * cs);
     });
   });
+  if (o.fields && ctx.fill) {
+    const tu = {};
+    m.items.forEach((it) => {
+      for (let k = 0; k < it.L.length; k++) {
+        const key = (it.r + (it.dir === 'd' ? k : 0)) + ',' + (it.c + (it.dir === 'a' ? k : 0));
+        (tu[key] = tu[key] || []).push(`${it.num} ${krPrDirWord(it)}, Buchstabe ${k + 1}`);
+      }
+    });
+    const fs = Math.max(8, Math.min(17, cs * 1.55));
+    for (let r = 0; r < lay.H; r++) for (let c = 0; c < lay.W; c++) {
+      if (!lay.cells[r][c]) continue;
+      krField(ctx, `Gitter_Z${r + 1}_S${c + 1}`, x0 + c * cs + cs * 0.1, y0 + r * cs + cs * 0.24, cs * 0.8, cs * 0.7, { fs, one: true, tu: (tu[r + ',' + c] || []).join('; ') });
+    }
+  }
 }
 function krPrSuffix(a) { const s = krStructure(a); return (s ? ' ' + s : '') + (a.nach ? ' (Nachname)' : ''); }
 /* Hinweisblock für eine Spalte */
@@ -25934,7 +26228,10 @@ function krClueBlock(ctx, it, lv, fs, colW) {
       r.draw(x + bd + 2.4, y);
       let yy = y + Math.max(bd, r.h);
       if (im) { const w = Math.min(tw, imH * im.ratio); K.doc.addImage(im.data, im.fmt, x + bd + 2.4, yy + 1.2, w, imH, 'vk-kr-' + it.id, 'FAST'); yy += imH + 1.2; }
-      if (lineH) { K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); K.doc.line(x + bd + 2.4, yy + 5, x + colW - 2, yy + 5); }
+      if (lineH) {
+        K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); K.doc.line(x + bd + 2.4, yy + 5, x + colW - 2, yy + 5);
+        krField(ctx, `Antwort_${it.num}${it.dir === 'a' ? 'w' : 's'}`, x + bd + 2.4, yy + 0.4, colW - bd - 4.4, 4.7, { fs: 10, tu: `${it.num} ${krPrDirWord(it)}, aus dem Kopf` });
+      }
     }
   };
 }
@@ -25958,16 +26255,72 @@ function krClueFlow(ctx, lv, fs, colW) {
   const sum = (a) => a.reduce((s, b) => s + b.h, 0);
   return { c1, c2, h: Math.max(sum(c1), sum(c2)) };
 }
-function krWeiterBlock(ctx, w) {
-  const K = ctx.K, m = ctx.m;
-  const task = m.sol ? 'Erkläre das Lösungswort in einem Satz. Verbinde es dabei mit zwei Wörtern aus dem Rätsel.' : 'Verbinde zwei Wörter aus dem Rätsel in einem Satz, der zeigt, wie sie zusammenhängen.';
-  const r = K.rich([['Weiterdenken. ', 'n9', PR_C.ink], [task, 'n6', PR_C.ink]], 8.6, w - 8, { lh: 1.28 });
-  const h = 4 + r.h + 3 * 7 + 3;
+/* Satzmuster mit beschrifteten Lücken (Lösungswort, Rätselwort) setzen und zeichnen */
+function krPrPatterns(ctx, names) { const all = PR_PATTERNS[ctx.level] || PR_PATTERNS.mid; return names.map((k) => all.find((x) => x[0] === k)).filter(Boolean); }
+function krPatLayout(K, text, size, w, lab) {
+  const toks = [];
+  text.split(/(\{A\}|\{B\})/).forEach((p) => { if (p === '{A}' || p === '{B}') toks.push({ slot: p[1] }); else p.split(/(\s+)/).forEach((q) => { if (q && !/^\s+$/.test(q)) toks.push({ t: q }); else if (q) toks.push({ sp: true }); }); });
+  for (let i = 2; i < toks.length; i++) { if (toks[i].t === '…' && toks[i - 1].sp && toks[i - 2].t) { toks[i - 2].t += ' …'; toks.splice(i - 1, 2); i -= 2; } }
+  const ls = size * 0.74, sh = size * PR_PT * 1.45, sp = K.tw(' ', 'n8', size), lh = size * PR_PT * 1.72;
+  const lines = [[]]; let cw = 0, pend = false;
+  toks.forEach((tk) => {
+    if (tk.sp) { pend = true; return; }
+    const ww = tk.slot ? K.tw(lab[tk.slot], 'n9', ls) + 4 : K.tw(tk.t, 'n8', size), glue = /^[.,]/.test(tk.t || '') ? 0 : sp;
+    const add = lines[lines.length - 1].length && pend ? glue : 0;
+    if (lines[lines.length - 1].length && cw + add + ww > w) { lines.push([]); cw = 0; } else if (add) cw += add;
+    lines[lines.length - 1].push(Object.assign({ x: cw, w: ww }, tk)); cw += ww; pend = false;
+  });
+  return { lines, lh, sh, ls, size, lab, h: lines.length * lh };
+}
+function krPatDraw(ctx, L, x, y) {
+  const K = ctx.K;
+  L.lines.forEach((ln, li) => {
+    const ly = y + li * L.lh, base = ly + (L.lh + K.cap(L.size)) / 2;
+    ln.forEach((tk) => {
+      const tx = x + tk.x;
+      if (!tk.slot) { K.text(tk.t, tx, base, 'n8', L.size, PR_C.ink); return; }
+      const sy = ly + (L.lh - L.sh) / 2, A = tk.slot === 'A';
+      K.fillC(ctx.spar ? '#FFFFFF' : (A ? PR_C.Alight : PR_C.Blight)); K.drawC(A ? PR_C.A : PR_C.B); K.lw(0.28); K.dash([0.9, 0.7]);
+      K.rr(tx, sy, tk.w, L.sh, L.sh / 2, 'FD'); K.dash(null);
+      K.text(L.lab[tk.slot], tx + tk.w / 2, sy + L.sh / 2 + K.cap(L.ls) / 2, 'n9', L.ls, A ? PR_C.Adark : PR_C.Bdark, { align: 'center' });
+    });
+  });
+}
+/* Weiterdenken: links erklären, rechts verbinden. Satzhilfen je Hinweisstufe: leicht Satzanfang und Satzmuster,
+   mittel Satzmuster, schwer keine */
+function krWeiterBlock(ctx, w, lv, extra) {
+  const K = ctx.K, m = ctx.m, W = krWt(ctx.pack), fs = 8.4, colW = (w - 8 - 6) / 2;
+  const lab = m.sol ? { A: 'Lösungswort', B: 'Rätselwort' } : { A: 'Wort 1', B: 'Wort 2' };
+  const exTask = m.sol ? W.exPrint : 'Wähle ein Wort aus dem Rätsel, das dir schwerfiel, und erkläre es mit eigenen Worten.';
+  const vbTask = m.sol ? W.vbPrint : 'Verbinde zwei Wörter aus dem Rätsel in einem Satz, der zeigt, wie sie zusammenhängen.';
+  const exScaff = lv === 'leicht' ? [krPatLayout(K, W.exStart('{A}'), fs, colW, m.sol ? lab : { A: 'Wort' })] : [];
+  const vbScaff = lv === 'schwer' ? [] : krPrPatterns(ctx, KR_PR_PAT[ctx.level] || KR_PR_PAT.mid).map((p) => krPatLayout(K, p[1], fs, colW, lab));
+  const LS = 7, nLines = Math.min(7, (lv === 'schwer' ? 4 : 3) + Math.max(0, extra || 0));
+  const col = (num, title, task, scaff, hint, tone) => {
+    const r = K.rich([[task, 'n6', PR_C.ink]], fs, colW, { lh: 1.28 });
+    const hl = scaff.length ? K.rich([[hint, 'n9', PR_C.muted]], 7, colW, { lh: 1.2 }) : null;
+    const sh = scaff.reduce((a, x) => a + x.h + 0.6, 0);
+    const h = 6.6 + r.h + (hl ? 1.8 + hl.h + 0.6 + sh : 0) + nLines * LS + 1.2;
+    return { h, draw: (x, y, H, fname, tu) => {
+      prNumBadge(ctx, x, y, 5, num, ctx.spar ? PR_C.ink : tone);
+      K.text(title, x + 7, y + 2.5 + K.cap(10) / 2, 't', 10, PR_C.ink);
+      let yy = y + 6.6; r.draw(x, yy); yy += r.h;
+      if (hl) { yy += 1.8; hl.draw(x, yy); yy += hl.h + 0.6; scaff.forEach((L) => { krPatDraw(ctx, L, x, yy); yy += L.h + 0.6; }); }
+      const top = y + H - nLines * LS - 1.2;
+      K.drawC(ctx.spar ? PR_C.faint : '#B3B6E6'); K.lw(0.3); K.dash(null);
+      for (let i = 1; i <= nLines; i++) K.doc.line(x, top + i * LS, x + colW, top + i * LS);
+      krField(ctx, fname, x, top + 1.4, colW, nLines * LS - 0.6, { fs: 11, multi: true, tu });
+    } };
+  };
+  const c1 = col(1, 'Erklären', exTask, exScaff, 'Satzanfang', PR_C.A), c2 = col(2, 'Verbinden', vbTask, vbScaff, vbScaff.length > 1 ? 'Satzmuster, wähle das passende' : 'Satzmuster', PR_C.violet);
+  const inner = Math.max(c1.h, c2.h), h = 3.6 + 6.4 + inner + 2.4;
   return { h, draw: (x, y) => {
     prPanel(ctx, x, y, w, h, 'indigo');
-    r.draw(x + 4, y + 3.4);
-    K.drawC(ctx.spar ? PR_C.faint : '#B9BCE8'); K.lw(0.3); K.dash(null);
-    for (let i = 1; i <= 3; i++) K.doc.line(x + 4, y + 3.4 + r.h + i * 7, x + w - 4, y + 3.4 + r.h + i * 7);
+    K.text('Weiterdenken', x + 4, y + 3.6 + K.cap(10.4), 't', 10.4, PR_C.accentDark);
+    const yy = y + 3.6 + 6.4;
+    c1.draw(x + 4, yy, inner, 'Erklaeren', m.sol ? 'Weiterdenken: das Lösungswort erklären' : 'Weiterdenken: ein Wort erklären');
+    c2.draw(x + 4 + colW + 6, yy, inner, 'Verbinden', 'Weiterdenken: in einem Satz verbinden');
+    K.drawC(ctx.spar ? PR_C.faint : '#C9CBF4'); K.lw(0.25); K.dash(null); K.doc.line(x + 4 + colW + 3, yy, x + 4 + colW + 3, yy + inner);
   } };
 }
 function krBankBlock(ctx, w) {
@@ -25985,6 +26338,7 @@ function krSolRow(ctx, y) {
     const cx = x0 + lw + i * (d + gap) + d / 2, cy = y + d / 2;
     K.lw(0.4); K.drawC(ctx.spar ? PR_C.ink : PR_C.goldDark); K.fillC(ctx.spar ? '#FFFFFF' : PR_C.goldLight); K.doc.circle(cx, cy, d / 2, 'FD');
     K.text(String(i + 1), cx + d / 2 - 0.2, cy + d / 2 + 0.4, 'n9', 5.2, ctx.spar ? PR_C.ink : PR_C.goldDark, { align: 'right' });
+    krField(ctx, `Loesungswort_${i + 1}`, cx - d * 0.34, cy - d * 0.34, d * 0.68, d * 0.68, { fs: 11, one: true, tu: `Lösungswort, Buchstabe ${i + 1}` });
   }
   return d + 4;
 }
@@ -25993,45 +26347,50 @@ function krSolRow(ctx, y) {
 function krPageBlatt(ctx, lv) {
   const K = ctx.K, doc = K.doc, m = ctx.m, lay = m.lay;
   const colW = 89, X2 = 12 + colW + 8, BOTTOM = 284;
+  ctx.fp = lv + '_';
   const steps = (ctx.kopf ? [['Aus dem Kopf.', 'Schreib zu jedem Hinweis das Wort auf die Linie.']] : [])
-    .concat([['Ins Gitter.', 'Trag die Wörter ein. Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe.'], ['Weiterdenken.', m.sol ? 'Finde das Lösungswort und erkläre es.' : 'Verbinde zwei Wörter in einem Satz.']]);
+    .concat([['Ins Gitter.', 'Trag die Wörter ein. Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe.'], ['Weiterdenken.', m.sol ? 'Finde das Lösungswort. Erkläre es und verbinde es mit einem Rätselwort.' : 'Erkläre ein Wort und verbinde es mit einem zweiten.']]);
   const sw = (186 - 8 - (steps.length - 1) * 3) / steps.length;
   const stepR = steps.map((s) => K.rich([[s[0] + ' ', 'n9', PR_C.ink], [s[1], 'n6', PR_C.ink]], 8, sw - 7.4, { lh: 1.26 }));
   const ph = Math.max(...stepR.map((r) => r.h)) + 6;
   const top = 32 + 10 + ph + 4;
   const maxCs = Math.min(10.5, 186 / lay.W);
-  const bank = lv === 'leicht' ? krBankBlock(ctx, 186) : null, weiter = krWeiterBlock(ctx, 186);
+  const bank = lv === 'leicht' ? krBankBlock(ctx, 186) : null, weiter = krWeiterBlock(ctx, 186, lv);
   const solH = m.sol ? 11.2 : 0, bankH = bank ? bank.h + 4 : 0;
   let plan = null;
-  for (const cs of [10.5, 9.6, 8.8, 8, 7.2, 6.6, 6]) {
+  for (const cs of [10.5, 9.6, 8.8, 8, 7.2, 6.6]) {
     const c = Math.min(cs, maxCs);
     for (const fs of [9, 8.4, 7.8]) {
       const fl = krClueFlow(ctx, lv, fs, colW);
       const h = top + lay.H * c + 4 + solH + fl.h + 2 + bankH + weiter.h;
-      if (h <= BOTTOM) { plan = { cs: c, fs, fl, one: true }; break; }
+      if (h <= BOTTOM) { plan = { cs: c, fs, fl }; break; }
     }
     if (plan) break;
   }
-  const head = () => {
-    K.page('portrait');
-    return prHeader(ctx, 'Kreuzworträtsel', null, { chip: 'Hinweise ' + lv });
-  };
-  let y = head();
+  K.page('portrait');
+  let y = prHeader(ctx, 'Kreuzworträtsel', null, { chip: 'Hinweise ' + lv });
   /* Name, Klasse, Datum */
   let x = 12; const fy = y + 4.4;
   [['Name', 88], ['Klasse', 40], ['Datum', 46]].forEach((f) => {
     const lw = K.text(f[0], x, fy, 'n9', 8, PR_C.muted);
     K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); doc.line(x + lw + 2, fy + 0.9, x + f[1], fy + 0.9);
+    krField(ctx, f[0], x + lw + 2, fy - 4, f[1] - lw - 2, 4.8, { fs: 10, tu: f[0] });
     x += f[1] + 6;
   });
   y = fy + 5.6;
   /* drei Schritte */
   prPanel(ctx, 12, y, 186, ph, 'gold');
-  steps.forEach((s, i) => { const sx = 16 + i * (sw + 3); prNumBadge(ctx, sx, y + 3, 5, i + 1, ctx.spar ? PR_C.goldDark : PR_C.goldDark); stepR[i].draw(sx + 7, y + 3); });
+  steps.forEach((s, i) => { const sx = 16 + i * (sw + 3); prNumBadge(ctx, sx, y + 3, 5, i + 1, PR_C.goldDark); stepR[i].draw(sx + 7, y + 3); });
   y += ph + 4;
-  /* Gitter */
-  const cs = plan ? plan.cs : Math.min(maxCs, Math.max(6, (BOTTOM - y - solH - bankH - weiter.h - 4) / lay.H));
-  krGridDraw(ctx, 12 + (186 - lay.W * cs) / 2, y, cs);
+  /* Gitter: auf einer Seite mit allem, sonst groß und die Hinweise auf der zweiten Seite */
+  let cs = plan ? plan.cs : 0, weiterHere = true;
+  if (!plan) {
+    const room = BOTTOM - y - solH - bankH - 4;
+    cs = Math.min(maxCs, (room - weiter.h - 4) / lay.H);
+    if (cs < 7.2) { weiterHere = false; cs = Math.min(maxCs, room / lay.H); }
+    cs = Math.max(5, cs);
+  }
+  krGridDraw(ctx, 12 + (186 - lay.W * cs) / 2, y, cs, { fields: true });
   y += lay.H * cs + 4;
   if (m.sol) y += krSolRow(ctx, y);
   if (plan) {
@@ -26040,30 +26399,70 @@ function krPageBlatt(ctx, lv) {
     plan.fl.c2.forEach((b) => { b.draw(X2, y2); y2 += b.h; });
     y += plan.fl.h + 2;
     if (bank) { bank.draw(12, y); y += bank.h + 4; }
-    weiter.draw(12, Math.max(y, BOTTOM - weiter.h));
+    const wb = krWeiterFit(ctx, lv, weiter, y, BOTTOM); wb.draw(12, Math.max(y, BOTTOM - wb.h));
     return;
   }
-  /* zu viel für eine Seite: Hinweise auf der Rückseite */
   if (bank) { bank.draw(12, y); y += bank.h + 4; }
-  weiter.draw(12, Math.min(BOTTOM - weiter.h, y));
+  if (y > BOTTOM - (weiterHere ? weiter.h : 0)) K.warn.push('Gitter zu groß: ' + ctx.pack.title);
+  if (weiterHere) { const wb = krWeiterFit(ctx, lv, weiter, y, BOTTOM); wb.draw(12, y + Math.min(4, Math.max(0, BOTTOM - y - wb.h))); }
+  /* zweite Seite: Hinweise, falls nötig mit Weiterdenken */
+  const extra = weiterHere ? 0 : weiter.h + 4;
   let fl = null;
-  for (const fs of [9, 8.4, 7.8, 7.2]) { fl = krClueFlow(ctx, lv, fs, colW); if (32 + 2 + fl.h <= BOTTOM) break; }
+  for (const fs of [9, 8.4, 7.8, 7.2]) { fl = krClueFlow(ctx, lv, fs, colW); if (34 + fl.h + extra <= BOTTOM) break; }
   K.page('portrait');
   y = prHeader(ctx, 'Hinweise zum Kreuzworträtsel', null, { chip: 'Hinweise ' + lv }) + 2;
-  if (y + fl.h > BOTTOM) K.warn.push('Rätselblatt zu voll: ' + ctx.pack.title);
+  if (y + fl.h + extra > BOTTOM) K.warn.push('Rätselblatt zu voll: ' + ctx.pack.title);
   let y1 = y, y2 = y;
   fl.c1.forEach((b) => { b.draw(12, y1); y1 += b.h; });
   fl.c2.forEach((b) => { b.draw(X2, y2); y2 += b.h; });
+  if (!weiterHere) { const wb = krWeiterFit(ctx, lv, weiter, y + fl.h + 4, BOTTOM); wb.draw(12, y + fl.h + 4); }
+}
+/* Freien Platz unter dem Gitter für zusätzliche Schreiblinien nutzen */
+function krWeiterFit(ctx, lv, base, y, bottom) {
+  const extra = Math.floor((bottom - y - base.h) / 7);
+  return extra > 0 ? krWeiterBlock(ctx, 186, lv, Math.min(4, extra)) : base;
 }
 
 /* ---------- Hilfekarten ---------- */
+function krModelLinks(m, id, k) {
+  const ids = new Set(m.items.map((it) => it.id)), words = (x) => String(x[2]).split(/\s+/).length;
+  const L = krLinks(m).filter((l) => (id ? (l[0] === id && ids.has(l[1])) || (l[1] === id && ids.has(l[0])) : ids.has(l[0]) && ids.has(l[1])));
+  return L.slice().sort((x, y) => Math.abs(words(x) - 14) - Math.abs(words(y) - 14)).slice(0, k);
+}
+/* Hilfen zum Weiterdenken auf Papier: verraten das Lösungswort nicht */
+function krWtCards(ctx) {
+  const m = ctx.m, out = [], L = ctx.level;
+  const pats = krPrPatterns(ctx, KR_CARD_PAT[L] || KR_CARD_PAT.mid).map((p) => '„' + krFill(p[1], '___', '___') + '“').join('  ');
+  if (m.sol) {
+    const t = m.sol.t, a = m.sol.a, h = t.hints || {};
+    out.push({ head: 'Erklären', hs: [
+      { label: 'Oberbegriff', text: h.ober ? krMask(krCap(h.ober), t, a) : 'Zu welcher Gruppe gehört das Lösungswort?' },
+      { label: 'Beispiel', text: h.beispiel ? krMask(krCap(h.beispiel), t, a) : 'Wo ist dir das Lösungswort schon begegnet?' },
+      { label: 'Satzanfang', text: h.satz ? krMask(krCap(h.satz), t, a) : KR_PR_START[L] || KR_PR_START.mid }] });
+    const near = krNearWords(m, { id: m.sol.id, t }), ex = krOtherExample(m, { id: m.sol.id });
+    out.push({ head: 'Verbinden', hs: [
+      { label: 'Passende Wörter', text: near.length ? `Mit dem Lösungswort ${near.length === 1 ? 'hängt' : 'hängen'} ${prList(near.map((it) => '„' + it.a.shown + '“'))} eng zusammen.` : 'Such ein Rätselwort aus demselben Themenbereich wie das Lösungswort.' },
+      { label: 'Satzmuster', text: pats + '  Wähle das Muster, das passt.' },
+      { label: 'Beispielsatz', text: ex ? `Mit anderen Wörtern: „${ex}“` : 'Ein „weil“, ein Beispiel oder ein Unterschied zeigt, wie zwei Wörter zusammenhängen.' }] });
+  } else {
+    const ids = new Set(m.items.map((it) => it.id)), name = {}; m.items.forEach((it) => { name[it.id] = it.a.shown; });
+    const pairs = krModelLinks(m, '', 2).map((l) => `„${name[l[0]]}“ und „${name[l[1]]}“`);
+    const other = krLinks(m).filter((l) => !ids.has(l[0]) && !ids.has(l[1])).map((l) => l[2]).sort((x, y) => Math.abs(x.split(/\s+/).length - 14) - Math.abs(y.split(/\s+/).length - 14))[0];
+    out.push({ head: 'Verbinden', hs: [
+      { label: 'Passende Wörter', text: pairs.length ? `Eng zusammen hängen zum Beispiel ${pairs.join(' oder ')}.` : 'Such zwei Wörter aus demselben Themenbereich.' },
+      { label: 'Satzmuster', text: pats + '  Wähle das Muster, das passt.' },
+      { label: 'Beispielsatz', text: other ? `Mit anderen Wörtern: „${other}“` : 'Ein „weil“, ein Beispiel oder ein Unterschied zeigt, wie zwei Wörter zusammenhängen.' }] });
+  }
+  return out;
+}
 function krPagesHilfe(ctx, lv) {
   const K = ctx.K, doc = K.doc, m = ctx.m, W = 62, BOTTOM = 284;
-  const rows = m.items.map((it) => {
-    const hs = krHelps(it.t, it.a, lv);
+  const mk = (head, hs, gold) => {
     const rs = hs.map((h) => K.rich([[h.text, 'n6', PR_C.ink]], 8.2, W - 8, { lh: 1.26 }));
-    return { it, hs, rs, h: Math.max(...rs.map((r) => r.h)) + 12 };
-  });
+    return { head, hs, rs, gold, h: Math.max(...rs.map((r) => r.h)) + 12 };
+  };
+  const rows = m.items.map((it) => mk(`${it.num} ${krPrDirWord(it)}`, krHelps(it.t, it.a, lv), true));
+  const wt = krWtCards(ctx).map((c) => mk(c.head, c.hs, false));
   let y = 0;
   const page = () => {
     K.page('portrait');
@@ -26071,14 +26470,13 @@ function krPagesHilfe(ctx, lv) {
     const r = K.rich([['Ausschneiden und am Pult auslegen, nach Wörtern sortiert. Erst Hilfe 1 nehmen, dann Hilfe 2, zuletzt Hilfe 3.', 'n6', PR_C.muted]], 8.4, 186, { lh: 1.3 });
     r.draw(12, y); y += r.h + 3;
   };
-  page();
-  rows.forEach((row) => {
+  const draw = (row) => {
     if (y + row.h > BOTTOM) page();
     row.hs.forEach((h, i) => {
-      const x = 12 + i * W;
-      if (!ctx.spar) { K.fillC(i === 2 ? PR_C.goldLight : PR_C.panel); K.rr(x + 1, y + 1, W - 2, row.h - 2, 2.4, 'F'); }
-      K.text(`${row.it.num} ${krPrDirWord(row.it)}`, x + 4, y + 6, 'n9', 7.6, PR_C.ink);
-      K.text(`Hilfe ${i + 1} · ${h.label}`, x + W - 4, y + 6, 'n8', 6.6, i === 2 ? PR_C.goldDark : PR_C.muted, { align: 'right' });
+      const x = 12 + i * W, last = i === 2;
+      if (!ctx.spar) { K.fillC(last && row.gold ? PR_C.goldLight : row.gold ? PR_C.panel : PR_C.accentLight); K.rr(x + 1, y + 1, W - 2, row.h - 2, 2.4, 'F'); }
+      K.text(row.head, x + 4, y + 6, 'n9', 7.6, row.gold ? PR_C.ink : PR_C.accentDark);
+      K.text(`Hilfe ${i + 1} · ${h.label}`, x + W - 4, y + 6, 'n8', 6.6, last && row.gold ? PR_C.goldDark : PR_C.muted, { align: 'right' });
       row.rs[i].draw(x + 4, y + 8.6);
     });
     K.drawC(PR_C.cut); K.lw(0.3); K.dash([1.6, 1.2]);
@@ -26086,28 +26484,49 @@ function krPagesHilfe(ctx, lv) {
     [12, 12 + W, 12 + 2 * W, 198].forEach((xx) => doc.line(xx, y, xx, y + row.h));
     K.dash(null);
     y += row.h;
-  });
+  };
+  page();
+  rows.forEach(draw);
+  if (wt.length) {
+    const hh = 9; if (y + 4 + hh + wt[0].h > BOTTOM) page(); else y += 4;
+    K.text('Zum Weiterdenken', 12, y + K.cap(10.4) + 1, 't', 10.4, PR_C.accentDark); y += hh;
+    wt.forEach(draw);
+  }
 }
 
 /* ---------- Lösung ---------- */
+function krWeiterLoesung(ctx, w) {
+  const K = ctx.K, m = ctx.m, parts = [], tw = w - 8;
+  if (m.sol) {
+    const t = m.sol.t;
+    parts.push(K.rich([['Erklären  ', 'n9', PR_C.ink], [m.sol.a.shown + '. ', 'n9', PR_C.goldDark], [t.expl, 'n6', PR_C.ink]], 8.6, tw, { lh: 1.3 }));
+    if ((t.feats || []).length) parts.push(K.rich([['Kernmerkmale  ', 'n9', PR_C.muted], [t.feats.slice(0, 3).join('  ·  ') + '. ', 'n6', PR_C.ink], ['Erklärt ist das Wort, wenn zwei davon genannt sind.', 'n6', PR_C.muted]], 8.2, tw, { lh: 1.3 }));
+  }
+  const ex = krModelLinks(m, m.sol ? m.sol.id : '', 2).map((l) => '„' + l[2] + '“');
+  parts.push(ex.length ? K.rich([['Verbinden, zum Beispiel  ', 'n9', PR_C.ink], [ex.join('  '), 'n6', PR_C.ink]], 8.6, tw, { lh: 1.3 })
+    : K.rich([['Verbinden  ', 'n9', PR_C.ink], ['Der Satz nennt beide Wörter und zeigt, wie sie zusammenhängen, etwa mit „weil“, einem Beispiel oder einem Unterschied.', 'n6', PR_C.ink]], 8.6, tw, { lh: 1.3 }));
+  const h = 3.6 + 6.6 + parts.reduce((a, r) => a + r.h + 1.6, 0) + 1.4;
+  return { h, draw: (x, y) => {
+    prPanel(ctx, x, y, w, h, 'indigo');
+    K.text('Weiterdenken, mögliche Antworten', x + 4, y + 3.6 + K.cap(10.4), 't', 10.4, PR_C.accentDark);
+    let yy = y + 3.6 + 6.6; parts.forEach((r) => { r.draw(x + 4, yy); yy += r.h + 1.6; });
+  } };
+}
 function krPageLoesung(ctx) {
   const K = ctx.K, m = ctx.m, lay = m.lay;
   K.page('portrait');
   let y = prHeader(ctx, 'Lösung zum Kreuzworträtsel', null, { chip: 'für die Lehrkraft' });
-  const cs = Math.min(11, 186 / lay.W, 150 / lay.H);
+  const list = (dir) => m.items.filter((it) => it.dir === dir).map((it) => K.rich([[it.num + '   ', 'n9', PR_C.accent], [it.a.shown, 'n9', PR_C.ink], [it.a.shown !== it.t.term ? '  (' + it.t.term + ')' : '', 'n6', PR_C.muted]], 9, 88, { lh: 1.3 }));
+  const la = list('a'), ld = list('d'), sum = (a) => a.reduce((s, r) => s + r.h + 1.2, 0);
+  const listH = 7 + Math.max(sum(la), sum(ld)), wb = krWeiterLoesung(ctx, 186), solH = m.sol ? 8 : 0;
+  const cs = Math.max(5, Math.min(11, 186 / lay.W, 150 / lay.H, (284 - y - 6 - solH - listH - wb.h - 4) / lay.H));
   krGridDraw(ctx, 12 + (186 - lay.W * cs) / 2, y, cs, { letters: true });
   y += lay.H * cs + 6;
   if (m.sol) { K.text('Lösungswort', 12, y + K.cap(10.4), 't', 10.4, PR_C.ink); K.text(m.sol.a.shown, 12 + K.tw('Lösungswort', 't', 10.4) + 4, y + K.cap(10.4), 'n9', 10.4, PR_C.goldDark); y += 8; }
-  const col = (dir, title, x) => {
-    let yy = y; K.text(title, x, yy + K.cap(10.4), 't', 10.4, PR_C.ink); yy += 7;
-    m.items.filter((it) => it.dir === dir).forEach((it) => {
-      const r = K.rich([[it.num + '   ', 'n9', PR_C.accent], [it.a.shown, 'n9', PR_C.ink], [it.a.shown !== it.t.term ? '  (' + it.t.term + ')' : '', 'n6', PR_C.muted]], 9, 88, { lh: 1.3 });
-      r.draw(x, yy); yy += r.h + 1.2;
-    });
-    return yy;
-  };
-  const e = Math.max(col('a', 'Waagerecht', 12), col('d', 'Senkrecht', 109));
-  if (e > 284) K.warn.push('Lösung zu voll: ' + ctx.pack.title);
+  const col = (rs, title, x) => { let yy = y; K.text(title, x, yy + K.cap(10.4), 't', 10.4, PR_C.ink); yy += 7; rs.forEach((r) => { r.draw(x, yy); yy += r.h + 1.2; }); return yy; };
+  const e = Math.max(col(la, 'Waagerecht', 12), col(ld, 'Senkrecht', 109));
+  wb.draw(12, e + 3);
+  if (e + 3 + wb.h > 284) K.warn.push('Lösung zu voll: ' + ctx.pack.title);
 }
 
 /* ---------- Lehrkraftblatt ---------- */
@@ -26115,22 +26534,23 @@ function krTeacherTexts(ctx, o) {
   const m = ctx.m, pack = ctx.pack, n = m.items.length;
   const musik = !pack.subject || /musik/i.test(pack.subject);
   const L = {};
-  L.chips = [pack.grade, `${n} Wörter`, o.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + o.level, ctx.kopf ? 'erst aus dem Kopf' : '', m.sol ? 'mit Lösungswort' : ''].filter(Boolean);
+  L.chips = [pack.grade, `${n} Wörter`, o.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + o.level, ctx.kopf ? 'erst aus dem Kopf' : '', m.sol ? 'mit Lösungswort' : '', o.fill && o.parts.blatt ? 'ausfüllbar' : ''].filter(Boolean);
   L.einordnung = (musik ? 'Abruf- und Sicherungsübung für die Zeit nach der musikalischen Erarbeitung. Das Rätsel ruft Begriffe ab, die die Klasse vorher gehört, gesungen und gespielt hat.'
     : 'Abruf- und Sicherungsübung für die Zeit nach der Erarbeitung. Das Rätsel ruft Begriffe ab, die die Klasse vorher kennengelernt hat.') + ' Verstanden ist ein Begriff, wenn er erklärt und mit anderen verbunden wird. Dafür gibt es den Schritt Weiterdenken.';
   L.module = pack.module || '';
-  const t1 = Math.max(3, Math.round(n * 0.6)), t2 = Math.max(4, Math.round(n * 0.8)), t3 = n <= 5 ? 3 : 7;
+  const t1 = Math.max(3, Math.round(n * 0.6)), t2 = Math.max(4, Math.round(n * 0.8)), t3 = n <= 5 ? 4 : 8;
   L.ablauf = [];
   if (n > 5) L.ablauf.push([3, 'Einführen', 'Die Schritte zeigen. Klären, dass Ä, Ö, Ü und ß in ein Kästchen kommen und Wörter aus mehreren Teilen eine Längenangabe haben.']);
   if (ctx.kopf) L.ablauf.push([t1, 'Aus dem Kopf', 'Alle schreiben allein auf die Linien, noch ohne Gitter. Lücken sind erlaubt.']);
   L.ablauf.push([t2, 'Ins Gitter', `Eintragen und an den Kreuzungen prüfen. ${o.parts.hilfe ? 'Wer feststeckt, holt sich eine Hilfekarte.' : 'Wer feststeckt, fragt nach einer Hilfe, erst nach dem Oberbegriff, dann nach einem Beispiel, zuletzt nach dem Anfangsbuchstaben.'}`]);
-  L.ablauf.push([t3, 'Weiterdenken', m.sol ? 'Lösungswort erklären und mit zwei Rätselwörtern verbinden. Danach zu zweit vergleichen.' : 'Zwei Rätselwörter in einem Satz verbinden, danach zu zweit vergleichen.']);
+  L.ablauf.push([t3, 'Weiterdenken', m.sol ? 'Lösungswort mit eigenen Worten erklären, dann in einem Satz mit einem Rätselwort verbinden. Danach zu zweit vergleichen: Welche Merkmale nennt die Erklärung, zeigt der Satz einen Zusammenhang?' : 'Ein Rätselwort erklären und in einem Satz mit einem zweiten verbinden, danach zu zweit vergleichen.']);
   if (n > 5) L.ablauf.push([5, 'Auswerten', 'Zwei oder drei Sätze vorlesen lassen. Welche Wörter brauchten Hilfe?']);
   L.total = L.ablauf.reduce((s, a) => s + a[0], 0);
   L.diff = [
     'Leicht heißt Erklärung und Wortspeicher, mittel nur die Erklärung, schwer nur typische Merkmale.',
+    'Beim Weiterdenken stehen bei leicht ein Satzanfang und zwei Satzmuster auf dem Blatt, bei mittel zwei Satzmuster, bei schwer keine Satzhilfe.',
     'Alle Stufen haben dasselbe Gitter und dieselbe Lösung. So lässt sich gemeinsam vergleichen.',
-    o.parts.hilfe ? 'Die Hilfekarten bieten je Wort drei Stufen. Wer eine Karte nimmt, markiert das Wort und wiederholt es später.' : ''
+    o.parts.hilfe ? 'Die Hilfekarten bieten je Wort drei Stufen, dazu Karten zum Erklären und Verbinden. Wer eine Karte nimmt, markiert das Wort und wiederholt es später.' : ''
   ].filter(Boolean);
   const hear = m.items.filter((it) => it.t.kind === 'hoeren' && isMedia(it.t)), bild = m.items.filter((it) => it.t.kind === 'bild' && isMedia(it.t));
   L.board = [['Wörter', prList(m.items.map((it) => it.a.shown)) + '.']];
@@ -26138,14 +26558,15 @@ function krTeacherTexts(ctx, o) {
   if (bild.length) L.board.push(['Notenbilder', `${bild.length}, als Bild beim Hinweis.`]);
   if (m.sol) L.board.push(['Lösungswort', m.sol.a.shown + '.']);
   if (m.missing.length) L.board.push(['Nicht im Gitter', prList(m.missing) + '.']);
+  if (o.fill && o.parts.blatt) L.board.push(['Ausfüllbar', 'Das Rätselblatt lässt sich am Gerät ausfüllen, etwa im Acrobat Reader. Ausgedruckt bleibt es ein normales Arbeitsblatt.']);
   const F = [];
   if (!pack.checked) F.push(['KI-Entwurf', 'Lies die Hinweise vor dem Einsatz. Fehler prägen sich beim Abrufen ein.']);
   F.push(['Raten', ctx.kopf ? 'Kreuzungen verraten Buchstaben. Wer nur Muster füllt, rät. Deshalb zuerst aus dem Kopf schreiben lassen und erst dann eintragen.' : 'Kreuzungen verraten Buchstaben. Mit „Erst aus dem Kopf“ schreiben alle zuerst ohne Gitter.']);
-  F.push(['Nur benennen', 'Das Gitter zeigt, ob ein Wort bekannt ist. Verstehen zeigt sich beim Erklären, deshalb den Schritt Weiterdenken nicht streichen.']);
+  F.push(['Nur benennen', 'Das Gitter zeigt, ob ein Wort bekannt ist. Verstehen zeigt sich beim Erklären und Verbinden. Sätze wie „Beide gehören zum Thema“ zeigen noch keinen Zusammenhang.']);
   F.push(['Schreibweise', 'Ä, Ö, Ü und ß stehen in einem Kästchen. Wörter aus mehreren Teilen haben eine Längenangabe wie (5, 4).']);
   if (hear.length) F.push(['Hörbeispiele', 'Auf Papier fehlt der Klang. Die Beispiele zweimal vorspielen, bevor alle schreiben.']);
   L.fallen = F.slice(0, 5);
-  L.sicherung = ['Die Wörter, die Hilfe brauchten, sind der Einstieg in die nächste Stunde.', 'Am Gerät legt ein Klick sie in „Karten üben“.', o.parts.loesung ? 'Die Lösung liegt bei, mit allen Wörtern.' : ''].filter(Boolean);
+  L.sicherung = ['Die Wörter, die Hilfe brauchten, sind der Einstieg in die nächste Stunde.', 'Am Gerät legt ein Klick sie in „Karten üben“.', o.parts.loesung ? 'Die Lösung liegt bei, mit allen Wörtern und einer Erwartung zum Weiterdenken.' : ''].filter(Boolean);
   const code = !pack.own && typeof krCodeMake === 'function' ? krCodeMake(pack, o.cfg, m.sol ? m.sol.id : '', o.level, ctx.kopf) : '';
   L.qr = code ? { url: krURL(pack, code), note: pack.edited ? 'Der Link passt nur zu einer Fassung mit deinen Anpassungen.' : '' } : null;
   L.own = String(pack.lk || '').trim();
@@ -26228,20 +26649,25 @@ async function buildKrPdf(JsPDF, o) {
   const pack = findPack(o.packId); if (!pack) throw new Error('pack');
   const m = krModel(pack, o.cfg); if (!m.lay) throw new Error('lay');
   const level = langFor(pack);
-  const ctx = { pack: Object.assign({}, pack), cover: prPackCover(pack), spar: o.color === 'spar', group: '', multi: false, famColor: {}, o: { parts: {} }, level, easy: level === 'easy', hard: level === 'hard', m, kopf: !!o.kopf };
+  const ctx = { pack: Object.assign({}, pack), cover: prPackCover(pack), spar: o.color === 'spar', group: '', multi: false, famColor: {}, o: { parts: {} }, level, easy: level === 'easy', hard: level === 'hard', m, kopf: !!o.kopf, fill: !!o.fill, fp: '', fields: {} };
   ctx.K = prKit(JsPDF, ctx.spar);
   ctx.img = await krPrImages(m);
   if (o.parts.lehrkraft) krPageLehrkraft(ctx, o);
+  ctx.fill = !!o.fill && !!o.parts.blatt;
   if (o.parts.blatt) (o.stufen === 'alle' ? ['leicht', 'mittel', 'schwer'] : [o.level]).forEach((lv) => krPageBlatt(ctx, lv));
+  ctx.fill = false;
   if (o.parts.hilfe) krPagesHilfe(ctx, o.level);
   if (o.parts.loesung) krPageLoesung(ctx);
   prFooters(ctx);
-  return { buf: prFixPdf(ctx.K.doc.output('arraybuffer')), pages: ctx.K.pages(), warnings: ctx.K.warn.slice() };
+  let buf = prFixPdf(ctx.K.doc.output('arraybuffer'));
+  const nf = Object.keys(ctx.fields).length;
+  if (nf) buf = krAcroFix(buf, ctx.fields);
+  return { buf, pages: ctx.K.pages(), warnings: ctx.K.warn.slice(), fields: nf };
 }
 async function krPrMake() {
   if (prBusy || !krPr) return;
   const pack = krSetupPack(), cfg = krCfg(pack);
-  const o = { packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level: krLevelNow(), kopf: settings.krKopf !== false, parts: Object.assign({}, krPr.parts), stufen: krPr.stufen, color: krPr.color };
+  const o = { packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level: krLevelNow(), kopf: settings.krKopf !== false, parts: Object.assign({}, krPr.parts), stufen: krPr.stufen, color: krPr.color, fill: krPr.fill };
   if (!KR_PR_PARTS.some((p) => o.parts[p[0]])) { toast('Bitte mindestens einen Inhalt ankreuzen.'); return; }
   prBusy = true; krPrStatus('PDF-Werkzeug wird geladen …', true);
   try {
@@ -26249,7 +26675,7 @@ async function krPrMake() {
     krPrStatus('PDF wird erstellt …', true);
     const res = await buildKrPdf(JsPDF, o);
     if (!downloads || location.protocol === 'file:') window.__vkLastPdf = res.buf;
-    window.__vkLastPdfInfo = { pages: res.pages, bytes: res.buf.byteLength, warnings: res.warnings, raetsel: pack.id };
+    window.__vkLastPdfInfo = { pages: res.pages, bytes: res.buf.byteLength, warnings: res.warnings, raetsel: pack.id, fields: res.fields };
     const kb = Math.round(res.buf.byteLength / 1024);
     if (downloads) {
       krPrStatus(`Fertig: ${res.pages} ${res.pages === 1 ? 'Seite' : 'Seiten'}, ${kb} KB. Abfrage zum Speichern …`, true);
@@ -26270,6 +26696,7 @@ Object.assign(KR_ACTIONS, {
     const k = el.dataset.k, v = el.dataset.v;
     if (k === 'stufen') krPr.stufen = v === 'alle' ? 'alle' : 'eine';
     else if (k === 'color') krPr.color = v === 'spar' ? 'spar' : 'farbig';
+    else if (k === 'fill') krPr.fill = v === 'an';
     krPr.status = ''; krPrSave(); krPrRender();
   },
   'kr-pr-part': (el) => { if (!krPr || prBusy) return; const k = el.dataset.k; if (!(k in krPr.parts)) return; krPr.parts[k] = !krPr.parts[k]; krPr.status = ''; krPrSave(); krPrRender(); },
