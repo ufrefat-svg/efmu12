@@ -611,6 +611,8 @@ select.field { appearance: auto; }
 .st3-top { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 12px; }
 .st3-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .st3-brand .logo-sm { width: 44px; height: 33px; }
+.beta-chip { align-self: center; border: 1px solid #E0A100 !important; background: #FFF3D6 !important; color: #8A5A00 !important; font: 700 0.72rem/1 'Nunito', system-ui, sans-serif; letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 8px; border-radius: 999px; cursor: pointer; flex: none; }
+.beta-chip:hover, .beta-chip:focus-visible { background: #FFE3A3 !important; }
 .st3-name { font-family: 'Vierklang Display', 'Lilita One', 'Trebuchet MS', system-ui, sans-serif; font-size: 1.75rem; line-height: 1; color: #23264F !important; }
 .st3-steps { display: flex; align-items: center; gap: 8px; }
 .st3-step { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 6px 15px 6px 7px; border: 0 !important; border-radius: 999px; background: #FFFFFF !important; color: #5A5F86 !important; font-weight: 800; box-shadow: 0 3px 0 #DCDFF0 !important; cursor: pointer; }
@@ -1823,7 +1825,7 @@ const BUILTIN_PACKS = [
   blurb: 'Moral, Werte, Würde und Verantwortung: Grundbegriffe zum Mitdenken.',
   cover: { color: 'green', icon: 'book' },
   checked: false,
-  note: 'Grundbegriffe, Handeln, Werte und ethische Theorien. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Grundbegriffe, Handeln, Werte und ethische Theorien. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   terms: [
     T('ethik', 'Ethik', 'begriff', 1, 'Grundbegriffe',
       'Nachdenken darüber, was gutes und richtiges Handeln ist und wie man das begründen kann. Sie ist ein Teilgebiet der Philosophie.',
@@ -1921,7 +1923,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6: Notenwerte, Taktarten und Zählweise, einfache Rhythmen notieren, vom Notenbild musizieren und erfinden, grafische Notation, Tempo, Bodypercussion',
   cover: { color: 'red', icon: 'drum' },
   checked: false,
-  note: 'Grundbegriffe zu Puls, Takt und Notenwerten, dazu die Rhythmussprache mit Du, dei und Du-a, Pattern, Bodypercussion und grafische Notation. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Grundbegriffe zu Puls, Takt und Notenwerten, dazu die Rhythmussprache mit Du, dei und Du-a, Pattern, Bodypercussion und grafische Notation. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('puls', 'Puls', 'begriff', 1, 'Grundschlag',
@@ -2099,7 +2101,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6: Instrumentenkunde mit Arten der Tonerzeugung, Instrumentengruppen des Orchesters und Instrumenten, die man hörend erkennt',
   cover: { color: 'brown', icon: 'violin' },
   checked: false,
-  note: 'Begriffe zu den sechs Instrumentenfamilien und wie in ihnen der Ton entsteht, zu einzelnen Instrumenten aus bekannten Hörbeispielen und zur Besetzung im Orchester. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu den sechs Instrumentenfamilien und wie in ihnen der Ton entsteht, zu einzelnen Instrumenten aus bekannten Hörbeispielen und zur Besetzung im Orchester. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('streich', 'Streichinstrumente', 'begriff', 1, 'Saiten',
@@ -2255,7 +2257,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6, Pflichtmodul Programmmusik: Programmmusik als Darstellung außermusikalischer Inhalte, Gestaltungselemente hörend erfassen und beschreiben, Leben eines Komponisten der Romantik',
   cover: { color: 'violet', icon: 'book' },
   checked: false,
-  note: 'Begriffe zur Programmmusik und ihren Gestaltungsmitteln, zu Griegs Musik zu Peer Gynt, zu Grieg und Ibsen und zum Sonnenaufgang von Richard Strauss. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zur Programmmusik und ihren Gestaltungsmitteln, zu Griegs Musik zu Peer Gynt, zu Grieg und Ibsen und zum Sonnenaufgang von Richard Strauss. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('programmmusik', 'Programmmusik', 'begriff', 2, 'Musik erzählt',
@@ -2433,7 +2435,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6, Stimme und Gehör: Aufbau und Funktion von Stimmorgan und Hörorgan, Stimmgattungen, die eigene Stimme wahrnehmen und pflegen',
   cover: { color: 'teal', icon: 'ear' },
   checked: false,
-  note: 'Begriffe zu Atmung und Stimmorgan, zum Einsingen und zum Stimmwechsel, zu den vier Stimmgattungen im Chor und zum Weg des Schalls durch das Ohr. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Atmung und Stimmorgan, zum Einsingen und zum Stimmwechsel, zu den vier Stimmgattungen im Chor und zum Weg des Schalls durch das Ohr. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('zwerchfell', 'Zwerchfell', 'begriff', 2, 'Stimmorgan',
@@ -2605,7 +2607,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6, Musik und Form: Strophe und Refrain, Liedform ABA, Rondo, Kanon, Wiederholungen, Melodieverlauf, Dur und Moll; Lieder wie Nationalhymne und Rennsteiglied',
   cover: { color: 'green', icon: 'form' },
   checked: false,
-  note: 'Begriffe zum Aufbau von Liedern, zu Formteilen und Formen, zur Melodie mit Tonschritt, Tonsprung, Dur und Moll und zum gemeinsamen Singen, dazu Nationalhymne und Rennsteiglied. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zum Aufbau von Liedern, zu Formteilen und Formen, zur Melodie mit Tonschritt, Tonsprung, Dur und Moll und zum gemeinsamen Singen, dazu Nationalhymne und Rennsteiglied. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('strophe', 'Strophe', 'begriff', 1, 'Liedaufbau',
@@ -2780,7 +2782,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6, Elementare Musiklehre: Notenwerte und Pausen, Stammtöne c’ bis e’’, Vorzeichen, Aufbau der Klaviatur, Tonleitern bis zwei Vorzeichen, Melodieverlauf',
   cover: { color: 'blue', icon: 'staff' },
   checked: false,
-  note: 'Begriffe zu Notenbild, Pausen, Tonhöhen, Klaviatur, Tonarten und Melodieverlauf, mit zwei Notenbildern. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Notenbild, Pausen, Tonhöhen, Klaviatur, Tonarten und Melodieverlauf, mit zwei Notenbildern. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('notenkopf', 'Notenkopf', 'begriff', 1, 'Notenbild',
@@ -2966,7 +2968,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul 2: Musiktheater, Klassenstufe 5/6: Szenen wahrnehmen, Figuren charakterisieren, Berufe des Musiktheaters, Leben eines Komponisten der Wiener Klassik',
   cover: { color: 'violet', icon: 'mask' },
   checked: false,
-  note: 'Begriffe zu Mozarts Leben, zur Zauberflöte mit Figuren, Zauberinstrumenten und Musiknummern und zu Berufen am Theater. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Mozarts Leben, zur Zauberflöte mit Figuren, Zauberinstrumenten und Musiknummern und zu Berufen am Theater. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('mozart', 'Wolfgang Amadeus Mozart', 'person', 1, 'Mozarts Leben',
@@ -3138,7 +3140,7 @@ BUILTIN_PACKS.push({
   module: 'Wahlmodul Musikkulturen der Welt, Klassenstufe 5/6: typische Instrumente verschiedener Kulturen und charakteristische Merkmale',
   cover: { color: 'orange', icon: 'globe' },
   checked: false,
-  note: 'Instrumente aus Afrika, Asien, Amerika, Europa und Australien, geordnet nach der Art der Klangerzeugung, dazu die Militärmusik der Janitscharen und drei Hörfelder zu typischen Merkmalen. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Instrumente aus Afrika, Asien, Amerika, Europa und Australien, geordnet nach der Art der Klangerzeugung, dazu die Militärmusik der Janitscharen und drei Hörfelder zu typischen Merkmalen. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('djembe', 'Djembe', 'begriff', 1, 'Fellklinger',
@@ -3307,7 +3309,7 @@ BUILTIN_PACKS.push({
   module: 'Wahlmodul Kultur erleben, Klassenstufe 5/6: kulturelle Orte und Einrichtungen der Region, Regeln für Konzert- und Theaterbesuch',
   cover: { color: 'red', icon: 'ticket' },
   checked: false,
-  note: 'Begriffe zu Kulturorten in Thüringen und anderswo, zu Räumen im Theater, zum Orchester, zum Ablauf eines Konzerts und zu Proben und Premieren. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Kulturorten in Thüringen und anderswo, zu Räumen im Theater, zum Orchester, zum Ablauf eines Konzerts und zu Proben und Premieren. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('konzertsaal', 'Konzertsaal', 'begriff', 1, 'Kulturorte',
@@ -3471,7 +3473,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6: Parameter Dynamik, Tempo und Artikulation, Dur und Moll hörend unterscheiden, Gestaltungselemente hörend erfassen und beschreiben',
   cover: { color: 'teal', icon: 'dial' },
   checked: false,
-  note: 'Begriffe zu Lautstärke, Tempo, Spielweise und Wirkung, mit vier Hörfeldern zu staccato, pizzicato, Dur und Moll. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Lautstärke, Tempo, Spielweise und Wirkung, mit vier Hörfeldern zu staccato, pizzicato, Dur und Moll. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('dynamik', 'Dynamik', 'begriff', 1, 'Lautstärke',
@@ -3648,7 +3650,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul Rock- und Popmusikstile, Klassenstufe 7/8: Einfluss musikalischer Traditionen, Stilmerkmale, Popsong als Ausdruck der Jugendkultur und des politischen Diskurses',
   cover: { color: 'red', icon: 'guitar' },
   checked: false,
-  note: 'Begriffe zu Wurzeln, Stilen, Stars und Gitarrensound von Rock und Pop, geordnet nach Jahrzehnten von den 1950er- bis zu den 1970er-Jahren. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Wurzeln, Stilen, Stars und Gitarrensound von Rock und Pop, geordnet nach Jahrzehnten von den 1950er- bis zu den 1970er-Jahren. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('rnb', 'Rhythm and Blues', 'begriff', 2, 'Wurzeln',
@@ -3842,7 +3844,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul Rock- und Popmusikstile, Klassenstufe 7/8, mit Bezug zum Musizieren in der Band (Instrumente, Bühnentechnik, Zusammenspiel)',
   cover: { color: 'orange', icon: 'drum' },
   checked: false,
-  note: 'Begriffe zu Bandinstrumenten, Schlagzeugteilen, Tontechnik und Zusammenspiel, wie sie beim gemeinsamen Musizieren von Popsongs in der Klasse vorkommen. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Bandinstrumenten, Schlagzeugteilen, Tontechnik und Zusammenspiel, wie sie beim gemeinsamen Musizieren von Popsongs in der Klasse vorkommen. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('egitarre', 'E-Gitarre', 'begriff', 1, 'Instrumente',
@@ -4022,7 +4024,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul Barock, Klassenstufe 7/8: Concerto grosso exemplarisch (Aufbau hörend erfassen, Formelemente, historischer Kontext, Komponist)',
   cover: { color: 'brown', icon: 'organ' },
   checked: false,
-  note: 'Begriffe zum Generalbasszeitalter (etwa 1600–1750): Musikleben an Hof und Kirche, Klang, Concerto grosso, Gattungen, Personen und Werke. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zum Generalbasszeitalter (etwa 1600–1750): Musikleben an Hof und Kirche, Klang, Concerto grosso, Gattungen, Personen und Werke. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('gbzeit', 'Generalbasszeitalter', 'begriff', 2, 'Musikleben',
@@ -4217,7 +4219,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 7/8: binäre und ternäre Rhythmen, Intervalle Prime bis Oktave, Dur- und Molldreiklänge in Grundstellung, Akkordsymbole, einfache Kadenz und Prinzip des 4-Chord-Songs',
   cover: { color: 'indigo', icon: 'chord' },
   checked: false,
-  note: 'Begriffe zu Intervallen, Dreiklängen, Akkordsymbolen, Kadenz und Rhythmusgefühl, mit Beispielen aus Liedern und Popsongs. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Intervallen, Dreiklängen, Akkordsymbolen, Kadenz und Rhythmusgefühl, mit Beispielen aus Liedern und Popsongs. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('intervall', 'Intervall', 'begriff', 1, 'Intervalle',
@@ -4399,7 +4401,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 7/8, Stimme und Gehör: Mutation, Stimmhygiene, Stimmübungen zum Erwärmen',
   cover: { color: 'teal', icon: 'mic' },
   checked: false,
-  note: 'Begriffe zu Stimmorgan, Stimmwechsel, Stimmpflege, Stimmlagen, gemeinsamem Singen und Stimme in Pop und Rap. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Stimmorgan, Stimmwechsel, Stimmpflege, Stimmlagen, gemeinsamem Singen und Stimme in Pop und Rap. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('kehlkopf', 'Kehlkopf', 'begriff', 1, 'Körper',
@@ -4581,7 +4583,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul Klassik: ein mehrsätziges Instrumentalwerk der Klassik erschließen (Formelemente, Parameter, historischer Kontext, Biografie), Klassenstufe 7/8',
   cover: { color: 'indigo', icon: 'quill' },
   checked: false,
-  note: 'Begriffe zu Zeit und Ideen, Personen, Gattungen, Satzformen und musikalischen Bausteinen der Wiener Klassik rund um mehrsätzige Werke. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Zeit und Ideen, Personen, Gattungen, Satzformen und musikalischen Bausteinen der Wiener Klassik rund um mehrsätzige Werke. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('wienerklassik', 'Wiener Klassik', 'begriff', 1, 'Lebenswelt',
@@ -4775,7 +4777,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan Klassenstufe 7/8 (Ende Klasse 8): Merkmale des Blues und 12-taktiges Bluesschema',
   cover: { color: 'blue', icon: 'guitar' },
   checked: false,
-  note: 'Wurzeln, Form, Klang, Groove, Stile und Personen des Blues; der Hintergrund von Sklaverei und Rassentrennung ist sachlich eingebunden. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Wurzeln, Form, Klang, Groove, Stile und Personen des Blues; der Hintergrund von Sklaverei und Rassentrennung ist sachlich eingebunden. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('worksong', 'Worksong', 'begriff', 1, 'Wurzeln',
@@ -4967,7 +4969,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul Rock- und Popmusikstile: Stile an Merkmalen erkennen, Songaufbau, Berufe der Branche, Klassenstufe 7/8',
   cover: { color: 'pink', icon: 'mic' },
   checked: false,
-  note: 'Stile von Soul bis K-Pop und Anadolu Rock an Merkmalen erkennen, dazu Songteile und drei Berufe der Musikbranche. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Stile von Soul bis K-Pop und Anadolu Rock an Merkmalen erkennen, dazu Songteile und drei Berufe der Musikbranche. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('soul', 'Soul', 'begriff', 2, 'Groove',
@@ -5163,7 +5165,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul Musiktheater: Räume, Arbeitsbereiche und Berufe eines Mehrspartenhauses und ihre Funktion im Ablauf einer Produktion, Klassenstufe 7/8',
   cover: { color: 'red', icon: 'mask' },
   checked: false,
-  note: 'Formen der Oper und der Weg einer Produktion vom Spielplan über die Proben bis zur Premiere, mit Bizets „Carmen“ als durchgehendem Beispiel. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Formen der Oper und der Weg einer Produktion vom Spielplan über die Proben bis zur Premiere, mit Bizets „Carmen“ als durchgehendem Beispiel. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('carmen', 'Carmen', 'werk', 1, 'Oper',
@@ -5355,7 +5357,7 @@ BUILTIN_PACKS.push({
   module: 'Wahlmodul Musik und Medien: Entwicklung der Tonträger, Wandel der Musiknutzung, Geschäftsmodelle von Musikplattformen, Urheberrecht und Datenschutz, Klassenstufe 7/8',
   cover: { color: 'teal', icon: 'headphones' },
   checked: false,
-  note: 'Geschichte und Technik der Tonträger, Wandel der Musiknutzung, Geschäftsmodelle der Musikbranche und Grundregeln zu Urheberrecht und Datenschutz. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Geschichte und Technik der Tonträger, Wandel der Musiknutzung, Geschäftsmodelle der Musikbranche und Grundregeln zu Urheberrecht und Datenschutz. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('phonograph', 'Phonograph', 'begriff', 2, 'Anfänge',
@@ -5550,7 +5552,7 @@ BUILTIN_PACKS.push(
   module: 'Pflichtmodul Romantik (Solokonzert der Romantik, Volkslied und Kunstlied) und Musik und Form (Solokonzert, Musik und Text), Klassenstufe 9; ergänzt um Programmmusik und Sinfonische Dichtung',
   cover: { color: 'violet', icon: 'violin' },
   checked: false,
-  note: 'Begriffe zu Lied und Liedformen, zur Klaviermusik im bürgerlichen Salon, zu Virtuosentum und Solokonzert sowie zu Programmmusik und nationalen Schulen. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Lied und Liedformen, zur Klaviermusik im bürgerlichen Salon, zu Virtuosentum und Solokonzert sowie zu Programmmusik und nationalen Schulen. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('romantik', 'Romantik', 'begriff', 1, 'Zeitgeist',
@@ -5775,7 +5777,7 @@ BUILTIN_PACKS.push(
   module: 'Pflichtmodul Musik und Werbung (Wirkung von Musik, Funktionen in der Werbung, Werbespots analysieren, Werbemusik gestalten), Klassenstufe 9',
   cover: { color: 'orange', icon: 'megaphone' },
   checked: false,
-  note: 'Begriffe zu Formen der Werbemusik, zum Markenklang, zu Wirkungen und Wirkungsmodellen sowie zur Werbepraxis, als Grundlage für Spotanalysen und eigene Werbemusik. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Formen der Werbemusik, zum Markenklang, zu Wirkungen und Wirkungsmodellen sowie zur Werbepraxis, als Grundlage für Spotanalysen und eigene Werbemusik. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('hintergrund', 'Hintergrundmusik', 'begriff', 1, 'Musikformen',
@@ -5980,7 +5982,7 @@ BUILTIN_PACKS.push(
   module: 'Pflichtmodul Musiknutzung im digitalen Raum (Formen, Funktionen und Wirkungen, Urheberrecht, algorithmische Empfehlungen, Identität), Klassenstufe 9',
   cover: { color: 'teal', icon: 'headphones' },
   checked: false,
-  note: 'Begriffe zu Musikdiensten und Algorithmen, zu Rechten im Netz, zu künstlicher Intelligenz, zum Auflegen, zur Netzkultur und zu Musikvideos. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Musikdiensten und Algorithmen, zu Rechten im Netz, zu künstlicher Intelligenz, zum Auflegen, zur Netzkultur und zu Musikvideos. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('streaming', 'Streaming', 'begriff', 1, 'Musikdienste',
@@ -6179,7 +6181,7 @@ BUILTIN_PACKS.push(
   module: 'Musiklehre Klassenstufe 9: Synkopen, Quintenzirkel (Tonarten, Vorzeichen, Verwandtschaften), Akkorde der einfachen Kadenz bis zwei Vorzeichen musizieren und anwenden',
   cover: { color: 'blue', icon: 'chord' },
   checked: false,
-  note: 'Begriffe zu Synkopen und Grundschlägen, zu Tonarten, Quintenzirkel und Verwandtschaften, zu Hauptfunktionen und Schlüssen sowie zum Begleiten und Komponieren, mit vier Hörfeldern. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Synkopen und Grundschlägen, zu Tonarten, Quintenzirkel und Verwandtschaften, zu Hauptfunktionen und Schlüssen sowie zum Begleiten und Komponieren, mit vier Hörfeldern. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('synkope', 'Synkope', 'hoeren', 2, 'Rhythmus',
@@ -6375,7 +6377,7 @@ BUILTIN_PACKS.push(
   module: 'Wahlmodul 2: Musikkulturen der Welt (Asien), Klassenstufe 9',
   cover: { color: 'red', icon: 'globe' },
   checked: false,
-  note: 'Instrumente, Tonsysteme und Klangprinzipien aus Indien, Indonesien und China sowie der europäische Blick auf diese Musik, mit zwei Hörfeldern. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Instrumente, Tonsysteme und Klangprinzipien aus Indien, Indonesien und China sowie der europäische Blick auf diese Musik, mit zwei Hörfeldern. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('raga', 'Raga', 'begriff', 2, 'Indien',
@@ -6581,7 +6583,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul Aufbruch in die Moderne: Impressionismus und Expressionismus, von tonaler zu atonaler Musik, Zwölftontechnik, Klassenstufe 10',
   cover: { color: 'violet', icon: 'wave' },
   checked: false,
-  note: 'Begriffe zu Impressionismus und Exotismus, Expressionismus und Atonalität, Zwölftontechnik und Strawinskys Ballettmusik, mit zwei Hörfeldern. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Impressionismus und Exotismus, Expressionismus und Atonalität, Zwölftontechnik und Strawinskys Ballettmusik, mit zwei Hörfeldern. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('impressionismus', 'Impressionismus', 'begriff', 1, 'Französische Moderne',
@@ -6807,7 +6809,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul Musiktheater: Aufbau und zentrale Merkmale des Musicals, Szenen, Charakterisierung von Figuren durch musikalische Mittel, Klassenstufe 10',
   cover: { color: 'pink', icon: 'mask' },
   checked: false,
-  note: 'Begriffe zu Formen und Nummern des Musicals, zur Arbeit auf der Bühne, zu West Side Story und weiteren Welterfolgen, mit einem Hörfeld. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Formen und Nummern des Musicals, zur Arbeit auf der Bühne, zu West Side Story und weiteren Welterfolgen, mit einem Hörfeld. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('musical', 'Musical', 'begriff', 1, 'Formen',
@@ -7024,7 +7026,7 @@ BUILTIN_PACKS.push({
   module: 'Wahlmodul Musik und Medien sowie Medienbildung: digitale Werkzeuge zur Musikproduktion (DAW), Klassenstufe 10',
   cover: { color: 'petrol', icon: 'headphones' },
   checked: false,
-  note: 'Begriffe zu Arbeit in der DAW, Aufnahme, Bausteinen eines Tracks, Mischung und DJing, jeweils mit Blick auf die musikalische Wirkung. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Arbeit in der DAW, Aufnahme, Bausteinen eines Tracks, Mischung und DJing, jeweils mit Blick auf die musikalische Wirkung. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('daw', 'DAW', 'begriff', 1, 'Arbeitsplatz',
@@ -7203,7 +7205,7 @@ BUILTIN_PACKS.push({
   module: 'Wahlmodul Musikkulturen der Welt, Klassenstufe 10',
   cover: { color: 'orange', icon: 'drum' },
   checked: false,
-  note: 'Begriffe zu kubanischer Musik und Salsa, Percussion, Brasilien, Tango, Karibik und Mexiko, mit einem Hörfeld zur Clave. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu kubanischer Musik und Salsa, Percussion, Brasilien, Tango, Karibik und Mexiko, mit einem Hörfeld zur Clave. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('son', 'Son cubano', 'begriff', 2, 'Kuba',
@@ -7384,7 +7386,7 @@ BUILTIN_PACKS.push({
   module: 'Pflichtmodul 2b: Filmmusik, Klassenstufe 10',
   cover: { color: 'red', icon: 'film' },
   checked: false,
-  note: 'Funktionen nach Hansjörg Pauli, Verfahren, Typen von Filmmusik, Klangmittel, Produktion und Geschichte, mit drei Hörfeldern. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Funktionen nach Hansjörg Pauli, Verfahren, Typen von Filmmusik, Klangmittel, Produktion und Geschichte, mit drei Hörfeldern. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('paraphr', 'paraphrasierend', 'begriff', 2, 'Funktionen',
@@ -7586,7 +7588,7 @@ BUILTIN_PACKS.push(
   module: 'Kursstufe Klasse 11: Musik im historischen Kontext (1430–1600), Vokalsatz, Kirchenmusik und Wort-Ton-Bezug; Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'green', icon: 'quill' },
   checked: false,
-  note: 'Begriffe zu Vokalsatz, Kirchenmusik zwischen Reformation und Trient, Madrigal und venezianischem Raumklang von etwa 1430 bis 1600. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Vokalsatz, Kirchenmusik zwischen Reformation und Trient, Madrigal und venezianischem Raumklang von etwa 1430 bis 1600. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('renaissance', 'Renaissance', 'begriff', 1, 'Umfeld',
@@ -7838,7 +7840,7 @@ BUILTIN_PACKS.push(
   module: 'Kursstufe Klasse 11: Musik im historischen Kontext (Generalbasszeitalter 1600–1750), Satztechnik der Fuge, Musik und Sprache in Kantate, Passion und Oratorium; Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'orange', icon: 'organ' },
   checked: false,
-  note: 'Begriffe zu Generalbass, Affekt und Figur, Fugenbau, Konzert und geistlicher Vokalmusik zwischen 1600 und 1750, mit einem Hörfeld. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Generalbass, Affekt und Figur, Fugenbau, Konzert und geistlicher Vokalmusik zwischen 1600 und 1750, mit einem Hörfeld. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('monodie', 'Monodie', 'begriff', 2, 'Generalbass',
@@ -8085,7 +8087,7 @@ BUILTIN_PACKS.push(
   module: 'Kursstufe Klasse 11: Satztechnik und Analyse (Funktions- und Stufentheorie, Akkordlehre, Satzlehre, Modulation); Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'violet', icon: 'chord' },
   checked: false,
-  note: 'Begriffe zu Funktionstheorie, Akkorden, Schlussbildungen, Satzlehre und Modulation, mit vier Hörfeldern. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Funktionstheorie, Akkorden, Schlussbildungen, Satzlehre und Modulation, mit vier Hörfeldern. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('funktionstheorie', 'Funktionstheorie', 'begriff', 2, 'Funktionen',
@@ -8315,7 +8317,7 @@ BUILTIN_PACKS.push(
   module: 'Kursstufe Klasse 11: Musik und Sprache (Wort-Ton-Verhältnis, Kunstlied, Oper und Musikdrama), Analyse der Textvertonung; Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'red', icon: 'mask' },
   checked: false,
-  note: 'Begriffe zur Wort-Ton-Analyse, zu Kunstlied und Liedformen sowie zur Oper von Monteverdi bis Wagner und Bizet. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zur Wort-Ton-Analyse, zu Kunstlied und Liedformen sowie zur Oper von Monteverdi bis Wagner und Bizet. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('wortton', 'Wort-Ton-Verhältnis', 'begriff', 1, 'Wort-Ton',
@@ -8557,7 +8559,7 @@ BUILTIN_PACKS.push({
   module: 'Musikgeschichte: Mittelalter, Kursstufe',
   cover: { color: 'indigo', icon: 'square' },
   checked: false,
-  note: 'Gregorianik, Neumen, Organum und frühe Mehrstimmigkeit, mit eigenen Aufgaben für Personen und Orte sowie Hör- und Notenfeldern. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Gregorianik, Neumen, Organum und frühe Mehrstimmigkeit, mit eigenen Aufgaben für Personen und Orte sowie Hör- und Notenfeldern. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('choral', 'gregorianischer Choral', 'begriff', 2, 'Gregorianik',
@@ -8802,7 +8804,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe 11/12: Musik im historischen Kontext (Wiener Klassik und Beethoven), Formen und Gattungen, Analyse und Deutung; Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'blue', icon: 'form' },
   checked: false,
-  note: 'Coriolan-Ouvertüre, 5. Sinfonie und zwei Klaviersonaten mit Sonatenhauptsatzform, Motivverarbeitung und dem Modell der Wiener Klassik. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Coriolan-Ouvertüre, 5. Sinfonie und zwei Klaviersonaten mit Sonatenhauptsatzform, Motivverarbeitung und dem Modell der Wiener Klassik. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('coriolan', 'Coriolan-Ouvertüre', 'werk', 1, 'Coriolan',
@@ -9117,7 +9119,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe 11/12: Musik im 19. Jahrhundert, Programmmusik und die Idee der absoluten Musik, Musikästhetik im historischen Kontext; Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'violet', icon: 'quill' },
   checked: false,
-  note: 'Romantische Leitideen, Epochenbegriffe und ihre Grenzen, der Streit um Programmmusik und absolute Musik sowie Schubert, Schumann und Chopin. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Romantische Leitideen, Epochenbegriffe und ihre Grenzen, der Streit um Programmmusik und absolute Musik sowie Schubert, Schumann und Chopin. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('subjektivitaet', 'Subjektivität', 'begriff', 3, 'Leitideen',
@@ -9411,7 +9413,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe 11/12: Jazz im historischen und kulturellen Kontext, Improvisation und Gestaltung; Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'orange', icon: 'sax' },
   checked: false,
-  note: 'Afroamerikanische Wurzeln und Stile des Jazz, prägende Personen und die Spielpraxis von Improvisation, Form und Rhythmus. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Afroamerikanische Wurzeln und Stile des Jazz, prägende Personen und die Spielpraxis von Improvisation, Form und Rhythmus. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('worksong', 'Worksong', 'begriff', 2, 'Wurzeln',
@@ -9671,7 +9673,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe 11/12: Musik im historischen Kontext (Neue Musik nach 1945), ästhetische Konzeptionen zwischen Determination und Zufall; KMK-Prüfungsanforderungen Abitur Musik (Analyse, Musikgeschichte, Gestaltung)',
   cover: { color: 'petrol', icon: 'wave' },
   checked: false,
-  note: 'Begriffe zu serieller Ordnung, Zufall und Unbestimmtheit, Studio, Klangfläche, Minimal Music, neuen Spielweisen und Stilvielfalt, mit einem Hörfeld. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu serieller Ordnung, Zufall und Unbestimmtheit, Studio, Klangfläche, Minimal Music, neuen Spielweisen und Stilvielfalt, mit einem Hörfeld. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('seriell', 'serielle Musik', 'begriff', 2, 'Ordnung',
@@ -9989,7 +9991,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe 11/12: Musik im gesellschaftlichen und politischen Kontext (Funktion, Wirkung und Deutung von Musik in Diktatur, Protest und Erinnerung); KMK-Prüfungsanforderungen Abitur Musik (Analyse, Interpretation, Erörterung)',
   cover: { color: 'red', icon: 'megaphone' },
   checked: false,
-  note: 'Begriffe zur Deutung politischer Musik, zur Weimarer Zeit, zur NS-Diktatur, zu Mahnung und Erinnerung, Protestkultur, Hymnen und aktuellen Debatten, sachlich und mehrperspektivisch formuliert, mit einem Hörfeld. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zur Deutung politischer Musik, zur Weimarer Zeit, zur NS-Diktatur, zu Mahnung und Erinnerung, Protestkultur, Hymnen und aktuellen Debatten, sachlich und mehrperspektivisch formuliert, mit einem Hörfeld. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('polmusik', 'politische Musik', 'begriff', 2, 'Deutung',
@@ -10296,7 +10298,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6: Musik hören und beschreiben, elementare Musiklehre, Musik und Form, Instrumentenkunde, Stimme und Gehör (Wiederholung über beide Jahrgänge)',
   cover: { color: 'yellow', icon: 'note' },
   checked: false,
-  note: 'Wiederholungspaket für die Klassen 5 und 6 mit Musikwörtern zu Lautstärke, Tempo, Spielweise, Klangfarbe, Ausdruck, Melodie, Rhythmus, Form, Notenschrift, Instrumenten und Stimme. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Wiederholungspaket für die Klassen 5 und 6 mit Musikwörtern zu Lautstärke, Tempo, Spielweise, Klangfarbe, Ausdruck, Melodie, Rhythmus, Form, Notenschrift, Instrumenten und Stimme. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('piano', 'piano', 'begriff', 1, 'Lautstärke',
@@ -10448,7 +10450,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6, Musizieren und Gestalten: sich im Metrum frei bewegen, einfache Tanzschritte imitieren, kombinieren und improvisieren, Bodypercussion, einfache Probentechniken kennenlernen und anwenden',
   cover: { color: 'orange', icon: 'fist' },
   checked: false,
-  note: 'Begriffe zu Metrum und Groove, zu Körperklängen und Alltagspercussion, zu Tanz und zum Leiten einer Gruppe mit Zeichen. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Metrum und Groove, zu Körperklängen und Alltagspercussion, zu Tanz und zum Leiten einer Gruppe mit Zeichen. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('metrum', 'Metrum', 'begriff', 2, 'Im Metrum',
@@ -10617,7 +10619,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6: grafische Notation erklären, klanglich umsetzen und selbst erstellen, mit selbstgebauten Instrumenten aus Alltagsmaterialien musizieren und Material nachhaltig nutzen, einen außermusikalischen Inhalt verklanglichen',
   cover: { color: 'petrol', icon: 'wave' },
   checked: false,
-  note: 'Begriffe zu Geräusch, Ton und Klang, zu Klanggeschichte, Hörspiel und Verklanglichen, zum Planen eigener Musik mit Zeichen und zum Bauen von Instrumenten. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Geräusch, Ton und Klang, zu Klanggeschichte, Hörspiel und Verklanglichen, zum Planen eigener Musik mit Zeichen und zum Bauen von Instrumenten. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('geraeusch', 'Geräusch', 'begriff', 1, 'Hören',
@@ -10789,7 +10791,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6: Leben eines Komponisten der Romantik und eines Komponisten der Wiener Klassik in Grundzügen wiedergeben, altersgemäße Informationsquellen selbstständig nutzen, Wahlmodul Kultur erleben',
   cover: { color: 'yellow', icon: 'quill' },
   checked: false,
-  note: 'Begriffe zu Komponist:innen aus Barock, Wiener Klassik und Romantik, zu Epochen und zu ihrem Beruf. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Komponist:innen aus Barock, Wiener Klassik und Romantik, zu Epochen und zu ihrem Beruf. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('barock', 'Barock', 'begriff', 2, 'Barock',
@@ -10964,7 +10966,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6, Instrumentenkunde: Arten der Tonerzeugung exemplarisch erklären, Instrumente den Gruppen zuordnen und Gruppen hörend erkennen',
   cover: { color: 'green', icon: 'trumpet' },
   checked: false,
-  note: 'Begriffe zu Schwingung und Frequenz, zu Saite, Luftsäule, Fell und Klangplatte und zur elektrischen Klangerzeugung. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Schwingung und Frequenz, zu Saite, Luftsäule, Fell und Klangplatte und zur elektrischen Klangerzeugung. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('schwingung', 'Schwingung', 'begriff', 2, 'Schwingung',
@@ -11136,7 +11138,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6, Musizieren und Gestalten: ein- und einfache zweistimmige Lieder in verschiedenen Sozialformen rhythmus-, intonations- und temposicher singen, Wahlmodul Kultur erleben: kulturelle Orte und Veranstaltungen der Region',
   cover: { color: 'brown', icon: 'mic' },
   checked: false,
-  note: 'Begriffe zu Bräuchen und Liedern von Sankt Martin bis zum Jahreswechsel, zu Liedformen, zu großen Werken wie dem Weihnachtsoratorium und zum Klang der Glocken. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Bräuchen und Liedern von Sankt Martin bis zum Jahreswechsel, zu Liedformen, zu großen Werken wie dem Weihnachtsoratorium und zum Klang der Glocken. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('advent', 'Advent', 'begriff', 1, 'Bräuche',
@@ -11305,7 +11307,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 5/6, Elementare Musiklehre: Tonleitern bis zwei Vorzeichen erklären und musizieren, Dur und Moll hörend unterscheiden, Vorzeichen und Versetzungszeichen, Aufbau der Klaviatur',
   cover: { color: 'indigo', icon: 'keys' },
   checked: false,
-  note: 'Begriffe zum Bau von Tonleitern, zu Dur- und Moll-Tonarten bis zwei Vorzeichen, zu Zeichen und Zusammenklängen, mit drei Hörfeldern und einem Notenbild. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zum Bau von Tonleitern, zu Dur- und Moll-Tonarten bis zwei Vorzeichen, zu Zeichen und Zusammenklängen, mit drei Hörfeldern und einem Notenbild. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('ganztonschritt', 'Ganztonschritt', 'begriff', 2, 'Bausteine',
@@ -11491,7 +11493,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 7/8, Musizieren und Gestalten: ein bis drei Tänze des Welttanzprogramms in Herkunft und kultureller Bedeutung beschreiben, hörend und sehend unterscheiden, Grundschritte und mindestens eine Tanzfigur tanzen',
   cover: { color: 'pink', icon: 'ticket' },
   checked: false,
-  note: 'Begriffe zu Standard- und Lateintänzen, zu Grundschritt, Tanzhaltung und Führung sowie zu den Herkunftsorten der Tänze. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Standard- und Lateintänzen, zu Grundschritt, Tanzhaltung und Führung sowie zu den Herkunftsorten der Tänze. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('langsamerwalzer', 'Langsamer Walzer', 'begriff', 1, 'Standardtänze',
@@ -11678,7 +11680,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 7/8, Elementare Musiklehre: binäre und ternäre Rhythmen erklären und musizieren, dazu Betonung, Notation, Tempo und Begleitmuster beim Musizieren in Band und Klasse',
   cover: { color: 'yellow', icon: 'dial' },
   checked: false,
-  note: 'Begriffe zur Unterteilung des Grundschlags, zu Betonung und Timing, zu Notenwerten und Zeichen, zum Tempo und zu Begleitmustern. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zur Unterteilung des Grundschlags, zu Betonung und Timing, zu Notenwerten und Zeichen, zum Tempo und zu Begleitmustern. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('swing', 'Swing-Feeling', 'hoeren', 2, 'Unterteilung',
@@ -11875,7 +11877,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 7/8, Wahlmodul Musikkulturen der Welt: typische Instrumente benennen, charakteristische Merkmale beschreiben und gestalten, Zusammenhänge zwischen Musik und Lebensweisen erfassen',
   cover: { color: 'green', icon: 'globe' },
   checked: false,
-  note: 'Begriffe zu Instrumenten Westafrikas und des südlichen Afrikas, zu Spielweisen wie Call and Response und Polyrhythmik, zu Musik im Alltag und zu afrikanischen Popstilen. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Instrumenten Westafrikas und des südlichen Afrikas, zu Spielweisen wie Call and Response und Polyrhythmik, zu Musik im Alltag und zu afrikanischen Popstilen. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('djembe', 'Djembe', 'begriff', 1, 'Instrumente',
@@ -12060,7 +12062,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 7/8, Pflichtmodul Musiktheater: ein Werk des Musiktheaters mit Szenen, Figurenkonstellation, musikalischer Gestaltung und Entstehungsgeschichte kennenlernen',
   cover: { color: 'orange', icon: 'mask' },
   checked: false,
-  note: 'Begriffe zur Entstehung der Oper, zu ihren Figuren, berühmten Nummern, zur Form der Opéra comique, zu den Schauplätzen in Sevilla und zu Stimmen und Klang. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zur Entstehung der Oper, zu ihren Figuren, berühmten Nummern, zur Form der Opéra comique, zu den Schauplätzen in Sevilla und zu Stimmen und Klang. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('bizet', 'Georges Bizet', 'person', 1, 'Entstehung',
@@ -12252,7 +12254,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 7/8, Musizieren und Gestalten: eine Tanzchoreografie zu aktueller Rock- und Popmusik erstellen und präsentieren',
   cover: { color: 'violet', icon: 'headphones' },
   checked: false,
-  note: 'Begriffe zu Hip-Hop-Tanzstilen und Breaking, zu Bausteinen und Gestaltungsmitteln einer Choreografie, zur Probenarbeit und zur Tanzszene von Battle bis Challenge. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Hip-Hop-Tanzstilen und Breaking, zu Bausteinen und Gestaltungsmitteln einer Choreografie, zur Probenarbeit und zur Tanzszene von Battle bis Challenge. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('hiphopdance', 'Hip-Hop-Dance', 'begriff', 1, 'Styles',
@@ -12441,7 +12443,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 7/8, Elementare Musiklehre und Musizieren: Dreiklänge an Akkordsymbolen erkennen, einfache Kadenz und 4-Chord-Song erklären und bilden, Lieder auf Ukulele, Gitarre, Keyboard oder Boomwhackers begleiten',
   cover: { color: 'green', icon: 'guitar' },
   checked: false,
-  note: 'Begriffe zu Akkorden und ihrem Aufbau, zu den Funktionen in Kadenz und 4-Chord-Song, zu Begleitmustern, zu Begleitinstrumenten und zum Arbeiten mit Leadsheet und Tonart. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Akkorden und ihrem Aufbau, zu den Funktionen in Kadenz und 4-Chord-Song, zu Begleitmustern, zu Begleitinstrumenten und zum Arbeiten mit Leadsheet und Tonart. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('akkordsymbol', 'Akkordsymbol', 'begriff', 1, 'Akkorde',
@@ -12627,7 +12629,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 9: Musik und Form (typische Merkmale eines Solokonzerts hörend erfassen, mit Parametern beschreiben) und Pflichtmodul Romantik (ein Werk der Romantik am Beispiel des Solokonzerts erschließen, Virtuosentum, Biografie); ergänzt um Konzertleben und Konzertetikette',
   cover: { color: 'indigo', icon: 'violin' },
   checked: false,
-  note: 'Begriffe zu Aufbau und Zusammenspiel im Solokonzert, zu Spieltechniken der Violine, zu vier berühmten Konzerten der Romantik und zum Konzertleben. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Aufbau und Zusammenspiel im Solokonzert, zu Spieltechniken der Violine, zu vier berühmten Konzerten der Romantik und zum Konzertleben. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('satzfolge', 'Satzfolge', 'begriff', 1, 'Aufbau',
@@ -12818,7 +12820,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 9: Pflichtmodul Musiknutzung im digitalen Raum (Einfluss von Musik auf die eigene Identitätsbildung, emotionalisierende Wirkung, algorithmische Empfehlungen hinterfragen) sowie Rock- und Popstile als Ausdruck von Jugend- und Musikkultur',
   cover: { color: 'pink', icon: 'ticket' },
   checked: false,
-  note: 'Begriffe zu Jugendkulturen und Szenen, zur Fankultur, zur Rolle der Musik für Identität und Zugehörigkeit, zu Gefühl und Erinnerung sowie zum digitalen Hören. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Jugendkulturen und Szenen, zur Fankultur, zur Rolle der Musik für Identität und Zugehörigkeit, zu Gefühl und Erinnerung sowie zum digitalen Hören. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('jugendkultur', 'Jugendkultur', 'begriff', 1, 'Jugendkultur',
@@ -13017,7 +13019,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 9: Wahlmodul Musikkulturen der Welt (Lieder und Stücke anderer Länder, typische Instrumente benennen, charakteristische Merkmale beschreiben, Zusammenhänge zwischen Musik und Lebensweisen) am Beispiel europäischer Traditionen',
   cover: { color: 'green', icon: 'guitar' },
   checked: false,
-  note: 'Begriffe zu Flamenco, Klezmer, Fado, Irish Folk, Balkan und Griechenland sowie zur Volksmusik des Alpenraums und Böhmens. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Flamenco, Klezmer, Fado, Irish Folk, Balkan und Griechenland sowie zur Volksmusik des Alpenraums und Böhmens. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('flamenco', 'Flamenco', 'begriff', 1, 'Flamenco',
@@ -13222,7 +13224,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 10: Wahlmodul Musik und Medien (Musikvideos analysieren, Vermarktung über Plattformen, Geschäftsmodelle) und Musiknutzung im digitalen Raum (Funktionen und Wirkungen von Musik im digitalen Kontext, algorithmische Verbreitung kritisch einordnen)',
   cover: { color: 'blue', icon: 'megaphone' },
   checked: false,
-  note: 'Begriffe zu Formen des Musikvideos, zur Bildsprache, zu Release-Strategien, zur Logik der Plattformen und zur Inszenierung von Künstler:innen in sozialen Medien. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Formen des Musikvideos, zur Bildsprache, zu Release-Strategien, zur Logik der Plattformen und zur Inszenierung von Künstler:innen in sozialen Medien. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('musikvideo', 'Musikvideo', 'begriff', 1, 'Videoformen',
@@ -13427,7 +13429,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 10: Musizieren und Gestalten (ein- bis einfache dreistimmige Lieder singen, Parameter gezielt zur Ausdrucksgestaltung einsetzen, Probentechniken, verschiedene Notationsformen nutzen)',
   cover: { color: 'teal', icon: 'mic' },
   checked: false,
-  note: 'Begriffe zu Chorsatz und Satzweisen, zu Stimmgruppen und Rollen im Gesangssatz, zu Klang und Stimmtechnik, zu Probe und Leitung sowie zu Chorformen. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Chorsatz und Satzweisen, zu Stimmgruppen und Rollen im Gesangssatz, zu Klang und Stimmtechnik, zu Probe und Leitung sowie zu Chorformen. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('chorsatz', 'Chorsatz', 'begriff', 2, 'Satz',
@@ -13625,7 +13627,7 @@ BUILTIN_PACKS.push({
   module: 'Lehrplan-Entwurf 2026, Klassenstufe 10: Pflichtmodul Aufbruch in die Moderne (Entwicklung von tonaler zu atonaler Musik historisch einordnen, Gestaltungsmittel analysieren) und Elementare Musiklehre (Polyrhythmik im Notenbild und Hörbeispiel erkennen und beschreiben)',
   cover: { color: 'slate', icon: 'drum' },
   checked: false,
-  note: 'Begriffe zu den Ballets Russes und dem Skandal von 1913, zu Teilen und Mitteln des Sacre, zu Rhythmus, Harmonik und Klang, zum Petruschka und zu den Werken nach dem Sacre. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu den Ballets Russes und dem Skandal von 1913, zu Teilen und Mitteln des Sacre, zu Rhythmus, Harmonik und Klang, zum Petruschka und zu den Werken nach dem Sacre. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('balletsrusses', 'Ballets Russes', 'begriff', 1, 'Ballets Russes',
@@ -13831,7 +13833,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe Klasse 11: Musik in Kirche und Gottesdienst (Messe, Requiem, Kantate, Passion, Choral, Spiritual und Gospel), Funktion und Wandel geistlicher Musik; Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'brown', icon: 'organ' },
   checked: false,
-  note: 'Begriffe zur Messe und ihren Teilen, zu Kantate und Choral, zur Passion, zu Liturgie und Kirchenmusikämtern, zur Reformation und zur geistlichen Musik der Gegenwart. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zur Messe und ihren Teilen, zu Kantate und Choral, zur Passion, zu Liturgie und Kirchenmusikämtern, zur Reformation und zur geistlichen Musik der Gegenwart. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('ordinarium', 'Ordinarium', 'begriff', 2, 'Messe',
@@ -14152,7 +14154,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe Klasse 11: Musiktheater der Romantik am Beispiel von Webers Freischütz (Figuren, Handlung, Nummern, musikalische Mittel, Gattung und Wirkung); Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'teal', icon: 'mask' },
   checked: false,
-  note: 'Begriffe zu Entstehung, Figuren, Handlung, Nummern, musikalischen Mitteln und zur Gattung der romantischen Oper am Beispiel des Freischütz, mit einem Hörfeld. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Entstehung, Figuren, Handlung, Nummern, musikalischen Mitteln und zur Gattung der romantischen Oper am Beispiel des Freischütz, mit einem Hörfeld. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('weber', 'Carl Maria von Weber', 'person', 1, 'Entstehung',
@@ -14477,7 +14479,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe Klasse 11: Musik im gesellschaftlichen Kontext am Beispiel von Krieg und Frieden (Schlachtenmusik, Militärmusik, Trauermusik, Musik in Verfolgung und Lager, Protest- und Friedenslieder, Funktionalisierung); Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'slate', icon: 'trumpet' },
   checked: false,
-  note: 'Begriffe und Werke quer durch die Epochen, die Krieg darstellen, begleiten, betrauern, verarbeiten oder ihm widersprechen, mit einem Hörfeld. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe und Werke quer durch die Epochen, die Krieg darstellen, begleiten, betrauern, verarbeiten oder ihm widersprechen, mit einem Hörfeld. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('battaglia', 'Battaglia', 'begriff', 3, 'Darstellen',
@@ -14811,7 +14813,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe Klasse 12: Musik im historischen Kontext um 1900 am Beispiel Gustav Mahlers (Sinfonie, Orchesterlied, Tonsprache, Wien um 1900, sinfonische Tradition); Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'indigo', icon: 'staff' },
   checked: false,
-  note: 'Begriffe zu Mahlers erster Sinfonie, zu seinen Liedern, zu weiteren Sinfonien, zu seiner Tonsprache, zu Leben und Zeitgeist in Wien um 1900 und zur sinfonischen Tradition. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Mahlers erster Sinfonie, zu seinen Liedern, zu weiteren Sinfonien, zu seiner Tonsprache, zu Leben und Zeitgeist in Wien um 1900 und zur sinfonischen Tradition. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('titan', '1. Sinfonie „Titan“', 'werk', 1, 'Erste',
@@ -15146,7 +15148,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe Klasse 12: Analyse und Interpretation populärer Musik (Songform, Harmonik, Melodik und Rhythmik, Produktion, Stimme und Text) an Beispielen von ABBA bis Taylor Swift; Bezug zu den KMK-Prüfungsanforderungen Abitur Musik',
   cover: { color: 'pink', icon: 'headphones' },
   checked: false,
-  note: 'Analysebegriffe für Popsongs auf Kursniveau, dazu Fallbeispiele von ABBA und Taylor Swift und Begriffe zur Branche, mit einem Hörfeld. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Analysebegriffe für Popsongs auf Kursniveau, dazu Fallbeispiele von ABBA und Taylor Swift und Begriffe zur Branche, mit einem Hörfeld. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('formverlauf', 'Formverlauf', 'begriff', 2, 'Form',
@@ -15479,7 +15481,7 @@ BUILTIN_PACKS.push({
   module: 'Kursstufe Klasse 12: Vorbereitung auf die schriftliche Abiturprüfung Musik (Operatoren und Anforderungsbereiche nach der Operatorenliste Thüringen, Aufgabenarten nach den KMK-Prüfungsanforderungen, Analyse- und Argumentationstechnik, Klausurpraxis)',
   cover: { color: 'yellow', icon: 'book' },
   checked: false,
-  note: 'Begriffe zu Operatoren und Anforderungsbereichen, zu den Aufgabenarten der Abiturprüfung, zum Analysewerkzeug, zur Argumentation und zur Klausurpraxis. Texte sind ein KI-Entwurf und noch nicht fachlich geprüft.',
+  note: 'Begriffe zu Operatoren und Anforderungsbereichen, zu den Aufgabenarten der Abiturprüfung, zum Analysewerkzeug, zur Argumentation und zur Klausurpraxis. Texte mit KI erstellt, noch nicht durchgehend geprüft.',
   sources: [],
   terms: [
     T('operator', 'Operator', 'begriff', 1, 'Anforderung',
@@ -15880,6 +15882,9 @@ function showCopyFallback(text) {
 }
 
 /* ---------- Einstellungen ---------- */
+/* Betaphase: Hinweis an einer Stelle formuliert, genutzt in App, Druck und Lehrkraftblättern */
+const BETA_SHORT = 'Beta · mit KI erstellt, noch nicht durchgehend geprüft';
+const BETA_LONG = 'Vierklang ist in der Betaphase. Begriffe, Erklärungen und Aufgaben sind mit KI erstellt und noch nicht durchgehend geprüft.';
 const DEFAULTS = {
   packId: 'mittelalter', mode: 'tafel', select: 'wuerfel', size: 6, layout: 'familien', mix: 'ausgewogen',
   levelA: 2, levelB: 2, explainTime: 30, consultTime: 20, gameTime: 0,
@@ -18803,7 +18808,7 @@ function modeSettings() {
 function startTop() {
   const steps = [[1, 'Paket'], [2, 'Spielform'], [3, settings.mode === 'papier' ? 'Drucken' : settings.mode === 'raetsel' ? 'Rätsel' : 'Los!']];
   return `<header class="st3-top">
-    <div class="st3-brand">${logoSVG('logo-sm')}<span class="st3-name">Vierklang</span></div>
+    <div class="st3-brand">${logoSVG('logo-sm')}<span class="st3-name">Vierklang</span><button type="button" class="beta-chip" data-act="beta-info" title="${esc(BETA_LONG)}">Beta</button></div>
     <nav class="st3-steps" aria-label="Schritte">${steps.map((x, i) => `${i ? '<span class="st3-dash" aria-hidden="true"></span>' : ''}<button type="button" class="st3-step${startStep === x[0] ? ' on' : ''}${startStep > x[0] ? ' done' : ''}" data-act="st-step" data-v="${x[0]}" aria-current="${startStep === x[0] ? 'step' : 'false'}"><span class="st3-num">${x[0]}</span><span class="st3-lbl">${x[1]}</span></button>`).join('')}</nav>
     <div class="st3-tools">
       ${typeof roomApi !== 'undefined' && roomApi ? '<button type="button" class="tool" data-act="ph-open"><svg viewBox="0 0 24 24" class="ti" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg><span>Mitspielen</span></button>' : ''}
@@ -18879,7 +18884,7 @@ function renderStart() {
         <div class="carousel" id="carousel">${list.map(skCard).join('')}<button type="button" class="sk sk-add" data-act="ws-new-start"><span class="sk-plus">+</span><span class="sk-title">Eigenes Paket</span><span class="sk-blurb">Begriffe eintippen oder aus einer Tabelle einfügen</span></button></div>
         <button type="button" class="car-arrow" data-act="car" data-d="1" aria-label="weiter">${iconArrow(1)}</button>
       </div>
-      <div class="st3-cta"><span class="cta-note">${esc(pack.title)} · ${playable(pack).length} Begriffe${pack.edited ? ' · von dir angepasst' : pack.checked ? '' : ' · KI-Entwurf, noch nicht fachlich geprüft'}</span><button type="button" class="btn ghost cta-adapt" data-act="learn-open" data-id="${esc(pack.id)}">Karten üben${(() => { const nd = typeof learnDueCount === 'function' ? learnDueCount(pack) : 0; return nd ? `<span class="due-pill">${nd} fällig</span>` : ''; })()}</button><button type="button" class="btn ghost cta-adapt" data-act="${pack.own || pack.edited ? 'ws-play-edit' : 'ws-adapt-start'}" data-id="${esc(pack.id)}">${pack.own || pack.edited ? 'Bearbeiten' : 'Anpassen'}</button>${typeof openLinkModal === 'function' ? `<button type="button" class="btn ghost cta-adapt cta-link" data-act="dl-open" data-id="${esc(pack.id)}" aria-label="Link und QR-Code zu diesem Paket">${lgIcon('link')}<span>Link</span></button>` : ''}<button type="button" class="btn cta" data-act="st-step" data-v="2" data-primary>Weiter zur Spielform${iconNext()}</button></div>`;
+      <div class="st3-cta"><span class="cta-note">${esc(pack.title)} · ${playable(pack).length} Begriffe${pack.edited ? ' · von dir angepasst' : pack.checked ? '' : ' · mit KI erstellt, noch nicht durchgehend geprüft'}</span><button type="button" class="btn ghost cta-adapt" data-act="learn-open" data-id="${esc(pack.id)}">Karten üben${(() => { const nd = typeof learnDueCount === 'function' ? learnDueCount(pack) : 0; return nd ? `<span class="due-pill">${nd} fällig</span>` : ''; })()}</button><button type="button" class="btn ghost cta-adapt" data-act="${pack.own || pack.edited ? 'ws-play-edit' : 'ws-adapt-start'}" data-id="${esc(pack.id)}">${pack.own || pack.edited ? 'Bearbeiten' : 'Anpassen'}</button>${typeof openLinkModal === 'function' ? `<button type="button" class="btn ghost cta-adapt cta-link" data-act="dl-open" data-id="${esc(pack.id)}" aria-label="Link und QR-Code zu diesem Paket">${lgIcon('link')}<span>Link</span></button>` : ''}<button type="button" class="btn cta" data-act="st-step" data-v="2" data-primary>Weiter zur Spielform${iconNext()}</button></div>`;
   } else if (startStep === 2) {
     const papier = s.mode === 'papier';
     main = `<div class="st3-hero"><h1>Wie wollt ihr spielen?</h1><p>An der Tafel gegeneinander, zu zweit, allein gegen den Klangbot, als Rätsel oder ausgedruckt auf Papier.</p></div>
@@ -18942,7 +18947,7 @@ function renderStart() {
       <div class="accs">${acc('brett', 'Brett und Begriffe', 'Feld bestimmen, Größe, Auswahl, Anordnung', brett)}${acc('zeit', 'Zeit', 'Erklärzeit, Beratung, Spielzeit', zeit)}${acc('extra', 'Sonderregeln', s.mode === 'tafel' ? `Vernetzung, Hilfen, Konter, Hörfelder${s.protokoll ? ', Hörprotokoll' : ''}` : s.mode === 'duell' ? `Vernetzung, Hilfen, Hörfelder${s.notiz !== false ? ', Mitschreiben' : ''}` : 'Vernetzung, Hilfen, Hörfelder', extra)}${acc('aufgaben', 'Aufgabenarten', `Zeigefelder${nZeig && s.zeig ? (nMit && s.mitspiel !== false ? ' und Mitspielfelder an' : ' an') : ' aus'}, Abgrenzung${nPairs && s.pairs ? ' an' : ' aus'}, Operatoren ${s.mode === 'solo' ? 'ohne' : s.ops}`, aufgaben)}${acc('spiel', 'Spielwürze', `Pasch ${s.pasch === 'ereignis' && s.select === 'wuerfel' ? 'mit Ereignis' : 'freie Wahl'}${s.geheim ? ', Geheimauftrag' : ''}${s.blitz ? ', Blitzrunde' : ''}${s.album ? ', Album' : ''}`, spiel)}${acc('lang', 'Sprache der Anleitung', `${LANG_LABEL[langFor(pack)]}${s.lang === 'auto' ? ', passend zur Klassenstufe' : ', von dir gewählt'}`, rule('Regeln, Kurzanleitung und Spielkarten', seg('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], s.lang), `${LANG_SUB[langFor(pack)]}. ${s.lang === 'auto' ? 'Die Stufe folgt der Klassenstufe des Pakets.' : 'Automatisch hieße hier: ' + LANG_LABEL[langFromGrades(pack.grades)] + '.'}`))}</div>
       <div class="st3-cta"><button type="button" class="btn ghost" data-act="st-step" data-v="2">${iconArrow(-1)}Zurück</button><button type="button" class="btn cta go" data-act="start" data-primary${sizes.length ? '' : ' disabled'}>Los geht’s!${iconNext()}</button></div>`;
   }
-  const foot = IS_WEB ? `<footer class="st3-foot"><span><b>Vierklang</b> · Uli Frefat · <a href="https://ulifrefat.de" target="_blank" rel="noopener">ulifrefat.de</a> · gebaut mit Claude (Anthropic)</span><span>KI-Assistent für neue Pakete und Handys koppeln: <a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Fassung auf claude.ai</a> (Claude-Konto nötig). Alles andere läuft hier, ohne Konto; Einstellungen, eigene Pakete, Lerngruppen und das Album bleiben in diesem Browser.</span></footer>` : '';
+  const foot = IS_WEB ? `<footer class="st3-foot"><span><b>Vierklang</b> Beta · Uli Frefat · <a href="https://ulifrefat.de" target="_blank" rel="noopener">ulifrefat.de</a> · gebaut mit Claude (Anthropic), Inhalte noch nicht durchgehend geprüft</span><span>KI-Assistent für neue Pakete und Handys koppeln: <a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Fassung auf claude.ai</a> (Claude-Konto nötig). Alles andere läuft hier, ohne Konto; Einstellungen, eigene Pakete, Lerngruppen und das Album bleiben in diesem Browser.</span></footer>` : '';
   $('#v-start').innerHTML = `<div class="st3 step-${startStep}">${startTop()}<main class="st3-main">${main}</main>${foot}</div>`;
   fitStartTop();
   const c2 = $('#carousel');
@@ -20106,7 +20111,7 @@ function printStudioHTML() {
         <div class="pr-row pr-lk"><div class="pr-l">Mustersätze<small>${pack.links.length} ${pack.links.length === 1 ? 'Satz' : 'Sätze'} für Satzbaukasten und Lösungsübersicht${pack.linksEdited ? ', angepasst' : ''}</small></div><button type="button" class="btn sm" data-act="lk-open" data-id="${esc(pack.id)}" data-back="print">Anpassen</button></div>
       </div>
     </div>
-    <div class="pr-sum"><b>${any ? `etwa ${pages} ${pages === 1 ? 'Seite' : 'Seiten'} A4` : 'Nichts ausgewählt'}</b><span>${pr.sets} ${pr.sets === 1 ? 'Satz' : 'Sätze'} · Brett ${n} × ${n} · ${pr.form === 'gruppe' ? 'Gruppenspiel' : 'Partnerspiel'} · ${pr.color === 'spar' ? 'tintensparend' : 'farbig'}</span>${pack.checked ? '' : '<span class="pr-ki">Die Inhalte sind ein KI-Entwurf. Die Fußzeile weist darauf hin.</span>'}</div>
+    <div class="pr-sum"><b>${any ? `etwa ${pages} ${pages === 1 ? 'Seite' : 'Seiten'} A4` : 'Nichts ausgewählt'}</b><span>${pr.sets} ${pr.sets === 1 ? 'Satz' : 'Sätze'} · Brett ${n} × ${n} · ${pr.form === 'gruppe' ? 'Gruppenspiel' : 'Partnerspiel'} · ${pr.color === 'spar' ? 'tintensparend' : 'farbig'}</span>${pack.checked ? '' : '<span class="pr-ki">Beta, die Inhalte sind mit KI erstellt und noch nicht durchgehend geprüft. Die Fußzeile weist darauf hin.</span>'}</div>
     <div class="modal-actions pr-actions"><p class="pr-status" id="pr-status" role="status" aria-live="polite">${esc(pr.status || '')}</p><button type="button" class="btn" data-act="modal-close">Schließen</button><button type="button" class="btn primary pr-make" id="pr-make" data-act="pr-make"${any && !prBusy ? '' : ' disabled'}>${prBusy ? 'PDF wird erstellt …' : 'PDF erstellen'}</button></div>`;
 }
 function renderPrintStudio(focus) {
@@ -21513,7 +21518,7 @@ function prTeacherTexts(ctx) {
   if (ctx.links.length) L.board.push(['Mustersätze', `${ctx.links.length} für den Vernetzungszug` + (P.satz || P.loesung ? ', ' + prList([P.satz && 'im Satzbaukasten', P.loesung && 'in der Lösungsübersicht']) : '') + '. Andere stimmige Sätze zählen genauso.']);
   /* Fallstricke, höchstens fünf */
   const F = [];
-  if (!pack.checked) F.push(['KI-Entwurf', 'Lies die Prüfkarten vor dem Einsatz durch. Fehler auf einer Karte prägen sich beim Spielen ein.']);
+  if (!pack.checked) F.push(['Beta', 'Mit KI erstellt und noch nicht durchgehend geprüft. Lies die Prüfkarten vor dem Einsatz durch, Fehler auf einer Karte prägen sich beim Spielen ein.']);
   F.push(['Wortlaut', 'Gezählt wird, was sinngemäß gesagt wurde. Kläre diese Schiedsregel vor dem Start.']);
   if (G) F.push(E ? ['Spielleitung', 'In Klasse 5 und 6 ist die Rolle anfangs schwer. Übernimm sie im ersten Spiel selbst oder gib sie einer sicheren Person, später reihum.'] : ['Strenge Prüfung', 'Im Wettbewerb prüfen Teams die Gegenseite oft sehr streng. Sprich das vor dem Start an.']);
   else F.push(['Verdeckte Karte', 'Die Prüfkarte bleibt verdeckt, bis erklärt wurde. Sonst werden die Merkmale nur abgelesen.']);
@@ -21878,7 +21883,7 @@ function prFooters(ctx) {
   for (let p = 1; p <= total; p++) {
     K.goto(p);
     const W = K.pw(), H = K.ph(), y = H - 6.6;
-    const right = ctx.pack.checked ? '' : 'Inhalte: KI-Entwurf, fachlich prüfen';
+    const right = ctx.pack.checked ? '' : BETA_SHORT;
     const rw = right ? K.tw(right, 'n8', 6.8) + 6 : 0;
     const left = `Vierklang · ${ctx.pack.title} · Seite ${p}/${total}`;
     K.text(K.ellipsize(left, 'n8', 6.8, W - 24 - rw - 4), 12, y, 'n8', 6.8, PR_C.muted);
@@ -23937,7 +23942,7 @@ const TEACHER_TEXT = {
       <li><b>Direktlink und QR-Code.</b> „Link“ unter den Paketen erzeugt einen Link mit QR-Code: für die Stunde, für „Karten üben“ zu Hause oder für Solo. Er passt auf eine Folie, ins Padlet oder aufs Arbeitsblatt. Eigene Pakete und Anpassungen liegen nur im eigenen Browser, andere Geräte öffnen die mitgelieferte Fassung.</li>
       <li><b>Mitspielfelder.</b> Manche Zeigefelder haben eine Begleitung aus der App. An der Tafel zählt die App ein und spielt Grundschlag oder Groove, das Team führt den Auftrag dazu aus, die Klasse prüft mit der Beobachtungskarte. Das Muster zum Vergleich gibt es erst beim Aufdecken, damit vorher niemand nur nachahmt. Im Duell sind die Durchgänge kürzer. Im Solo wird aus Feldern mit eindeutigem Muster eine Höraufgabe, die übrigen bleiben Zeigefelder. Auf Papier übernimmt eine Person die Begleitung, die Prüfkarte sagt wie.</li>
       <li><b>Mitschreiben und Hörprotokoll.</b> Im Duell tippt die Person, die zugehört hat, nach jeder Erklärung bis zu drei Stichwörter ein. Beim Aufdecken markiert die Prüfkarte, was davon dort steht, abgehakt wird weiterhin von Hand. An der Tafel ruft die App mit dem Hörprotokoll bei jedem Zug zwei Nummern aus dem anderen Team auf. Sie schreiben auf dem ausgedruckten Bogen mit und lesen vor dem Abhaken vor. Das PDF gibt es in Schritt 3 unter „Sonderregeln“, für Papier in der Druckwerkstatt. Wer mehr Beteiligung will, lässt das ganze andere Team mitschreiben, vorgelesen wird von den aufgerufenen Nummern.</li>
-      <li><b>Paket vor dem Einsatz prüfen.</b> Die mitgelieferten Pakete sind KI-Entwürfe und noch nicht durchgehend fachlich geprüft. Was im Spiel immer wieder abgerufen und geprüft wird, prägt sich ein, ein Fehler auf einer Prüfkarte also auch. In der Werkstatt lässt sich jedes Paket korrigieren.</li>
+      <li><b>Paket vor dem Einsatz prüfen.</b> Vierklang ist in der Betaphase. Die mitgelieferten Pakete sind mit KI erstellt und noch nicht durchgehend geprüft. Was im Spiel immer wieder abgerufen und geprüft wird, prägt sich ein, ein Fehler auf einer Prüfkarte also auch. In der Werkstatt lässt sich jedes Paket korrigieren.</li>
     </ul>
     <p>Der Mehrwert liegt in der <b>Erklärsprache</b>: Lernende müssen Fachbegriffe mündlich, kriteriengeleitet und mit Beispiel erklären, und die Klasse hört zu. Das Spiel ersetzt kein Hören und kein Musizieren. Zeige-, Hör- und Notenfelder holen beides ins Spiel, deshalb kommen sie mit mindestens einem Viertel der Felder aufs Brett, soweit das Paket sie hat. Spiele die Hörbeispiele aus deinem Unterricht dazu, wo die App nur synthetische Klänge hat.</p>`,
   forschung: `
@@ -26313,7 +26318,7 @@ function krPrintHTML() {
       </div>
       <div class="pr-col"><div class="pr-row pr-parts-row"><div class="pr-l pr-l-flex"><span>Inhalte</span></div><div class="pr-parts">${parts}</div></div></div>
     </div>
-    <div class="pr-sum"><b>${any ? 'PDF zum Ausdrucken' : 'Nichts ausgewählt'}</b><span>${info.n} ${esc(info.unit)} · ${krPr.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + esc(lv)} · ${krPr.color === 'spar' ? 'tintensparend' : 'farbig'}${krPr.fill && krPr.parts.blatt ? ' · ausfüllbar' : ''}</span>${pack.checked ? '' : '<span class="pr-ki">Die Inhalte sind ein KI-Entwurf. Die Fußzeile weist darauf hin.</span>'}</div>
+    <div class="pr-sum"><b>${any ? 'PDF zum Ausdrucken' : 'Nichts ausgewählt'}</b><span>${info.n} ${esc(info.unit)} · ${krPr.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + esc(lv)} · ${krPr.color === 'spar' ? 'tintensparend' : 'farbig'}${krPr.fill && krPr.parts.blatt ? ' · ausfüllbar' : ''}</span>${pack.checked ? '' : '<span class="pr-ki">Beta, die Inhalte sind mit KI erstellt und noch nicht durchgehend geprüft. Die Fußzeile weist darauf hin.</span>'}</div>
     <div class="modal-actions pr-actions"><p class="pr-status" id="kr-pr-status" role="status" aria-live="polite">${esc(krPr.status || '')}</p><button type="button" class="btn" data-act="modal-close">Schließen</button><button type="button" class="btn primary pr-make" id="kr-pr-make" data-act="kr-pr-make"${any && !prBusy ? '' : ' disabled'}>${prBusy ? 'PDF wird erstellt …' : 'PDF erstellen'}</button></div>`;
 }
 function krPrintOpen() {
@@ -26804,7 +26809,7 @@ function krTeacherTexts(ctx, o) {
   if (m.missing.length) L.board.push(['Nicht im Gitter', prList(m.missing) + '.']);
   if (o.fill && o.parts.blatt) L.board.push(['Ausfüllbar', 'Das Rätselblatt lässt sich am Gerät ausfüllen, etwa im Acrobat Reader. Ausgedruckt bleibt es ein normales Arbeitsblatt.']);
   const F = [];
-  if (!pack.checked) F.push(['KI-Entwurf', 'Lies die Hinweise vor dem Einsatz. Fehler prägen sich beim Abrufen ein.']);
+  if (!pack.checked) F.push(['Beta', 'Mit KI erstellt und noch nicht durchgehend geprüft. Lies die Hinweise vor dem Einsatz, Fehler prägen sich beim Abrufen ein.']);
   F.push(['Raten', ctx.kopf ? 'Kreuzungen verraten Buchstaben. Wer nur Muster füllt, rät. Deshalb zuerst aus dem Kopf schreiben lassen und erst dann eintragen.' : 'Kreuzungen verraten Buchstaben. Mit „Erst aus dem Kopf“ schreiben alle zuerst ohne Gitter.']);
   F.push(['Nur benennen', 'Das Gitter zeigt, ob ein Wort bekannt ist. Verstehen zeigt sich beim Erklären und Verbinden. Sätze wie „Beide gehören zum Thema“ zeigen noch keinen Zusammenhang.']);
   F.push(['Schreibweise', 'Ä, Ö, Ü und ß stehen in einem Kästchen. Wörter aus mehreren Teilen haben eine Längenangabe wie (5, 4).']);
@@ -28097,7 +28102,7 @@ function rxTeacherTexts(ctx, o) {
   L.chips = [pack.grade, `${n} ${unit}`, o.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + o.level, art === 'such' && ctx.kopf ? 'erst aus dem Kopf' : '', m.sol ? 'mit Lösungswort' : '', o.fill && o.parts.blatt ? 'ausfüllbar' : ''].filter(Boolean);
   L.module = pack.module || '';
   const hilfe = o.parts.hilfe;
-  const ki = !pack.checked ? [['KI-Entwurf', 'Lies die Aufgaben vor dem Einsatz. Fehler prägen sich beim Abrufen ein.']] : [];
+  const ki = !pack.checked ? [['Beta', 'Mit KI erstellt und noch nicht durchgehend geprüft. Lies die Aufgaben vor dem Einsatz, Fehler prägen sich beim Abrufen ein.']] : [];
   const sicherung = ['Was Hilfe brauchte, ist der Einstieg in die nächste Stunde.', 'Am Gerät legt ein Klick die schwierigen Begriffe in „Karten üben“. Was ohne Hilfe gelang, kommt als Karte ins Album.', o.parts.loesung ? 'Die Lösung liegt bei.' : ''].filter(Boolean);
   if (art === 'luecke') {
     const sufG = [].concat(...m.sents.map((x) => x.gaps)).find((g) => g.suf);
@@ -28161,6 +28166,7 @@ async function buildRxPdf(JsPDF, o) {
 /* Vierklang · Teil 6: Bedienung und Start */
 
 const ACTIONS = {
+  'beta-info': () => openModal(`<h2>Betaphase</h2><p>${esc(BETA_LONG)}</p><p>Lies ein Paket vor dem Einsatz durch. Was im Spiel oft abgerufen wird, prägt sich ein, ein Fehler also auch. In der Werkstatt lässt sich jedes Paket korrigieren.</p><div class="modal-actions"><button type="button" class="btn primary" data-act="modal-close">Verstanden</button></div>`),
   /* Startseite */
   'help': () => openModal(helpHTML(), 'wide'),
   'pack': (el) => { settings.packId = el.dataset.id; const sz = sizesFor(findPack(settings.packId)); if (sz.length) settings.size = sz[sz.length - 1]; saveSettings(); Sound.tick(); renderStart(); },
