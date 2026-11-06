@@ -1397,6 +1397,49 @@ select.field { appearance: auto; }
   .cta-link span { display: none; }
 }
 
+/* Vierklang · Mitspielfelder
+   Farben: Mitspielen #3A3DA8 / #ECEDFD · Schlag #FFB020 */
+
+.cell.mit .cz { color: #3A3DA8 !important; }
+.cell.mit .cz svg { fill: none !important; stroke: #3A3DA8 !important; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.kind-mit { color: #3A3DA8 !important; }
+.term-mit { background: #ECEDFD !important; color: #3A3DA8 !important; }
+.term-mit svg { stroke: #3A3DA8 !important; }
+.task-mit { background: #F3F3FE !important; border-color: #C9CAF5 !important; }
+.task-mit > svg { fill: none !important; stroke: #3A3DA8 !important; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.task-mit .task-k { color: #3A3DA8 !important; }
+
+.mit { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 10px 12px; border-radius: 14px; background: #FFFFFF !important; border: 1.5px solid #C9CAF5 !important; }
+.mit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mit-btn { min-height: 44px; padding: 0.45em 0.95em; border-radius: 12px; border: 1.5px solid #3A3DA8 !important; background: #ECEDFD !important; color: #23264F !important; font-weight: 800; box-shadow: none !important; }
+.mit-btn:hover { background: #DFE0FB !important; border-color: #3A3DA8 !important; }
+.mit-btn.on { background: #3A3DA8 !important; color: #FFFFFF !important; }
+.mit-ic { width: 1.05em; height: 1.05em; flex: none; fill: #3A3DA8 !important; stroke: none !important; }
+.mit-btn.on .mit-ic { fill: #FFFFFF !important; }
+.mit-tempo { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; padding: 3px; border-radius: 12px; background: #EEF0FA !important; }
+.mit-tempo b { min-width: 2.6em; text-align: center; font-variant-numeric: tabular-nums; color: #23264F !important; }
+.mit-tb { width: 36px; height: 36px; border: 0 !important; border-radius: 9px; background: #FFFFFF !important; color: #23264F !important; font-weight: 800; font-size: 1.1rem; cursor: pointer; }
+.mit-tb:hover { background: #ECEDFD !important; }
+.mit-tb:focus-visible, .mit-btn:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 2px; }
+.mit-info { color: #5A5F86 !important; font-size: 0.86rem; font-weight: 700; }
+.mit-beat { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.mb-l { min-width: 8.5em; font-weight: 800; color: #3A3DA8 !important; font-variant-numeric: tabular-nums; }
+.mit-beat.count .mb-l { color: #8A5A00 !important; }
+.mb-dots { display: inline-flex; gap: 6px; }
+.mb-d { display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: #E4E6F5 !important; border: 2px solid #C9CAF5 !important; box-sizing: border-box; transition: transform 0.06s; }
+.mb-d.one { border-color: #3A3DA8 !important; }
+.mb-d.on { background: #FFB020 !important; border-color: #C98500 !important; transform: scale(1.25); }
+.mit-note { color: #5A5F86 !important; font-size: 0.84rem; font-weight: 700; }
+.mit-cmp { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+.mit-cmp-l { width: 100%; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #5A5F86 !important; }
+.mit-cmp .mit-btn { min-height: 38px; padding: 0.3em 0.75em; font-size: 0.92rem; }
+
+@media (prefers-reduced-motion: reduce) { .mb-d { transition: none; } .mb-d.on { transform: none; } }
+@media (max-width: 640px) {
+  .mit-tempo { margin-left: 0; }
+  .mb-d { width: 13px; height: 13px; }
+}
+
 </style>
 </head>
 <body>
@@ -1542,7 +1585,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klopft mit dem Fuß einen gleichmäßigen Puls und sprecht dazu ein Pattern mit Du und dei.',
           merkmale: ['Fuß klopft ganz gleichmäßig', 'Fuß läuft auch bei dei weiter', 'Tempo bleibt die ganze Zeit gleich']
-      } }),
+      },
+        mit: { groove: 'lied', bpm: 100, takte: 8, muster: 'puls4', erkennen: false, auftrag: 'Die App spielt eine Melodie. Klopft mit dem Fuß den gleichmäßigen Puls dazu und sprecht ein Pattern mit Du und dei.' } }),
     T('tempo', 'Tempo', 'begriff', 1, 'Grundschlag',
       'Gibt an, wie schnell oder langsam die Musik läuft, also wie dicht die Schläge aufeinander folgen. Über den Noten stehen dafür italienische Wörter wie Allegro für schnell oder Adagio für langsam.',
       ['wie schnell oder langsam', 'wie dicht die Schläge folgen', 'Allegro, Andante, Adagio'],
@@ -1559,7 +1603,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Zählt laut bis vier und wieder von vorn und klatscht dabei jede Eins kräftiger, damit man hört, wo ein neuer Takt beginnt.',
           merkmale: ['jede Eins klingt kräftiger', 'Gruppen sind immer gleich lang', 'Zählen bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 92, takte: 4, muster: 'eins4', auftrag: 'Klatscht zur Begleitung auf jeden Schlag. Jede Eins klatscht ihr kräftiger, damit man hört, wo ein neuer Takt beginnt.' } }),
     T('taktart', 'Taktart', 'begriff', 2, 'Takt',
       'Zwei Zahlen übereinander am Anfang der Noten. Sie zeigen, wie viele Schläge in jeden Takt passen, bei 3/4 sind es drei Viertel, bei 4/4 vier Viertel.',
       ['zwei Zahlen übereinander', 'wie viele Schläge pro Takt', 'zum Beispiel 2/4, 3/4 oder 4/4'],
@@ -1646,7 +1691,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Spielt ein Pattern nur mit dem Körper, zum Beispiel Du klatschen, dei auf die Schenkel patschen und Du-a stampfen.',
           merkmale: ['nur der Körper macht die Klänge', 'mindestens zwei verschiedene Klänge', 'Pattern bleibt im Puls']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 92, takte: 4, auftrag: 'Spielt zur Begleitung ein Pattern nur mit dem Körper, zum Beispiel Du klatschen, dei auf die Schenkel patschen und Du-a stampfen.' } }),
     T('ostinato', 'Ostinato', 'hoeren', 3, 'Musizieren',
       'Kurzes Muster aus Tönen oder Schlägen, das ohne Unterbrechung immer gleich wiederholt wird. Es läuft wie ein Motor unter der Melodie weiter, während sich darüber vieles verändert.',
       ['kurzes Muster aus Tönen oder Schlägen', 'immer gleich wiederholt', 'läuft unter der Melodie weiter'],
@@ -1987,7 +2033,8 @@ BUILTIN_PACKS.push({
       ], zeig: {
           auftrag: 'Klatscht das Thema aus dem Bergkönig mit seinen vier Pattern und sprecht Du und dei dazu.',
           merkmale: ['vier Pattern hintereinander', 'Fuß hält den Puls', 'endet mit dem langen Du-a']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 80, takte: 4, muster: 'dudei', erkennen: false, auftrag: 'Klatscht zur Begleitung das Thema aus dem Bergkönig und sprecht dazu Du-dei, Du-dei, Du-dei, Du.' } }),
     T('motiv', 'Motiv', 'begriff', 3, 'Gestaltung',
       'Kleinster Baustein einer Melodie aus wenigen Tönen, den man sofort wiedererkennt. Im Stück kehrt er oft wieder, mal genau gleich, mal höher, tiefer oder leicht verändert.',
       ['kleinster Baustein einer Melodie', 'wenige Töne, sofort wiederzuerkennen', 'kehrt oft wieder, auch verändert'],
@@ -2258,7 +2305,8 @@ BUILTIN_PACKS.push({
       ], zeig: {
           auftrag: 'Klatscht drei Teile nach dem Bauplan A B A, der mittlere klingt anders, der letzte genau wie der erste.',
           merkmale: ['drei Teile', 'Mittelteil klingt anders', 'letzter Teil wie der erste']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 12, auftrag: 'Klatscht zur Begleitung drei Teile nach dem Bauplan A B A. Der mittlere klingt anders, der letzte genau wie der erste.' } }),
     T('rondo', 'Rondo', 'begriff', 3, 'Form',
       'Form, in der ein Hauptteil immer wiederkehrt wie ein Refrain. Dazwischen erklingen jedes Mal andere Teile, sodass sich zum Beispiel A B A C A ergibt.',
       ['Hauptteil kehrt immer wieder', 'dazwischen jedes Mal neue Teile', 'zum Beispiel A B A C A'],
@@ -2270,7 +2318,8 @@ BUILTIN_PACKS.push({
       ], zeig: {
           auftrag: 'Klatscht ein Rondo, alle klatschen immer wieder denselben Teil A, dazwischen erfindet jedes Mal eine andere Person etwas Neues.',
           merkmale: ['Teil A kommt mindestens dreimal', 'dazwischen jedes Mal etwas Neues', 'Teil A klingt immer gleich']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 12, auftrag: 'Klatscht zur Begleitung ein Rondo. Alle klatschen immer wieder denselben Teil A, dazwischen erfindet jedes Mal eine andere Person etwas Neues.' } }),
     T('wdh', 'Wiederholungszeichen', 'bild', 1, 'Form',
       'Zwei Punkte vor einem Doppelstrich in den Noten. Wer dort ankommt, springt zurück und spielt den Abschnitt noch einmal, so muss man ihn nur einmal aufschreiben.',
       ['zwei Punkte am Doppelstrich', 'zurückspringen und noch einmal spielen', 'man muss weniger aufschreiben'],
@@ -3188,7 +3237,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht acht gleichmäßige Schläge und gebt nur dem dritten und dem siebten Schlag einen kräftigen Akzent.',
           merkmale: ['nur zwei Schläge sind betont', 'betonte Schläge deutlich kräftiger', 'Tempo bleibt gleich']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'akzent3', auftrag: 'Klatscht zur Begleitung gleichmäßig auf jeden Schlag. Nur der dritte Schlag in jedem Takt bekommt einen kräftigen Akzent.' } }),
     T('dur', 'Dur', 'hoeren', 2, 'Wirkung',
       'Tongeschlecht, also eine Art von Tonleiter und Zusammenklang, die oft hell und fröhlich klingt. Typisch sind die Töne c, e und g zusammen, und viele Kinderlieder stehen darin.',
       ['klingt oft hell und fröhlich', 'c, e und g zusammen', 'Gegenstück zu Moll'],
@@ -3279,7 +3329,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Zählt laut eins, zwei, drei, vier und klatscht dabei nur auf zwei und vier, so wie man zu Rock ’n’ Roll mitklatscht.',
           merkmale: ['Klatschen nur auf 2 und 4', 'Zählen bleibt gleichmäßig', 'die Eins wird nicht geklatscht']
-      } }),
+      },
+        mit: { groove: 'boogie', bpm: 140, takte: 4, muster: 'backbeat', auftrag: 'Die App spielt eine Rock-’n’-Roll-Begleitung. Klatscht dazu nur auf zwei und vier, so wie man zu Rock ’n’ Roll mitklatscht.' } }),
     T('elvis', 'Elvis Presley', 'person', 1, '1950er-Jahre',
       'Star aus den Südstaaten der USA (1935–1977), der in afroamerikanischer Nachbarschaft aufwuchs und Country mit afroamerikanischer Musik verband. Sein Hüftschwung galt als so anstößig, dass ihn das Fernsehen einmal nur oberhalb der Hüfte zeigte; bis heute heißt er „King of Rock ’n’ Roll“.',
       ['Star der 1950er aus den USA', 'Hüftschwung, Tolle, Skandal im Fernsehen', '„King of Rock ’n’ Roll“'],
@@ -3371,7 +3422,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Singt oder summt ein bekanntes Gitarrenriff, zum Beispiel aus „Smoke on the Water“, und wiederholt es dreimal genau gleich.',
           merkmale: ['kurze, einprägsame Tonfolge', 'mindestens dreimal gleich wiederholt', 'Song ist daran zu erkennen']
-      } }),
+      },
+        mit: { groove: 'rock', bpm: 100, takte: 8, auftrag: 'Singt oder summt zum Beat der App ein bekanntes Gitarrenriff und wiederholt es dreimal genau gleich.' } }),
     T('verzerrung', 'Verzerrung', 'begriff', 2, 'Sound',
       'Absichtlich übersteuerter, rauer und kratziger Gitarrenklang, der in einem überlasteten Verstärker oder einem Effektgerät entsteht. Er klingt dicht, kraftvoll und aggressiv; ohne ihn wären Hardrock und Heavy Metal kaum denkbar.',
       ['rauer, kratziger, übersteuerter Klang', 'entsteht im Verstärker oder Effektgerät', 'typisch für harte Gitarrenmusik'],
@@ -3478,7 +3530,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Zählt laut bis vier, stampft dabei die Bassdrum auf 1 und 3 und sprecht dazu ein tiefes Bumm.',
           merkmale: ['nur auf 1 und 3', 'tiefes Bumm mit dem Fuß', 'Zählen bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'rock', ohne: ['kick'], bpm: 96, takte: 4, muster: 'bassdrum', auftrag: 'Die App spielt den Beat ohne Bassdrum. Stampft die Bassdrum auf eins und drei und sprecht dazu ein tiefes Bumm.' } }),
     T('snare', 'Snare', 'begriff', 2, 'Drumset',
       'Flache Trommel mit einem Teppich aus Metallspiralen an der Unterseite, der bei jedem Schlag mitrasselt. Sie steht vor der spielenden Person zwischen den Knien und setzt im Rock meist die Schläge auf 2 und 4.',
       ['flache Trommel mit Metallteppich', 'scharfer, rasselnder Klang', 'oft Schläge auf 2 und 4'],
@@ -3486,7 +3539,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Zählt laut bis vier, klatscht dabei die Snare auf 2 und 4 und sprecht dazu ein kurzes Tschak.',
           merkmale: ['nur auf 2 und 4', 'kurzer, scharfer Klang', 'Zählen bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'rock', ohne: ['snare'], bpm: 96, takte: 4, muster: 'backbeat', auftrag: 'Die App spielt den Beat ohne Snare. Klatscht die Snare auf zwei und vier und sprecht dazu ein kurzes Tschak.' } }),
     T('hihat', 'Hi-Hat', 'begriff', 2, 'Drumset',
       'Zwei übereinanderliegende Becken auf einem Ständer, die man mit einem Fußpedal zusammendrückt oder öffnet. Darauf laufen oft gleichmäßige Achtel; geschlossen klingen sie kurz und zischend, offen lang und rauschend.',
       ['zwei Becken übereinander', 'mit Fußpedal offen oder geschlossen', 'oft durchlaufende Achtel'],
@@ -3534,7 +3588,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Baut zu dritt einen Groove, eine Person stampft den Puls, eine klatscht auf 2 und 4, eine spricht ein kurzes Bassmuster.',
           merkmale: ['drei Muster greifen ineinander', 'alle bleiben im selben Tempo', 'bringt zum Mitwippen']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'rockbeat', erkennen: false, auftrag: 'Baut zu dritt einen Groove zur Begleitung. Eine Person stampft auf eins und drei, eine klatscht auf zwei und vier, eine spricht ein kurzes Bassmuster.' } }),
     T('fillin', 'Fill-in', 'begriff', 2, 'Zusammenspiel',
       'Kurzer Einschub des Schlagzeugs, der das gleichmäßige Grundmuster unterbricht und einen neuen Songteil ankündigt. Oft läuft er über mehrere Trommeln von hoch nach tief und endet mit einem Beckenschlag.',
       ['kurzer Einschub des Schlagzeugs', 'unterbricht das Grundmuster', 'kündigt einen neuen Teil an'],
@@ -3542,7 +3597,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht zwei Takte Rockbeat und spielt im dritten Takt auf den Oberschenkeln ein Fill-in von hoch nach tief, das einen neuen Teil ankündigt.',
           merkmale: ['Grundmuster wird kurz unterbrochen', 'Einschub läuft von hoch nach tief', 'danach beginnt ein neuer Teil']
-      } }),
+      },
+        mit: { groove: 'rock', pausen: [3], bpm: 96, takte: 4, muster: 'fillin', auftrag: 'Die App spielt einen Rockbeat und setzt im dritten Takt aus. Spielt genau dort auf den Oberschenkeln ein Fill-in von hoch nach tief und steigt im vierten Takt wieder ein.' } }),
     T('einzaehlen', 'Einzählen', 'begriff', 1, 'Zusammenspiel',
       'Ansage von Zahlen vor dem Start eines Songs, etwa „One, two, three, four“, oft mit Klicks der Sticks. So kennen alle Tempo und Einsatz und beginnen genau gemeinsam.',
       ['Zahlen vor dem Start', 'zeigt Tempo und Einsatz', 'alle beginnen gemeinsam'],
@@ -3703,7 +3759,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Singt oder klatscht ein Ritornell, alle gemeinsam einen Teil A, dazwischen singt jeweils eine Person allein etwas Neues, dann wieder A.',
           merkmale: ['Teil A kehrt mindestens dreimal wieder', 'alle spielen Teil A gemeinsam', 'dazwischen Abschnitte für eine Person allein']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 12, auftrag: 'Singt oder klatscht zur Begleitung ein Ritornell. Alle spielen gemeinsam Teil A, dazwischen singt jeweils eine Person allein etwas Neues, dann wieder A.' } }),
     T('fuge', 'Fuge', 'begriff', 2, 'Gattungen',
       'Mehrstimmiges Stück, in dem ein kurzes Thema nacheinander in allen Stimmen einsetzt, abwechselnd auf verschiedenen Tonhöhen. Wie beim Kanon scheinen die Stimmen einander zu jagen, danach gehen sie aber eigene Wege.',
       ['ein Thema wandert durch alle Stimmen', 'Einsätze nacheinander', 'mehrstimmig, wie eine Verfolgungsjagd'],
@@ -3935,7 +3992,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht gerade Achtel zu einem gezählten Puls, jeder Schlag in zwei gleiche Hälften geteilt.',
           merkmale: ['jeder Schlag in zwei gleiche Teile', 'Achtel laufen gerade wie ein Uhrwerk', 'Puls bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 92, takte: 4, muster: 'achtel', auftrag: 'Klatscht zur Begleitung gerade Achtel. Jeder Schlag wird dabei in zwei gleiche Hälften geteilt.' } }),
     T('ternaer', 'ternär', 'begriff', 3, 'Rhythmus',
       'Rhythmusgefühl, bei dem jeder Grundschlag in drei gleiche Teile geteilt wird. Achtelpaare klingen dann lang und kurz und wiegen, wie im Swing, im Shuffle und in vielen Songs des Rhythm and Blues.',
       ['Grundschlag in drei Teile geteilt', 'Achtel klingen lang-kurz', 'z. B. Swing, Shuffle'],
@@ -3943,7 +4001,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht zu einem gezählten Puls lang-kurz, lang-kurz wie im Shuffle, jeder Schlag in drei Teile geteilt.',
           merkmale: ['Achtel klingen lang-kurz', 'wiegt wie im Swing', 'Puls bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 92, takte: 4, muster: 'ternaer', auftrag: 'Klatscht zur Begleitung lang-kurz, lang-kurz wie im Shuffle. Jeder Schlag ist dabei in drei Teile geteilt.' } }),
     T('triole', 'Triole', 'bild', 1, 'Rhythmus',
       'Drei gleich lange Noten, die zusammen so viel Zeit bekommen wie sonst zwei Noten desselben Werts. In den Noten stehen sie unter einer Klammer oder einem Bogen mit einer kleinen 3.',
       ['drei Noten in der Zeit von zweien', 'Klammer oder Bogen mit 3', 'gleich lange Noten'],
@@ -4125,7 +4184,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Sprecht vier Zeilen Text als Rap auf einen geklatschten Beat, mit Reimen, die auf die Schläge fallen.',
           merkmale: ['Silben sitzen im Beat', 'Reime fallen auf die Schläge', 'Stimme bleibt im Rhythmus']
-      } })
+      },
+        mit: { groove: 'hiphop', bpm: 88, takte: 8, auftrag: 'Rappt vier Zeilen Text auf den Beat der App, mit Reimen, die auf die Schläge fallen.' } })
   ],
   links: [
     ['kehlkopf', 'stimmlippen', 'Die Stimmlippen sitzen im Kehlkopf und bringen dort den Ton hervor, sobald der Atem sie in Schwingung versetzt.'],
@@ -4282,7 +4342,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht ein Rondo nach dem Muster A B A C A. Alle klatschen gemeinsam den Refrain, dazwischen klatscht jeweils eine Person allein einen neuen Rhythmus.',
           merkmale: ['Refrain kehrt unverändert wieder', 'dazwischen jedes Mal ein neuer Teil', 'Ablauf A B A C A erkennbar']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 12, auftrag: 'Klatscht zur Begleitung ein Rondo nach dem Muster A B A C A. Alle klatschen gemeinsam den Refrain, dazwischen klatscht jeweils eine Person allein einen neuen Rhythmus.' } }),
     T('variation', 'Variation', 'begriff', 2, 'Satzformen',
       'Veränderte Wiederholung eines Themas, bei der die Melodie erkennbar bleibt, während etwa Rhythmus, Begleitung, Tonart oder Instrument wechseln. Ein ganzer Satz kann aus einem Thema und mehreren solchen Abwandlungen hintereinander bestehen.',
       ['Thema wird verändert wiederholt', 'Melodie bleibt erkennbar', 'Rhythmus, Begleitung oder Instrument wechseln'],
@@ -4460,7 +4521,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht zwei Takte gleichmäßige Achtel und danach zwei Takte, in denen jede erste Achtel lang und jede zweite kurz ist.',
           merkmale: ['Grundpuls bleibt gleichmäßig', 'Achtel ungleich, lang und kurz', 'wiegender, hüpfender Charakter']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'achtelshuffle', auftrag: 'Klatscht zur Begleitung zwei Takte gleichmäßige Achtel und danach zwei Takte, in denen jede erste Achtel lang und jede zweite kurz ist.' } }),
     T('walkingbass', 'Walking Bass', 'hoeren', 2, 'Groove',
       'Basslinie, die in gleichmäßigen Vierteln Schritt für Schritt durch die Akkorde läuft, oft mit Durchgangstönen dazwischen. Sie hält das Tempo, treibt das Stück voran und ist typisch für Blues und Jazz.',
       ['gleichmäßige Viertel im Bass', 'läuft schrittweise durch die Akkorde', 'hält das Tempo, treibt an'],
@@ -4580,7 +4642,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Stampft vier Takte lang die Zählzeit eins besonders stark und klatscht dazwischen ein kurzes, lückenhaftes Muster, das sich wiederholt.',
           merkmale: ['Eins wird stark betont', 'kurzes Muster mit Pausen', 'Muster wiederholt sich tanzbar']
-      } }),
+      },
+        mit: { groove: 'funk', bpm: 100, takte: 4, auftrag: 'Die App spielt einen Funk-Beat. Stampft die Eins besonders stark und klatscht dazwischen ein kurzes, lückenhaftes Muster, das sich wiederholt.' } }),
     T('disco', 'Disco', 'begriff', 1, 'Groove',
       'Tanzmusik der 1970er-Jahre aus den Clubs von New York, bei der die Bassdrum auf jeden Viertelschlag fällt und Streicher, Bläser und glitzernde Klänge dazukommen. Statt einer Band mischten DJs die Platten nahtlos ineinander, und der Film „Saturday Night Fever“ machte den Stil 1977 weltweit berühmt.',
       ['Tanzmusik der 1970er-Jahre', 'Bassdrum auf jedem Viertel', 'Streicher, Glitzer, DJs statt Band'],
@@ -4596,7 +4659,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Sprecht den Text „Wir sitzen hier im Klassenraum, das ist kein Traum“ rhythmisch über einen Beat, den das Team klatscht.',
           merkmale: ['Text wird gesprochen statt gesungen', 'Reim am Zeilenende', 'bleibt ohne Stocken im Takt']
-      } }),
+      },
+        mit: { groove: 'hiphop', bpm: 88, takte: 8, auftrag: 'Sprecht den Text „Wir sitzen hier im Klassenraum, das ist kein Traum“ rhythmisch über den Beat der App.' } }),
     T('scratching', 'Scratching', 'begriff', 2, 'Hip-Hop',
       'Technik beim Auflegen, bei der eine Schallplatte unter der Nadel mit der Hand vor und zurück bewegt wird. So entstehen kratzende, rhythmische Geräusche, die man mit dem Regler am Mischpult ein- und ausblendet, und der Plattenspieler wird zum Instrument.',
       ['Platte mit der Hand vor und zurück', 'kratzende, rhythmische Geräusche', 'Plattenspieler als Instrument'],
@@ -4646,7 +4710,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Sprecht in ruhigem Tempo die Zählzeiten eins, zwei, drei, vier und klatscht kurz und trocken nur auf die Offbeats dazwischen.',
           merkmale: ['ruhiges, entspanntes Tempo', 'Klatschen nur zwischen den Zählzeiten', 'Zählzeiten werden mitgesprochen']
-      } }),
+      },
+        mit: { groove: 'reggae', bpm: 76, takte: 4, muster: 'offbeat', auftrag: 'Die App spielt einen ruhigen Reggae-Beat. Klatscht kurz und trocken nur auf die Offbeats zwischen den Schlägen.' } }),
     T('kpop', 'K-Pop', 'begriff', 1, 'Stile weltweit',
       'Popmusik aus Südkorea, gesungen von Gruppen, die Agenturen oft jahrelang in Gesang, Tanz und Auftreten ausbilden. Typisch sind exakt einstudierte Choreografien, ein Stilmix aus Pop, Hip-Hop und Elektro, aufwendige Videos und riesige Fangemeinden weltweit.',
       ['Pop aus Südkorea', 'Gruppen, von Agenturen ausgebildet', 'Choreografien, Fans in aller Welt'],
@@ -5229,7 +5294,8 @@ BUILTIN_PACKS.push(
         zeig: {
           auftrag: 'Klatscht vier Takte im Dreivierteltakt, sprecht die Zählzeiten mit und betont dabei die zweite oder dritte Zählzeit statt der Eins.',
           merkmale: ['Dreiertakt bleibt erkennbar', 'Akzent liegt auf zwei oder drei', 'Zählzeiten werden mitgesprochen']
-      } }),
+      },
+        mit: { groove: 'puls', takt: 3, bpm: 132, takte: 4, muster: 'mazurka', auftrag: 'Klatscht zur Begleitung im Dreivierteltakt, zählt mit und betont dabei die zweite Zählzeit statt der Eins.' } }),
     T('virtuosentum', 'Virtuosentum', 'begriff', 3, 'Konzertsaal',
       'Begeisterung für Musizierende mit atemberaubender Technik, die ihr Publikum durch Tempo, Kraft und Bühnenauftritt verblüffen. Im 19. Jahrhundert reisten solche Stars durch Europa, Kritiker wie Robert Schumann warnten aber vor bloßer Effekthascherei.',
       ['Bewunderung atemberaubender Spieltechnik', 'reisende Stars im 19. Jahrhundert', 'Kritik an bloßer Effekthascherei'],
@@ -5674,7 +5740,8 @@ BUILTIN_PACKS.push(
       { zeig: {
           auftrag: 'Sprecht einen Takt Schlagzeugrhythmus mit Silben wie „bum“ und „tschak“ und wiederholt ihn ohne jede Pause mindestens sechsmal.',
           merkmale: ['kurzer Abschnitt von einem Takt', 'ohne Pause wiederholt', 'jede Wiederholung genau gleich']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 8, auftrag: 'Sprecht zur Begleitung einen Takt Schlagzeugrhythmus mit Silben wie „bum“ und „tschak“ und wiederholt ihn ohne jede Pause.' } }),
     T('kurzvideo', 'Kurzvideo-Plattform', 'begriff', 1, 'Netzkultur',
       'App für kurze, meist hochkant gefilmte Clips, die man endlos durchwischt und mit Songausschnitten unterlegt. Was dort beliebt ist, landet oft in den Charts und im Radio.',
       ['kurze, hochkant gefilmte Clips', 'endloses Durchwischen', 'Songausschnitte unter den Clips'],
@@ -5781,7 +5848,8 @@ BUILTIN_PACKS.push(
       { zeig: {
           auftrag: 'Zählt laut „eins und zwei und drei und vier und“ und klatscht dabei nur auf jedes „und“ zwischen den Zählzeiten, vier Takte lang.',
           merkmale: ['Zählzeiten werden laut gesprochen', 'Klatschen nur auf dem „und“', 'Puls bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'offbeat', auftrag: 'Klatscht zur Begleitung nur auf jedes Und zwischen den Zählzeiten.' } }),
     T('backbeat', 'Backbeat', 'begriff', 1, 'Rhythmus',
       'Betonung der Zählzeiten 2 und 4 im Viervierteltakt, meist durch die Snare des Schlagzeugs. Sie liegt auf den eigentlich leichten Schlägen und gibt Rock und Pop ihren typischen Antrieb.',
       ['Betonung auf 2 und 4', 'meist die Snare Drum', 'Antrieb in Rock und Pop'],
@@ -5789,7 +5857,8 @@ BUILTIN_PACKS.push(
       { zeig: {
           auftrag: 'Stampft mit dem Fuß auf alle vier Zählzeiten und klatscht dazu laut nur auf zwei und vier, vier Takte lang.',
           merkmale: ['Puls auf allen vier Zählzeiten', 'Klatschen nur auf zwei und vier', 'Klatschen lauter als der Puls']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'backbeat', auftrag: 'Stampft zur Begleitung auf alle vier Zählzeiten und klatscht dazu laut nur auf zwei und vier.' } }),
     T('taktschwerpunkt', 'Taktschwerpunkt', 'begriff', 1, 'Rhythmus',
       'Natürlich betonte Zählzeit eines Takts, im Viervierteltakt vor allem die Eins und etwas schwächer die Drei. Gegen diese gewohnte Ordnung arbeiten Synkopen und Backbeat.',
       ['natürlich betonte Zählzeit', 'im 4/4-Takt die Eins und die Drei', 'Synkopen arbeiten dagegen'],
@@ -5978,7 +6047,8 @@ BUILTIN_PACKS.push(
         zeig: {
           auftrag: 'Zählt laut einen Zyklus von 16 Schlägen, klatscht auf die Schläge eins, fünf und 13, winkt auf Schlag neun und beginnt dann wieder von vorn.',
           merkmale: ['fester Zyklus, dann wieder von vorn', 'Klatschen und Winken markieren die Gruppen', 'alle treffen sich auf dem ersten Schlag']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 4, muster: 'tala16', auftrag: 'Die App zählt die Schläge. Klatscht im Zyklus von 16 Schlägen auf die Schläge eins, fünf und 13 und winkt auf Schlag neun.' } }),
     T('sitar', 'Sitar', 'begriff', 1, 'Indien',
       'Indische Langhalslaute mit Kürbissen als Klangkörper, verschiebbaren, hoch gewölbten Bünden und vielen Saiten, die ohne Anschlag mitschwingen. Durch seitliches Ziehen der Saite gleiten die Töne, sogar in Abstände kleiner als ein Halbton.',
       ['indische Langhalslaute', 'Kürbisse als Klangkörper', 'mitschwingende Resonanzsaiten'],
@@ -6116,7 +6186,8 @@ BUILTIN_PACKS.push(
         zeig: {
           auftrag: 'Klatscht zehn Schläge in Gruppen zu 2, 3, 2 und 3, betont den ersten Schlag jeder Gruppe und wiederholt das Muster dreimal.',
           merkmale: ['Gruppen ungleich lang', 'erster Schlag jeder Gruppe betont', 'Muster wiederholt sich gleich']
-      } })
+      },
+        mit: { groove: 'puls', takt: 10, bpm: 180, takte: 3, muster: 'additiv', auftrag: 'Die App spielt zehn gleichmäßige Schläge. Klatscht sie in Gruppen zu zwei, drei, zwei und drei und betont den ersten Schlag jeder Gruppe.' } })
   ],
   links: [
     ['sitar', 'tanpura', 'Während die Sitar die Melodie spielt, liefert die Tanpura den summenden Klangteppich aus Grundton und Quinte.'],
@@ -6206,7 +6277,8 @@ BUILTIN_PACKS.push({
         zeig: {
           auftrag: 'Klopft einen gleichbleibenden Trommelrhythmus im Dreiertakt auf den Tisch, summt darüber eine Melodie und werdet dabei langsam immer lauter.',
           merkmale: ['Rhythmus bleibt unverändert', 'Melodie darüber', 'stetig lauter werdend']
-      } }),
+      },
+        mit: { groove: 'bolero', bpm: 72, takte: 8, muster: 'bolero', auftrag: 'Klopft zur Begleitung den gleichbleibenden Trommelrhythmus auf den Tisch, summt eine Melodie darüber und werdet dabei langsam immer lauter.' } }),
     T('ganzton', 'Ganztonleiter', 'hoeren', 2, 'Klangmittel',
       'Leiter aus sechs Tönen im immer gleichen Abstand eines Ganztons, etwa c, d, e, fis, gis, ais. Weil weder Halbtonschritt noch Leitton vorkommen, tritt kein Grundton hervor, und der Klang wirkt schwebend und ohne Ziel.',
       ['sechs Töne', 'nur Ganztonschritte', 'schwebend, ohne Grundton'],
@@ -6439,7 +6511,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Tanzt zu zweit acht Zählzeiten einer kurzen, gleichen Bewegungsfolge synchron zu einem Beat, den das übrige Team klatscht.',
           merkmale: ['Bewegungen geplant und bei beiden gleich', 'genau auf den Beat', 'beide bewegen sich synchron']
-      } }),
+      },
+        mit: { groove: 'rock', bpm: 104, takte: 8, auftrag: 'Tanzt zu zweit acht Zählzeiten einer kurzen, gleichen Bewegungsfolge synchron zum Beat der App.' } }),
     T('audition', 'Audition', 'begriff', 1, 'Bühne',
       'Vorsingen, Vortanzen und Vorsprechen vor dem Team einer Produktion, das die Rollen besetzt. Oft bewerben sich Hunderte, und nur die Besten werden zu weiteren Runden eingeladen, bis die Besetzung feststeht.',
       ['Vorsingen, Vortanzen, Vorsprechen', 'vor dem Team der Produktion', 'mehrere Runden bis zur Rolle'],
@@ -6524,7 +6597,8 @@ BUILTIN_PACKS.push({
         zeig: {
           auftrag: 'Klatscht sechs gleichmäßige Schläge pro Takt und betont abwechselnd einen Takt als zwei Dreiergruppen und den nächsten als drei Zweiergruppen.',
           merkmale: ['sechs Schläge pro Takt', 'Wechsel von zwei Dreiern und drei Zweiern', 'Tempo bleibt gleich']
-      } }),
+      },
+        mit: { groove: 'puls', takt: 6, bpm: 180, takte: 4, muster: 'america', auftrag: 'Die App spielt sechs gleichmäßige Schläge pro Takt. Betont abwechselnd einen Takt als zwei Dreiergruppen und den nächsten als drei Zweiergruppen.' } }),
     T('tritonus', 'Tritonus', 'hoeren', 3, 'Klassiker 1957',
       'Intervall aus drei Ganztönen, etwa f und h, das sehr spannungsreich klingt. Bernstein durchzieht West Side Story damit, etwa im Liebeslied Maria, wo es sich sofort in die Quinte auflöst.',
       ['drei Ganztöne (übermäßige Quarte)', 'klingt spannungsreich', 'Beginn von Maria in West Side Story'],
@@ -6854,7 +6928,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Spielt pantomimisch eine große Basstrommel mit weichem Schlägel und betont im schnellen Zweiertakt den zweiten Schlag mit einem tiefen „bum“.',
           merkmale: ['große, tief hängende Trommel', 'zweiter Schlag stärker betont', 'gleichmäßiger Zweiertakt']
-      } }),
+      },
+        mit: { groove: 'samba', bpm: 96, takte: 4, muster: 'surdo', auftrag: 'Die App spielt einen Samba-Rhythmus. Spielt pantomimisch eine große Basstrommel und betont den zweiten Schlag mit einem tiefen „bum“.' } }),
     T('agogo', 'Agogo', 'begriff', 2, 'Brasilien',
       'Zwei verschieden große Metallglocken, die über einen Bügel verbunden sind und mit einem kurzen Stab angeschlagen werden. Das Instrument stammt aus Westafrika und spielt im Samba ein helles Muster aus zwei Tonhöhen.',
       ['zwei verbundene Metallglocken', 'zwei Tonhöhen, heller Klang', 'mit einem Stab geschlagen'],
@@ -6882,7 +6957,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht vier Takte lang den Rhythmus „Dam-da dam dam“ im langsamen Zweiertakt, wie der Bass in der Habanera aus Carmen, und summt die Melodie dazu.',
           merkmale: ['langsamer Zweiertakt', 'erster Schlag punktiert, lang und kurz', 'Muster wiederholt sich wie im Bass']
-      } }),
+      },
+        mit: { groove: 'puls', takt: 2, bpm: 72, takte: 4, muster: 'habanera', auftrag: 'Klatscht zur Begleitung den Rhythmus „Dam-da dam dam“ im langsamen Zweiertakt, wie der Bass in der Habanera aus Carmen, und summt die Melodie dazu.' } }),
     T('reggae', 'Reggae', 'begriff', 1, 'Karibik',
       'Musik aus Jamaika, die Ende der 1960er-Jahre aus Ska und Rocksteady entstand. Gitarre und Keyboard setzen kurze Akkorde zwischen die Grundschläge, Bass und Schlagzeug tragen langsam und schwer, und viele Texte handeln von Glauben, Freiheit und Ungerechtigkeit.',
       ['Musik aus Jamaika (Ende der 1960er)', 'kurze Akkorde zwischen den Grundschlägen', 'tiefer Bass, gesellschaftskritische Texte'],
@@ -7531,7 +7607,8 @@ BUILTIN_PACKS.push(
       { zeig: {
           auftrag: 'Klatscht ein kurzes rhythmisches Thema aus Vierteln und Achteln und dann dasselbe Thema mit doppelt so langen Werten, während der Grundpuls gleich bleibt.',
           merkmale: ['gleiches Thema beide Male', 'zweites Mal doppelt so lange Werte', 'Grundpuls bleibt unverändert']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 90, takte: 4, muster: 'augmentbarock', auftrag: 'Klatscht zur Begleitung ein kurzes Thema aus Vierteln und Achteln, setzt einen Takt aus und klatscht dann dasselbe Thema mit doppelt so langen Werten.' } }),
     T('wtk', 'Das Wohltemperierte Klavier', 'werk', 1, 'Fugenbau',
       'Zwei Sammlungen Bachs mit je 24 Präludien und Fugen durch alle Dur- und Molltonarten, chromatisch aufsteigend geordnet. Teil I trägt die Jahreszahl 1722, Teil II entstand um 1740; sie zeigen, dass gut gestimmte Tasteninstrumente jede Tonart erlauben.',
       ['zweimal 24 Präludien und Fugen', 'alle Dur- und Molltonarten', 'Teil I 1722, Teil II um 1740'],
@@ -8046,7 +8123,8 @@ BUILTIN_PACKS.push(
       { zeig: {
           auftrag: 'Klatscht oder sprecht den Bassrhythmus im ruhigen Zweiertakt mehrere Takte lang: punktierte Achtel, Sechzehntel, dann zwei Achtel.',
           merkmale: ['ruhiger Zweiertakt', 'lang, kurz, dann zwei gleiche Werte', 'Rhythmus wiederholt sich unverändert']
-      } }),
+      },
+        mit: { groove: 'puls', takt: 2, bpm: 72, takte: 4, muster: 'habanera', auftrag: 'Klatscht oder sprecht zur Begleitung den Bassrhythmus der Habanera aus punktierter Achtel, Sechzehntel und zwei Achteln.' } }),
     T('wagner', 'Richard Wagner', 'person', 1, 'Musikdrama',
       'Komponist aus Leipzig (1813–1883), der seine Bühnentexte selbst dichtete und in Bayreuth ein eigenes Festspielhaus eröffnete. Mit Leitmotiven und durchkomponierten Akten veränderte er die Oper grundlegend.',
       ['1813–1883, dichtete seine Texte selbst', 'Festspielhaus in Bayreuth', 'Leitmotive, durchkomponierte Akte'],
@@ -8500,7 +8578,8 @@ BUILTIN_PACKS.push({
         zeig: {
           auftrag: 'Klatscht das Viertonmotiv kurz, kurz, kurz, lang und danach dasselbe Motiv mit doppelt so langen Werten, während jemand den gleichbleibenden Puls mitzählt.',
           merkmale: ['gleiches Motiv beide Male', 'zweites Mal doppelt so lange Werte', 'Puls bleibt gleich, Motiv wirkt gedehnt']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'augmentmotiv', auftrag: 'Klatscht zur Begleitung das Viertonmotiv kurz, kurz, kurz, lang, setzt einen Takt aus und klatscht dann dasselbe Motiv mit doppelt so langen Werten.' } }),
     T('diminution', 'Diminution', 'begriff', 2, 'Verarbeitung',
       'Verarbeitungstechnik, bei der die Notenwerte eines Themas verkleinert werden. Das Thema erklingt gestaucht und wirkt gedrängt und beschleunigt, ein Mittel, um Spannung zu steigern oder ein Motiv atemlos wirken zu lassen.',
       ['Notenwerte werden verkleinert', 'Thema klingt gestaucht', 'wirkt gedrängt, beschleunigt'],
@@ -8530,7 +8609,8 @@ BUILTIN_PACKS.push({
         zeig: {
           auftrag: 'Klatscht das Viertonmotiv mehrmals und lasst bei jeder Wiederholung einen Ton weg, bis nur noch ein einzelner leiser Schlag und dann Stille bleibt.',
           merkmale: ['Motiv wird Schritt für Schritt kürzer', 'am Ende nur noch ein Rest', 'löst sich in Stille auf']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'liquidation', auftrag: 'Klatscht zur Begleitung das Viertonmotiv mehrmals und lasst bei jeder Wiederholung einen Ton weg, bis nur noch ein einzelner leiser Schlag und dann Stille bleibt.' } }),
     T('generalpause', 'Generalpause', 'begriff', 1, 'Verarbeitung',
       'Stelle, an der alle Stimmen eines Ensembles gleichzeitig schweigen. Die Stille wird zum Gestaltungsmittel und wirkt wie angehaltene Zeit, in der Coriolan-Ouvertüre etwa als Moment der Besinnung vor dem Schluss.',
       ['alle Stimmen schweigen gleichzeitig', 'Stille als Gestaltungsmittel', 'wirkt wie angehaltene Zeit'],
@@ -8874,7 +8954,8 @@ BUILTIN_PACKS.push({
         zeig: {
           auftrag: 'Geht im gleichmäßigen Schritttempo auf der Stelle und klatscht dazu mehrere Takte lang den Rhythmus lang, kurz, kurz.',
           merkmale: ['Rhythmus lang, kurz, kurz wiederholt', 'gleichmäßiges Schritttempo', 'Rhythmus bleibt unverändert']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 76, takte: 4, muster: 'daktylus', auftrag: 'Geht zur Begleitung im gleichmäßigen Schritttempo auf der Stelle und klatscht dazu den Rhythmus lang, kurz, kurz.' } }),
     T('unvollendete', 'Unvollendete', 'werk', 3, 'Schubert',
       'Schuberts Sinfonie h-Moll von 1822, von der nur zwei Sätze vollständig vorliegen, erst 1865 in Wien uraufgeführt. Sie beginnt leise in den tiefen Streichern, ihre Themen sind in sich geschlossene Gesänge, und Generalpausen lassen den Satz jäh abreißen.',
       ['Sinfonie h-Moll, nur zwei Sätze', 'Beginn leise in den tiefen Streichern', 'liedhafte Themen statt Motivarbeit'],
@@ -9051,7 +9132,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Singt vier Takte mit sinnfreien Silben wie du-ba-da-ba frei erfunden über einen geklatschten Swing-Puls, als wäre die Stimme ein Blasinstrument.',
           merkmale: ['Silben ohne Wortbedeutung', 'Phrasierung wie ein Instrument', 'frei erfunden im Moment']
-      } }),
+      },
+        mit: { groove: 'swing', bpm: 120, takte: 8, auftrag: 'Singt zum Swing der App vier Takte mit sinnfreien Silben wie du-ba-da-ba, frei erfunden, als wäre die Stimme ein Blasinstrument.' } }),
 
     T('swingaera', 'Swing-Ära', 'begriff', 1, 'Swing',
       'Zeit etwa von 1935 bis 1945, in der Jazz zur populären Tanzmusik ganzer Generationen wurde. Große Bands mit ausgefeilten Arrangements füllten Ballsäle und Radioprogramme, und 1938 spielte Benny Goodman sogar in der Carnegie Hall.',
@@ -9178,7 +9260,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Singt eine selbst erfundene kurze Phrase von zwei Takten viermal hintereinander unverändert über einen Swing-Puls.',
           merkmale: ['kurze, prägnante Phrase', 'mehrfach unverändert wiederholt', 'rhythmisch markant, mit Swing']
-      } })
+      },
+        mit: { groove: 'swing', bpm: 120, takte: 8, auftrag: 'Singt über den Swing der App eine selbst erfundene kurze Phrase von zwei Takten viermal hintereinander unverändert.' } })
   ],
   links: [
     ['worksong', 'callresponse', 'Im Worksong ruft ein Vorsänger und die Gruppe antwortet, das ist Call and Response in seiner ursprünglichen Form.'],
@@ -9406,7 +9489,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht ein kurzes Muster über einem gleichmäßigen Puls mindestens achtmal und verändert es dabei jeweils nur um einen einzigen Schlag.',
           merkmale: ['kurzes Muster vielfach wiederholt', 'gleichmäßiger Puls durchgehend', 'Veränderung nur in kleinen Schritten']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 120, takte: 16, auftrag: 'Klatscht über dem gleichmäßigen Puls der App ein kurzes Muster mindestens achtmal und verändert es dabei jeweils nur um einen einzigen Schlag.' } }),
     T('pattern', 'Pattern', 'begriff', 1, 'Reduktion',
       'Kurze melodische oder rhythmische Figur, die als Baustein vielfach wiederholt wird. In Prozessstücken verändern sich diese Bausteine Schritt für Schritt, etwa durch Verschieben, Anfügen oder Weglassen einzelner Töne.',
       ['kurze Figur als Baustein', 'vielfach wiederholt', 'wird schrittweise verändert'],
@@ -9634,7 +9718,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Geht gemeinsam im Marschschritt auf der Stelle und singt dazu eine kurze, selbst erfundene Parole auf eine einfache Melodie, alle zusammen und mit betonten Schlägen.',
           merkmale: ['alle singen gemeinsam', 'Marschrhythmus im geraden Takt', 'kurze, einprägsame Zeile mit Aufruf']
-      } }),
+      },
+        mit: { groove: 'marsch', bpm: 108, takte: 8, auftrag: 'Geht zur Marschbegleitung im Schritt auf der Stelle und singt dazu eine kurze, selbst erfundene Parole auf eine einfache Melodie.' } }),
     T('rmk', 'Reichsmusikkammer', 'begriff', 3, 'NS-Diktatur',
       'Ab 1933 Teil der Reichskulturkammer unter Propagandaminister Joseph Goebbels. Wer beruflich musizieren, unterrichten oder veröffentlichen wollte, musste Mitglied sein; jüdische und politisch unerwünschte Musiker:innen wurden ausgeschlossen und verloren damit ihre Arbeit.',
       ['Pflichtmitgliedschaft für Berufsmusizierende', 'Teil der Reichskulturkammer (Goebbels)', 'Ausschluss bedeutete Berufsverbot'],
@@ -9706,7 +9791,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Singt einen selbst erfundenen Refrain mit einer Kritik oder Forderung, den das andere Team sofort mitsingen kann, begleitet nur von einem schlichten Klatschpuls.',
           merkmale: ['Text mit Kritik oder Forderung', 'Refrain zum Mitsingen', 'schlichte Begleitung, Text im Vordergrund']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 8, auftrag: 'Singt einen selbst erfundenen Refrain mit einer Kritik oder Forderung, den das andere Team sofort mitsingen kann. Die App gibt den Puls.' } }),
     T('folkrevival', 'Folk Revival', 'begriff', 3, 'Protestkultur',
       'Wiederbelebung traditioneller Lieder in den USA zwischen etwa 1955 und 1965, getragen von Woody Guthrie, Pete Seeger, Joan Baez und dem frühen Bob Dylan. Gospel, Spiritual, Blues und alte Balladen wurden mit neuen politischen Texten verbunden und stärkten Bürgerrechts- und Friedensbewegung.',
       ['Wiederbelebung alter Volkslieder', 'USA, etwa 1955–1965', 'akustisch und politisch engagiert'],
@@ -9899,7 +9985,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klopft mit dem Fuß den gleichmäßigen Puls zu einem Lied, das ihr dabei summt.',
           merkmale: ['Fuß klopft gleichmäßig wie ein Herzschlag', 'Puls läuft bei langen Tönen weiter', 'Tempo bleibt gleich']
-      } }),
+      },
+        mit: { groove: 'lied', bpm: 100, takte: 8, muster: 'puls4', erkennen: false, auftrag: 'Die App spielt eine Melodie. Klopft mit dem Fuß den gleichmäßigen Puls dazu und summt mit.' } }),
     T('rhythmus', 'Rhythmus', 'begriff', 1, 'Zeit',
       'Die Abfolge langer und kurzer Töne und Pausen in einem Stück. Man kann sie klatschen oder in Silben wie Du, dei und Du-a sprechen.',
       ['lange und kurze Töne', 'auch Pausen gehören dazu', 'klatschen oder in Silben sprechen'],
@@ -10025,7 +10112,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Geht auf der Stelle im gleichmäßigen Schlag und betont jeden vierten Schritt mit einem Stampfer.',
           merkmale: ['Schritte bleiben gleichmäßig', 'jeder vierte Schritt ist betont', 'alle im Team gehen zusammen']
-        }, distractors: [
+        },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'metrum4', auftrag: 'Geht zur Begleitung auf der Stelle, auf jeden Schlag ein Schritt. Jeden vierten Schritt betont ihr mit einem Stampfer.' }, distractors: [
           'Die Geschwindigkeit, mit der ein Stück gespielt wird, gemessen in Schlägen pro Minute.',
           'Die Folge aus langen und kurzen Tönen, die man zu einem Lied klatschen kann.'
         ] }),
@@ -10036,7 +10124,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Spielt vier Takte lang dasselbe Muster aus Patschen und Klatschen, ohne dass der Schlag wackelt.',
           merkmale: ['Muster wiederholt sich genau', 'Schlag bleibt gleichmäßig', 'Körper wippt mit']
-        }, distractors: ['Ein einzelner lauter Schlag am Ende eines Liedes, nach dem alle still sind.'] }),
+        },
+        mit: { groove: 'puls', bpm: 96, takte: 4, auftrag: 'Spielt zur Begleitung immer wieder dasselbe Muster aus Patschen und Klatschen, ohne dass der Schlag wackelt.' }, distractors: ['Ein einzelner lauter Schlag am Ende eines Liedes, nach dem alle still sind.'] }),
     T('fill', 'Fill', 'begriff', 3, 'Im Metrum',
       'Kurze Abweichung vom Begleitmuster, meist am Ende eines Abschnitts, zum Beispiel ein Stopp auf der Eins oder etwas Neues auf drei und vier. Danach läuft das Muster weiter.',
       ['kurze Abweichung vom Muster', 'meist am Ende eines Abschnitts', 'danach läuft das Muster weiter'],
@@ -10300,7 +10389,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht ein Pattern laut und wiederholt es sofort ganz leise, zweimal hintereinander.',
           merkmale: ['Wiederholung ist deutlich leiser', 'Pattern bleibt gleich', 'Abstand bleibt gleichmäßig']
-        } }),
+        },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'echo', auftrag: 'Klatscht zur Begleitung ein kurzes Pattern laut und wiederholt es im nächsten Takt ganz leise, zweimal hintereinander.' } }),
     T('aufnahme', 'Aufnahme', 'begriff', 1, 'Aufführen',
       'Man hält die eigene Musik mit Tablet oder Handy fest, hört sie danach an und bespricht, was gut war und was man verbessert. Ohne das wäre der Klang nach dem Spielen weg.',
       ['Musik mit Tablet festhalten', 'danach anhören und besprechen', 'zum Verbessern'],
@@ -10750,7 +10840,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Singt „Bruder Jakob“ in zwei Gruppen, die zweite beginnt, wenn die erste bei „schläfst du noch“ ist.',
           merkmale: ['beide Gruppen singen dieselbe Melodie', 'zweite Gruppe beginnt später', 'beide bleiben im Tempo']
-        } }),
+        },
+        mit: { groove: 'lied', bpm: 100, takte: 10, muster: 'kanon2', erkennen: false, auftrag: 'Die App singt die erste Stimme von „Bruder Jakob“. Setzt als zweite Stimme ein, wenn sie bei „schläfst du noch“ ist.' } }),
     T('choral', 'Choral', 'begriff', 3, 'Liedformen',
       'Ein Kirchenlied mit einer einfachen, feierlichen Melodie, die die ganze Gemeinde mitsingen kann. Jede Zeile hat etwa gleich lange Töne, am Zeilenende wird gehalten.',
       ['Kirchenlied für die Gemeinde', 'einfache, feierliche Melodie', 'gleichmäßige Töne, Halt am Zeilenende'],
@@ -10818,7 +10909,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Ruft eine Zeile als Vorsänger:in, das Team antwortet, und alle klatschen dabei auf zwei und vier.',
           merkmale: ['Ruf und Antwort wechseln sich ab', 'Klatschen liegt auf zwei und vier', 'Antwort kommt gemeinsam']
-        } }),
+        },
+        mit: { groove: 'puls', bpm: 88, takte: 8, muster: 'backbeat', erkennen: false, auftrag: 'Eine Person ruft eine Zeile vor, das Team antwortet. Alle klatschen dabei zur Begleitung auf zwei und vier.' } }),
     T('volkslied', 'Volkslied', 'begriff', 2, 'Klang und Stil',
       'Ein Lied, das seit langer Zeit von Mensch zu Mensch weitergegeben wird, oft weiß niemand mehr, wer es erfunden hat. Es ist einfach zu singen und gehört zu einer Region oder einem Land.',
       ['von Mensch zu Mensch weitergegeben', 'oft ohne bekannten Erfinder', 'gehört zu Region oder Land'],
@@ -11063,7 +11155,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Zählt laut eins, zwei, drei und geht dazu den Grundschritt: vor, seit, schließen, dann rück, seit, schließen.',
           merkmale: ['drei Schritte je Takt', 'auf die Eins ein großer Schritt', 'Füße werden beim dritten Schritt geschlossen']
-      } }),
+      },
+        mit: { groove: 'walzer', bpm: 90, takte: 8, auftrag: 'Die App spielt einen langsamen Walzer. Zählt eins, zwei, drei und geht dazu den Grundschritt vor, seit, schließen und rück, seit, schließen.' } }),
     T('wienerwalzer', 'Wiener Walzer', 'begriff', 1, 'Standardtänze',
       'Schneller Drehtanz im 3/4-Takt, der um 1800 in Österreich aus dem Ländler entstand und auf den Bällen der Stadt Wien zum Welterfolg wurde. Das Paar dreht sich fast ununterbrochen rechts- oder linksherum durch den Saal, fast doppelt so schnell wie beim ruhigen Bruder dieses Tanzes.',
       ['schneller Drehtanz im 3/4-Takt', 'ständiges Drehen durch den Saal', 'um 1800 in Österreich entstanden'],
@@ -11254,7 +11347,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht zwei Takte lang auf jeden Schlag lang-kurz und sprecht dazu Du-a-di, Du-a-di, bis der Rhythmus rollt.',
           merkmale: ['jeder Schlag wird in lang-kurz geteilt', 'Grundpuls bleibt gleichmäßig', 'Klatschen rollt hörbar ohne Stocken']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'ternaer', auftrag: 'Klatscht zur Begleitung auf jeden Schlag lang-kurz und sprecht dazu Du-a-di, bis der Rhythmus rollt.' } }),
     T('gerade', 'gerade Achtel', 'begriff', 1, 'Unterteilung',
       'Spielweise, bei der jeder Grundschlag in zwei gleich lange Hälften geteilt wird, sodass die Töne gleichmäßig wie ein Uhrwerk laufen. Die meisten Pop-, Rock- und Latin-Songs werden so gespielt.',
       ['Schlag in zwei gleiche Hälften', 'gleichmäßig wie ein Uhrwerk', 'typisch für Pop, Rock, Latin'],
@@ -11262,7 +11356,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Sprecht zwei Takte lang eins-und-zwei-und-drei-und-vier-und völlig gleichmäßig und klatscht auf jede Silbe.',
           merkmale: ['alle Silben gleich lang', 'Klatschen auf Zahl und Und', 'Tempo bleibt stabil']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'achtel', auftrag: 'Sprecht zur Begleitung eins-und-zwei-und-drei-und-vier-und völlig gleichmäßig und klatscht auf jede Silbe.' } }),
     T('sechsachtel', 'Sechsachteltakt', 'begriff', 2, 'Unterteilung',
       'Taktart mit zwei Schlägen, die jeweils in drei Achtel unterteilt sind, gezählt eins-zwei-drei, vier-fünf-sechs mit Betonung auf eins und vier. Er wiegt wie ein Schaukelstuhl und steckt in vielen Balladen, Volksliedern und Seemannsliedern.',
       ['zwei Schläge mit je drei Achteln', 'Betonung auf eins und vier', 'wiegend, typisch für Balladen'],
@@ -11283,7 +11378,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Stampft die Schläge eins bis vier und klatscht nur auf die Und dazwischen, zwei Takte lang.',
           merkmale: ['Füße auf den Schlägen', 'Klatschen genau zwischen den Schlägen', 'Tempo bleibt gleich']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'offbeat', auftrag: 'Die App spielt die Schläge. Klatscht nur auf die Und dazwischen.' } }),
     T('synkope', 'Synkope', 'hoeren', 2, 'Betonung',
       'Verschiebung der Betonung auf eine eigentlich leichte Zählzeit, etwa wenn ein Ton auf der Und beginnt und über den nächsten Schlag hinweg gehalten wird. Die Musik stolpert kurz und bekommt dadurch Schwung.',
       ['Betonung auf leichter Zählzeit', 'Ton beginnt zwischen den Schlägen und wird gehalten', 'Musik stolpert und bekommt Schwung'],
@@ -11352,7 +11448,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Spielt zwei Takte Bodypercussion: Stampfen auf eins und drei, Klatschen auf zwei und vier, dazu leise Achtel auf den Oberschenkeln.',
           merkmale: ['Stampfen auf eins und drei', 'Klatschen auf zwei und vier', 'gleichmäßige Achtel auf den Oberschenkeln']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 4, muster: 'rockbeat', auftrag: 'Spielt zur Begleitung einen Rockbeat mit dem Körper. Stampft auf eins und drei, klatscht auf zwei und vier und patscht leise Achtel auf die Oberschenkel.' } }),
     T('schlagzeugnotation', 'Schlagzeugnotation', 'begriff', 2, 'Begleitmuster',
       'Schreibweise für das Drumset auf einem Notensystem, bei der jede Linie oder jeder Zwischenraum einem Teil des Instruments gehört. Trommeln bekommen runde Notenköpfe, Becken und Hi-Hat Kreuze; die Bassdrum steht ganz unten.',
       ['jede Linie ein Teil des Drumsets', 'runde Köpfe für Trommeln, Kreuze für Becken', 'Bassdrum unten, Hi-Hat oben'],
@@ -11366,7 +11463,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht zwei Takte lang das Muster drei plus zwei: eins, zwei-und, vier, dann zwei, drei, und wiederholt es viermal.',
           merkmale: ['fünf Schläge auf zwei Takte', 'erster Takt drei, zweiter Takt zwei Schläge', 'Muster wiederholt sich ohne Lücke']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 4, muster: 'clave32', auftrag: 'Klatscht zur Begleitung die Clave drei plus zwei. Im ersten Takt auf eins, zwei-und und vier, im zweiten Takt auf zwei und drei, immer wieder von vorn.' } }),
     T('hemiole', 'Hemiole', 'begriff', 3, 'Begleitmuster',
       'Rhythmische Umdeutung, bei der sechs Achtel einmal als zwei Dreiergruppen und dann als drei Zweiergruppen gehört werden. Das Metrum scheint kurz zu kippen, besonders wenn beide Gruppierungen abwechseln oder gleichzeitig erklingen.',
       ['sechs Achtel: zweimal drei oder dreimal zwei', 'Metrum scheint zu kippen', 'Wechsel oder Gleichzeitigkeit'],
@@ -11483,7 +11581,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht ein kurzes Muster aus vier Schlägen ohne Pause immer wieder, während zwei andere dazu gleichmäßig den Puls stampfen.',
           merkmale: ['Muster bleibt ohne Änderung', 'Puls im Fuß läuft durch', 'Muster und Puls passen zusammen']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 8, auftrag: 'Die App spielt den Puls. Klatscht ein kurzes Muster aus vier Schlägen ohne Pause immer wieder darüber.' } }),
     T('ostinato', 'Ostinato', 'hoeren', 1, 'Spielweise',
       'Kurze Tonfolge oder rhythmische Figur, die ständig wiederholt wird und so das Fundament für Gesang und Soli bildet. Die Harfenlauten und Daumenklaviere Afrikas bauen ihre Musik aus solchen sich drehenden Mustern.',
       ['kurze Figur, ständig wiederholt', 'Fundament für Gesang und Soli', 'typisch für Harfenlaute und Daumenklavier'],
@@ -11524,7 +11623,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Stampft und patscht zwei Takte lang auf Beine und Schuhe einen gemeinsamen Rhythmus, wie es Arbeiter in Gummistiefeln tun.',
           merkmale: ['Stampfen und Schläge auf Beine oder Schuhe', 'alle im gleichen Rhythmus', 'keine Instrumente nötig']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 4, auftrag: 'Stampft und patscht zur Begleitung gemeinsam einen Rhythmus auf Beine und Schuhe, wie es Arbeiter in Gummistiefeln tun.' } }),
     T('pentatonik', 'Pentatonik', 'hoeren', 2, 'Alltag',
       'Tonleiter aus nur fünf Tönen ohne Halbtonschritte, etwa c, d, e, g und a. Weil alle Töne gut zusammenklingen, kann eine Gruppe darüber frei singen und spielen; viele Lieder Afrikas und Kinderlieder weltweit nutzen sie.',
       ['fünf Töne', 'keine Halbtonschritte', 'alles klingt zusammen, gut zum Improvisieren'],
@@ -11662,7 +11762,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht zwei Takte lang den Tanzrhythmus des Auftrittslieds: lang-kurz, dann zwei gleiche Schläge, und sprecht dazu Dam-da-dam-dam.',
           merkmale: ['vier Schläge je Takt, erster lang-kurz', 'Muster wiederholt sich gleich', 'Sprechen und Klatschen passen zusammen']
-      } }),
+      },
+        mit: { groove: 'puls', takt: 2, bpm: 72, takte: 4, muster: 'habanera', auftrag: 'Klatscht zur Begleitung den Tanzrhythmus des Auftrittslieds, lang-kurz und dann zwei gleiche Schläge, und sprecht dazu Dam-da-dam-dam.' } }),
     T('seguidilla', 'Seguidilla', 'begriff', 3, 'Nummern',
       'Lied im ersten Akt, mit dem die gefesselte Titelrolle den bewachenden Soldaten verführt. Zum schnellen spanischen Tanzrhythmus im 3/8-Takt lockt sie ihn in die Schenke von Lillas Pastia, bis er ihre Fesseln löst und sie fliehen lässt.',
       ['Verführungslied im ersten Akt', 'spanischer Tanz im 3/8-Takt', 'lockt in die Schenke, Soldat löst die Fesseln'],
@@ -11670,7 +11771,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht vier Takte lang den schnellen Dreiertakt der Seguidilla, stampft auf jede Eins und zählt eins, zwei, drei laut mit.',
           merkmale: ['drei Schläge in jedem Takt', 'Stampfen auf jeder Eins', 'schnelles, tänzerisches Tempo']
-      } }),
+      },
+        mit: { groove: 'puls', takt: 3, bpm: 152, takte: 4, muster: 'dreier', auftrag: 'Klatscht zur Begleitung im schnellen Dreiertakt, stampft auf jede Eins und zählt eins, zwei, drei laut mit.' } }),
     T('torerolied', 'Torerolied', 'begriff', 1, 'Nummern',
       'Auftrittslied des Stierkämpfers im zweiten Akt, mit dem er in der Schenke auf seinen Erfolg trinkt und vom Kampf in der Arena erzählt. Die Strophen sind marschartig, und im Refrain fällt der ganze Chor ein; die Melodie erklingt schon im Vorspiel der Oper.',
       ['Auftrittslied des Stierkämpfers', 'marschartig, Chor im Refrain', 'Melodie schon im Vorspiel'],
@@ -11678,7 +11780,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Singt oder summt den Refrain „Auf in den Kampf, Torero“ und marschiert dazu auf der Stelle.',
           merkmale: ['Melodie des Refrains erkennbar', 'Marschschritt im Takt', 'kräftig und selbstbewusst vorgetragen']
-      } }),
+      },
+        mit: { groove: 'marsch', bpm: 104, takte: 8, auftrag: 'Singt oder summt den Refrain „Auf in den Kampf, Torero“ und marschiert dazu im Tempo der Begleitung auf der Stelle.' } }),
     T('blumenarie', 'Blumenarie', 'begriff', 2, 'Nummern',
       'Gesang des Soldaten im zweiten Akt, in dem er erzählt, wie er im Gefängnis die zugeworfene Blume aufbewahrte und nur an die Frau dachte, die sie geworfen hatte. Die Melodie steigt in großen Bögen auf und endet leise in höchster Lage; es ist das Bekenntnis seiner Liebe.',
       ['Liebesbekenntnis des Soldaten', 'erinnert an die Blume aus dem Gefängnis', 'weite Bögen, leiser hoher Schluss'],
@@ -12084,7 +12187,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Stampft im 3/4-Takt auf die Eins und klatscht leicht auf zwei und drei, vier Takte lang, als Walzerbegleitung.',
           merkmale: ['Stampfen nur auf die Eins', 'zwei leichte Klatscher danach', 'Dreiertakt bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'puls', takt: 3, bpm: 120, takte: 4, muster: 'nachschlag', auftrag: 'Stampft zur Begleitung im Dreivierteltakt auf die Eins und klatscht leicht auf zwei und drei, als Walzerbegleitung.' } }),
     T('ukulele', 'Ukulele', 'begriff', 1, 'Instrumente',
       'Kleine viersaitige Gitarre aus Hawaii, deren Saiten meist auf g, c, e und a gestimmt sind. Weil die Saiten weich sind und viele Akkorde nur einen oder zwei Finger brauchen, lernen Klassen darauf schnell, Lieder zu begleiten.',
       ['vier Saiten, aus Hawaii', 'Stimmung g, c, e, a', 'Akkorde mit wenigen Fingern'],
@@ -12406,7 +12510,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Ruft als Gruppe eine kurze Protestzeile im Sprechchor und klatscht dazu einen gleichmäßigen Puls.',
           merkmale: ['kurze, klare Botschaft', 'alle rufen gemeinsam', 'Puls bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 96, takte: 8, auftrag: 'Ruft als Gruppe zur Begleitung eine kurze Protestzeile im Sprechchor und klatscht im Puls mit.' } }),
     T('fankultur', 'Fankultur', 'begriff', 1, 'Fankultur',
       'Alles, was Fans rund um ihre Lieblingsmusik tun, etwa Konzerte besuchen, Texte auswendig lernen, Poster sammeln, Kleidung tragen, Neuigkeiten teilen und sich mit anderen austauschen. Dabei entstehen eigene Rituale, Sprache und Zeichen der Zugehörigkeit.',
       ['Verhalten rund um die Lieblingsmusik', 'Konzerte, Sammeln, Teilen', 'eigene Rituale und Zeichen'],
@@ -12438,7 +12543,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Singt das Riff von „Seven Nation Army“ auf „Oh“ als Stadionchor und stampft dazu den Puls, dreimal hintereinander.',
           merkmale: ['alle singen dieselben Töne', 'Puls wird gestampft', 'wird mehrmals wiederholt']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 124, takte: 8, auftrag: 'Singt das Riff von „Seven Nation Army“ auf „Oh“ als Stadionchor und stampft im Takt der Begleitung mit.' } }),
     T('identitaetsbildung', 'Identitätsbildung', 'begriff', 3, 'Identität',
       'Prozess, in dem Jugendliche herausfinden, wer sie sind und wer sie sein wollen. Musik hilft dabei, weil sie Gefühle ausdrückt, Vorbilder bietet und zeigt, zu wem man gehört. Das eigene Profil, geteilte Lieblingssongs und Konzertfotos sind Teil dieser Selbstdarstellung.',
       ['Herausfinden, wer man ist', 'Musik bietet Gefühle und Vorbilder', 'Selbstdarstellung durch Musikgeschmack'],
@@ -12583,7 +12689,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Zählt laut von 1 bis 12 und klatscht dabei auf 3, 6, 8, 10 und 12 kräftiger. Wiederholt den Zyklus dreimal.',
           merkmale: ['zwölf Schläge werden gezählt', 'Betonungen auf 3, 6, 8, 10, 12', 'Zyklus läuft ohne Bruch weiter']
-      }, distractors: [
+      },
+        mit: { groove: 'puls', takt: 12, bpm: 180, takte: 3, muster: 'compas', auftrag: 'Die App zählt zwölf Schläge. Klatscht mit und betont die Schläge 3, 6, 8, 10 und 12.' }, distractors: [
         'Lebhafter Tanz im ungeraden Siebenachteltakt, der auf dem Balkan von Blaskapellen gespielt wird.',
         'Rhythmisches Klatschen mit hohlen oder flachen Händen, das Gesang und Tanz begleitet.',
         'Gesang im Flamenco, rau und reich verziert, oft mit einem langen Ruf auf „Ay“ eröffnet.'] }),
@@ -12594,7 +12701,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht acht gleichmäßige Schläge abwechselnd mit hohlen und mit flachen Händen, sodass zwei Klangfarben zu hören sind.',
           merkmale: ['Puls bleibt gleichmäßig', 'zwei Klangfarben deutlich hörbar', 'Wechsel der Handhaltung sichtbar']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 4, muster: 'palmas', auftrag: 'Klatscht zur Begleitung gleichmäßig auf jeden Schlag, abwechselnd mit hohlen und mit flachen Händen, sodass zwei Klangfarben zu hören sind.' } }),
     T('klezmer', 'Klezmer', 'begriff', 1, 'Klezmer',
       'Festmusik der jüdischen Gemeinden Osteuropas, gespielt von reisenden Kapellen vor allem auf Hochzeiten. Geige und Klarinette singen, seufzen und lachen wie eine menschliche Stimme, dazu kommen Akkordeon, Kontrabass und Zimbal. Seit den 1970er-Jahren erlebt die Musik weltweit eine Wiederbelebung.',
       ['jüdische Festmusik aus Osteuropa', 'Klarinette und Geige wie Stimmen', 'Hochzeitsmusik reisender Kapellen'],
@@ -12646,7 +12754,8 @@ BUILTIN_PACKS.push({
         zeig: {
           auftrag: 'Zählt vier Takte im Sechsachteltakt laut als „eins-und-a, zwei-und-a“ und klatscht dazu jede Achtel, die Eins und die Zwei kräftiger.',
           merkmale: ['sechs Achtel in zwei Dreiergruppen', 'Eins und Zwei deutlich betont', 'hüpfender, gleichmäßiger Schwung']
-      } }),
+      },
+        mit: { groove: 'sechsachtel', bpm: 100, takte: 4, muster: 'jig', auftrag: 'Zählt zur Begleitung im Sechsachteltakt eins-und-a, zwei-und-a und klatscht jede Achtel. Die Eins und die Zwei klatscht ihr kräftiger.' } }),
     T('session', 'Session', 'begriff', 1, 'Irish Folk',
       'Informelles Treffen von Musizierenden in einem Pub, bei dem bekannte Melodien reihum angestimmt und von allen mitgespielt werden. Noten gibt es nicht, man lernt die Stücke durch Zuhören. Wer kann, setzt sich dazu, das Publikum sitzt daneben beim Bier.',
       ['Treffen im Pub', 'Melodien reihum, alle spielen mit', 'ohne Noten, nach Gehör'],
@@ -12670,7 +12779,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Zählt einen Siebenachteltakt laut als 1-2-3, 1-2, 1-2 und klatscht die Einsen kräftiger. Vier Takte lang.',
           merkmale: ['sieben Zählzeiten pro Takt', 'Gruppen 3+2+2 hörbar betont', 'Tempo bleibt gleichmäßig']
-      } }),
+      },
+        mit: { groove: 'puls', takt: 7, bpm: 168, takte: 4, muster: 'sieben', auftrag: 'Die App zählt sieben gleichmäßige Achtel. Zählt mit als 1-2-3, 1-2, 1-2 und klatscht die Einsen kräftiger.' } }),
     T('rebetiko', 'Rebetiko', 'begriff', 3, 'Balkan',
       'Griechische Großstadtmusik, die in den 1920er-Jahren in Piräus und Athen entstand, als Flüchtlinge aus Kleinasien kamen. Lieder über Armut, Gefängnis, Liebe und Rausch zu Bouzouki und Baglamas, deshalb oft griechischer Blues genannt. Seit 2017 UNESCO-Kulturerbe.',
       ['Großstadtmusik aus Piräus und Athen', 'Lieder über Armut, Gefängnis, Liebe', 'Bouzouki, „griechischer Blues“'],
@@ -13223,7 +13333,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht acht gleichmäßige Achtel und setzt kräftige Akzente auf unerwartete Schläge, etwa den zweiten, fünften und siebten. Zweimal.',
           merkmale: ['Puls bleibt gleichmäßig', 'Akzente an unerwarteten Stellen', 'Muster wird wiederholt']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 100, takte: 4, muster: 'akzentverschiebung', auftrag: 'Klatscht zur Begleitung gleichmäßige Achtel und setzt kräftige Akzente auf unerwartete Achtel, etwa die zweite, fünfte und siebte.' } }),
     T('polyrhythmik', 'Polyrhythmik', 'hoeren', 1, 'Rhythmus',
       'Gleichzeitiges Erklingen verschiedener Rhythmen, die sich nicht auf einen gemeinsamen Grundschlag bringen lassen, etwa drei Schläge gegen zwei in derselben Zeit. Die Schichten reiben sich und erzeugen Spannung, im „Sacre“ überlagern sich oft mehrere solcher Muster.',
       ['verschiedene Rhythmen gleichzeitig', 'z. B. drei gegen zwei', 'Schichten reiben sich'],
@@ -13236,7 +13347,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Klatscht in zwei Gruppen gleichzeitig: Gruppe A einen Dreiertakt mit betonter Eins, Gruppe B einen Vierertakt mit betonter Eins, zwölf Schläge lang.',
           merkmale: ['zwei Gruppen mit verschiedenen Betonungen', 'gemeinsamer Puls bleibt', 'Einsen treffen sich erst nach zwölf Schlägen']
-      }, distractors: [
+      },
+        mit: { groove: 'puls', takt: 12, bpm: 168, takte: 2, muster: 'polymetrik', auftrag: 'Die App zählt zwölf Schläge. Gruppe A klatscht einen Dreiertakt mit betonter Eins, Gruppe B gleichzeitig einen Vierertakt mit betonter Eins.' }, distractors: [
         'Verschiedene Rhythmen gleichzeitig, etwa drei Schläge gegen zwei in derselben Zeit.',
         'Betonungen, die gegen das erwartete Metrum gesetzt werden und den Puls stolpern lassen.',
         'Gleichmäßige, maschinenhafte Bewegung in kleinen Notenwerten ohne Veränderung.'] }),
@@ -13247,7 +13359,8 @@ BUILTIN_PACKS.push({
       { zeig: {
           auftrag: 'Stampft oder klatscht zwei Takte lang gleichmäßige Achtel wie eine Maschine, ohne Betonung, ohne schneller oder langsamer zu werden.',
           merkmale: ['völlig gleichmäßige Achtel', 'keine Betonung hörbar', 'Tempo bleibt konstant']
-      } }),
+      },
+        mit: { groove: 'puls', bpm: 112, takte: 4, muster: 'achtel', auftrag: 'Stampft oder klatscht zur Begleitung gleichmäßige Achtel wie eine Maschine, ohne Betonung und ohne schneller oder langsamer zu werden.' } }),
     T('akkordrepetition', 'Akkordrepetition', 'begriff', 2, 'Rhythmus',
       'Vielfache Wiederholung desselben Akkords in gleichmäßigen kurzen Notenwerten, sodass der Klang zum rhythmischen Schlag wird. Im „Tanz der jungen Mädchen“ spielen die Streicher einen einzigen dissonanten Akkord Dutzende Male hintereinander, nur die Akzente verändern sich.',
       ['derselbe Akkord vielfach wiederholt', 'Klang wird zum Schlag', 'nur Akzente ändern sich'],
@@ -13624,7 +13737,8 @@ BUILTIN_PACKS.push({
       ['ein Ensemble', 'Oh Happy Day, 1969 ein Hit der Edwin Hawkins Singers', 'Ein Chor, bei dem alle klatschen und …'],
       { zeig: {
           auftrag: 'Klatscht auf 2 und 4, eine Person ruft eine kurze Zeile vor, die Gruppe antwortet mit derselben Zeile, zweimal hintereinander.',
-          merkmale: ['Klatschen auf 2 und 4', 'Ruf und Antwort', 'Gruppe bewegt sich mit'] } }),
+          merkmale: ['Klatschen auf 2 und 4', 'Ruf und Antwort', 'Gruppe bewegt sich mit'] },
+        mit: { groove: 'puls', bpm: 88, takte: 8, muster: 'backbeat', erkennen: false, auftrag: 'Klatscht zur Begleitung auf zwei und vier. Eine Person ruft eine kurze Zeile vor, die Gruppe antwortet mit derselben Zeile.' } }),
     T('ngl', 'Neues Geistliches Lied', 'begriff', 2, 'Gegenwart',
       'Kirchenlieder seit den 1960er-Jahren im Stil von Pop, Folk, Jazz oder Gospel, mit Gitarre, Klavier und Band statt Orgel. Sie wollen die Sprache und Musik der Gegenwart in den Gottesdienst holen und sind heute fester Teil der Gesangbücher.',
       ['Kirchenlieder seit den 1960ern', 'Pop, Folk, Jazz, Gospel', 'Gitarre und Band statt Orgel'],
@@ -14050,7 +14164,8 @@ BUILTIN_PACKS.push({
         'Zweite Melodie eines Sonatensatzes in der Nebentonart, oft lyrisch und gesanglich.'],
         zeig: {
           auftrag: 'Klatscht ein kurzes Marschmuster und wiederholt es viermal, jedes Mal etwas lauter, ohne das Tempo zu verändern.',
-          merkmale: ['gleiches Muster wiederholt', 'jede Wiederholung lauter', 'Tempo bleibt gleich'] } }),
+          merkmale: ['gleiches Muster wiederholt', 'jede Wiederholung lauter', 'Tempo bleibt gleich'] },
+        mit: { groove: 'puls', bpm: 104, takte: 4, muster: 'marsch', auftrag: 'Klatscht zur Begleitung ein kurzes Marschmuster und wiederholt es viermal, jedes Mal etwas lauter, ohne das Tempo zu verändern.' } }),
     T('mars', 'Mars aus The Planets', 'werk', 1, 'Darstellen',
       'Erster Satz von Holsts Orchestersuite über die Himmelskörper, 1914 komponiert, mit dem Untertitel Der Kriegsbringer. Ein hämmernder Rhythmus im Fünfertakt, mit dem Holz des Bogens geschlagene Streicher, Trompetenrufe und wachsende Lautstärke erzeugen Gewalt ohne jede Melodie zum Mitsingen.',
       ['Holst 1914, Der Kriegsbringer', 'hämmernder Fünfertakt, col legno', 'Trompetenrufe, Gewalt ohne Gesangsmelodie'],
@@ -14060,7 +14175,8 @@ BUILTIN_PACKS.push({
         'Werk für 52 Streichinstrumente mit Clustern und Glissandi, den Opfern von Hiroshima gewidmet.'],
         zeig: {
           auftrag: 'Klatscht im Fünfertakt mehrmals den hämmernden Rhythmus Achteltriole, Viertel, Viertel, zwei Achtel, Viertel und zählt dabei laut bis fünf mit.',
-          merkmale: ['fünf Zählzeiten in jedem Takt', 'derselbe Rhythmus ständig wiederholt', 'harte, gleichmäßig hämmernde Schläge'] } }),
+          merkmale: ['fünf Zählzeiten in jedem Takt', 'derselbe Rhythmus ständig wiederholt', 'harte, gleichmäßig hämmernde Schläge'] },
+        mit: { groove: 'puls', takt: 5, bpm: 132, takte: 4, muster: 'mars5', auftrag: 'Die App zählt fünf Schläge pro Takt. Klatscht dazu den hämmernden Rhythmus aus Achteltriole, Viertel, Viertel, zwei Achteln und Viertel.' } }),
     T('klangsymbolik', 'Klangsymbolik', 'begriff', 2, 'Darstellen',
       'Verwendung von Klängen, die das Publikum sofort mit Krieg verbindet: Trommelwirbel, Trompetenrufe, Kanonenschläge, Sirenen, Schüsse oder Marschtritt. Diese Zeichen wirken ohne Erklärung und werden deshalb in Schlachtenmusik, Filmmusik und Protestsongs eingesetzt.',
       ['Klänge als Zeichen für Krieg', 'Trommel, Trompete, Kanone, Sirene', 'wirkt ohne Erklärung'],
@@ -14122,7 +14238,8 @@ BUILTIN_PACKS.push({
         'Messe für Verstorbene mit lateinischem Text, benannt nach ihrem ersten Wort.'],
         zeig: {
           auftrag: 'Geht im langsamen Schritt auf der Stelle und klatscht dazu leise einen punktierten Rhythmus im geraden Takt, als zöge ein Trauerzug vorbei.',
-          merkmale: ['langsamer, schwerer Schritt', 'punktierter Rhythmus im geraden Takt', 'leise und gleichmäßig'] } }),
+          merkmale: ['langsamer, schwerer Schritt', 'punktierter Rhythmus im geraden Takt', 'leise und gleichmäßig'] },
+        mit: { groove: 'puls', bpm: 60, takte: 4, muster: 'trauer', auftrag: 'Geht zur langsamen Begleitung im Schritt auf der Stelle und klatscht dazu leise einen punktierten Rhythmus.' } }),
     T('britten', 'Benjamin Britten', 'person', 2, 'Trauer',
       'Englischer Komponist (1913–1976) und überzeugter Kriegsgegner, der im Zweiten Weltkrieg den Dienst mit der Waffe verweigerte. Für die Weihe der neuen Kathedrale von Coventry schrieb er 1962 sein Werk gegen den Krieg; mit Peter Pears gründete er das Festival in Aldeburgh.',
       ['englischer Komponist (1913–1976)', 'Kriegsgegner, verweigerte den Waffendienst', 'Werk zur Weihe der Kathedrale von Coventry'],
@@ -14276,7 +14393,8 @@ BUILTIN_PACKS.push({
         'Preußischer Parademarsch im geraden Takt mit Becken, Trommel und Dreiklangsmelodik.'],
         zeig: {
           auftrag: 'Klatscht einen geraden Marschrhythmus und lasst ihn absichtlich stolpern, mit einem Schlag zu früh und einer Pause zu viel, bevor er wieder in den Takt findet.',
-          merkmale: ['gerader Marschrhythmus als Ausgangspunkt', 'Rhythmus gerät hörbar aus dem Tritt', 'wirkt komisch statt machtvoll'] } }),
+          merkmale: ['gerader Marschrhythmus als Ausgangspunkt', 'Rhythmus gerät hörbar aus dem Tritt', 'wirkt komisch statt machtvoll'] },
+        mit: { groove: 'marsch', bpm: 108, takte: 8, auftrag: 'Klatscht zur Marschbegleitung einen geraden Marschrhythmus und lasst ihn absichtlich stolpern, mit einem Schlag zu früh und einer Pause zu viel, bevor er wieder in den Takt findet.' } }),
     T('funktionalisierung', 'Funktionalisierung', 'begriff', 3, 'Deutung',
       'Einsatz von Musik für einen Zweck, den sie ursprünglich nicht hatte, etwa wenn eine Sinfonie zum Kriegssymbol oder ein Lied zur Parole wird. Der Klang bleibt gleich, die Bedeutung entsteht durch Anlass, Ort und Publikum; Staaten nutzen das im Krieg besonders gezielt.',
       ['Musik für einen fremden Zweck', 'Bedeutung durch Anlass und Ort', 'im Krieg gezielt genutzt'],
@@ -14511,7 +14629,8 @@ BUILTIN_PACKS.push({
       ['ein Tanz', 'Der zweite Satz der ersten Sinfonie, kräftig bewegt, doch nicht zu schnell', 'Ein bäuerlicher Tanz im Dreiertakt, der …'],
       { zeig: {
           auftrag: 'Tanzt oder schwingt im Dreiertakt mit kräftig gestampfter Eins, gemütlich und dörflich, zwei Phrasen lang.',
-          merkmale: ['Dreiertakt erkennbar', 'Eins gestampft oder betont', 'gemütliches, nicht zu schnelles Tempo'] } }),
+          merkmale: ['Dreiertakt erkennbar', 'Eins gestampft oder betont', 'gemütliches, nicht zu schnelles Tempo'] },
+        mit: { groove: 'puls', takt: 3, bpm: 108, takte: 4, muster: 'nachschlag', erkennen: false, auftrag: 'Tanzt oder schwingt zur Begleitung im Dreiertakt mit kräftig gestampfter Eins, gemütlich und dörflich.' } }),
     T('vortragsanweisung', 'Vortragsanweisung', 'begriff', 3, 'Tonsprache',
       'Hinweis in der Partitur zu Tempo, Ausdruck und Charakter. Mahler schreibt sie ungewöhnlich genau und auf Deutsch, etwa Wie ein Naturlaut, Feierlich und gemessen, ohne zu schleppen, Mit Parodie oder Sehr behaglich, und lenkt so Dirigierende und Hörende in seine Deutung.',
       ['Hinweis zu Tempo und Charakter', 'bei Mahler genau und auf Deutsch', 'lenkt die Deutung'],
@@ -14803,7 +14922,8 @@ BUILTIN_PACKS.push({
         'Bassdrum auf jedem Viertel des Taktes, typisch für Disco und House.'],
         zeig: {
           auftrag: 'Zählt laut 1 und 2 und 3 und 4 und und klatscht dabei zwei Takte lang nur auf jedes Und.',
-          merkmale: ['Zählzeiten werden mitgesprochen', 'Klatschen nur auf den Und-Zählzeiten', 'Grundschlag bleibt unbetont'] } }),
+          merkmale: ['Zählzeiten werden mitgesprochen', 'Klatschen nur auf den Und-Zählzeiten', 'Grundschlag bleibt unbetont'] },
+        mit: { groove: 'puls', bpm: 100, takte: 4, muster: 'offbeat', auftrag: 'Klatscht zur Begleitung nur auf jedes Und zwischen den Zählzeiten.' } }),
     T('backbeat', 'Backbeat', 'hoeren', 1, 'Melodik und Rhythmik',
       'Betonung der Zählzeiten 2 und 4 durch die Snare Drum, während die Bassdrum auf 1 und 3 liegt. Dieses Muster trägt fast jeden Rock- und Popsong seit den 1950er-Jahren und lädt zum Mitklatschen auf den betonten Schlägen ein.',
       ['Snare auf 2 und 4', 'Bassdrum auf 1 und 3', 'Grundmuster von Rock und Pop'],
@@ -14818,7 +14938,8 @@ BUILTIN_PACKS.push({
         'Betonung der Zwischenzeiten, während der Grundschlag ausgespart bleibt.'],
         zeig: {
           auftrag: 'Stampft vier gleichmäßige Viertel pro Takt wie eine Bassdrum und klatscht dazu auf 2 und 4, zwei Takte lang.',
-          merkmale: ['vier gleichmäßige Stampfer je Takt', 'Klatschen auf 2 und 4', 'durchgehend ohne Lücke'] } }),
+          merkmale: ['vier gleichmäßige Stampfer je Takt', 'Klatschen auf 2 und 4', 'durchgehend ohne Lücke'] },
+        mit: { groove: 'house', bpm: 120, takte: 4, muster: 'fouronthefloor', auftrag: 'Die App spielt Hi-Hat und Bass. Stampft dazu vier gleichmäßige Viertel pro Takt wie eine Bassdrum und klatscht auf zwei und vier.' } }),
     T('overdub', 'Overdub', 'begriff', 3, 'Sound',
       'Nachträgliches Aufnehmen weiterer Spuren über eine bestehende Aufnahme, etwa wenn dieselbe Stimme mehrfach eingesungen wird und dadurch wie ein Chor klingt. ABBA baute so ihre breiten Gesangssätze; live müssen Backing-Chöre diese Schichten ersetzen.',
       ['weitere Spuren nachträglich aufgenommen', 'dieselbe Stimme mehrfach eingesungen', 'breite Gesangssätze bei ABBA'],
@@ -15144,7 +15265,8 @@ BUILTIN_PACKS.push({
         'Aufgabenart, bei der ein Text über Musik wiedergegeben und diskutiert wird.'],
         zeig: {
           auftrag: 'Sprecht eine Gedichtzeile, die ihr kennt, als Rap über einem Klatschpuls und begründet danach in einem Satz ein Mittel, das ihr gewählt habt.',
-          merkmale: ['Gedichtzeile rhythmisch umgesetzt', 'gleichmäßiger Klatschpuls als Grundlage', 'gewähltes Mittel begründet'] } }),
+          merkmale: ['Gedichtzeile rhythmisch umgesetzt', 'gleichmäßiger Klatschpuls als Grundlage', 'gewähltes Mittel begründet'] },
+        mit: { groove: 'hiphop', bpm: 88, takte: 8, auftrag: 'Sprecht eine Gedichtzeile, die ihr kennt, als Rap über den Beat der App und begründet danach in einem Satz ein Mittel, das ihr gewählt habt.' } }),
     T('praxisanteil', 'Praktisches Musizieren', 'begriff', 3, 'Aufgabenarten',
       'Aufgabenart der Abiturprüfung, bei der ein Vorspiel oder Vorsingen mit einer Untersuchung oder einem Fachgespräch verbunden wird. Die Vorgaben legen fest, wie Vortrag und schriftlicher oder mündlicher Teil gewichtet werden; der Vortrag soll zum geprüften Thema passen.',
       ['Vorspiel oder Vorsingen', 'verbunden mit Untersuchung oder Fachgespräch', 'Gewichtung nach den Vorgaben'],
@@ -15419,7 +15541,7 @@ const DEFAULTS = {
   nameA: 'Team Quadrat', nameB: 'Team Raute', duoA: 'Quadrat', duoB: 'Raute', playersA: 12, playersB: 12,
   soloName: '', levelSolo: 2, botLevel: 'mittel', showRules: true, gradeFilter: 'auto', lang: 'auto',
   zeig: true, pairs: true, ops: 'auto', pasch: 'ereignis', geheim: false, blitz: false, album: true,
-  packView: 'klasse', topicFilter: 'all', linkBase: 'web'
+  packView: 'klasse', topicFilter: 'all', linkBase: 'web', mitspiel: true
 };
 /* Themen der Pakete: feste Zuordnung über die Paket-id, sonst Schlüsselwörter aus Titel und Lehrplanbezug */
 const TOPICS = [
@@ -15509,6 +15631,7 @@ function normTerm(t, i) {
   const list = (a) => (Array.isArray(a) ? a : []).map((x) => String(x == null ? '' : x).trim()).filter(Boolean).slice(0, 3);
   return {
     zeig: normZeig(o.zeig),
+    mit: typeof normMit === 'function' ? normMit(o.mit) : null,
     id: String(o.id || ('t' + i + '-' + uid())),
     term: String(o.term || '').trim(),
     kind: KINDS.includes(o.kind) ? o.kind : 'begriff',
@@ -15937,6 +16060,8 @@ TX.easy = {
   quizFeatsSub: (normal) => `Achtung, nicht alles passt. ${normal ? 'Für den Stein brauchst du zwei richtige Haken und keinen falschen.' : 'Hier müssen alle richtigen Haken gesetzt sein und kein falscher.'}`,
   stoneHollow: 'Wackelstein, weil ihr eine Hilfe genommen habt.',
   promptZeig: 'Zeigen statt erklären',
+  promptMit: 'Mitspielen statt erklären',
+  promptHear: 'Hören und erkennen',
   promptPairPick: 'Den richtigen Unterschied auswählen',
   promptPair: 'Zwei Begriffe: Was ist gleich, was ist anders?',
   promptOp: (op, partner) => ({ beschreiben: 'Beschreibe, woran man es erkennt', zuordnen: 'Sag, wozu es gehört, und erkläre es', erlaeutern: 'Erkläre es und nenne ein Beispiel', vergleichen: `Vergleiche mit ${esc(partner)}`, einordnen: 'Sag, wozu es gehört' })[op] || 'In eigenen Worten erklären',
@@ -15951,6 +16076,7 @@ TX.easy = {
   quizPair: (a, b) => `Welcher Satz unterscheidet <b>${esc(a)}</b> und <b>${esc(b)}</b> richtig?`,
   quizAssign: (who, other) => `Welches Merkmal gehört zu <b>${esc(who)}</b>${other ? ` und nicht zu ${esc(other)}` : ''}?`,
   quizShow: 'Hast du es vorgemacht? Hake an, was geklappt hat.',
+  quizHear: 'Hör genau hin. Was spielt die App zur Begleitung dazu?',
   quizShowSub: (normal) => (normal ? 'Zwei von drei Punkten reichen für den Stein.' : 'Hier müssen alle Punkte klappen.'),
   rules: (o) => [
     ['Feld finden', `${o.select === 'taktik' ? 'Ihr sucht euch euer Feld selbst aus.' : o.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile. In dieser Zeile sucht ihr euch ein Feld aus.' : 'Ihr würfelt mit zwei Würfeln. Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Zwei gleiche Zahlen heißen Pasch. Dann dürft ihr das Feld selbst aussuchen.'} Ist das Feld schon besetzt? Dann nehmt ihr ein freies Feld in der gleichen Zeile oder Spalte.`],
@@ -15962,7 +16088,8 @@ TX.easy = {
     o.mode === 'tafel' ? ['An der Tafel', 'Euer Team bespricht sich kurz. Dann sagt die App eine Nummer. Wer die Nummer hat, erklärt. Findet das andere Team, dass etwas gefehlt hat? Dann darf es kontern und selbst erklären.'] : null,
     o.mode === 'duell' ? ['Zu zweit', 'Die andere Person rät vor dem Aufdecken: Reicht die Erklärung? Wer richtig rät, bekommt einen Joker.'] : null,
     o.mode === 'solo' ? ['Allein', 'Du spielst gegen den Klangbot. Zu jedem Feld gibt es Fragen: Du wählst die richtige Erklärung und hakst die richtigen Punkte an. Wenn der Klangbot dran ist, erklärt er, und du prüfst: Stimmt das? Am Ende siehst du, was du noch üben kannst.'] : null,
-    o.zeig ? ['Zeigefelder', 'Manche Felder haben eine kleine Hand. Hier wird nicht erklärt, sondern vorgemacht: klatschen, singen, dirigieren oder an die Tafel zeichnen. Das andere Team schaut genau hin. Auf der Karte stehen drei Dinge, die man sehen oder hören muss. Zwei davon reichen.'] : null,
+    o.zeig ? ['Zeigefelder', 'Manche Felder haben eine kleine Hand. Hier macht ihr etwas vor, statt es zu erklären: klatschen, singen, dirigieren oder an die Tafel zeichnen. Das andere Team schaut genau hin. Auf der Karte stehen drei Dinge, die man sehen oder hören muss. Zwei davon reichen.'] : null,
+    o.mit ? ['Mitspielfelder', o.mode === 'solo' ? 'Felder mit dem Metronom sind Höraufgaben. Die App spielt eine Begleitung und ein Muster dazu. Du hörst genau hin und wählst den passenden Begriff.' : 'Felder mit dem Metronom sind Mitspielfelder. Die App zählt ein und spielt eine Begleitung. Ihr spielt dazu, was auf der Karte steht. Beim Aufdecken könnt ihr ein Muster zum Vergleich anhören.'] : null,
     o.pairs ? ['Zwei Begriffe auf einem Feld', 'Auf manchen Feldern stehen zwei Begriffe, die man leicht verwechselt. Sagt, was beide gemeinsam haben, und zu jedem, woran man ihn erkennt. Nur dann gibt es den Stein.'] : null,
     o.ops ? ['Aufgabenwörter', 'Auf der Karte steht, was ihr tun sollt: erklären, beschreiben, zuordnen oder ein Beispiel nennen. Die Prüfkarte passt dazu.'] : null,
     o.pasch ? ['Pasch', 'Zwei gleiche Zahlen: Dann kommt manchmal ein Ereignis. Zum Beispiel „Noch mal“ (ihr seid gleich wieder dran), „Blitz“ (nur 30 Sekunden), „Ohne Hilfe“ oder „Angriff nach Wahl“. Sonst dürft ihr frei wählen.'] : null,
@@ -15981,6 +16108,7 @@ TX.easy = {
     soloTip: 'Für den Stein müssen alle Fragen stimmen. Bei den Punkten reichen zwei richtige, wenn kein falscher dabei ist.',
     bot: 'Nach dir kommt der Klangbot. Er erklärt laut, aber nicht immer richtig. Du prüfst ihn: Stimmt die Erklärung? Erkennst du einen Fehler, bekommt er keinen Stein.',
     zeig: 'Felder mit der kleinen Hand sind Zeigefelder. Hier macht ihr etwas vor: klatschen, singen, dirigieren oder zeichnen. Die anderen schauen genau hin.',
+    mit: o.du ? 'Felder mit dem Metronom sind Höraufgaben. Du hörst eine Begleitung und ein Muster darüber und wählst den passenden Begriff.' : 'Felder mit dem Metronom sind Mitspielfelder. Die App zählt ein und spielt eine Begleitung. Ihr spielt dazu, was auf der Karte steht.',
     pair: 'Auf manchen Feldern stehen zwei Begriffe. Sagt, was beide gemeinsam haben, und zu jedem, woran man ihn erkennt. Nur dann gibt es den Stein.',
     goal: (connect, diag, du) => (connect ? `Vier Steine in einer Reihe${diag ? ', auch schräg' : ''}. Dann ${du ? 'sagst du' : 'sagt ihr'} einen Satz mit zwei von den Begriffen. Stimmt der Satz, ist der Vierklang geschafft.` : `Vier Steine in einer Reihe${diag ? ', auch schräg' : ''} gewinnen sofort.`)
   })
@@ -16011,6 +16139,8 @@ TX.mid = {
   quizFeatsSub: (normal) => `Vorsicht, nicht alle passen. ${normal ? 'Für den Stein brauchst du mindestens zwei richtige und kein falsches.' : 'Hier müssen alle richtigen angehakt sein und kein falsches.'}`,
   stoneHollow: 'Wackelstein, weil eine Hilfe genutzt wurde.',
   promptZeig: 'Zeigen statt erklären',
+  promptMit: 'Mitspielen statt erklären',
+  promptHear: 'Hören und den Begriff erkennen',
   promptPairPick: 'Den zutreffenden Unterschied auswählen',
   promptPair: 'Abgrenzen: Was verbindet, was unterscheidet die beiden?',
   promptOp: (op, partner) => ({ beschreiben: 'Beschreiben: woran erkennt man es?', zuordnen: 'Zuordnen und erklären', erlaeutern: 'Erläutern: erklären und mit Beispiel belegen', vergleichen: `Vergleichen mit ${esc(partner)}`, einordnen: 'Einordnen: Oberbegriff, Merkmal, Nachbarbegriff' })[op] || 'In eigenen Worten erklären',
@@ -16025,6 +16155,7 @@ TX.mid = {
   quizPair: (a, b) => `Welcher Satz unterscheidet <b>${esc(a)}</b> und <b>${esc(b)}</b> richtig?`,
   quizAssign: (who, other) => `Welches Merkmal gehört zu <b>${esc(who)}</b>${other ? ` und nicht zu ${esc(other)}` : ''}?`,
   quizShow: 'Hast du den Auftrag ausgeführt? Hake ab, welche Merkmale zu sehen oder zu hören waren.',
+  quizHear: 'Hör zu. Welcher Begriff passt zu dem, was über der Begleitung erklingt?',
   quizShowSub: (normal) => (normal ? 'Mindestens zwei von drei Merkmalen reichen für den Stein.' : 'Hier müssen alle Merkmale stimmen.'),
   rules: (o) => [
     ['Feld bestimmen', `${o.select === 'taktik' ? 'Jede Seite wählt ihr Feld selbst.' : o.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile, das Feld darin wird selbst gewählt.' : 'Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Ein Pasch erlaubt freie Wahl.'} Ist das Feld besetzt, kommt ein freies Feld in derselben Zeile oder Spalte infrage.`],
@@ -16036,6 +16167,7 @@ TX.mid = {
     o.mode === 'duell' ? ['Duell', 'Vor dem Aufdecken schätzt das Gegenüber, ob die Erklärung reicht. Richtig geschätzt ergibt einen Joker.'] : null,
     o.mode === 'solo' ? ['Solo', 'Du spielst gegen den Klangbot. Zu jedem Feld beantwortest du Prüffragen: Du wählst die passende Erklärung, hakst die richtigen Merkmale ab und findest auf der Stufe Mit Beispiel das passende Beispiel. Ist der Klangbot dran, erklärt er sichtbar, und du prüfst ihn. Am Ende zeigt die Lernbilanz, was du wiederholen solltest.'] : null,
     o.zeig ? ['Zeigefelder', 'Felder mit Handsymbol werden vorgemacht statt erklärt: klatschen, singen, dirigieren, an der Tafel skizzieren. Das andere Team beobachtet. Die Karte nennt drei Beobachtungsmerkmale, zwei davon ergeben den Stein. Hilfen gibt es hier keine, der Stein steht fest.'] : null,
+    o.mit ? ['Mitspielfelder', o.mode === 'solo' ? 'Felder mit Metronom sind Höraufgaben. Über einer Begleitung erklingt ein Muster. Du ordnest ihm den passenden Begriff zu und hakst danach die Merkmale ab.' : 'Felder mit Metronom sind Mitspielfelder. Die App zählt ein und spielt Grundschlag oder Groove, das Team führt den Auftrag dazu aus. Geprüft wird wie beim Zeigefeld. Das Muster zum Vergleich gibt es erst beim Aufdecken.'] : null,
     o.pairs ? ['Abgrenzungsfelder', 'Zwei leicht verwechselbare Begriffe auf einem Feld. Den Stein gibt es nur, wenn die Gemeinsamkeit und für beide das unterscheidende Merkmal genannt werden.'] : null,
     o.ops ? ['Operatoren', 'Die Karte nennt den Operator: erklären, erläutern (mit Beispiel), vergleichen (Gemeinsamkeit und Unterschied) oder einordnen (Oberbegriff, Merkmal, Nachbarbegriff). Die Prüfkarte passt sich an, ein Pflichtpunkt muss immer dabei sein.'] : null,
     o.pasch ? ['Pasch-Ereignisse', 'Bei einem Pasch kommt höchstens alle drei Züge ein Ereignis: „Noch mal“ (bei Erfolg sofort wieder dran), „Blitz“ (30 Sekunden), „Ohne Hilfe“ (fester Stein), „Angriff nach Wahl“ (ein Wackelstein der anderen Seite) oder freie Wahl.'] : null,
@@ -16054,6 +16186,7 @@ TX.mid = {
     soloTip: 'Für den Stein müssen alle Prüffragen stimmen. Bei den Merkmalen reichen zwei richtige, wenn kein falsches dabei ist.',
     bot: 'Nach dir ist der Klangbot dran. Er erklärt sichtbar, aber nicht immer richtig. Du prüfst ihn wie eine Spielleitung: Nur was du durchwinkst oder was stimmt, bringt ihm einen Stein.',
     zeig: 'Felder mit Handsymbol sind Zeigefelder: vormachen statt erklären. Die andere Seite beobachtet anhand von drei Merkmalen, zwei reichen. Keine Hilfen, fester Stein.',
+    mit: o.du ? 'Felder mit Metronom sind Höraufgaben. Über einer Begleitung erklingt ein Muster, du ordnest ihm den passenden Begriff zu.' : 'Felder mit Metronom sind Mitspielfelder. Die App zählt ein und spielt Grundschlag oder Groove, das Team spielt den Begriff dazu. Beobachtet wird wie beim Zeigefeld.',
     pair: 'Felder mit zwei Begriffen sind Abgrenzungsfelder. Den Stein gibt es nur, wenn die Gemeinsamkeit und für beide das unterscheidende Merkmal genannt werden.',
     goal: (connect, diag, du) => (connect ? `Vier Steine in einer Reihe${diag ? ', auch schräg' : ''}. Dann ${du ? 'verbindest du' : 'verbindet ihr'} zwei der Begriffe in einem stimmigen Satz, und der Vierklang ist geschafft.` : `Vier Steine in einer Reihe${diag ? ', auch schräg' : ''} gewinnen sofort.`)
   })
@@ -16084,6 +16217,8 @@ TX.hard = {
   quizFeatsSub: (normal) => `Nicht alle Merkmale treffen zu. ${normal ? 'Für den Stein braucht es mindestens zwei zutreffende und kein unzutreffendes.' : 'Hier müssen alle zutreffenden markiert sein, kein unzutreffendes.'}`,
   stoneHollow: 'Wackelstein, da eine Hilfe genutzt wurde.',
   promptZeig: 'Zeigen statt erläutern',
+  promptMit: 'Mitspielen statt erläutern',
+  promptHear: 'Hören und zuordnen',
   promptPairPick: 'Die zutreffende Abgrenzung auswählen',
   promptPair: 'Abgrenzen: Gemeinsamkeit und Unterscheidungsmerkmale',
   promptOp: (op, partner) => ({ beschreiben: 'Beschreiben', zuordnen: 'Zuordnen', erlaeutern: 'Erläutern: Zusammenhang und belegendes Beispiel', vergleichen: `Vergleichen mit ${esc(partner)}: Gemeinsamkeit und Unterschied`, einordnen: 'Einordnen: Oberbegriff, Kernmerkmal, Nachbarbegriff' })[op] || 'Erläutern',
@@ -16098,6 +16233,7 @@ TX.hard = {
   quizPair: (a, b) => `Welche Aussage grenzt <b>${esc(a)}</b> und <b>${esc(b)}</b> korrekt voneinander ab?`,
   quizAssign: (who, other) => `Welches Merkmal kennzeichnet <b>${esc(who)}</b>${other ? ` im Unterschied zu ${esc(other)}` : ''}?`,
   quizShow: 'Auftrag ausgeführt? Markiere die erfüllten Beobachtungsmerkmale.',
+  quizHear: 'Welcher Begriff beschreibt das Muster über der Begleitung?',
   quizShowSub: (normal) => (normal ? 'Mindestens zwei von drei Merkmalen ergeben den Stein.' : 'Hier müssen alle Merkmale erfüllt sein.'),
   rules: (o) => [
     ['Feld bestimmen', `${o.select === 'taktik' ? 'Jede Seite wählt ihr Feld selbst.' : o.select === 'mix' ? 'Der blaue Würfel bestimmt die Zeile, das Feld darin wird gewählt.' : 'Blauer Würfel Zeile, gelber Würfel Spalte, Pasch erlaubt freie Wahl.'} Besetzte Felder: ein freies Feld derselben Zeile oder Spalte.`],
@@ -16109,6 +16245,7 @@ TX.hard = {
     o.mode === 'duell' ? ['Duell', 'Vor dem Aufdecken schätzt das Gegenüber, ob die Erläuterung den Kriterien genügt. Eine zutreffende Einschätzung bringt einen Joker.'] : null,
     o.mode === 'solo' ? ['Solo', 'Gegen den Klangbot. Je Feld folgen Prüffragen: zutreffende Erläuterung wählen, Merkmale markieren, auf der Stufe Mit Beispiel das belegende Beispiel bestimmen. Die Erläuterungen des Klangbots werden geprüft. Die Lernbilanz weist Wiederholungsbedarf aus.'] : null,
     o.zeig ? ['Zeigefelder', 'Felder mit Handsymbol werden ausgeführt statt erläutert (klatschen, singen, dirigieren, skizzieren). Das andere Team beobachtet anhand von drei Merkmalen, zwei genügen. Keine Hilfen, der Stein steht fest.'] : null,
+    o.mit ? ['Mitspielfelder', o.mode === 'solo' ? 'Felder mit Metronom sind Höraufgaben. Ein Muster über der Begleitung wird dem passenden Begriff zugeordnet, danach folgen die Merkmale.' : 'Felder mit Metronom sind Mitspielfelder. Die App zählt ein und begleitet, das Team führt den Auftrag aus. Geprüft wird wie beim Zeigefeld, das Vergleichsmuster erklingt erst beim Aufdecken.'] : null,
     o.pairs ? ['Abgrenzungsfelder', 'Zwei verwechselbare Begriffe auf einem Feld. Der Stein setzt voraus, dass die Gemeinsamkeit und für beide das unterscheidende Merkmal benannt werden.'] : null,
     o.ops ? ['Operatoren', 'Die Karte nennt den Operator nach der Thüringer Operatorenliste: erläutern (mit belegendem Beispiel), vergleichen (Gemeinsamkeit und Unterschied), einordnen (Oberbegriff, Kernmerkmal, Nachbarbegriff) oder erklären. Die Prüfkarte enthält einen Pflichtpunkt.'] : null,
     o.pasch ? ['Pasch-Ereignisse', 'Höchstens alle drei Züge löst ein Pasch ein Ereignis aus: „Noch mal“, „Blitz“ (30 Sekunden), „Ohne Hilfe“ (fester Stein), „Angriff nach Wahl“ oder freie Wahl.'] : null,
@@ -16127,6 +16264,7 @@ TX.hard = {
     soloTip: 'Alle Prüffragen müssen stimmen. Bei den Merkmalen genügen zwei zutreffende, sofern kein unzutreffendes markiert ist.',
     bot: 'Nach dir zieht der Klangbot. Seine Erläuterungen enthalten mitunter Fehler. Du prüfst sie: Eine durchgewinkte falsche Erläuterung bringt ihm den Stein, eine erkannte nicht.',
     zeig: 'Zeigefelder (Handsymbol) werden ausgeführt statt erläutert; beobachtet wird anhand von drei Merkmalen, zwei genügen. Keine Hilfen, fester Stein.',
+    mit: o.du ? 'Metronom: Höraufgabe. Das Muster über der Begleitung wird dem passenden Begriff zugeordnet.' : 'Felder mit Metronom sind Mitspielfelder. Die App zählt ein und begleitet, das Team führt den Auftrag aus. Geprüft wird wie beim Zeigefeld.',
     pair: 'Abgrenzungsfelder tragen zwei Begriffe. Der Stein setzt die Gemeinsamkeit und beide Unterscheidungsmerkmale voraus.',
     goal: (connect, diag, du) => (connect ? `Vier Steine in einer Reihe${diag ? ', auch diagonal' : ''} eröffnen den Vernetzungszug: Zwei Begriffe in einem Satz verknüpfen, der die Beziehung benennt und begründet.` : `Vier Steine in einer Reihe${diag ? ', auch diagonal' : ''} gewinnen sofort.`)
   })
@@ -16725,7 +16863,12 @@ function createGame(carry) {
   const duo = s.mode === 'duell' || solo;
   const lang = langFor(pack);
   const pool = playable(pack).map((t) => JSON.parse(JSON.stringify(t)));
-  pool.forEach((t) => { if ((t.kind === 'hoeren' || t.kind === 'bild') && !(s.media && isMedia(t))) t.kind = 'begriff'; if (!s.zeig) t.zeig = null; });
+  pool.forEach((t) => {
+    if ((t.kind === 'hoeren' || t.kind === 'bild') && !(s.media && isMedia(t))) t.kind = 'begriff';
+    if (!s.zeig) t.zeig = null;
+    /* Mitspielfelder: nur mit Zeigeauftrag; im Solo nur, wenn daraus eine Höraufgabe wird */
+    if (!t.zeig || s.mitspiel === false || isMedia(t) || (s.mode === 'solo' && !(typeof mitHearable === 'function' && mitHearable(t)))) t.mit = null;
+  });
   /* Abgrenzungsfelder nehmen einige Felder ein, wenn das Paket Paare hat */
   const focus = typeof lgFocusFor === 'function' ? lgFocusFor(pack.id) : null, fset = new Set(focus || []);
   let pairTerms = [];
@@ -16752,7 +16895,7 @@ function createGame(carry) {
     },
     bot: solo ? { level: s.botLevel, p: ({ entspannt: 0.45, mittel: 0.62, stark: 0.8 })[s.botLevel] || 0.62 } : null,
     terms,
-    pool: playable(pack).map((t) => ({ id: t.id, term: t.term, expl: t.expl, family: t.family, kind: t.kind, feats: t.feats.slice(0, 3), ex: t.hints.beispiel || '', media: isMedia(t), ober: t.hints.ober || '' })),
+    pool: playable(pack).map((t) => ({ id: t.id, term: t.term, expl: t.expl, family: t.family, kind: t.kind, feats: t.feats.slice(0, 3), ex: t.hints.beispiel || '', media: isMedia(t), ober: t.hints.ober || '', mu: typeof mitHearable === 'function' && mitHearable(t) ? t.mit.muster : '' })),
     pairs: (pack.pairs || []).map((q) => q.slice()),
     links: pack.links.filter((l) => ids.has(l[0]) && ids.has(l[1])),
     cells: placed.map((t, i) => ({ tid: t.id, owner: null, solid: false, op: ops ? ops[i] : null })),
@@ -16983,13 +17126,16 @@ function beginTerm(idx) {
   let level = g.cfg.level[T];
   /* Hör- und Notenfelder sind nach dem ersten Stein aufgedeckt; Angriff und Festigen verlangen dann eine Erklärung */
   const media = isMedia(t) && type === 'normal';
-  const zeig = !!(g.cfg.zeig && t.zeig && !media);
+  /* Höraufgaben im Solo sind nach dem ersten Stein aufgedeckt; Angriff und Festigen verlangen dann eine Erklärung */
+  const hearSolo = g.mode === 'solo' && !!(g.cfg.zeig && t.zeig && t.mit);
+  const zeig = !!(g.cfg.zeig && t.zeig && !media) && !(hearSolo && type !== 'normal');
+  const mit = zeig && !!t.mit;
   if (zeig && level === 1) level = 2;
   const ev = g.choose && g.choose.reason === 'event' ? g.choose.event : null;
   const op = !media && !zeig && t.kind !== 'paar' && level >= 2 && g.mode !== 'solo' && cell.op ? cell.op.k : null;
   g.phase = 'term'; g.choose = null; g.note = ''; g.lastIdx = idx;
   g.cur = {
-    idx, tid: t.id, type, side: T, level, media, zeig, op, with: op === 'vergleichen' ? cell.op.with : null, hints: [], removed: [], pick: -1,
+    idx, tid: t.id, type, side: T, level, media, zeig, mit, op, with: op === 'vergleichen' ? cell.op.with : null, hints: [], removed: [], pick: -1,
     options: level === 1 || g.mode === 'solo' ? buildOptions(t, media) : null, quizOk: null,
     step: g.mode === 'tafel' ? 'consult' : 'explain', num: 0, counter: null, estimate: null,
     checks: { A: [], B: [] }, extra: { A: false, B: false }, override: false,
@@ -16997,12 +17143,13 @@ function beginTerm(idx) {
   };
   if (op === 'einordnen') g.cur.neighbor = neighborTerm(t);
   const cr = checkRows(t, g.cur); g.cur.rows = cr.rows; g.cur.need = cr.need;
-  if (g.mode === 'solo') { g.cur.qs = buildSoloQs(t, media, level, g.cur); g.cur.qi = 0; }
+  if (g.mode === 'solo') { g.cur.qs = buildSoloQs(t, media, level, g.cur); g.cur.qi = 0; if (g.cur.qs[0] && g.cur.qs[0].kind === 'hear') g.cur.step = 'quiz'; }
   go(g.cur.step, true);
 }
 /* Schritt wechseln: Zeitmesser setzen, dann neu zeichnen */
 function go(step, full) {
   const g = game;
+  if (typeof mitStop === 'function') mitStop(true);
   if (g.phase === 'term' && g.cur) g.cur.step = step;
   if (g.phase === 'connect' && g.conn) g.conn.step = step;
   startStepTimer();
@@ -17073,6 +17220,7 @@ function decided() {
   return null;
 }
 function finish(winner) {
+  if (typeof mitStop === 'function') mitStop(true);
   const g = game, c = g.cur; if (!c || g.phase !== 'term') return;
   const cell = g.cells[c.idx], t = g.terms[c.tid], T = c.side, O = other(T);
   Timer.clear(); Sound.stop();
@@ -17286,7 +17434,8 @@ function botAttempt(idx) {
   const cell = g.cells[idx], t = g.terms[cell.tid];
   const type = !cell.owner ? 'normal' : (cell.owner === 'B' ? 'firm' : 'attack');
   g.phase = 'botthink'; g.lastIdx = idx; g.botCur = { idx, tid: t.id, type };
-  const shown = isMedia(t) && !cell.owner ? (t.kind === 'hoeren' ? 'das Hörfeld' : 'das Notenbild') : `„${t.term}“`;
+  const hearB = !isMedia(t) && !!(g.cfg.zeig && t.zeig && t.mit) && !cell.owner;
+  const shown = isMedia(t) && !cell.owner ? (t.kind === 'hoeren' ? 'das Hörfeld' : 'das Notenbild') : hearB ? 'die Höraufgabe' : `„${t.term}“`;
   g.msg = type === 'attack' ? `Der Klangbot greift deinen Wackelstein an und erklärt ${shown} …`
     : type === 'firm' ? `Der Klangbot festigt seinen Wackelstein und erklärt ${shown} …` : `Der Klangbot erklärt ${shown} …`;
   persist(); renderGame();
@@ -17296,6 +17445,7 @@ function botAttempt(idx) {
 function botWrongSay(t, media) {
   const pool = qPool().filter((x) => x.id !== t.id);
   const near = shuffle(pool.filter((x) => x.family && x.family === t.family)), far = shuffle(pool.filter((x) => !(x.family && x.family === t.family)));
+  if (media && t.mit && typeof soloHearOptions === 'function') { const ho = soloHearOptions(t); const w = ho && ho.find((o) => !o.ok); if (w) return w.text; }
   if (media) { const x = near.concat(far).find((y) => y.term !== t.term); return x ? x.term : ''; }
   const own = (t.distractors || []).filter((d) => d && !leaks(d, t.term));
   if (own.length) return shuffle(own)[0];
@@ -17312,7 +17462,7 @@ function botWrongSay(t, media) {
 function botAsk() {
   const g = game; if (!g || g.phase !== 'botthink' || !g.botCur) return;
   const { tid, type } = g.botCur, t = g.terms[tid];
-  const media = isMedia(t) && type === 'normal';
+  const media = (isMedia(t) || !!(g.cfg.zeig && t.zeig && t.mit)) && type === 'normal';
   const p = clamp(g.bot.p - (t.diff - 2) * 0.08 - (type !== 'normal' ? 0.08 : 0), 0.15, 0.92);
   let ok = Math.random() < p;
   let text = ok ? (media ? t.term : t.expl) : botWrongSay(t, media);
@@ -17402,7 +17552,7 @@ function soloSummary() {
    Je Feld zwei bis drei Fragen: passende Erklärung wählen (bei Hör- und Notenfeldern den Begriff erkennen),
    Merkmale abhaken (falsche stehen dazwischen) und auf der Stufe Mit Beispiel das passende Beispiel wählen.
    Falsche Antworten stammen aus anderen Begriffen des Pakets, bevorzugt aus anderen Themenfamilien. */
-const Q_LABEL = { expl: 'Erklärung gewählt', name: 'Begriff erkannt', feats: 'Merkmale abgehakt', example: 'Beispiel gewählt', show: 'Vorgemacht und abgehakt', assign: 'Merkmal zugeordnet' };
+const Q_LABEL = { expl: 'Erklärung gewählt', name: 'Begriff erkannt', feats: 'Merkmale abgehakt', example: 'Beispiel gewählt', show: 'Vorgemacht und abgehakt', assign: 'Merkmal zugeordnet', hear: 'Muster erkannt' };
 const qNorm = (s) => String(s || '').toLowerCase().replace(/[^a-zäöüß0-9]+/g, ' ').trim();
 /* Vergleichsbegriffe: das ganze Paket (auch Begriffe, die nicht auf dem Brett liegen); ältere Spielstände ohne Merkmale nutzen die Brettbegriffe */
 function qPool() {
@@ -17453,6 +17603,14 @@ function soloAssignOptions(t) {
   return shuffle([{ text: p.ka, ok: true }, { text: p.kb, ok: false }].concat(wrong.map((text) => ({ text, ok: false }))));
 }
 function buildSoloQs(t, media, level, c) {
+  if (c && c.mit && t.mit && typeof soloHearOptions === 'function') {
+    const ho = soloHearOptions(t);
+    if (ho) {
+      const qs = [{ kind: 'hear', options: ho, pick: -1, done: false, ok: null }];
+      const fo = soloFeatOptions(t); if (fo) qs.push({ kind: 'feats', options: fo, picks: [], done: false, ok: null });
+      return qs;
+    }
+  }
   if (c && c.zeig && t.zeig) return [{ kind: 'show', options: t.zeig.merkmale.map((text) => ({ text, ok: true })), picks: [], done: false, ok: null }];
   const qs = [{ kind: media ? 'name' : 'expl', pick: -1, done: false, ok: null }];
   if (t.kind === 'paar') { const ao = soloAssignOptions(t); if (ao) qs.push({ kind: 'assign', options: ao, pick: -1, done: false, ok: null, who: t.pair.an }); return qs; }
@@ -17465,14 +17623,14 @@ function soloQ(c) { return c && c.qs ? c.qs[c.qi || 0] : null; }
 function soloCanLock(c) {
   const q = soloQ(c); if (!q || q.done) return false;
   if (q.kind === 'feats' || q.kind === 'show') return q.picks.length > 0;
-  if (q.kind === 'example' || q.kind === 'assign') return q.pick >= 0;
+  if (q.kind === 'example' || q.kind === 'assign' || q.kind === 'hear') return q.pick >= 0;
   return c.pick >= 0;
 }
 function soloLock() {
   const g = game, c = g && g.cur, q = soloQ(c);
   if (!q || !soloCanLock(c)) return;
   if (q.kind === 'expl' || q.kind === 'name') { q.pick = c.pick; q.ok = !!(c.options[c.pick] && c.options[c.pick].ok); }
-  else if (q.kind === 'example' || q.kind === 'assign') q.ok = !!(q.options[q.pick] && q.options[q.pick].ok);
+  else if (q.kind === 'example' || q.kind === 'assign' || q.kind === 'hear') q.ok = !!(q.options[q.pick] && q.options[q.pick].ok);
   else if (q.kind === 'show') { q.right = q.options.length; q.hit = q.picks.length; q.miss = 0; q.ok = c.type === 'normal' ? q.hit >= Math.min(2, q.right) : q.hit === q.right; }
   else {
     q.right = q.options.filter((o) => o.ok).length;
@@ -17588,15 +17746,17 @@ function cellHTML(i, opts, rolled) {
   if ((g.cur && g.cur.idx === i && g.phase === 'term') || (g.botCur && g.botCur.idx === i && (g.phase === 'botthink' || g.phase === 'botjudge' || g.phase === 'botreveal'))) cls.push('current');
   if (g.flash === i) cls.push('flash');
   if ((g.pending.A && g.pending.A.includes(i)) || (g.pending.B && g.pending.B.includes(i))) cls.push('pending');
-  const zeig = !!(g.cfg.zeig && t.zeig && !isMedia(t));
+  const zeig = !!(g.cfg.zeig && t.zeig && !isMedia(t)), mit = zeig && !!t.mit;
   const pair = t.kind === 'paar';
-  if (zeig) cls.push('zeig'); if (pair) cls.push('pair');
-  const name = media ? (t.kind === 'hoeren' ? 'Hörfeld' : (t.label || 'Bildfeld')) : t.term;
-  const aria = `Zeile ${r + 1}, Spalte ${c + 1}: ${pair ? 'Abgrenzung ' : ''}${name}${zeig ? ', Zeigefeld' : ''}${cell.owner ? ', ' + tn(cell.owner) + (cell.solid ? '' : ', Wackelstein') : ''}`;
+  if (zeig) cls.push('zeig'); if (mit) cls.push('mit'); if (pair) cls.push('pair');
+  const hearHide = mit && g.mode === 'solo' && !cell.owner;
+  const name = media ? (t.kind === 'hoeren' ? 'Hörfeld' : (t.label || 'Bildfeld')) : hearHide ? 'Höraufgabe' : t.term;
+  const aria = `Zeile ${r + 1}, Spalte ${c + 1}: ${pair ? 'Abgrenzung ' : ''}${name}${hearHide ? '' : mit ? (g.mode === 'solo' ? ', Höraufgabe' : ', Mitspielfeld') : zeig ? ', Zeigefeld' : ''}${cell.owner ? ', ' + tn(cell.owner) + (cell.solid ? '' : ', Wackelstein') : ''}`;
   const inner = media ? mediaLabel(t)
+    : hearHide ? `<span class="cm">${noteSVG()}<span class="cm-l">Höraufgabe</span></span>`
     : pair ? `<span class="ct ct-pair"><span>${esc(softHy(t.pair.an))}</span><i>oder</i><span>${esc(softHy(t.pair.bn))}</span></span>`
       : `<span class="ct">${esc(softHy(t.term))}</span>`;
-  return `<button type="button" class="${cls.join(' ')}" data-act="cell" data-i="${i}" aria-label="${esc(aria)}">${cell.owner ? shapeSVG(cell.owner, !cell.solid, 'cell-shape') : ''}<span class="cell-term">${inner}</span>${zeig ? `<span class="cz" title="Zeigefeld">${handSVG()}</span>` : ''}${diffMark(t.diff)}</button>`;
+  return `<button type="button" class="${cls.join(' ')}" data-act="cell" data-i="${i}" aria-label="${esc(aria)}">${cell.owner ? shapeSVG(cell.owner, !cell.solid, 'cell-shape') : ''}<span class="cell-term">${inner}</span>${mit ? (hearHide ? '' : `<span class="cz cz-mit" title="${g.mode === 'solo' ? 'Höraufgabe' : 'Mitspielfeld'}">${noteSVG()}</span>`) : zeig ? `<span class="cz" title="Zeigefeld">${handSVG()}</span>` : ''}${diffMark(t.diff)}</button>`;
 }
 function handSVG() { return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11m0-6a1.5 1.5 0 0 1 3 0v6m0-4.5a1.5 1.5 0 0 1 3 0V12m0-1a1.5 1.5 0 0 1 3 0v5a6 6 0 0 1-6 6h-2a6 6 0 0 1-5.2-3L4.6 14a1.6 1.6 0 0 1 2.6-1.8L8 13.5"/></svg>'; }
 function renderBoard() {
@@ -17723,6 +17883,7 @@ function timerHTML() {
 }
 function opPartnerName(c) { const g = game, p = c.with ? (g.terms[c.with] || (g.pool || []).find((x) => x.id === c.with)) : null; return p ? p.term : ''; }
 function promptFor(t, c) {
+  if (c.mit) return game && game.mode === 'solo' ? tx('promptHear') : tx('promptMit');
   if (c.zeig) return tx('promptZeig');
   if (t.kind === 'paar') return c.level === 1 ? tx('promptPairPick') : tx('promptPair');
   if (c.level === 1) return c.media ? 'Den passenden Begriff auswählen' : 'Die passende Erklärung auswählen';
@@ -17736,6 +17897,7 @@ function promptFor(t, c) {
 /* Aufgabenkasten: Zeigeauftrag, Abgrenzungspaar oder Vergleichspartner */
 function taskBoxHTML(t, c) {
   const E = gameLang() === 'easy';
+  if (c.mit && t.mit && t.zeig) return `<div class="task task-zeig task-mit">${noteSVG()}<div><span class="task-k">${E ? 'Spielt mit' : 'Mitspielen'}</span><span class="task-v">${esc(t.mit.auftrag || t.zeig.auftrag)}</span></div></div>${c.step === 'estimate' ? '' : mitPlayerHTML(t, c, c.step === 'consult' ? 'consult' : 'go')}`;
   if (c.zeig && t.zeig) return `<div class="task task-zeig">${handSVG()}<div><span class="task-k">${E ? 'Macht es vor' : 'Zeigt statt zu erklären'}</span><span class="task-v">${esc(t.zeig.auftrag)}</span></div></div>`;
   if (t.kind === 'paar') return `<div class="task task-pair"><div class="pair-names"><span>${esc(t.pair.an)}</span><i>oder</i><span>${esc(t.pair.bn)}</span></div><span class="task-v">${E ? 'Was haben beide gemeinsam? Und woran erkennt man jeden der beiden?' : 'Erst die Gemeinsamkeit nennen, dann für jeden Begriff das Merkmal, das ihn vom anderen abhebt.'}</span></div>`;
   if (c.op === 'vergleichen' && c.with) {
@@ -17787,13 +17949,14 @@ function soloQuestionHTML(t, c, q) {
   if (q.kind === 'name') return `<p class="step-text">${tx('quizName')}</p>${optionsHTML(c, true, false)}`;
   if (q.kind === 'expl') return `<p class="step-text">${t.kind === 'paar' ? tx('quizPair', t.pair.an, t.pair.bn) : tx('quizExpl', t.term)}</p>${optionsHTML(c, true, false)}`;
   if (q.kind === 'example') return `<p class="step-text">${tx('quizExample', t.term)}</p>${qOptsHTML(q, true, false)}`;
+  if (q.kind === 'hear') return `<p class="step-text">${tx('quizHear')}</p>${mitPlayerHTML(t, c, 'hear')}${qOptsHTML(q, true, false)}`;
   if (q.kind === 'assign') return `<p class="step-text">${tx('quizAssign', q.who, t.pair ? (q.who === t.pair.an ? t.pair.bn : t.pair.an) : '')}</p>${qOptsHTML(q, true, false)}`;
   if (q.kind === 'show') return `<div class="task task-zeig">${handSVG()}<div><span class="task-k">Auftrag</span><span class="task-v">${esc(t.zeig ? t.zeig.auftrag : '')}</span></div></div><p class="step-text">${tx('quizShow')}</p><p class="step-sub">${tx('quizShowSub', c.type === 'normal')}</p>${qFeatsHTML(q, true, false)}`;
   return `<p class="step-text">${tx('quizFeats', t.term)}</p><p class="step-sub">${tx('quizFeatsSub', c.type === 'normal')}</p>${qFeatsHTML(q, true, false)}`;
 }
 function soloFeedbackHTML(q) {
   if (!q || !q.done) return '';
-  const label = ({ expl: 'Erklärung', name: 'Begriff', feats: 'Merkmale', example: 'Beispiel', show: 'Vorgemacht', assign: 'Zuordnung' })[q.kind] || 'Antwort';
+  const label = ({ expl: 'Erklärung', name: 'Begriff', feats: 'Merkmale', example: 'Beispiel', show: 'Vorgemacht', assign: 'Zuordnung', hear: 'Gehört' })[q.kind] || 'Antwort';
   let text = q.ok ? 'richtig.' : 'daneben.';
   if (q.kind === 'feats') text = q.miss ? `${q.miss === 1 ? 'ein falsches' : q.miss + ' falsche'} dabei.` : q.ok ? `${q.hit} von ${q.right} richtig, kein falsches.` : `${q.hit} von ${q.right} richtig, das reicht noch nicht.`;
   if (q.kind === 'show') text = q.ok ? `${q.hit} von ${q.right} Merkmalen geschafft.` : `${q.hit} von ${q.right} Merkmalen, das reicht noch nicht.`;
@@ -17804,14 +17967,16 @@ function soloSumRow(t, c, q) {
   let more = '';
   if (q.kind === 'feats' || q.kind === 'show') more = qFeatsHTML(q, false, true);
   else if (!q.ok) {
-    const right = ((q.kind === 'example' || q.kind === 'assign') ? q.options : c.options).find((o) => o.ok);
+    const right = ((q.kind === 'example' || q.kind === 'assign' || q.kind === 'hear') ? q.options : c.options).find((o) => o.ok);
     if (right) more = `<div class="model"><span class="model-k">Richtig wäre</span><span class="model-v">${esc(right.text)}</span></div>`;
   }
+  if (q.kind === 'hear' && typeof mitCompareHTML === 'function') more += mitCompareHTML(q);
   return `<li class="${q.ok ? 'ok' : 'no'}">${head}${more}</li>`;
 }
 function soloCardHTML(t, c) {
   if (t.kind === 'paar') return `<div class="pk"><div class="pk-title">Prüfkarte</div>${pkExplHTML(t, c)}</div>`;
-  return `<div class="pk"><div class="pk-title">Prüfkarte${c.media ? `<span>Gesucht war <b>${esc(t.term)}</b></span>` : ''}</div><p class="pk-expl">${esc(t.expl)}</p>${t.hints.beispiel && !c.media ? `<p class="pk-ex"><b>Beispiel</b> ${esc(t.hints.beispiel)}</p>` : ''}</div>`;
+  const hid = c.media || (c.mit && game && game.mode === 'solo');
+  return `<div class="pk"><div class="pk-title">Prüfkarte${hid ? `<span>Gesucht war <b>${esc(t.term)}</b></span>` : ''}</div><p class="pk-expl">${esc(t.expl)}</p>${t.hints.beispiel && !c.media ? `<p class="pk-ex"><b>Beispiel</b> ${esc(t.hints.beispiel)}</p>` : ''}</div>`;
 }
 function hintsHTML(t, c) {
   const g = game;
@@ -17840,6 +18005,7 @@ function statusText(side) {
 }
 /* Prüfkarte: Erklärung oder Aufgabe, Prüfzeilen mit Haken je Seite */
 function pkExplHTML(t, c) {
+  if (c.mit && t.mit && t.zeig) return `<p class="pk-expl"><b>Auftrag:</b> ${esc(t.mit.auftrag || t.zeig.auftrag)}</p>${mitPlayerHTML(t, c, 'check')}`;
   if (c.zeig && t.zeig) return `<p class="pk-expl"><b>Auftrag:</b> ${esc(t.zeig.auftrag)}</p>`;
   if (t.kind === 'paar') return `<p class="pk-expl">${esc(t.expl)}</p><details class="conn-ref"><summary>Beide Erklärungen</summary><p><b>${esc(t.pair.an)}</b> ${esc(t.pair.ea)}</p><p><b>${esc(t.pair.bn)}</b> ${esc(t.pair.eb)}</p></details>`;
   if (c.op === 'vergleichen' && c.with) {
@@ -17884,10 +18050,11 @@ function termCard() {
       ${timerHTML()}
     </div>`;
   const pair = t.kind === 'paar';
-  const kind = `<div class="kind${c.zeig ? ' kind-zeig' : pair ? ' kind-pair' : ''}">${esc(promptFor(t, c))}<span class="kind-diff">${DIFF_LABEL[t.diff]}</span></div>`;
+  const kind = `<div class="kind${c.mit ? ' kind-zeig kind-mit' : c.zeig ? ' kind-zeig' : pair ? ' kind-pair' : ''}">${esc(promptFor(t, c))}<span class="kind-diff">${DIFF_LABEL[t.diff]}</span></div>`;
   const title = c.media ? `<h2 class="term term-media">${t.kind === 'hoeren' ? 'Hörfeld' : esc(t.label || 'Bildfeld')}</h2>`
+    : c.mit && g.mode === 'solo' ? `<h2 class="term term-media">Höraufgabe</h2>`
     : pair ? `<h2 class="term term-pair"><span>${esc(t.pair.an)}</span><i>oder</i><span>${esc(t.pair.bn)}</span></h2>`
-      : `<h2 class="term">${esc(t.term)}${c.zeig ? `<span class="term-zeig">${handSVG()}Zeigefeld</span>` : ''}</h2>`;
+      : `<h2 class="term">${esc(t.term)}${c.mit ? `<span class="term-zeig term-mit">${noteSVG()}${g.mode === 'solo' ? 'Höraufgabe' : 'Mitspielfeld'}</span>` : c.zeig ? `<span class="term-zeig">${handSVG()}Zeigefeld</span>` : ''}</h2>`;
   const special = eventBanner(c) + (c.type === 'attack' ? `<div class="banner attack">Angriff auf einen Wackelstein von ${esc(tn(O))}. Ohne Hilfe erklären.</div>` : c.type === 'firm' ? '<div class="banner firm">Den eigenen Wackelstein festigen. Ohne Hilfe erklären.</div>' : '');
   const media = c.media ? mediaHTML(t) : '';
   const task = (c.step === 'consult' || c.step === 'explain' || c.step === 'counter' || c.step === 'estimate') ? taskBoxHTML(t, c) : '';
@@ -17896,7 +18063,7 @@ function termCard() {
     body = `<p class="step-text">${tx('consult', tm.name, c.level === 1, c.zeig)}</p>${task}${c.level === 1 ? optionsHTML(c, false, false) : ''}${hintsHTML(t, c)}`;
     actions = '<button type="button" class="btn primary big" data-act="announce" data-primary>Nummer ansagen</button>';
   } else if (c.step === 'explain') {
-    const verb = c.zeig ? 'zeigt' : pair ? 'unterscheidet' : c.level === 1 ? 'wählt' : (c.media ? 'nennt den Begriff' : c.op === 'vergleichen' ? 'vergleicht' : c.op === 'einordnen' ? 'ordnet ein' : c.op === 'erlaeutern' ? 'erläutert' : 'erklärt');
+    const verb = c.mit ? 'spielt mit' : c.zeig ? 'zeigt' : pair ? 'unterscheidet' : c.level === 1 ? 'wählt' : (c.media ? 'nennt den Begriff' : c.op === 'vergleichen' ? 'vergleicht' : c.op === 'einordnen' ? 'ordnet ein' : c.op === 'erlaeutern' ? 'erläutert' : 'erklärt');
     const soloText = c.zeig ? tx('soloZeig') : pair ? tx('soloPair', c.level === 1) : (c.level === 1 ? (c.media ? tx('quizName') : tx('quizExpl', t.term)) + (c.qs && c.qs.length > 1 ? ` <span class="q-more">${tx('moreQ', c.qs.length - 1)}</span>` : '') : tx('soloExplain', c.level, c.media, c.qs ? c.qs.length : 2));
     const nb = g.mode === 'tafel' ? numBanner(T, c.num, verb)
       : g.mode === 'solo' ? `<p class="step-text">${soloText}</p>`
@@ -17912,7 +18079,7 @@ function termCard() {
     body = `<p class="step-text">${tx('counterAsk', tn(O))}</p>`;
     actions = `<button type="button" class="btn big" data-act="no-counter" data-primary>Kein Konter, aufdecken</button><button type="button" class="btn big side-${O}" data-act="counter">Konter ansagen</button>`;
   } else if (c.step === 'counter') {
-    body = numBanner(O, c.counter.num, c.zeig ? 'zeigt' : 'erklärt', `Konter · ${tn(O)} · Nummer`) + task + `<p class="step-sub">${tx('counterSub')}</p>`;
+    body = numBanner(O, c.counter.num, c.mit ? 'spielt mit' : c.zeig ? 'zeigt' : 'erklärt', `Konter · ${tn(O)} · Nummer`) + task + `<p class="step-sub">${tx('counterSub')}</p>`;
     actions = '<button type="button" class="btn primary big" data-act="counter-done" data-primary>Konter fertig, aufdecken</button>';
   } else if (c.step === 'estimate') {
     const q = c.zeig ? tx('estimateZeig') : tx('estimateQ', c.level);
@@ -17948,8 +18115,9 @@ function botCard() {
   const r = Math.floor(c.idx / g.n) + 1, col = c.idx % g.n + 1;
   const head = `<div class="card-head"><div class="who who-B">${shapeSVG('B', false, 'who-shape')}<span>Klangbot</span></div><div class="where" title="Zeile ${r}, Spalte ${col}">${diceSVG(r, 'xs dz')}<span>·</span>${diceSVG(col, 'xs ds')}</div></div>`;
   const kind = `<div class="kind">${c.type === 'attack' ? 'Angriff auf deinen Wackelstein' : c.type === 'firm' ? 'Der Klangbot festigt' : 'Der Klangbot ist am Zug'}<span class="kind-diff">${DIFF_LABEL[t.diff]}</span></div>`;
-  const title = say.media ? `<h2 class="term term-media">${t.kind === 'hoeren' ? 'Hörfeld' : esc(t.label || 'Bildfeld')}</h2>` : `<h2 class="term">${esc(t.term)}</h2>`;
-  const media = say.media ? mediaHTML(t) : '';
+  const hear = say.media && !isMedia(t) && t.mit;
+  const title = say.media ? `<h2 class="term term-media">${hear ? 'Höraufgabe' : t.kind === 'hoeren' ? 'Hörfeld' : esc(t.label || 'Bildfeld')}</h2>` : `<h2 class="term">${esc(t.term)}</h2>`;
+  const media = hear ? mitPlayerHTML(t, c, 'hear') : say.media ? mediaHTML(t) : '';
   const bubble = `<div class="bot-say"><span class="bot-say-k">${say.media ? 'Der Klangbot sagt' : 'Der Klangbot erklärt'}</span><span class="bot-say-v">${esc(say.text)}</span></div>`;
   let body, actions;
   if (g.phase === 'botjudge') {
@@ -18341,9 +18509,11 @@ function renderStart() {
       sw('showRules', 'Kurzanleitung vor dem Start', 'Erklärt in vier Schritten, wie eine Runde läuft.')
     ].join('');
     const nZeig = playable(pack).filter((t) => t.zeig).length, nPairs = (pack.pairs || []).length;
+    const nMit = playable(pack).filter((t) => t.zeig && t.mit).length, nHear = playable(pack).filter((t) => typeof mitHearable === 'function' && mitHearable(t)).length;
     const L0 = langFor(pack);
     const aufgaben = [
       nZeig ? sw('zeig', 'Zeigefelder', `${nZeig} Begriffe dieses Pakets werden vorgemacht statt erklärt: klatschen, singen, dirigieren, skizzieren. Das andere Team beobachtet.`) : '<p class="ms-note">Dieses Paket hat noch keine Zeigefelder. In der Werkstatt lassen sich Zeigeaufträge ergänzen.</p>',
+      nZeig && s.zeig && nMit ? sw('mitspiel', 'Mitspielfelder', s.mode === 'solo' ? (nHear ? `${nHear === 1 ? 'Ein Feld wird' : nHear + ' Felder werden'} im Solo zur Höraufgabe. Über einer Begleitung erklingt ein Muster, du erkennst den passenden Begriff. Die übrigen bleiben Zeigefelder.` : 'Im Solo bleiben sie Zeigefelder, weil dieses Paket dafür keine Höraufgaben hat.') : `${nMit === 1 ? 'Ein Zeigefeld hat' : nMit + ' Zeigefelder haben'} eine Begleitung aus der App. Sie zählt ein und spielt Grundschlag oder Groove${s.mode === 'duell' ? ', im Duell in kürzeren Durchgängen' : ', das Team spielt mit'}. Das Muster zum Vergleich gibt es beim Aufdecken.`) : '',
       nPairs ? sw('pairs', 'Abgrenzungsfelder', `${nPairs} Begriffspaare, die man leicht verwechselt. Den Stein gibt es nur für den Unterschied.`) : '<p class="ms-note">Dieses Paket hat noch keine Abgrenzungspaare. In der Werkstatt lassen sie sich anlegen.</p>',
       s.mode === 'solo' ? '<p class="ms-note">Operatoren gibt es im Solo nicht, dort prüfen die Prüffragen.</p>' : rule('Operatoren', seg('ops', [['auto', 'automatisch'], ['an', 'an'], ['aus', 'aus']], s.ops), `${s.ops === 'auto' ? (L0 === 'easy' ? 'Automatisch: In der einfachen Sprachstufe aus.' : 'Automatisch: an, weil die Sprachstufe mittel oder Oberstufe ist.') : s.ops === 'an' ? 'Jede Karte nennt einen Operator, die Prüfkarte passt sich an.' : 'Alle Felder werden erklärt.'} Operatoren nach der Thüringer Operatorenliste: ${(OPS_BY_LANG[L0] || OPS_BY_LANG.mid).map((k) => OPS[k].label).join(', ')}.`)
     ].join('');
@@ -18361,7 +18531,7 @@ function renderStart() {
         <div class="sum-mode"><span class="sum-mi">${MODE_ICON[s.mode] || MODE_ICON.tafel}</span><span class="sum-t"><b>${esc((MODE_TEXT[s.mode] || MODE_TEXT.tafel)[0])}</b><small>${s.mode === 'tafel' ? `${esc(s.nameA)} gegen ${esc(s.nameB)}` : s.mode === 'duell' ? `${esc(s.duoA)} gegen ${esc(s.duoB)}` : `Stufe ${esc(LEVELS[s.levelSolo])} · Klangbot ${esc(s.botLevel)}`}</small></span></div>
         <div class="sum-size"><span class="sum-t"><b>${s.blitz ? 'Blitzrunde 4 × 4' : sizes.length ? s.size + ' × ' + s.size : 'zu wenige Begriffe'}</b><small>${s.select === 'wuerfel' ? 'Würfeln' : s.select === 'mix' ? 'Würfeln mit Wahl' : 'Frei wählen'}${s.connect ? ' · Vernetzung an' : ''}${s.geheim ? ' · Geheimauftrag' : ''}</small></span></div>
       </div>
-      <div class="accs">${acc('brett', 'Brett und Begriffe', 'Feld bestimmen, Größe, Auswahl, Anordnung', brett)}${acc('zeit', 'Zeit', 'Erklärzeit, Beratung, Spielzeit', zeit)}${acc('extra', 'Sonderregeln', 'Vernetzung, Hilfen, Konter, Hörfelder', extra)}${acc('aufgaben', 'Aufgabenarten', `Zeigefelder${nZeig && s.zeig ? ' an' : ' aus'}, Abgrenzung${nPairs && s.pairs ? ' an' : ' aus'}, Operatoren ${s.mode === 'solo' ? 'ohne' : s.ops}`, aufgaben)}${acc('spiel', 'Spielwürze', `Pasch ${s.pasch === 'ereignis' && s.select === 'wuerfel' ? 'mit Ereignis' : 'freie Wahl'}${s.geheim ? ', Geheimauftrag' : ''}${s.blitz ? ', Blitzrunde' : ''}${s.album ? ', Album' : ''}`, spiel)}${acc('lang', 'Sprache der Anleitung', `${LANG_LABEL[langFor(pack)]}${s.lang === 'auto' ? ', passend zur Klassenstufe' : ', von dir gewählt'}`, rule('Regeln, Kurzanleitung und Spielkarten', seg('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], s.lang), `${LANG_SUB[langFor(pack)]}. ${s.lang === 'auto' ? 'Die Stufe folgt der Klassenstufe des Pakets.' : 'Automatisch hieße hier: ' + LANG_LABEL[langFromGrades(pack.grades)] + '.'}`))}</div>
+      <div class="accs">${acc('brett', 'Brett und Begriffe', 'Feld bestimmen, Größe, Auswahl, Anordnung', brett)}${acc('zeit', 'Zeit', 'Erklärzeit, Beratung, Spielzeit', zeit)}${acc('extra', 'Sonderregeln', 'Vernetzung, Hilfen, Konter, Hörfelder', extra)}${acc('aufgaben', 'Aufgabenarten', `Zeigefelder${nZeig && s.zeig ? (nMit && s.mitspiel !== false ? ' und Mitspielfelder an' : ' an') : ' aus'}, Abgrenzung${nPairs && s.pairs ? ' an' : ' aus'}, Operatoren ${s.mode === 'solo' ? 'ohne' : s.ops}`, aufgaben)}${acc('spiel', 'Spielwürze', `Pasch ${s.pasch === 'ereignis' && s.select === 'wuerfel' ? 'mit Ereignis' : 'freie Wahl'}${s.geheim ? ', Geheimauftrag' : ''}${s.blitz ? ', Blitzrunde' : ''}${s.album ? ', Album' : ''}`, spiel)}${acc('lang', 'Sprache der Anleitung', `${LANG_LABEL[langFor(pack)]}${s.lang === 'auto' ? ', passend zur Klassenstufe' : ', von dir gewählt'}`, rule('Regeln, Kurzanleitung und Spielkarten', seg('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], s.lang), `${LANG_SUB[langFor(pack)]}. ${s.lang === 'auto' ? 'Die Stufe folgt der Klassenstufe des Pakets.' : 'Automatisch hieße hier: ' + LANG_LABEL[langFromGrades(pack.grades)] + '.'}`))}</div>
       <div class="st3-cta"><button type="button" class="btn ghost" data-act="st-step" data-v="2">${iconArrow(-1)}Zurück</button><button type="button" class="btn cta go" data-act="start" data-primary${sizes.length ? '' : ' disabled'}>Los geht’s!${iconNext()}</button></div>`;
   }
   const foot = IS_WEB ? `<footer class="st3-foot"><span><b>Vierklang</b> · Uli Frefat · <a href="https://ulifrefat.de" target="_blank" rel="noopener">ulifrefat.de</a> · gebaut mit Claude (Anthropic)</span><span>KI-Assistent für neue Pakete und Handys koppeln: <a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Fassung auf claude.ai</a> (Claude-Konto nötig). Alles andere läuft hier, ohne Konto; Einstellungen, eigene Pakete, Lerngruppen und das Album bleiben in diesem Browser.</span></footer>` : '';
@@ -18396,12 +18566,14 @@ function helpHTML() {
   const mode = game ? game.mode : settings.mode;
   const cfg = game ? game.cfg : null;
   const hasZeig = pack ? playable(pack).some((t) => t.zeig) : false, hasPairs = !!(pack && pack.pairs && pack.pairs.length);
+  const hasMit = game ? !!(game.cfg.zeig && Object.values(game.terms || {}).some((t) => t.zeig && t.mit))
+    : !!(pack && settings.zeig && settings.mitspiel !== false && playable(pack).some((t) => t.zeig && t.mit && (mode !== 'solo' || (typeof mitHearable === 'function' && mitHearable(t)))));
   const sel = cfg ? cfg.select : settings.select;
   const items = (TX[L] || TX.mid).rules({
     mode: mode === 'papier' ? 'tafel' : mode, select: sel,
     zeig: cfg ? cfg.zeig && hasZeig : settings.zeig && hasZeig, pairs: cfg ? cfg.pairs : settings.pairs && hasPairs,
     ops: cfg ? cfg.ops : opsActive(settings, L, mode), pasch: (cfg ? cfg.pasch === 'ereignis' : settings.pasch === 'ereignis') && sel === 'wuerfel',
-    geheim: cfg ? !!cfg.geheim : !!settings.geheim, series: cfg ? !!cfg.blitz : !!settings.blitz
+    geheim: cfg ? !!cfg.geheim : !!settings.geheim, series: cfg ? !!cfg.blitz : !!settings.blitz, mit: hasMit
   });
   const lv = ['easy', 'mid', 'hard'].map((k) => `<button type="button" class="seg-btn${L === k ? ' on' : ''}" data-act="help-lang" data-v="${k}" aria-pressed="${L === k}">${LANG_LABEL[k]}</button>`).join('');
   return `<h2>So geht Vierklang</h2>
@@ -18430,7 +18602,9 @@ function coachSteps() {
   const s4 = { sel: '#board', title: 'Der Vierklang', text: C.goal(!!g.cfg.connect, !!g.cfg.diagonals, du) };
   const hasZeig = g.cfg.zeig && g.cells.some((c) => g.terms[c.tid] && g.terms[c.tid].zeig), hasPair = g.cells.some((c) => g.terms[c.tid] && g.terms[c.tid].kind === 'paar');
   const sx = [];
-  if (hasZeig) sx.push({ sel: '#board .cell.zeig', title: 'Zeigefelder', text: C.zeig });
+  const hasMit = g.cells.some((c) => g.terms[c.tid] && g.terms[c.tid].zeig && g.terms[c.tid].mit);
+  if (hasMit) sx.push({ sel: '#board .cell.mit', title: du ? 'Höraufgaben' : 'Mitspielfelder', text: C.mit });
+  if (hasZeig && g.cells.some((c) => g.terms[c.tid] && g.terms[c.tid].zeig && !g.terms[c.tid].mit)) sx.push({ sel: '#board .cell.zeig:not(.mit)', title: 'Zeigefelder', text: C.zeig });
   if (hasPair) sx.push({ sel: '#board .cell.pair', title: 'Zwei Begriffe auf einem Feld', text: C.pair });
   if (g.mode === 'solo') {
     const lvl = g.cfg.level.A;
@@ -18499,6 +18673,7 @@ function placeCoach(el, r) {
 /* ---------- Ansichten ---------- */
 function show(v) {
   view = v;
+  if (typeof mitStop === 'function') mitStop(true);
   ['start', 'game', 'ws', 'phone', 'album', 'learn'].forEach((k) => { const el = $('#v-' + k); if (el) el.hidden = k !== v; });
   document.body.dataset.view = v;
   if (v !== 'game') { Timer.clear(); coach = null; renderCoach(); const ov = $('#overlay'); ov.hidden = true; ov.innerHTML = ''; ov.dataset.key = ''; document.body.classList.remove('ov-open'); }
@@ -18719,7 +18894,7 @@ function wsEditor(p) {
   const editedNote = p.edited ? `<p class="ws-note ws-edited"><b>Angepasstes Paket.</b> Deine Fassung gilt in diesem Browser und auf diesem Gerät. <button type="button" class="lk-reset" data-act="ws-reset" data-id="${esc(p.id)}">Original wiederherstellen</button></p>` : '';
   const rows = p.terms.map((t) => {
     const w = termWarn(t);
-    return `<div class="tl-row"><span class="tl-term">${esc(t.term || '(ohne Begriff)')}${w.length ? `<small class="tl-warn">${esc(w.join(' · '))}</small>` : ''}</span><span>${esc(KIND_LABEL[t.kind])}</span><span>${esc(t.family || '–')}</span><span>${DIFF_LABEL[t.diff]}</span><span>${t.feats.length} von 3${t.zeig ? ' · zeigen' : ''}</span><span class="tl-act"><button type="button" class="btn sm" data-act="${own ? 'ws-edit' : 'ws-view'}" data-id="${esc(t.id)}">${own ? 'Bearbeiten' : 'Ansehen'}</button></span></div>`;
+    return `<div class="tl-row"><span class="tl-term">${esc(t.term || '(ohne Begriff)')}${w.length ? `<small class="tl-warn">${esc(w.join(' · '))}</small>` : ''}</span><span>${esc(KIND_LABEL[t.kind])}</span><span>${esc(t.family || '–')}</span><span>${DIFF_LABEL[t.diff]}</span><span>${t.feats.length} von 3${t.zeig ? (t.mit ? ' · mitspielen' : ' · zeigen') : ''}</span><span class="tl-act"><button type="button" class="btn sm" data-act="${own ? 'ws-edit' : 'ws-view'}" data-id="${esc(t.id)}">${own ? 'Bearbeiten' : 'Ansehen'}</button></span></div>`;
   }).join('');
   return `${head}${editedNote}
     <div class="ws-stats"><span><b>${n}</b> spielbare Begriffe</span><span>${sizes.length ? 'Brett ' + sizes.map((x) => x + ' × ' + x).join(', ') : `noch ${Math.max(0, 16 - n)} bis zum 4 × 4-Brett`}</span>${fams.length ? `<span>${fams.length} Themenfamilien</span>` : ''}</div>
@@ -18764,6 +18939,7 @@ function termFormHTML(p, t) {
     <fieldset class="f wide"><legend>Zeigefeld <small>leer lassen, wenn der Begriff erklärt werden soll; sonst wird er im Spiel vorgemacht und beobachtet</small></legend>
       <div class="stack"><input id="tf-z0" class="field" placeholder="Zeigeauftrag, z. B. Klatscht zwei Takte im 4/4-Takt und betont dabei einmal zwischen den Schlägen." value="${v(t && t.zeig && t.zeig.auftrag)}" maxlength="240">
       <div class="three"><input id="tf-z1" class="field" placeholder="Beobachtungsmerkmal 1" value="${v(t && t.zeig && t.zeig.merkmale[0])}" maxlength="90"><input id="tf-z2" class="field" placeholder="Beobachtungsmerkmal 2" value="${v(t && t.zeig && t.zeig.merkmale[1])}" maxlength="90"><input id="tf-z3" class="field" placeholder="Beobachtungsmerkmal 3" value="${v(t && t.zeig && t.zeig.merkmale[2])}" maxlength="90"></div></div></fieldset>
+    ${typeof wsMitHTML === 'function' ? wsMitHTML(t) : ''}
     <fieldset class="f wide"><legend>Falsche Erklärungen für die Stufe Auswählen <small>leer lassen, dann nimmt die App Erklärungen anderer Begriffe</small></legend>
       <div class="stack"><input id="tf-x1" class="field" value="${v(t && t.distractors[0])}" maxlength="400"><input id="tf-x2" class="field" value="${v(t && t.distractors[1])}" maxlength="400"><input id="tf-x3" class="field" value="${v(t && t.distractors[2])}" maxlength="400"></div></fieldset>
   </form>
@@ -18833,7 +19009,11 @@ function tfSave() {
   const old = ctx.tid ? p.terms.find((x) => x.id === ctx.tid) : null;
   const zeig = v('tf-z0') ? { auftrag: v('tf-z0'), merkmale: [v('tf-z1'), v('tf-z2'), v('tf-z3')] } : null;
   if (zeig && zeig.merkmale.filter(Boolean).length < 2) { const el = $('#tf-z1'); el.classList.add('err'); el.focus(); toast('Ein Zeigefeld braucht mindestens zwei Beobachtungsmerkmale.'); return; }
-  const nt = normTerm({ id: ctx.tid || ('t-' + uid()), term, kind, expl, diff: ctx.diff, family: v('tf-fam'), feats: [v('tf-f1'), v('tf-f2'), v('tf-f3')], hints: { ober: v('tf-h1'), beispiel: v('tf-h2'), satz: v('tf-h3') }, distractors: [v('tf-x1'), v('tf-x2'), v('tf-x3')], media, prompt: kind === 'bild' ? v('tf-prompt') : '', label: kind === 'bild' ? ctx.label : '', zeig: kind === 'hoeren' || kind === 'bild' ? null : zeig }, old ? old.order : p.terms.length);
+  const mitG = v('tf-mg');
+  if (mitG && !zeig) { const el = $('#tf-z0'); el.classList.add('err'); el.focus(); toast('Eine Begleitung braucht einen Zeigeauftrag mit Beobachtungsmerkmalen.'); return; }
+  const om = old && old.mit && old.mit.groove === mitG ? old.mit : null;
+  const mitRaw = mitG ? { groove: mitG, takt: v('tf-mk'), bpm: v('tf-mb'), takte: v('tf-mt'), muster: v('tf-mm'), auftrag: v('tf-ma'), ohne: om ? om.ohne : [], pausen: om ? om.pausen : [], erkennen: !!v('tf-mm') && !(om && om.muster === v('tf-mm') && om.erkennen === false) } : null;
+  const nt = normTerm({ id: ctx.tid || ('t-' + uid()), term, kind, expl, diff: ctx.diff, family: v('tf-fam'), feats: [v('tf-f1'), v('tf-f2'), v('tf-f3')], hints: { ober: v('tf-h1'), beispiel: v('tf-h2'), satz: v('tf-h3') }, distractors: [v('tf-x1'), v('tf-x2'), v('tf-x3')], media, prompt: kind === 'bild' ? v('tf-prompt') : '', label: kind === 'bild' ? ctx.label : '', zeig: kind === 'hoeren' || kind === 'bild' ? null : zeig, mit: kind === 'hoeren' || kind === 'bild' ? null : mitRaw }, old ? old.order : p.terms.length);
   if (old) p.terms[p.terms.indexOf(old)] = nt; else p.terms.push(nt);
   p.updated = today();
   const ok = persistPack(p); closeModal(); renderWS();
@@ -19480,7 +19660,7 @@ function printStudioHTML() {
   const seg2 = (key, opts, val) => `<div class="seg pr-seg" role="radiogroup">${opts.map((o) => { const on = String(o[0]) === String(val); return `<button type="button" role="radio" class="seg-btn${on ? ' on' : ''}" aria-checked="${on}" data-act="pr-set" data-k="${key}" data-v="${esc(o[0])}">${esc(o[1])}</button>`; }).join('')}</div>`;
   const form = (v, title, text) => { const on = pr.form === v; return `<button type="button" class="pr-form${on ? ' on' : ''}" role="radio" aria-checked="${on}" data-act="pr-set" data-k="form" data-v="${v}"><span class="pr-form-ic">${prIconForm(v)}</span><span class="pr-form-t">${esc(title)}</span><span class="pr-form-x">${esc(text)}</span></button>`; };
   const tick = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  const nPairs = (pack.pairs || []).length, nZeig = playable(pack).filter((t) => t.zeig).length;
+  const nPairs = (pack.pairs || []).length, nZeig = playable(pack).filter((t) => t.zeig).length, nMitP = playable(pack).filter((t) => t.zeig && t.mit).length;
   const pagesOf = { anleitung: '2 bis 3 Seiten je Satz', plan: '1 Seite je Satz', pruef: `${Math.ceil(k / 9)} Seiten je Satz`, steine: '1 Seite je Satz', wuerfel: '1 Seite je Satz', lern: `${Math.ceil(k / 8)} Seiten, einmal`, loesung: 'je Satz', satz: '1 Seite je Satz', paare: `${Math.ceil(nPairs / 9)} ${Math.ceil(nPairs / 9) === 1 ? 'Seite' : 'Seiten'}, einmal`, operatoren: '1 Seite, einmal' };
   const parts = PR_PARTS.filter((p) => p[0] !== 'paare' || nPairs).map((p) => { const on = !!pr.parts[p[0]]; return `<button type="button" class="pr-part${on ? ' on' : ''}" role="checkbox" aria-checked="${on}" data-act="pr-part" data-k="${p[0]}"><span class="pr-box">${on ? tick : ''}</span><span class="pr-part-t"><b>${esc(p[1])}</b><small>${esc(p[2])} · ${esc(pagesOf[p[0]])}</small></span></button>`; }).join('');
   const partList = PR_PARTS.filter((p) => p[0] !== 'paare' || nPairs);
@@ -19502,7 +19682,7 @@ function printStudioHTML() {
           <div class="pr-step"><button type="button" class="pr-step-b" data-act="pr-sets" data-v="-1" aria-label="ein Satz weniger"${pr.sets <= 1 ? ' disabled' : ''}>−</button><span class="pr-step-n" aria-live="polite">${pr.sets}</span><button type="button" class="pr-step-b" data-act="pr-sets" data-v="1" aria-label="ein Satz mehr"${pr.sets >= 8 ? ' disabled' : ''}>+</button></div></div>
         <div class="pr-row"><div class="pr-l">Farbe</div>${seg2('color', [['farbig', 'farbig'], ['spar', 'tintensparend']], pr.color)}</div>
         <div class="pr-row"><div class="pr-l">Sprache der Anleitung<small>${LANG_SUB[langFor(pack, pr.lang)]}${pr.lang === 'auto' ? ', passend zur Klassenstufe' : ''}</small></div>${seg2('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], pr.lang)}</div>
-        ${nZeig ? `<div class="pr-row"><div class="pr-l">Zeigefelder<small>${nZeig} Begriffe werden vorgemacht statt erklärt; die Prüfkarte nennt Auftrag und Beobachtungsmerkmale.</small></div>${seg2('zeig', [['an', 'an'], ['aus', 'aus']], pr.zeig ? 'an' : 'aus')}</div>` : ''}
+        ${nZeig ? `<div class="pr-row"><div class="pr-l">Zeigefelder<small>${nZeig} Begriffe werden vorgemacht statt erklärt; die Prüfkarte nennt Auftrag und Beobachtungsmerkmale.${nMitP ? ` Bei ${nMitP === 1 ? 'einem davon' : nMitP + ' davon'} übernimmt eine Person die Begleitung, die Karte sagt wie.` : ''}</small></div>${seg2('zeig', [['an', 'an'], ['aus', 'aus']], pr.zeig ? 'an' : 'aus')}</div>` : ''}
         <div class="pr-row"><div class="pr-l">Pasch<small>${pr.pasch ? 'Ein Würfel bestimmt das Ereignis: Noch mal, Blitz, Ohne Hilfe, Angriff nach Wahl oder freie Wahl.' : 'Pasch heißt freie Wahl.'}</small></div>${seg2('pasch', [['ereignis', 'Ereignis'], ['wahl', 'freie Wahl']], pr.pasch ? 'ereignis' : 'wahl')}</div>
       </div>
       <div class="pr-col">
@@ -20091,7 +20271,7 @@ function prPruefCard(ctx, t, r, c, x, y, set) {
   cy += 4.2;
   /* Inhalt mit gemeinsamer Skalierung, bis alles passt */
   const footY = Y + Hd - 4.2, avail = footY - cy - 0.8;
-  const hints = isZeig ? [['Auftrag', t.zeig.auftrag]] : [['Oberbegriff', t.hints.ober], [isBild ? 'Tipp' : 'Beispiel', t.hints.beispiel]].filter((h) => h[1]);
+  const hints = isZeig ? [['Auftrag', t.zeig.auftrag]].concat(t.mit && typeof mitPapierText === 'function' ? [['Begleitung', mitPapierText(t)]] : []) : [['Oberbegriff', t.hints.ober], [isBild ? 'Tipp' : 'Beispiel', t.hints.beispiel]].filter((h) => h[1]);
   const lay = (s) => {
     const fsz = 7.5 * s, hsz = 6.7 * s, esz = 6.2 * s, lab = 5.3 * s, cb = 3.3 * s;
     const featW = iw - cb - 1.9;
@@ -23136,6 +23316,7 @@ const TEACHER_TEXT = {
       <li><b>Lerngruppen und Schnellstart.</b> Lege für jede Klasse eine Lerngruppe an, mit der Bezeichnung als einzigem Eintrag, zum Beispiel 7b. Sie merkt sich das letzte Spiel mit seinen Einstellungen, und „Wie letztes Mal“ auf der Startseite startet es mit einem Klick.</li>
       <li><b>Klassenbild als Einstieg.</b> Nach jedem Spiel zeigt das Klassenbild, welche Begriffe der Lerngruppe sitzen und welche noch wackeln. „An die Tafel“ zeigt die wackelnden Begriffe groß für den Einstieg der nächsten Stunde, „Damit spielen“ legt sie sicher aufs nächste Brett.</li>
       <li><b>Direktlink und QR-Code.</b> „Link“ unter den Paketen erzeugt einen Link mit QR-Code: für die Stunde, für „Karten üben“ zu Hause oder für Solo. Er passt auf eine Folie, ins Padlet oder aufs Arbeitsblatt. Eigene Pakete und Anpassungen liegen nur im eigenen Browser, andere Geräte öffnen die mitgelieferte Fassung.</li>
+      <li><b>Mitspielfelder.</b> Manche Zeigefelder haben eine Begleitung aus der App. An der Tafel zählt die App ein und spielt Grundschlag oder Groove, das Team führt den Auftrag dazu aus, die Klasse prüft mit der Beobachtungskarte. Das Muster zum Vergleich gibt es erst beim Aufdecken, damit vorher niemand nur nachahmt. Im Duell sind die Durchgänge kürzer. Im Solo wird aus Feldern mit eindeutigem Muster eine Höraufgabe, die übrigen bleiben Zeigefelder. Auf Papier übernimmt eine Person die Begleitung, die Prüfkarte sagt wie.</li>
       <li><b>Paket vor dem Einsatz prüfen.</b> Die mitgelieferten Pakete sind KI-Entwürfe und noch nicht durchgehend fachlich geprüft. Was im Spiel immer wieder abgerufen und geprüft wird, prägt sich ein, ein Fehler auf einer Prüfkarte also auch. In der Werkstatt lässt sich jedes Paket korrigieren.</li>
     </ul>
     <p>Der Mehrwert liegt in der <b>Erklärsprache</b>: Lernende müssen Fachbegriffe mündlich, kriteriengeleitet und mit Beispiel erklären, und die Klasse hört zu. Das Spiel ersetzt kein Hören und kein Musizieren. Zeige-, Hör- und Notenfelder holen beides ins Spiel, deshalb kommen sie mit mindestens einem Viertel der Felder aufs Brett, soweit das Paket sie hat. Spiele die Hörbeispiele aus deinem Unterricht dazu, wo die App nur synthetische Klänge hat.</p>`,
@@ -23204,7 +23385,7 @@ const TEACHER_TEXT = {
       <li><b>Stufe je Seite.</b> Im Duell kann eine Person auf „Auswählen“ spielen, die andere auf „Mit Beispiel“. An der Tafel gilt eine Stufe für beide Teams, dafür verteilt die Beratung die Last.</li>
       <li><b>Gestufte Hilfen.</b> Oberbegriff, Beispiel, Satzanfang. Sie kosten einen festen Stein, aber keinen Zug. Schwere Begriffe ergeben auch mit Hilfe einen festen Stein, damit sich das Risiko lohnt. Hilfen sind ein Gerüst auf Zeit: Wenn eine Klasse sicherer wird, sprecht darüber, wer schon ohne auskommt.</li>
       <li><b>Sprachstufe.</b> Regeln, Karten und Druck gibt es einfach, mittel und für die Oberstufe. Für eine sprachlich schwache Klasse 8 kannst du die einfache Fassung wählen, der Inhalt bleibt derselbe.</li>
-      <li><b>Zeigefelder.</b> Wer sich mündlich schwertut, kann klatschen, singen oder zeichnen. Das sind vollwertige Felder mit eigener Beobachtungskarte.</li>
+      <li><b>Zeigefelder.</b> Wer sich mündlich schwertut, kann klatschen, singen oder zeichnen. Das sind vollwertige Felder mit eigener Beobachtungskarte. Bei Mitspielfeldern gibt die Begleitung aus der App Halt, das Tempo lässt sich auf der Karte anpassen.</li>
       <li><b>Paket anpassen.</b> Jedes Paket lässt sich in der Werkstatt kürzen, erweitern oder umformulieren. Für eine Lerngruppe mit Förderbedarf: Begriffe streichen, Erklärungen vereinfachen, Zeigeaufträge ergänzen.</li>
       <li><b>Karten üben.</b> Die Lernkartei zum Paket arbeitet mit Fächern: Neue und falsch beantwortete Karten liegen in Fach 1, richtig beantwortete kommen nach 3 Tagen, einer Woche und vier Wochen wieder. Wählbar sind die Richtung (Begriff zur Erklärung oder umgekehrt), der Selbstcheck an den Kernmerkmalen oder das Eintippen des Begriffs und „A oder B?“ für Abgrenzungspaare. Unterstrichene Fachwörter auf der Rückseite erklären sich beim Antippen. Der Lernstand lässt sich als Code auf ein anderes Gerät mitnehmen, und die Liste „Zum Wiederholen“ am Spielende wandert auf Knopfdruck in Fach 1. Das läuft auf jedem Handy.</li>
     </ul>`,
@@ -23603,6 +23784,396 @@ const KLASSE_ACTIONS = {
   }
 };
 
+/* Vierklang · Teil 14: Mitspielfelder
+   Ein Mitspielfeld ist ein Zeigefeld mit Begleitung aus der App: Die App zählt ein und spielt Grundschlag oder Groove,
+   das Team führt den Auftrag dazu aus. Ein Muster zeigt zum Vergleich, wie es klingen kann.
+   Je Spielform anders eingesetzt:
+   Tafel   Einzählen und Begleitung beim Vormachen, die Klasse prüft mit der Beobachtungskarte, das Muster erst beim Aufdecken.
+   Duell   kürzere Durchgänge, die andere Person prüft und kann das Muster anhören.
+   Solo    kein Vormachen: Felder mit eindeutigem Muster werden zu Höraufgaben, die übrigen bleiben Zeigefelder.
+   Papier  ohne Klang: Die Prüfkarte sagt, wie eine Person die Begleitung übernimmt.
+   Paketformat: mit: { groove, takt (nur bei puls), bpm, takte, muster, ohne: ['snare'], pausen: [3], auftrag, erkennen } */
+
+const mEv = (b, s, v, m, d, p) => ({ b, s, v, m: m || 0, d: d || 0, p: p || '' });
+const mSteps = (n, step, from) => { const a = []; for (let k = 0; k < n; k++) a.push(+((from || 0) + k * step).toFixed(4)); return a; };
+const mAt = (list, s, v, m, d, p) => list.map((b) => mEv(b, s, v, m, d, p));
+const MIT_NUM = ['null', 'eins', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun', 'zehn', 'elf', 'zwölf'];
+const mitZahl = (n) => MIT_NUM[n] || String(n);
+const MIT_PART = { kick: 'Bassdrum', snare: 'Snare', hat: 'Hi-Hat', bass: 'Bass' };
+
+/* „Bruder Jakob“ (Viertel = 1), 32 Schläge */
+const MIT_JAKOB = [[60, 1], [62, 1], [64, 1], [60, 1], [60, 1], [62, 1], [64, 1], [60, 1], [64, 1], [65, 1], [67, 2], [64, 1], [65, 1], [67, 2],
+  [67, 0.5], [69, 0.5], [67, 0.5], [65, 0.5], [64, 1], [60, 1], [67, 0.5], [69, 0.5], [67, 0.5], [65, 0.5], [64, 1], [60, 1],
+  [60, 1], [55, 1], [60, 2], [60, 1], [55, 1], [60, 2]];
+function mitJakob(shift, s, v) { let b = shift; return MIT_JAKOB.map((n) => { const e = mEv(b, s, v, n[0], n[1] * 0.92); b += n[1]; return e; }); }
+const MIT_JAKOB_EV = mitJakob(0, 'tone', 0.8);
+
+/* ---------- Begleitungen ---------- */
+const MIT_GROOVES = {
+  puls: {
+    name: 'Grundschlag',
+    bar: (o) => mAt(mSteps(o.takt, 1), 'click', 0.45),
+    papier: (o) => `Eine Person zählt ${mitZahl(o.takt)} Schläge ein und klatscht dann leise den Grundschlag.`
+  },
+  lied: {
+    name: 'Melodie „Bruder Jakob“', takt: 4,
+    bar: (o, i) => MIT_JAKOB_EV.filter((e) => Math.floor(e.b / 4) === i % 8).map((e) => mEv(e.b - (i % 8) * 4, e.s, e.v, e.m, e.d)),
+    papier: () => 'Eine Gruppe singt dazu leise „Bruder Jakob“.'
+  },
+  rock: {
+    name: 'Rockbeat', takt: 4,
+    bar: () => [].concat(mAt([0, 2], 'kick', 0.85, 0, 0, 'kick'), mAt([1, 3], 'snare', 0.8, 0, 0, 'snare'), mSteps(8, 0.5).map((b, k) => mEv(b, 'hat', k % 2 ? 0.24 : 0.36, 0, 0, 'hat'))),
+    papier: (o) => (o.ohne.includes('snare') ? 'Eine Person stampft auf eins und drei und patscht leise Achtel.'
+      : o.ohne.includes('kick') ? 'Eine Person klatscht auf zwei und vier und patscht leise Achtel.' : 'Eine Person stampft auf eins und drei und klatscht auf zwei und vier.')
+  },
+  boogie: {
+    name: 'Rock-’n’-Roll-Begleitung', takt: 4,
+    bar: () => { const line = [36, 40, 43, 45, 46, 45, 43, 40], ev = []; for (let k = 0; k < 4; k++) ev.push(mEv(k, 'bass', 0.8, line[2 * k], 0.6, 'bass'), mEv(k + 2 / 3, 'bass', 0.6, line[2 * k + 1], 0.3, 'bass'), mEv(k, 'hat', 0.34, 0, 0, 'hat'), mEv(k + 2 / 3, 'hat', 0.2, 0, 0, 'hat')); return ev; },
+    papier: () => 'Eine Person patscht im Shuffle lang-kurz auf die Oberschenkel und summt einen tiefen Ton dazu.'
+  },
+  swing: {
+    name: 'Swing', takt: 4,
+    bar: (o, i) => { const bass = [[36, 40, 43, 45], [46, 45, 43, 40], [41, 45, 48, 45], [43, 41, 40, 38]][i % 4]; return [].concat(mAt([0, 1, 1 + 2 / 3, 2, 3, 3 + 2 / 3], 'ride', 0.5), mAt([1, 3], 'hat', 0.34, 0, 0, 'hat'), bass.map((m, k) => mEv(k, 'bass', 0.75, m, 0.9, 'bass'))); },
+    papier: () => 'Eine Person schnipst auf zwei und vier, eine zweite summt gleichmäßige Viertel als Bass.'
+  },
+  hiphop: {
+    name: 'Hip-Hop-Beat', takt: 4,
+    bar: () => [].concat(mAt([0, 1.5, 2.5], 'kick', 0.85, 0, 0, 'kick'), mAt([1, 3], 'snare', 0.8, 0, 0, 'snare'), mSteps(8, 0.5).map((b, k) => mEv(b, 'hat', k % 2 ? 0.2 : 0.32, 0, 0, 'hat'))),
+    papier: () => 'Eine Person spricht dazu einen Beat mit „bum“ auf der Eins und „tschak“ auf zwei und vier.'
+  },
+  funk: {
+    name: 'Funk-Beat', takt: 4,
+    bar: () => [].concat(mAt([0, 0.75, 2.5], 'kick', 0.85, 0, 0, 'kick'), mAt([1, 3], 'snare', 0.8, 0, 0, 'snare'), [mEv(3.75, 'snare', 0.18, 0, 0, 'snare')], mSteps(16, 0.25).map((b, k) => mEv(b, 'hat', k % 2 ? 0.13 : 0.27, 0, 0, 'hat'))),
+    papier: () => 'Eine Person spricht dazu leise schnelle Sechzehntel „tschi-ki-tschi-ki“.'
+  },
+  reggae: {
+    name: 'Reggae-Beat', takt: 4,
+    bar: () => [].concat([mEv(2, 'kick', 0.8, 0, 0, 'kick'), mEv(2, 'rim', 0.6, 0, 0, 'snare')], mAt([0, 1, 2, 3], 'hat', 0.26, 0, 0, 'hat'), [mEv(0, 'bass', 0.7, 43, 0.9, 'bass'), mEv(1.5, 'bass', 0.55, 47, 0.4, 'bass'), mEv(2.5, 'bass', 0.6, 48, 1.2, 'bass')]),
+    papier: () => 'Eine Person stampft ruhig auf drei und zählt leise mit.'
+  },
+  house: {
+    name: 'House-Begleitung', takt: 4,
+    bar: () => [].concat(mAt([0.5, 1.5, 2.5, 3.5], 'hatopen', 0.4, 0, 0, 'hat'), mSteps(16, 0.25).map((b, k) => mEv(b, 'shaker', k % 4 === 2 ? 0.3 : 0.13)), mAt([0.5, 1.5, 2.5, 3.5], 'bass', 0.55, 36, 0.35, 'bass')),
+    papier: () => 'Eine Person spricht auf jedes Und ein kurzes „tss“.'
+  },
+  marsch: {
+    name: 'Marsch', takt: 4,
+    bar: () => [].concat(mAt([0, 2], 'kick', 0.8, 0, 0, 'kick'), mAt([1, 3], 'snare', 0.75, 0, 0, 'snare'), [mEv(3.5, 'snare', 0.34, 0, 0, 'snare')]),
+    papier: () => 'Eine Person stampft im Marschtempo auf eins und drei und klatscht auf zwei und vier.'
+  },
+  walzer: {
+    name: 'Walzerbegleitung', takt: 3,
+    bar: (o, i) => { const ch = [[48, [55, 60, 64]], [43, [55, 59, 62, 65]], [43, [55, 59, 62, 65]], [48, [55, 60, 64]]][i % 4]; return [mEv(0, 'bass', 0.8, ch[0], 0.9, 'bass')].concat([1, 2].reduce((a, b) => a.concat(ch[1].map((m) => mEv(b, 'pluck', 0.4, m, 0.5))), [])); },
+    papier: () => 'Eine Person patscht auf die Eins und klatscht leise auf zwei und drei.'
+  },
+  sechsachtel: {
+    name: 'Sechsachteltakt', takt: 2,
+    bar: () => mAt([0, 1], 'click', 0.45),
+    papier: () => 'Eine Person zählt eins-und-a, zwei-und-a und patscht leise die beiden Schläge.'
+  },
+  samba: {
+    name: 'Samba', takt: 2,
+    bar: () => [].concat(mSteps(8, 0.25).map((b, k) => mEv(b, 'shaker', k % 4 === 0 ? 0.42 : 0.2)), [mEv(0, 'tom', 0.4, 45)]),
+    papier: () => 'Eine Person spricht leise schnelle Sechzehntel „tschi-ki-tschi-ki“ und tippt dazu die Eins.'
+  },
+  bolero: {
+    name: 'Boléro-Begleitung', takt: 3,
+    bar: () => [mEv(0, 'pluck', 0.55, 48, 0.4), mEv(1, 'pluck', 0.35, 55, 0.3), mEv(2, 'pluck', 0.35, 55, 0.3)],
+    papier: () => 'Eine Person zupft oder summt auf jeder Eins einen tiefen Ton.'
+  }
+};
+
+/* ---------- Muster zum Vergleich und für Höraufgaben ---------- */
+const MIT_BOLERO = [0, 0.5, 0.5 + 1 / 6, 0.5 + 1 / 3, 1, 1.5, 1.5 + 1 / 6, 1.5 + 1 / 3, 2, 2.5, 3, 3.5, 3.5 + 1 / 6, 3.5 + 1 / 3, 4, 4.5, 4.5 + 1 / 6, 4.5 + 1 / 3, 5, 5 + 1 / 6, 5 + 1 / 3, 5.5, 5.5 + 1 / 6, 5.5 + 1 / 3];
+const MIT_MUSTER = {
+  eins4: { name: 'Takt mit betonter Eins', takt: 4, bars: 1, ev: [mEv(0, 'clap', 1)].concat(mAt([1, 2, 3], 'clap', 0.36)) },
+  puls4: { name: 'Puls', takt: 4, bars: 1, ev: mAt([0, 1, 2, 3], 'stamp', 0.75) },
+  metrum4: { name: 'Schritte mit Stampfer auf der Eins', takt: 4, bars: 1, ev: [mEv(0, 'stamp', 1)].concat(mAt([1, 2, 3], 'step', 0.45)) },
+  echo: { name: 'laut, dann leise', takt: 4, bars: 2, ev: mAt([0, 1, 2, 2.5, 3], 'clap', 0.95).concat(mAt([4, 5, 6, 6.5, 7], 'clap', 0.18)) },
+  akzent3: { name: 'Akzent auf dem dritten Schlag', takt: 4, bars: 1, ev: mAt([0, 1, 3], 'clap', 0.34).concat([mEv(2, 'clap', 1)]) },
+  backbeat: { name: 'Klatschen auf zwei und vier', takt: 4, bars: 1, ev: mAt([1, 3], 'clap', 0.9) },
+  bassdrum: { name: 'Bassdrum auf eins und drei', takt: 4, bars: 1, ev: mAt([0, 2], 'stamp', 1) },
+  rockbeat: { name: 'Rockbeat mit dem Körper', takt: 4, bars: 1, ev: [].concat(mAt([0, 2], 'stamp', 0.95), mAt([1, 3], 'clap', 0.9), mAt(mSteps(8, 0.5), 'patsch', 0.3)) },
+  fillin: { name: 'Fill-in im dritten Takt', takt: 4, bars: 4, ev: mSteps(16, 0.25, 8).map((b, k) => mEv(b, 'tom', 0.62, [64, 59, 55, 50][Math.floor(k / 4)])).concat([mEv(12, 'stamp', 1), mEv(12, 'snap', 0.7)]) },
+  achtel: { name: 'gerade Achtel', takt: 4, bars: 1, ev: mAt(mSteps(8, 0.5), 'clap', 0.6) },
+  ternaer: { name: 'lang-kurz im Shuffle', takt: 4, bars: 1, ev: [].concat(mAt([0, 1, 2, 3], 'clap', 0.7), mAt([2 / 3, 1 + 2 / 3, 2 + 2 / 3, 3 + 2 / 3], 'clap', 0.45)) },
+  achtelshuffle: { name: 'erst gerade, dann lang-kurz', takt: 4, bars: 4, ev: [].concat(mAt(mSteps(16, 0.5), 'clap', 0.6), mSteps(8, 1, 8).reduce((a, b) => a.concat([mEv(b, 'clap', 0.7), mEv(b + 2 / 3, 'clap', 0.45)]), [])) },
+  offbeat: { name: 'Offbeat', takt: 4, bars: 1, ev: mAt([0.5, 1.5, 2.5, 3.5], 'clap', 0.85) },
+  clave32: { name: 'Clave drei plus zwei', takt: 4, bars: 2, ev: mAt([0, 1.5, 3, 5, 6], 'clave', 0.9) },
+  habanera: { name: 'Habanera-Rhythmus', takt: 2, bars: 1, ev: [mEv(0, 'clap', 0.95), mEv(0.75, 'clap', 0.5), mEv(1, 'clap', 0.8), mEv(1.5, 'clap', 0.7)] },
+  dreier: { name: 'Dreiertakt mit gestampfter Eins', takt: 3, bars: 1, ev: [mEv(0, 'stamp', 1), mEv(0, 'clap', 0.7), mEv(1, 'clap', 0.42), mEv(2, 'clap', 0.42)] },
+  nachschlag: { name: 'Eins gestampft, zwei und drei leicht', takt: 3, bars: 1, ev: [mEv(0, 'stamp', 1), mEv(1, 'clap', 0.4), mEv(2, 'clap', 0.4)] },
+  mazurka: { name: 'Betonung auf der zweiten Zählzeit', takt: 3, bars: 1, ev: [mEv(0, 'clap', 0.36), mEv(1, 'clap', 1), mEv(2, 'clap', 0.36)] },
+  dudei: { name: 'Du-dei, Du-dei, Du-dei, Du', takt: 4, bars: 1, ev: mAt([0, 0.5, 1, 1.5, 2, 2.5], 'clap', 0.6).concat([mEv(3, 'clap', 0.8)]) },
+  tala16: { name: 'Zyklus mit 16 Schlägen', takt: 4, bars: 4, ev: mAt([0, 4, 12], 'clap', 1).concat([mEv(8, 'wave', 0.6)]) },
+  additiv: { name: '2 + 3 + 2 + 3', takt: 10, bars: 1, ev: mSteps(10, 1).map((b) => mEv(b, 'clap', [0, 2, 5, 7].includes(b) ? 1 : 0.3)) },
+  compas: { name: 'zwölf Schläge mit Betonungen', takt: 12, bars: 1, ev: mSteps(12, 1).map((b) => mEv(b, 'clap', [2, 5, 7, 9, 11].includes(b) ? 1 : 0.3)) },
+  palmas: { name: 'hohl und flach im Wechsel', takt: 4, bars: 2, ev: mSteps(8, 1).map((b) => mEv(b, b % 2 ? 'clap' : 'claph', 0.8)) },
+  jig: { name: 'Achtel im Sechsachteltakt', takt: 2, bars: 1, ev: mSteps(6, 1 / 3).map((b, k) => mEv(b, 'clap', k % 3 === 0 ? 1 : 0.35)) },
+  sieben: { name: '3 + 2 + 2', takt: 7, bars: 1, ev: mSteps(7, 1).map((b) => mEv(b, 'clap', [0, 3, 5].includes(b) ? 1 : 0.3)) },
+  akzentverschiebung: { name: 'Akzente auf der zweiten, fünften und siebten Achtel', takt: 4, bars: 1, ev: mSteps(8, 0.5).map((b, k) => mEv(b, 'clap', [1, 4, 6].includes(k) ? 1 : 0.28)) },
+  polymetrik: { name: 'drei gegen vier', takt: 12, bars: 1, ev: [].concat(mAt([0, 3, 6, 9], 'clap', 0.9), mAt([0, 4, 8], 'stamp', 0.95)) },
+  america: { name: 'zwei Dreier, dann drei Zweier', takt: 6, bars: 2, ev: mSteps(12, 1).map((b) => mEv(b, 'clap', [0, 3, 6, 8, 10].includes(b) ? 1 : 0.3)) },
+  marsch: { name: 'Marschmuster, jedes Mal lauter', takt: 4, bars: 4, ev: [0, 1, 2, 3].reduce((a, k) => a.concat(mAt([0, 1, 2, 2.5, 3].map((b) => b + 4 * k), 'clap', 0.24 + k * 0.25)), []) },
+  mars5: { name: 'Rhythmus im Fünfertakt', takt: 5, bars: 1, ev: [[0, 0.85], [1 / 3, 0.6], [2 / 3, 0.6], [1, 0.85], [2, 0.85], [3, 0.7], [3.5, 0.7], [4, 0.85]].map((x) => mEv(x[0], 'wood', x[1], 84)) },
+  trauer: { name: 'punktierter Trauermarsch', takt: 4, bars: 1, ev: [mEv(0, 'clap', 0.5), mEv(1, 'clap', 0.45), mEv(1.75, 'clap', 0.32), mEv(2, 'clap', 0.55)] },
+  daktylus: { name: 'lang, kurz, kurz', takt: 4, bars: 1, ev: [[0, 0.85], [1, 0.5], [1.5, 0.5], [2, 0.85], [3, 0.5], [3.5, 0.5]].map((x) => mEv(x[0], 'clap', x[1])) },
+  augmentbarock: { name: 'Thema, dann doppelt so lang', takt: 4, bars: 4, ev: mAt([0, 1, 1.5, 2, 3], 'clap', 0.8).concat(mAt([8, 10, 11, 12, 14], 'clap', 0.8)) },
+  augmentmotiv: { name: 'Viertonmotiv, dann doppelt so lang', takt: 4, bars: 4, ev: [mEv(0.5, 'tone', 0.8, 67, 0.45), mEv(1, 'tone', 0.8, 67, 0.45), mEv(1.5, 'tone', 0.8, 67, 0.45), mEv(2, 'tone', 0.9, 63, 1.9), mEv(9, 'tone', 0.8, 67, 0.9), mEv(10, 'tone', 0.8, 67, 0.9), mEv(11, 'tone', 0.8, 67, 0.9), mEv(12, 'tone', 0.9, 63, 3.8)] },
+  liquidation: { name: 'Motiv, das immer kürzer wird', takt: 4, bars: 4, ev: [mEv(0.5, 'tone', 0.8, 67, 0.45), mEv(1, 'tone', 0.8, 67, 0.45), mEv(1.5, 'tone', 0.8, 67, 0.45), mEv(2, 'tone', 0.85, 63, 1.5), mEv(5, 'tone', 0.7, 67, 0.45), mEv(5.5, 'tone', 0.7, 67, 0.45), mEv(6, 'tone', 0.75, 63, 1.5), mEv(9.5, 'tone', 0.55, 67, 0.45), mEv(10, 'tone', 0.6, 63, 1.5), mEv(14, 'tone', 0.3, 63, 1)] },
+  bolero: { name: 'Boléro-Rhythmus', takt: 3, bars: 2, cresc: true, ev: MIT_BOLERO.map((b) => mEv(b, 'snare', [0, 1, 2, 3, 4].includes(b) ? 0.55 : 0.4)) },
+  surdo: { name: 'tiefe Trommel betont auf zwei', takt: 2, bars: 1, ev: [mEv(0, 'tom', 0.3, 38), mEv(1, 'tom', 1, 38)] },
+  fouronthefloor: { name: 'Four-on-the-Floor', takt: 4, bars: 1, ev: mAt([0, 1, 2, 3], 'stamp', 0.95).concat(mAt([1, 3], 'clap', 0.85)) },
+  kanon2: { name: 'zweite Stimme im Kanon', takt: 4, bars: 10, ev: mitJakob(8, 'mallet', 0.85) },
+  synkope: { name: 'Synkope', takt: 4, bars: 1, ev: [mEv(0, 'mallet', 0.7, 72, 0.45), mEv(0.5, 'mallet', 0.95, 72, 0.95), mEv(1.5, 'mallet', 0.6, 72, 0.45), mEv(2, 'mallet', 0.8, 72, 0.95), mEv(3, 'mallet', 0.7, 72, 0.95)] },
+  punktiert: { name: 'Punktierung', takt: 4, bars: 1, ev: [mEv(0, 'mallet', 0.8, 72, 1.4), mEv(1.5, 'mallet', 0.55, 72, 0.45), mEv(2, 'mallet', 0.8, 72, 1.4), mEv(3.5, 'mallet', 0.55, 72, 0.45)] },
+  triolen: { name: 'Triolen', takt: 4, bars: 1, ev: mSteps(12, 1 / 3).map((b, k) => mEv(b, 'clap', k % 3 ? 0.4 : 0.7)) }
+};
+/* Grundmuster, die bei Höraufgaben als falsche Antworten dienen, wenn das Paket selbst zu wenige hat */
+const MIT_BASIS = [['achtel', 'gerade Achtel'], ['offbeat', 'Offbeat'], ['backbeat', 'Backbeat'], ['synkope', 'Synkope'], ['punktiert', 'Punktierung'], ['triolen', 'Triole']];
+
+function normMit(m) {
+  if (!m || typeof m !== 'object') return null;
+  const groove = String(m.groove || '').trim(), G = MIT_GROOVES[groove];
+  if (!G) return null;
+  const takt = G.takt || clamp(parseInt(m.takt, 10) || 4, 2, 16);
+  let muster = String(m.muster || '').trim();
+  const M = MIT_MUSTER[muster];
+  if (!M || M.takt !== takt) muster = '';
+  const ohne = (Array.isArray(m.ohne) ? m.ohne : []).map(String).filter((x) => MIT_PART[x]);
+  const pausen = (Array.isArray(m.pausen) ? m.pausen : []).map((x) => parseInt(x, 10)).filter((x) => x >= 1 && x <= 4);
+  const bars = muster ? MIT_MUSTER[muster].bars : 1;
+  return {
+    groove, takt, muster, ohne, pausen,
+    bpm: clamp(parseInt(m.bpm, 10) || 96, 40, 220),
+    takte: clamp(parseInt(m.takte, 10) || 4, Math.max(2, bars), 16),
+    auftrag: String(m.auftrag || '').trim().slice(0, 300),
+    erkennen: !!muster && m.erkennen !== false
+  };
+}
+function mitHearable(t) { return !!(t && t.zeig && t.mit && t.mit.muster && MIT_MUSTER[t.mit.muster] && t.mit.erkennen !== false); }
+function mitGrooveLabel(m) {
+  const G = MIT_GROOVES[m.groove]; if (!G) return '';
+  let s = G.name;
+  if (m.groove === 'puls' && m.takt !== 4) s += `, ${mitZahl(m.takt)} Schläge pro Takt`;
+  if (m.ohne && m.ohne.length) s += ' ohne ' + m.ohne.map((x) => MIT_PART[x]).join(' und ');
+  if (m.pausen && m.pausen.length) s += `, Pause im ${m.pausen.map((x) => x + '.').join(' und ')} Takt`;
+  return s;
+}
+function mitPapierText(t) {
+  const m = t && t.mit, G = m && MIT_GROOVES[m.groove]; if (!G) return '';
+  const pause = m.pausen && m.pausen.length ? ` Im ${m.pausen.map((x) => x + '.').join(' und ')} Takt setzt sie aus.` : '';
+  return `${G.papier(m)}${pause} Tempo etwa ${m.bpm} Schläge pro Minute.`;
+}
+function mitTakte(m, mode) {
+  if (mode !== 'duell') return m.takte;
+  const M = MIT_MUSTER[m.muster];
+  return M ? Math.min(m.takte, Math.max(2, M.bars)) : Math.min(m.takte, 4);
+}
+
+/* ---------- Klänge ---------- */
+function mitVoice(e, t, spb, scale) {
+  const S = Sound, v = Math.max(0.02, (e.v || 0.5) * (scale || 1));
+  switch (e.s) {
+    case 'click': S.hit('wood', t, v * 0.55, 86); break;
+    case 'clickhi': S.hit('wood', t, v * 0.6, 93); break;
+    case 'clave': S.hit('wood', t, v * 0.65, 96); break;
+    case 'rim': S.hit('wood', t, v * 0.5, 100); break;
+    case 'wood': S.hit('wood', t, v * 0.6, e.m || 84); break;
+    case 'kick': case 'snare': case 'hat': case 'hatopen': case 'ride': S.hit(e.s, t, v * 0.45); break;
+    case 'tom': S.hit('tom', t, v * 0.6, e.m || 50); break;
+    case 'clap': case 'claph': {
+      const hollow = e.s === 'claph', f = hollow ? 820 : 1250;
+      for (let k = 0; k < 3; k++) S.mxNoiseHit(t + k * 0.0095, v * (k === 2 ? 1.6 : 0.9), k === 2 ? (hollow ? 0.2 : 0.14) : 0.01, [['highpass', hollow ? 360 : 700], ['bandpass', f, hollow ? 1.5 : 1.1]]);
+      break;
+    }
+    case 'stamp': case 'step': {
+      const w = e.s === 'step' ? v * 0.55 : v;
+      const o = S.mxOsc('sine', 112, t, 0.34, S.mxEnv(t, w * 0.5, 0.3, 0.004));
+      o.frequency.setValueAtTime(112, t); o.frequency.exponentialRampToValueAtTime(52, t + 0.12);
+      S.mxNoiseHit(t, w * 0.22, 0.05, [['lowpass', 520]]);
+      break;
+    }
+    case 'patsch': {
+      S.mxNoiseHit(t, v * 1.0, 0.07, [['bandpass', 650, 0.9], ['lowpass', 2200]]);
+      const o = S.mxOsc('sine', 190, t, 0.1, S.mxEnv(t, v * 0.5, 0.08, 0.002)); o.frequency.exponentialRampToValueAtTime(120, t + 0.06);
+      break;
+    }
+    case 'snap': S.mxNoiseHit(t, v * 0.6, 0.03, [['highpass', 2200], ['bandpass', 3200, 2.2]]); break;
+    case 'shaker': S.mxNoiseHit(t, v * 0.45, 0.05, [['highpass', 5200], ['bandpass', 8200, 0.7]]); break;
+    case 'wave': S.mxNoiseHit(t, v * 0.25, 0.32, [['highpass', 3000], ['bandpass', 6000, 0.5]]); break;
+    case 'bass': S.bass(e.m, t, Math.max(0.08, e.d * spb), v * 0.32); break;
+    case 'pluck': S.note(e.m, t, Math.max(0.1, e.d * spb), 'pluck', v * 0.3); break;
+    case 'mallet': S.note(e.m, t, Math.max(0.1, e.d * spb), 'mallet', v * 0.34); break;
+    case 'tone': S.note(e.m, t, Math.max(0.1, e.d * spb), 'flute', v * 0.22); break;
+    default: break;
+  }
+}
+
+/* ---------- Abspielen mit Vorausplanung ---------- */
+let mitP = null;
+function mitEvents(m, what, takte, mu) {
+  const G = MIT_GROOVES[m.groove], takt = m.takt, count = takt <= 2 ? 2 : 1, evs = [];
+  for (let k = 0; k < count * takt; k++) evs.push({ b: k, e: mEv(0, k % takt === 0 ? 'clickhi' : 'click', 0.6) });
+  for (let i = 0; i < takte; i++) {
+    if (m.pausen && m.pausen.includes((i % 4) + 1)) continue;
+    G.bar(m, i).filter((e) => !(e.p && m.ohne && m.ohne.includes(e.p))).forEach((e) => evs.push({ b: (count + i) * takt + e.b, e }));
+  }
+  const M = mu ? MIT_MUSTER[mu] : null;
+  if ((what === 'muster' || what === 'cmp') && M) {
+    const span = M.bars * takt, total = takte * takt;
+    for (let start = 0; start < total; start += span) {
+      M.ev.forEach((e) => {
+        const b = start + e.b; if (b >= total - 1e-6) return;
+        evs.push({ b: count * takt + b, e, scale: M.cresc ? 0.35 + 0.65 * (b / Math.max(1, total)) : 1 });
+      });
+    }
+  }
+  evs.sort((x, y) => x.b - y.b);
+  return { evs, count, takt, total: (count + takte) * takt };
+}
+function mitStart(spec) {
+  mitStop(true);
+  const ctx = Sound.ensure(true);
+  if (!ctx) { toast('Klang ist auf diesem Gerät nicht verfügbar.'); return; }
+  const m = spec.m, plan = mitEvents(m, spec.what, spec.takte, spec.mu);
+  const bus = ctx.createGain(); bus.gain.value = 1; bus.connect(Sound.out);
+  const spb = 60 / clamp(spec.bpm || m.bpm, 40, 220);
+  mitP = { tid: spec.tid || '', what: spec.what, key: spec.key || spec.what, m, spb, plan, i: 0, bus, t0: ctx.currentTime + 0.15, timer: 0, raf: 0, takte: spec.takte, from: spec.from || 'game' };
+  mitPump();
+  mitP.timer = setInterval(mitPump, 25);
+  mitP.raf = requestAnimationFrame(mitFrame);
+  if (spec.refresh !== false) mitRefresh();
+}
+function mitPump() {
+  const p = mitP; if (!p) return;
+  if (p.from === 'game' && !mitOnCard(p.tid)) { mitStop(true); return; }
+  const ctx = Sound.ctx, now = ctx.currentTime, keep = Sound.out;
+  Sound.out = p.bus;
+  try {
+    while (p.i < p.plan.evs.length && p.t0 + p.plan.evs[p.i].b * p.spb < now + 0.18) {
+      const x = p.plan.evs[p.i++];
+      mitVoice(x.e, Math.max(now, p.t0 + x.b * p.spb), p.spb, x.scale);
+    }
+  } finally { Sound.out = keep; }
+  if (now > p.t0 + p.plan.total * p.spb + 0.6) { mitStop(true); mitRefresh(); }
+}
+function mitFrame() {
+  const p = mitP; if (!p) return;
+  const el = document.getElementById('mit-beat');
+  if (el) {
+    const beat = Math.floor((Sound.ctx.currentTime - p.t0) / p.spb), cnt = p.plan.count * p.plan.takt;
+    const lbl = el.querySelector('.mb-l'), dots = el.querySelectorAll('.mb-d');
+    let text, cur = -1;
+    if (beat < 0) text = 'Gleich geht es los';
+    else if (beat < cnt) { text = `Einzählen: ${beat % p.plan.takt + 1}`; cur = beat % p.plan.takt; }
+    else { const k = beat - cnt, bar = Math.floor(k / p.plan.takt) + 1; text = bar > p.takte ? 'Fertig' : `Takt ${bar} von ${p.takte}`; cur = bar > p.takte ? -1 : k % p.plan.takt; }
+    if (lbl && lbl.textContent !== text) lbl.textContent = text;
+    dots.forEach((d, i) => d.classList.toggle('on', i === cur));
+    el.classList.toggle('count', beat < cnt);
+  }
+  p.raf = requestAnimationFrame(mitFrame);
+}
+function mitStop(silent) {
+  const p = mitP; if (!p) return;
+  mitP = null;
+  clearInterval(p.timer); cancelAnimationFrame(p.raf);
+  try { const now = Sound.ctx.currentTime; p.bus.gain.cancelScheduledValues(now); p.bus.gain.setValueAtTime(p.bus.gain.value, now); p.bus.gain.linearRampToValueAtTime(0, now + 0.04); setTimeout(() => { try { p.bus.disconnect(); } catch (e) { /* schon getrennt */ } }, 120); } catch (e) { /* ohne Klang */ }
+  if (!silent) mitRefresh();
+}
+function mitOnCard(tid) {
+  if (view !== 'game' || !game) return false;
+  if (game.phase === 'term' && game.cur && game.cur.tid === tid) return true;
+  return !!(game.botCur && game.botCur.tid === tid && (game.phase === 'botjudge' || game.phase === 'botreveal'));
+}
+function mitCard() { const g = game; if (!g) return null; if (g.phase === 'term' && g.cur) return g.cur; if ((g.phase === 'botjudge' || g.phase === 'botreveal') && g.botCur) return g.botCur; return null; }
+function mitRefresh() { if (view === 'game' && mitCard() && typeof renderOverlay === 'function') renderOverlay(); }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') mitStop(true); });
+
+/* ---------- Anzeige auf der Spielkarte ---------- */
+/* Metronom als Zeichen für Mitspielfelder, deutlich anders als das Notenzeichen der Notenbilder */
+function noteSVG() { return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 20.5h8L13.6 4h-3.2z"/><path d="M6.5 20.5h11"/><path d="M12 16.2l4.6-8.4"/><circle cx="15.4" cy="10" r="1.4"/></svg>'; }
+function mitPlayIcon(on) { return on ? '<svg viewBox="0 0 24 24" class="mit-ic" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="1.5"/></svg>' : '<svg viewBox="0 0 24 24" class="mit-ic" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>'; }
+function mitBpm(c, m) { return clamp(parseInt(c && c.mitBpm, 10) || m.bpm, 40, 220); }
+function mitBtn(key, label, extra) {
+  const on = !!(mitP && mitP.key === key);
+  return on ? `<button type="button" class="btn mit-btn on" data-act="mit-stop">${mitPlayIcon(true)}Stopp</button>`
+    : `<button type="button" class="btn mit-btn" data-act="mit-play" data-v="${key}"${extra || ''}>${mitPlayIcon(false)}${esc(label)}</button>`;
+}
+function mitBeatHTML(m) {
+  const n = Math.min(12, m.takt);
+  return `<div class="mit-beat" id="mit-beat" aria-hidden="true"${mitP ? '' : ' hidden'}><span class="mb-l"></span><span class="mb-dots">${range(0, n - 1).map((i) => `<i class="mb-d${i === 0 ? ' one' : ''}"></i>`).join('')}</span></div>`;
+}
+/* where: 'go' beim Vormachen, 'consult' in der Beratung, 'check' beim Aufdecken, 'hear' in der Höraufgabe */
+function mitPlayerHTML(t, c, where) {
+  const m = t && t.mit; if (!m || !MIT_GROOVES[m.groove]) return '';
+  const mode = game ? game.mode : 'tafel', takte = mitTakte(m, mode), bpm = mitBpm(c, m);
+  let btns;
+  if (where === 'check') btns = (m.muster ? mitBtn('muster', 'Muster zum Vergleich') : '') + mitBtn('groove', 'Begleitung');
+  else if (where === 'hear') btns = mitBtn('muster', 'Anhören');
+  else btns = mitBtn('groove', where === 'consult' ? 'Begleitung probehören' : 'Einzählen und los');
+  const tempo = where === 'hear' ? '' : `<span class="mit-tempo" role="group" aria-label="Tempo"><button type="button" class="mit-tb" data-act="mit-tempo" data-d="-1" aria-label="langsamer">−</button><b>${bpm}</b><button type="button" class="mit-tb" data-act="mit-tempo" data-d="1" aria-label="schneller">+</button></span>`;
+  const info = where === 'hear' ? `Begleitung: ${esc(mitGrooveLabel(m))}` : `${esc(mitGrooveLabel(m))} · ${takte} Takte · ${bpm} Schläge pro Minute`;
+  return `<div class="mit" id="mit-pl"><div class="mit-row">${btns}${tempo}</div><div class="mit-info">${info}</div>${mitBeatHTML(m)}${where === 'check' && m.muster ? '<p class="mit-note">Das Muster zeigt, wie es klingen kann. Geprüft wird mit den Merkmalen auf der Karte.</p>' : ''}</div>`;
+}
+
+/* ---------- Höraufgabe im Solo ---------- */
+function soloHearOptions(t) {
+  if (!mitHearable(t)) return null;
+  const mu = t.mit.muster, names = new Set([qNorm(t.term)]), used = new Set([mu]), wrong = [];
+  shuffle(qPool().filter((x) => x.id !== t.id && x.mu)).forEach((x) => {
+    if (wrong.length >= 3 || used.has(x.mu) || names.has(qNorm(x.term))) return;
+    used.add(x.mu); names.add(qNorm(x.term)); wrong.push({ text: x.term, ok: false, mu: x.mu });
+  });
+  shuffle(MIT_BASIS.slice()).forEach((b) => {
+    if (wrong.length >= 3 || used.has(b[0]) || names.has(qNorm(b[1]))) return;
+    used.add(b[0]); names.add(qNorm(b[1])); wrong.push({ text: b[1], ok: false, mu: b[0] });
+  });
+  if (wrong.length < 2) return null;
+  return shuffle([{ text: t.term, ok: true, mu }].concat(wrong));
+}
+function mitCompareHTML(q) {
+  const list = (q.options || []).filter((o) => o.mu && MIT_MUSTER[o.mu]);
+  if (!list.length) return '';
+  return `<div class="mit-cmp"><span class="mit-cmp-l">Zum Vergleich anhören</span>${list.map((o) => mitBtn('cmp:' + o.mu, o.text, ` data-mu="${esc(o.mu)}"`)).join('')}</div>${mitBeatHTML({ takt: 4 })}`;
+}
+
+const MIT_ACTIONS = {
+  'mit-play': (el) => {
+    const g = game, c = mitCard(), t = c && g.terms[c.tid]; if (!t || !t.mit) return;
+    const key = el.dataset.v || 'groove';
+    if (key.indexOf('cmp:') === 0) {
+      const mu = el.dataset.mu, M = MIT_MUSTER[mu]; if (!M) return;
+      const own = mu === t.mit.muster;
+      const m = own ? t.mit : { groove: 'puls', takt: M.takt, bpm: 96, takte: Math.max(2, M.bars), ohne: [], pausen: [] };
+      mitStart({ tid: t.id, what: 'cmp', key, m, mu, bpm: own ? mitBpm(c, t.mit) : 96, takte: Math.max(2, M.bars) });
+      return;
+    }
+    const what = key === 'muster' ? 'muster' : 'groove';
+    const takte = g.mode === 'solo' ? Math.max(2, Math.min(t.mit.takte, (MIT_MUSTER[t.mit.muster] || { bars: 2 }).bars * 2)) : mitTakte(t.mit, g.mode);
+    mitStart({ tid: t.id, what, key, m: t.mit, mu: t.mit.muster, bpm: mitBpm(c, t.mit), takte });
+  },
+  'mit-stop': () => mitStop(false),
+  'mit-tempo': (el) => {
+    const g = game, c = mitCard(), t = c && g.terms[c.tid]; if (!t || !t.mit) return;
+    c.mitBpm = clamp(mitBpm(c, t.mit) + (parseInt(el.dataset.d, 10) || 0) * 6, 40, 220);
+    const again = mitP && mitP.tid === t.id ? mitP.key : '';
+    mitStop(true); persist(); renderOverlay();
+    if (again) { const b = document.querySelector(`#overlay [data-act="mit-play"][data-v="${again}"]`); if (b) b.click(); }
+  }
+};
+
+/* ---------- Werkstatt: Begleitung zu einem Zeigefeld ---------- */
+function wsMitHTML(t) {
+  const m = t && t.mit, v = (x) => esc(x == null ? '' : String(x));
+  const gOpt = ['<option value="">keine Begleitung</option>'].concat(Object.keys(MIT_GROOVES).map((k) => `<option value="${k}"${m && m.groove === k ? ' selected' : ''}>${esc(MIT_GROOVES[k].name)}${MIT_GROOVES[k].takt ? ` · ${MIT_GROOVES[k].takt} Schläge pro Takt` : ''}</option>`)).join('');
+  const mOpt = ['<option value="">ohne Muster</option>'].concat(Object.keys(MIT_MUSTER).map((k) => `<option value="${k}"${m && m.muster === k ? ' selected' : ''}>${esc(MIT_MUSTER[k].name)} · ${MIT_MUSTER[k].takt} Schläge pro Takt</option>`)).join('');
+  return `<fieldset class="f wide"><legend>Mitspielen <small>Begleitung aus der App zum Zeigefeld; leer lassen für ein Zeigefeld ohne Begleitung</small></legend>
+    <div class="stack"><div class="three"><select id="tf-mg" class="field" aria-label="Begleitung">${gOpt}</select><input id="tf-mb" class="field" type="number" min="40" max="220" placeholder="Tempo, z. B. 96" value="${v(m && m.bpm)}" aria-label="Tempo in Schlägen pro Minute"><input id="tf-mt" class="field" type="number" min="2" max="16" placeholder="Takte, z. B. 4" value="${v(m && m.takte)}" aria-label="Zahl der Takte"></div>
+    <div class="three"><select id="tf-mm" class="field" aria-label="Muster zum Vergleich">${mOpt}</select><input id="tf-mk" class="field" type="number" min="2" max="16" placeholder="Schläge pro Takt beim Grundschlag" value="${v(m && m.groove === 'puls' ? m.takt : '')}" aria-label="Schläge pro Takt beim Grundschlag"><input id="tf-ma" class="field" placeholder="Auftrag mit Begleitung, sonst gilt der Zeigeauftrag" value="${v(m && m.auftrag)}" maxlength="300" aria-label="Auftrag mit Begleitung"></div>
+    <p class="ws-note">Ein Muster passt nur zu einer Begleitung mit gleich vielen Schlägen pro Takt. Mit Muster wird das Feld im Solo zur Höraufgabe.</p></div></fieldset>`;
+}
+
 /* Vierklang · Teil 6: Bedienung und Start */
 
 const ACTIONS = {
@@ -23673,7 +24244,7 @@ const ACTIONS = {
   'quiz-lock': () => { if (game && game.cur && game.cur.qs) soloLock(); },
   'bot-judge': (el) => botJudge(el.dataset.v === '1'),
   'bot-next': () => botNext(),
-  'qpick': (el) => { const q = game && soloQ(game.cur); if (!q || q.done || (q.kind !== 'example' && q.kind !== 'assign')) return; q.pick = parseInt(el.dataset.i, 10); renderOverlay(); },
+  'qpick': (el) => { const q = game && soloQ(game.cur); if (!q || q.done || (q.kind !== 'example' && q.kind !== 'assign' && q.kind !== 'hear')) return; q.pick = parseInt(el.dataset.i, 10); renderOverlay(); },
   'qtick': (el) => {
     const q = game && soloQ(game.cur); if (!q || q.done || (q.kind !== 'feats' && q.kind !== 'show')) return;
     const i = parseInt(el.dataset.i, 10), k = q.picks.indexOf(i);
@@ -23747,6 +24318,7 @@ if (typeof ROOM_ACTIONS === 'object' && ROOM_ACTIONS) Object.assign(ACTIONS, ROO
 if (typeof ALBUM_ACTIONS === 'object' && ALBUM_ACTIONS) Object.assign(ACTIONS, ALBUM_ACTIONS);
 if (typeof LEARN_ACTIONS === 'object' && LEARN_ACTIONS) Object.assign(ACTIONS, LEARN_ACTIONS);
 if (typeof KLASSE_ACTIONS === 'object' && KLASSE_ACTIONS) Object.assign(ACTIONS, KLASSE_ACTIONS);
+if (typeof MIT_ACTIONS === 'object' && MIT_ACTIONS) Object.assign(ACTIONS, MIT_ACTIONS);
 document.addEventListener('click', (e) => {
   const el = e.target.closest('[data-act]');
   if (!el || el.disabled) return;
@@ -23833,7 +24405,8 @@ function boot(data) {
   else show('start');
 }
 /* Testzugang nur bei lokal geöffneter Datei */
-try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t) }; } catch (e) { /* ohne Testzugang */ }
+try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__mitVoice = (e, t, spb, sc) => mitVoice(e, t, spb, sc); } catch (e) { /* ohne */ }
+try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i) }; } catch (e) { /* ohne Testzugang */ }
 (function () {
   const hot = window.claude && window.claude.hot;
   try { if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ game, view, settings, ws: { packId: ws.packId } })); } catch (e) { /* ohne Übernahme */ }
