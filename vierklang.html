@@ -650,6 +650,10 @@ select.field { appearance: auto; }
 .fl { min-width: 42px; min-height: 42px; padding: 7px 14px; border: 0 !important; border-radius: 999px; background: #FFFFFF !important; color: #3A3F7A !important; font-weight: 800; box-shadow: 0 3px 0 #DCDFF0 !important; cursor: pointer; }
 .fl:hover { color: #23264F !important; }
 .fl.on { background: #23264F !important; color: #FFFFFF !important; box-shadow: 0 3px 0 #11133A !important; }
+.fl-sub { display: flex; justify-content: center; margin: 8px 0 0; }
+.fl-sub label { display: inline-flex; align-items: center; gap: 8px; color: #5A5F86 !important; font-weight: 800; font-size: 0.9rem; }
+.fl-sel { min-height: 40px; max-width: min(320px, 70vw); padding: 6px 12px; border: 0 !important; border-radius: 999px; background: #FFFFFF !important; color: #23264F !important; font-weight: 800; font-size: max(16px, 0.95rem); box-shadow: 0 3px 0 #DCDFF0 !important; cursor: pointer; }
+.fl-sel:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 2px; }
 .car-wrap { display: flex; align-items: center; gap: 10px; margin-block: auto; }
 .carousel > :first-child { margin-left: auto; }
 .carousel > :last-child { margin-right: auto; }
@@ -15306,7 +15310,7 @@ BUILTIN_PACKS.push({
         'Aufgabenart, bei der ein Werk mit Noten und Klangbeispiel untersucht wird.',
         'Aufgabenart, bei der ein Text über Musik wiedergegeben und diskutiert wird.'],
         zeig: {
-          auftrag: 'Sprecht eine Gedichtzeile, die ihr kennt, als Rap über einem Klatschpuls und begründet danach in einem Satz ein Mittel, das ihr gewählt habt.',
+          auftrag: 'Sprecht eine bekannte Gedichtzeile als Rap über einem Klatschpuls und begründet in einem Satz ein gewähltes Mittel.',
           merkmale: ['Gedichtzeile rhythmisch umgesetzt', 'gleichmäßiger Klatschpuls als Grundlage', 'gewähltes Mittel begründet'] },
         mit: { groove: 'hiphop', bpm: 88, takte: 8, auftrag: 'Sprecht eine Gedichtzeile, die ihr kennt, als Rap über den Beat der App und begründet danach in einem Satz ein Mittel, das ihr gewählt habt.' } }),
     T('praxisanteil', 'Praktisches Musizieren', 'begriff', 3, 'Aufgabenarten',
@@ -15583,7 +15587,7 @@ const DEFAULTS = {
   nameA: 'Team Quadrat', nameB: 'Team Raute', duoA: 'Quadrat', duoB: 'Raute', playersA: 12, playersB: 12,
   soloName: '', levelSolo: 2, botLevel: 'mittel', showRules: true, gradeFilter: 'auto', lang: 'auto',
   zeig: true, pairs: true, ops: 'auto', pasch: 'ereignis', geheim: false, blitz: false, album: true,
-  packView: 'klasse', topicFilter: 'all', linkBase: 'web', mitspiel: true, notiz: true, protokoll: false
+  packView: 'klasse', topicFilter: 'all', gradeSub: 'all', topicSub: 'all', linkBase: 'web', mitspiel: true, notiz: true, protokoll: false
 };
 /* Themen der Pakete: feste Zuordnung über die Paket-id, sonst Schlüsselwörter aus Titel und Lehrplanbezug */
 const TOPICS = [
@@ -15716,6 +15720,7 @@ function normPack(p, own) {
     topic: typeof src.topic === 'string' ? src.topic : '',
     checked: !!src.checked,
     note: String(src.note || '').trim(),
+    lk: String(src.lk || '').trim(),
     terms, links, own: !!own,
     updated: src.updated || today()
   };
@@ -18420,6 +18425,32 @@ function packsForTopic(topic) {
   return base.slice().sort((a, b) => (tIdx.get(packTopic(a)) || 0) - (tIdx.get(packTopic(b)) || 0));
 }
 function topicsInUse() { const seen = new Set(allPacks().map(packTopic)); return TOPICS.filter((t) => seen.has(t[0])); }
+/* Klasse und Thema kombinieren: die Ansicht bestimmt die Knöpfe, die andere Angabe filtert über die Auswahlliste darunter */
+function subGrade() { const g = parseInt(settings.gradeSub, 10); return g >= 1 && g <= 13 ? g : 0; }
+function subTopic() { const t = settings.topicSub; return t && t !== 'all' && TOPICS.some((x) => x[0] === t) ? t : ''; }
+function packsVisible(pack) {
+  if (settings.packView === 'thema') { const g = subGrade(), l = packsForTopic(settings.topicFilter); return g ? l.filter((p) => (p.grades || []).includes(g)) : l; }
+  const t = subTopic(), l = packsFor(currentFilter(pack)); return t ? l.filter((p) => packTopic(p) === t) : l;
+}
+function subFilterHTML(pack) {
+  const thema = settings.packView === 'thema';
+  const base = thema ? packsForTopic(settings.topicFilter) : packsFor(currentFilter(pack));
+  const opts = thema
+    ? range(5, 12).map((g) => [String(g), 'Klasse ' + g, base.filter((p) => (p.grades || []).includes(g)).length])
+    : TOPICS.map((t) => [t[0], t[1], base.filter((p) => packTopic(p) === t[0]).length]);
+  const used = opts.filter((o) => o[2]);
+  const cur = thema ? (subGrade() ? String(subGrade()) : 'all') : (subTopic() || 'all');
+  if (used.length < 2 && cur === 'all') return '';
+  const all = [['all', thema ? 'alle Klassen' : 'alle Themen', base.length]];
+  return `<div class="fl-sub"><label><span>${thema ? 'Klasse' : 'Thema'}</span><select class="fl-sel" data-fsub="${thema ? 'grade' : 'topic'}" aria-label="${thema ? 'Klassenstufe innerhalb des Themas' : 'Thema innerhalb der Auswahl'}">${all.concat(used).map((o) => `<option value="${esc(o[0])}"${cur === o[0] ? ' selected' : ''}>${esc(o[1])} (${o[2]})</option>`).join('')}</select></label></div>`;
+}
+/* Nach einem Wechsel der Knöpfe: Ergibt die Kombination nichts, gilt die Auswahlliste wieder für alle */
+function subFilterHeal(pack) {
+  if (!packsVisible(pack).length) { if (settings.packView === 'thema') settings.gradeSub = 'all'; else settings.topicSub = 'all'; }
+  const list = packsVisible(pack);
+  if (list.length && !list.some((p) => p.id === settings.packId)) { settings.packId = list[0].id; const sz = sizesFor(list[0]); if (sz.length) settings.size = sz[sz.length - 1]; }
+  return list;
+}
 
 /* ---------- Spielformen ---------- */
 const MODE_ICON = {
@@ -18432,7 +18463,7 @@ const MODE_TEXT = {
   tafel: ['Tafel', 'Zwei Teams an Tafel oder Beamer. Die App ruft auf, wer erklärt.'],
   duell: ['Duell', 'Zu zweit an einem iPad oder Handy. Ihr prüft euch gegenseitig.'],
   solo: ['Solo', 'Allein gegen den Klangbot, in drei Stufen. Mit Prüffragen zum Ankreuzen und Abhaken und mit Lernbilanz.'],
-  papier: ['Auf Papier', 'Spielplan, Prüfkarten, Steine und Anleitung als PDF zum Ausdrucken.']
+  papier: ['Auf Papier', 'Spielplan, Prüfkarten, Steine und Spielkarte als PDF zum Ausdrucken.']
 };
 function modeCard(m) {
   const on = settings.mode === m;
@@ -18458,7 +18489,7 @@ function modeSettings() {
       ${rule('Klangbot', seg('botLevel', [['entspannt', 'entspannt'], ['mittel', 'mittel'], ['stark', 'stark']], s.botLevel), 'Je stärker, desto öfter erklärt er richtig und desto klüger setzt er.')}
     </div>`;
   return `<ul class="ms-list">
-      <li>Spielplan mit Würfelraster und Begriffen</li><li>Prüfkarten im Sammelkartenformat</li><li>Spielsteine und Würfelnetze zum Ausschneiden</li><li>Anleitung, Lernkarten und Lösungsübersicht</li>
+      <li>Spielplan mit Würfelraster und Begriffen</li><li>Prüfkarten im Sammelkartenformat</li><li>Spielsteine und Würfelnetze zum Ausschneiden</li><li>Spielkarte mit Nachschlageblatt, Lehrkraftblatt, Lernkarten und Lösungsübersicht</li>
     </ul><p class="ms-note">Im nächsten Fenster passt du den Druck an deine Lerngruppe an: Klasse, Brettgröße, Spielform auf Papier und Zahl der Sätze.</p>`;
 }
 
@@ -18521,7 +18552,9 @@ function renderStart() {
   let main = '';
   if (startStep === 1) {
     const f = currentFilter(pack);
-    const list = packsFor(f);
+    /* Das gewählte Paket bleibt sichtbar, notfalls ohne die Auswahlliste */
+    if ((subGrade() || subTopic()) && !packsVisible(pack).some((p) => p.id === pack.id)) { settings.gradeSub = 'all'; settings.topicSub = 'all'; }
+    const list = packsVisible(pack);
     const grades = range(5, 12).filter((g) => BUILTIN.some((p) => (p.grades || []).includes(g)));
     const chip = (v, l, aria) => `<button type="button" class="fl${f === v ? ' on' : ''}" data-act="filter" data-v="${v}" aria-pressed="${f === v}"${aria ? ` aria-label="${aria}"` : ''}>${l}</button>`;
     const thema = s.packView === 'thema', tf = s.topicFilter || 'all';
@@ -18534,7 +18567,7 @@ function renderStart() {
     main = `<div class="st3-hero"><h1>Welches Paket spielt ihr heute?</h1>${lgBar ? '' : '<p>Jedes Paket ist ein Brett voller Begriffe. Wer gut erklärt, holt sich die Steine.</p>'}</div>
       ${lgBar}
       ${canResume ? `<div class="resume"><div class="resume-t"><b>Laufendes Spiel</b><span>${esc(saved.packTitle)} · ${esc(saved.teams.A.name)} gegen ${esc(saved.teams.B.name)}</span></div><div class="resume-a"><button type="button" class="btn ghost" data-act="discard">Verwerfen</button><button type="button" class="btn primary" data-act="resume">Fortsetzen</button></div></div>` : ''}
-      ${filterRow}
+      ${filterRow}${subFilterHTML(pack)}
       <div class="car-wrap">
         <button type="button" class="car-arrow" data-act="car" data-d="-1" aria-label="zurück">${iconArrow(-1)}</button>
         <div class="carousel" id="carousel">${list.map(skCard).join('')}<button type="button" class="sk sk-add" data-act="ws-new-start"><span class="sk-plus">+</span><span class="sk-title">Eigenes Paket</span><span class="sk-blurb">Begriffe eintippen oder aus einer Tabelle einfügen</span></button></div>
@@ -18956,6 +18989,7 @@ function wsEditor(p) {
         <label class="f"><span>Klasse oder Stufe</span><input class="field" data-wsf="grade" value="${esc(p.grade)}" maxlength="40"></label>
         <label class="f"><span>Thema <small>für die Ansicht nach Themen</small></span><select class="field" data-wsf="topic">${[['', 'automatisch (' + topicLabel(packTopic(Object.assign({}, p, { topic: '' }))) + ')']].concat(TOPICS).map((t) => `<option value="${t[0]}"${(p.topic || '') === t[0] ? ' selected' : ''}>${esc(t[1])}</option>`).join('')}</select></label>
         <label class="f wide"><span>Beschreibung</span><input class="field" data-wsf="note" value="${esc(p.note)}" maxlength="240"></label>
+        <label class="f wide"><span>Hinweis für die Lehrkraft <small>erscheint auf dem Lehrkraftblatt im Druck</small></span><textarea class="field" data-wsf="lk" rows="2" maxlength="400" placeholder="zum Beispiel: vorher das Hörbeispiel aus Stunde 3 wiederholen">${esc(p.lk || '')}</textarea></label>
         <label class="check wide"><input type="checkbox" data-wsf="checked"${p.checked ? ' checked' : ''}><span>Fachlich geprüft</span></label>
       </div>`
     : `<div class="ws-ro"><h2>${esc(p.title)}</h2><p>${esc([p.subject, p.grade].filter(Boolean).join(' · '))}</p><p class="ws-note">${esc(p.note)}</p><p><b>Mitgeliefertes Paket.</b> „Anpassen“ macht es direkt bearbeitbar, das Original lässt sich jederzeit wiederherstellen. Eine Kopie ist sinnvoll, wenn das Original daneben bleiben soll.</p></div>`;
@@ -19670,7 +19704,8 @@ function prHyPoints(word) {
 /* ---------- Druckwerkstatt: Dialog ---------- */
 const PR_KEY = 'vierklang.print.v1';
 const PR_PARTS = [
-  ['anleitung', 'Anleitung', 'Regeln, Material und Ablauf'],
+  ['lehrkraft', 'Lehrkraftblatt', 'Ablauf, dieses Brett, Fallstricke'],
+  ['anleitung', 'Spielkarte und Nachschlageblatt', 'Regeln auf einer Seite, Sonderfälle zum Nachschlagen'],
   ['plan', 'Spielplan', 'A4 quer, je Satz eine eigene Anordnung'],
   ['pruef', 'Prüfkarten', 'neun pro Seite, mit Schnittmarken'],
   ['steine', 'Spielsteine', 'feste Steine und Wackelsteine'],
@@ -19684,7 +19719,7 @@ const PR_PARTS = [
 ];
 let pr = null;
 let prBusy = false;
-function prSave() { if (pr) store.set(PR_KEY, { group: pr.group, form: pr.form, sets: pr.sets, parts: pr.parts, color: pr.color, mix: pr.mix, lang: pr.lang, zeig: pr.zeig, pasch: pr.pasch }); }
+function prSave() { if (pr) store.set(PR_KEY, { group: pr.group, form: pr.form, sets: pr.sets, parts: pr.parts, color: pr.color, mix: pr.mix, lang: pr.lang, zeig: pr.zeig, pasch: pr.pasch, regeln: pr.regeln }); }
 function openPrintStudio(packId) {
   const pack = findPack(packId) || findPack(settings.packId) || BUILTIN[0];
   if (!pack) { toast('Kein Themenpaket gefunden.'); return; }
@@ -19699,7 +19734,7 @@ function openPrintStudio(packId) {
     size: sizes.includes(keep) ? keep : (pack.id === settings.packId && sizes.includes(settings.size) ? settings.size : sizes[sizes.length - 1]),
     sets: clamp(parseInt(s.sets, 10) || 1, 1, 8), parts, color: s.color === 'spar' ? 'spar' : 'farbig',
     mix: ['ausgewogen', 'leichter', 'schwerer'].includes(s.mix) ? s.mix : 'ausgewogen', lang: ['auto', 'easy', 'mid', 'hard'].includes(s.lang) ? s.lang : 'auto', status: prBusy ? 'Ein PDF wird gerade erstellt …' : '',
-    zeig: s.zeig !== false, pasch: s.pasch !== false
+    zeig: s.zeig !== false, pasch: s.pasch !== false, regeln: s.regeln === 'voll' ? 'voll' : 'einstieg'
   };
   if (!(pack.pairs && pack.pairs.length)) pr.parts.paare = false;
   modalCtx = { print: true };
@@ -19707,12 +19742,12 @@ function openPrintStudio(packId) {
 }
 function prSolidCount(n) { return Math.ceil(n * n / 2) + 4; }
 function prPageEstimate(o, pack) {
-  const n = o.size, P = o.parts, extras = (o.zeig !== false && playable(pack).some((t) => t.zeig)) || (P.paare && pack.pairs && pack.pairs.length) || P.operatoren || o.pasch !== false;
-  const per = (P.anleitung ? 2 + (extras ? 1 : 0) : 0) + (P.plan ? 1 : 0) + (P.pruef ? Math.ceil(n * n / 9) : 0) + (P.steine ? 1 : 0) + (P.wuerfel ? 1 : 0) + (P.satz ? 1 : 0);
+  const n = o.size, P = o.parts;
+  const per = (P.anleitung ? 2 : 0) + (P.plan ? 1 : 0) + (P.pruef ? Math.ceil(n * n / 9) : 0) + (P.steine ? 1 : 0) + (P.wuerfel ? 1 : 0) + (P.satz ? 1 : 0);
   const ids = new Set(playable(pack).map((t) => t.id)), k = Math.min(1, (n * n) / Math.max(1, ids.size));
   const links = Math.round((pack.links || []).filter((l) => ids.has(l[0]) && ids.has(l[1])).length * k * k);
   const solMM = 52 + n * (n >= 6 ? 9.6 : n === 5 ? 10.8 : 12.4) + n * n * 9.4 + (links ? 16 + links * 4.6 : 0);
-  return per * o.sets + (P.lern ? Math.ceil(n * n / 8) : 0) + (P.loesung ? o.sets * Math.max(1, Math.ceil(solMM / 252)) : 0) + (P.paare && pack.pairs && pack.pairs.length ? Math.ceil(pack.pairs.length / 9) : 0) + (P.operatoren ? 1 : 0) + (P.protokoll ? 1 : 0);
+  return per * o.sets + (P.lern ? Math.ceil(n * n / 8) : 0) + (P.loesung ? o.sets * Math.max(1, Math.ceil(solMM / 252)) : 0) + (P.paare && pack.pairs && pack.pairs.length ? Math.ceil(pack.pairs.length / 9) : 0) + (P.operatoren ? 1 : 0) + (P.protokoll ? 1 : 0) + (P.lehrkraft ? 1 : 0);
 }
 function prIconForm(kind) {
   const sq = (x, y, s, c) => `<rect x="${x}" y="${y}" width="${s}" height="${s}" rx="${s * 0.18}" fill="${c}"/>`;
@@ -19730,7 +19765,7 @@ function printStudioHTML() {
   const form = (v, title, text) => { const on = pr.form === v; return `<button type="button" class="pr-form${on ? ' on' : ''}" role="radio" aria-checked="${on}" data-act="pr-set" data-k="form" data-v="${v}"><span class="pr-form-ic">${prIconForm(v)}</span><span class="pr-form-t">${esc(title)}</span><span class="pr-form-x">${esc(text)}</span></button>`; };
   const tick = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const nPairs = (pack.pairs || []).length, nZeig = playable(pack).filter((t) => t.zeig).length, nMitP = playable(pack).filter((t) => t.zeig && t.mit).length;
-  const pagesOf = { anleitung: '2 bis 3 Seiten je Satz', plan: '1 Seite je Satz', pruef: `${Math.ceil(k / 9)} Seiten je Satz`, steine: '1 Seite je Satz', wuerfel: '1 Seite je Satz', lern: `${Math.ceil(k / 8)} Seiten, einmal`, loesung: 'je Satz', satz: '1 Seite je Satz', paare: `${Math.ceil(nPairs / 9)} ${Math.ceil(nPairs / 9) === 1 ? 'Seite' : 'Seiten'}, einmal`, operatoren: '1 Seite, einmal', protokoll: '1 Seite zum Kopieren' };
+  const pagesOf = { lehrkraft: '1 Seite, einmal', anleitung: '2 Seiten je Satz', plan: '1 Seite je Satz', pruef: `${Math.ceil(k / 9)} Seiten je Satz`, steine: '1 Seite je Satz', wuerfel: '1 Seite je Satz', lern: `${Math.ceil(k / 8)} Seiten, einmal`, loesung: 'je Satz', satz: '1 Seite je Satz', paare: `${Math.ceil(nPairs / 9)} ${Math.ceil(nPairs / 9) === 1 ? 'Seite' : 'Seiten'}, einmal`, operatoren: '1 Seite, einmal', protokoll: '1 Seite zum Kopieren' };
   const parts = PR_PARTS.filter((p) => p[0] !== 'paare' || nPairs).map((p) => { const on = !!pr.parts[p[0]]; return `<button type="button" class="pr-part${on ? ' on' : ''}" role="checkbox" aria-checked="${on}" data-act="pr-part" data-k="${p[0]}"><span class="pr-box">${on ? tick : ''}</span><span class="pr-part-t"><b>${esc(p[1])}</b><small>${esc(p[2])} · ${esc(pagesOf[p[0]])}</small></span></button>`; }).join('');
   const partList = PR_PARTS.filter((p) => p[0] !== 'paare' || nPairs);
   const any = partList.some((p) => pr.parts[p[0]]), all = partList.every((p) => pr.parts[p[0]]);
@@ -19743,7 +19778,7 @@ function printStudioHTML() {
     <p class="pr-intro">Ein PDF mit allem, was das Spiel auf Papier braucht. Jeder Satz bekommt eine eigene Anordnung der Begriffe, damit Gruppen nicht abschauen können; Prüfkarten und Lösungsübersicht passen jeweils dazu.</p>
     <div class="pr-grid">
       <div class="pr-col">
-        <label class="pr-row pr-group"><span class="pr-l">Lerngruppe<small>erscheint auf Anleitung, Spielplan und Karten</small></span><input class="field pr-input" data-pr="group" value="${esc(pr.group)}" maxlength="24" placeholder="zum Beispiel 7b" autocomplete="off" spellcheck="false"></label>
+        <label class="pr-row pr-group"><span class="pr-l">Lerngruppe<small>erscheint auf Spielkarte, Spielplan und Karten</small></span><input class="field pr-input" data-pr="group" value="${esc(pr.group)}" maxlength="24" placeholder="zum Beispiel 7b" autocomplete="off" spellcheck="false"></label>
         <div class="pr-row"><div class="pr-l">Spielform auf Papier</div><div class="pr-forms" role="radiogroup">${form('gruppe', 'Gruppenspiel', 'Zwei Teams am Tisch, dazu eine Spielleitung')}${form('partner', 'Partnerspiel', 'Zu zweit, eins gegen eins')}</div></div>
         <div class="pr-row"><div class="pr-l">Brettgröße<small>${sizes.length > 1 ? 'Kleinere Bretter sind schneller gespielt.' : 'Mehr Begriffe ermöglichen größere Bretter.'}</small></div>${seg2('size', sizes.map((x) => [x, x + ' × ' + x]), n)}</div>
         ${mixRow}
@@ -19752,7 +19787,8 @@ function printStudioHTML() {
         <div class="pr-row"><div class="pr-l">Farbe</div>${seg2('color', [['farbig', 'farbig'], ['spar', 'tintensparend']], pr.color)}</div>
         <div class="pr-row"><div class="pr-l">Sprache der Anleitung<small>${LANG_SUB[langFor(pack, pr.lang)]}${pr.lang === 'auto' ? ', passend zur Klassenstufe' : ''}</small></div>${seg2('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], pr.lang)}</div>
         ${nZeig ? `<div class="pr-row"><div class="pr-l">Zeigefelder<small>${nZeig} Begriffe werden vorgemacht statt erklärt; die Prüfkarte nennt Auftrag und Beobachtungsmerkmale.${nMitP ? ` Bei ${nMitP === 1 ? 'einem davon' : nMitP + ' davon'} übernimmt eine Person die Begleitung, die Karte sagt wie.` : ''}</small></div>${seg2('zeig', [['an', 'an'], ['aus', 'aus']], pr.zeig ? 'an' : 'aus')}</div>` : ''}
-        <div class="pr-row"><div class="pr-l">Pasch<small>${pr.pasch ? 'Ein Würfel bestimmt das Ereignis: Noch mal, Blitz, Ohne Hilfe, Angriff nach Wahl oder freie Wahl.' : 'Pasch heißt freie Wahl.'}</small></div>${seg2('pasch', [['ereignis', 'Ereignis'], ['wahl', 'freie Wahl']], pr.pasch ? 'ereignis' : 'wahl')}</div>
+        <div class="pr-row"><div class="pr-l">Regelumfang<small>${pr.regeln === 'voll' ? `Alle Regeln mit Festigen, Pasch-Ereignissen${pr.form === 'gruppe' ? ' und Konter' : ''}.` : `Fürs erste Spiel, ohne Festigen, Pasch-Ereignisse${pr.form === 'gruppe' ? ' und Konter' : ''}. Pasch heißt freie Wahl.`}</small></div>${seg2('regeln', [['einstieg', 'Einstieg'], ['voll', 'alle Regeln']], pr.regeln)}</div>
+        ${pr.regeln === 'voll' ? `<div class="pr-row"><div class="pr-l">Pasch<small>${pr.pasch ? 'Ein Würfel bestimmt das Ereignis: Noch mal, Blitz, Ohne Hilfe, Angriff nach Wahl oder freie Wahl.' : 'Pasch heißt freie Wahl.'}</small></div>${seg2('pasch', [['ereignis', 'Ereignis'], ['wahl', 'freie Wahl']], pr.pasch ? 'ereignis' : 'wahl')}</div>` : ''}
       </div>
       <div class="pr-col">
         <div class="pr-row pr-parts-row"><div class="pr-l pr-l-flex"><span>Inhalte</span><button type="button" class="pr-all" data-act="pr-all">${all ? 'keine' : 'alle'}</button></div><div class="pr-parts">${parts}</div></div>
@@ -19837,7 +19873,7 @@ function prPlan(o) {
   const pairs = (pack.pairs || []).map((q) => { const a = pack.terms.find((t) => t.id === q[0]), b = pack.terms.find((t) => t.id === q[1]); return a && b ? { a, b, text: q[2], ka: q[3] || '', kb: q[4] || '', common: typeof pairCommon === 'function' ? pairCommon(a, b) : '' } : null; }).filter(Boolean);
   return {
     pack, cover, n, sel, famList, famColor, links, sets, o, group: String(o.group || '').trim(),
-    zeig: zeigOn && sel.some((t) => t.zeig), pairs, pasch: o.pasch !== false, ops: (OPS_BY_LANG[level] || OPS_BY_LANG.mid).slice(),
+    zeig: zeigOn && sel.some((t) => t.zeig), pairs, pasch: o.pasch !== false && o.regeln === 'voll', einstieg: o.regeln !== 'voll', ops: (OPS_BY_LANG[level] || OPS_BY_LANG.mid).slice(),
     easy: level === 'easy', hard: level === 'hard', level,
     gruppe: o.form !== 'partner', spar: o.color === 'spar', multi: sets.length > 1,
     hasBild: sel.some((t) => t.kind === 'bild'), hasPersons: sel.some((t) => ['person', 'ort', 'werk'].includes(t.kind)),
@@ -20322,6 +20358,16 @@ function prMiniHeader(ctx, title, set, note) {
   if (ctx.group) xr -= K.chip(xr, 6.3, 'Lerngruppe ' + ctx.group, 'light', 5.4) + 1.6;
   K.text(K.ellipsize(ctx.pack.title + (note ? ' · ' + note : ''), 'n8', 7, Math.max(20, xr - x - 3)), x, 11.2, 'n8', 7, PR_C.muted);
 }
+/* erster Satz einer Erklärung; Abkürzungen wie „z. B.“ beenden keinen Satz */
+function prFirstSentence(text) {
+  const s = String(text || ''), re = /([.!?])\s+(?=[A-ZÄÖÜ„])/g;
+  let m;
+  while ((m = re.exec(s))) {
+    const head = s.slice(0, m.index), word = (head.match(/(\S+)$/) || ['', ''])[1];
+    if (head.length >= 30 && word.replace(/[^A-Za-zÄÖÜäöüß]/g, '').length >= 3) return head + m[1];
+  }
+  return '';
+}
 function prPruefCard(ctx, t, r, c, x, y, set) {
   const K = ctx.K, X = x + 1.7, Y = y + 1.7, Wd = PR_CARD_W - 3.4, Hd = PR_CARD_H - 3.4, R = 3, padX = 3.3, iw = Wd - 2 * padX;
   const fam = ctx.famColor[t.family] || PR_C.muted, isBild = t.kind === 'bild', isZeig = !!t.zeig && !isBild;
@@ -20341,6 +20387,7 @@ function prPruefCard(ctx, t, r, c, x, y, set) {
   /* Inhalt mit gemeinsamer Skalierung, bis alles passt */
   const footY = Y + Hd - 4.2, avail = footY - cy - 0.8;
   const hints = isZeig ? [['Auftrag', t.zeig.auftrag]].concat(t.mit && typeof mitPapierText === 'function' ? [['Begleitung', mitPapierText(t)]] : []) : [['Oberbegriff', t.hints.ober], [isBild ? 'Tipp' : 'Beispiel', t.hints.beispiel]].filter((h) => h[1]);
+  let explText = t.expl;
   const lay = (s) => {
     const fsz = 7.5 * s, hsz = 6.7 * s, esz = 6.2 * s, lab = 5.3 * s, cb = 3.3 * s;
     const featW = iw - cb - 1.9;
@@ -20353,12 +20400,15 @@ function prPruefCard(ctx, t, r, c, x, y, set) {
     }
     const hintR = hints.map((hh) => K.rich([[hh[0] + ': ', 'n9', PR_C.goldDark], [hh[1], 'n6']], hsz, iw - 3.4, { lh: 1.22 }));
     const hintH = hints.length ? 2.2 + 3.6 * s + hintR.reduce((a, b) => a + b.h, 0) + 1.6 : 0;
-    const expl = K.wrap(t.expl, 'n6', esz, iw, { hyphen: true, fill: true, force: true }), elh = esz * PR_PT * 1.2;
+    const expl = K.wrap(explText, 'n6', esz, iw, { hyphen: true, fill: true, force: true }), elh = esz * PR_PT * 1.2;
     const explH = 3.8 * s + expl.lines.length * elh;
     return { s, fsz, hsz, esz, lab, cb, featW, feats, featH, bildRows, hintR, hintH, expl, elh, explH, total: featH + 1.8 + hintH + 2 + explH };
   };
   let L = null;
-  for (let s = 1; s >= 0.7; s -= 0.025) { L = lay(s); if (L.total <= avail) break; }
+  const fitCard = () => { for (let s = 1; s >= 0.7; s -= 0.025) { L = lay(s); if (L.total <= avail) break; } };
+  fitCard();
+  /* Reicht der Platz nicht, bleibt von der Erklärung der erste Satz */
+  if (L.total > avail) { const f1 = prFirstSentence(t.expl); if (f1) { explText = f1; fitCard(); } }
   if (L.total > avail) K.warn.push('Prüfkarte zu voll: ' + t.term);
   /* Kernmerkmale */
   const need = isBild ? 'BEGRIFF NENNEN = STEIN' : isZeig ? (t.zeig.merkmale.length >= 3 ? 'BEOBACHTEN · ZWEI VON DREI = STEIN' : 'BEOBACHTEN · BEIDE = STEIN') : t.feats.length >= 3 ? 'KERNMERKMALE · ZWEI VON DREI = STEIN' : t.feats.length === 2 ? 'KERNMERKMALE · BEIDE = STEIN' : 'GENANNT = STEIN';
@@ -20788,121 +20838,484 @@ function pageSatz(ctx, set) {
   }
 }
 
-/* ---------- Anleitung ---------- */
-function prRuleTexts(ctx) {
-  const G = ctx.gruppe, E = ctx.easy, H = ctx.hard, n = ctx.n, P = ctx.o.parts;
+/* ---------- Spielkarte und Nachschlageblatt ----------
+   Die Spielkarte reicht zum Anfangen. Sonderfälle stehen auf dem Nachschlageblatt und werden erst gelesen, wenn sie eintreten. */
+function prPlayTexts(ctx) {
+  const G = ctx.gruppe, E = ctx.easy, H = ctx.hard, n = ctx.n, P = ctx.o.parts, ein = ctx.einstieg;
   const pick = (e, m, h) => (E ? e : H ? h : m);
-  const S = ctx.multi ? ` (Satz ${ctx.curSet})` : '';
-  const SL = G ? 'Die Spielleitung' : 'Die andere Person';
+  const pairs = !!(P.paare && ctx.pairs.length), star = n < 6;
   const T = {};
-  T.intro = G
-    ? pick('Zwei Teams spielen gegeneinander. Ihr erklärt Begriffe mit euren eigenen Worten. Für jede gute Erklärung legt ihr einen Stein auf das Brett. Ihr wollt vier Steine in eine Reihe bringen. Dann verbindet ihr zwei der vier Begriffe in einem Satz. Das ist der Vierklang!',
-      'Zwei Teams spielen gegeneinander. Ihr erklärt Fachbegriffe in eigenen Worten, und jede gelungene Erklärung bringt einen Stein aufs Brett. Wer vier Steine in eine Reihe bringt und zwei dieser Begriffe in einem stimmigen Satz verbindet, hat den Vierklang und gewinnt.',
-      'Zwei Teams spielen gegeneinander. Fachbegriffe werden erläutert, geprüft und in Steine umgesetzt. Vier Steine in einer Reihe eröffnen den Vernetzungszug: Zwei der Begriffe werden in einem Satz verknüpft, der ihre Beziehung benennt und begründet. Gelingt das, ist der Vierklang komplett.')
-    : pick('Ihr spielt zu zweit gegeneinander. Ihr erklärt Begriffe mit euren eigenen Worten. Für jede gute Erklärung kommt ein Stein auf das Brett. Ihr wollt vier Steine in eine Reihe bringen. Dann verbindet ihr zwei der vier Begriffe in einem Satz. Das ist der Vierklang!',
-      'Ihr spielt zu zweit gegeneinander. Wer einen Fachbegriff in eigenen Worten gut erklärt, legt einen Stein aufs Brett. Wer vier Steine in eine Reihe bringt und zwei dieser Begriffe in einem stimmigen Satz verbindet, hat den Vierklang und gewinnt.',
-      'Ihr spielt zu zweit gegeneinander. Fachbegriffe werden erläutert, vom Gegenüber geprüft und in Steine umgesetzt. Vier Steine in einer Reihe eröffnen den Vernetzungszug: Zwei der Begriffe werden in einem Satz verknüpft, der ihre Beziehung benennt und begründet. Gelingt das, ist der Vierklang komplett.');
-  T.material = [
-    P.plan ? `Spielplan${S}` : 'Spielplan',
-    P.pruef ? `${n * n} Prüfkarten${S}, nach Feldern sortiert` : 'Prüfkarten zum Spielplan',
-    P.steine ? `Spielsteine: je ${G ? 'Team' : 'Person'} ${ctx.solidReal || ctx.solid} feste Steine und 8 Wackelsteine` : 'Spielsteine in zwei Farben',
-    P.wuerfel ? 'Würfel Zeile (blau) und Würfel Spalte (gelb)' : 'zwei Würfel in verschiedenen Farben',
-    pick('Uhr für 30 Sekunden, zum Beispiel eine Sanduhr', 'Sanduhr oder Handy-Timer für 30 Sekunden', 'Timer, 30 Sekunden'),
-    'Bleistift zum Abhaken'
-  ];
-  if (P.satz) T.material.push(pick('Satzbaukasten für den Satz am Schluss', 'Satzbaukasten für den Vernetzungszug', 'Satzbaukasten für den Vernetzungszug'));
-  if (P.paare && ctx.pairs.length) T.material.push(pick('Abgrenzungskarten (für den Pasch)', 'Abgrenzungskarten als Stapel', 'Abgrenzungskarten als Stapel'));
-  if (P.operatoren) T.material.push(pick('Operatorenkarten', 'Operatorenkarten als Stapel', 'Operatorenkarten als Stapel'));
-  if (P.protokoll) T.material.push(pick('Hörprotokolle zum Mitschreiben', 'Hörprotokolle für alle, die zuhören', 'Hörprotokolle für die Zuhörenden'));
-  if (ctx.pasch) T.material.push(pick('ein Würfel für den Pasch', 'ein Würfel für Pasch-Ereignisse', 'ein Würfel für Pasch-Ereignisse'));
-  if (P.steine || P.wuerfel) T.material.push('Schere und Klebstoff zum Basteln');
+  T.goal = G
+    ? pick('Zwei Teams erklären Begriffe. Für jede gute Erklärung gibt es einen Stein. Wer vier Steine in einer Reihe hat und zwei der Begriffe in einem Satz verbindet, gewinnt.',
+      'Zwei Teams erklären Fachbegriffe in eigenen Worten, jede gelungene Erklärung bringt einen Stein. Wer vier Steine in eine Reihe bringt und zwei dieser Begriffe in einem stimmigen Satz verbindet, gewinnt.',
+      'Zwei Teams erläutern Fachbegriffe, jede gelungene Erläuterung bringt einen Stein. Vier Steine in einer Reihe eröffnen den Vernetzungszug, zwei der Begriffe werden in einem begründeten Satz verknüpft.')
+    : pick('Ihr spielt zu zweit. Wer einen Begriff gut erklärt, bekommt einen Stein. Wer vier Steine in einer Reihe hat und zwei der Begriffe in einem Satz verbindet, gewinnt.',
+      'Ihr spielt zu zweit. Wer einen Fachbegriff in eigenen Worten gut erklärt, legt einen Stein aufs Brett. Wer vier Steine in eine Reihe bringt und zwei dieser Begriffe in einem stimmigen Satz verbindet, gewinnt.',
+      'Zu zweit werden Fachbegriffe erläutert, jede gelungene Erläuterung bringt einen Stein. Vier Steine in einer Reihe eröffnen den Vernetzungszug, zwei der Begriffe werden in einem begründeten Satz verknüpft.');
   T.setup = G
-    ? pick(['Bildet zwei Teams: Team Quadrat und Team Raute.', 'Eine Person ist die Spielleitung. Sie hat die Prüfkarten und die Uhr.', 'Legt den Spielplan in die Mitte. Jedes Team nimmt seine Steine.', 'Jedes Team würfelt. Die höhere Zahl fängt an.'],
-      ['Bildet zwei Teams: Team Quadrat und Team Raute. Eine Person übernimmt die Spielleitung.', 'Legt den Spielplan in die Mitte. Jedes Team nimmt seine Steine.', 'Die Spielleitung nimmt die Prüfkarten und die Uhr. Sie achtet auf die Zeit, liest Hilfen vor und prüft.', 'Jedes Team würfelt einmal. Die höhere Zahl beginnt.'],
-      ['Zwei Teams (Quadrat, Raute) und eine Spielleitung.', 'Spielplan in die Mitte, Steine an die Teams.', 'Die Spielleitung verwaltet Prüfkarten, Zeit und Hilfen und entscheidet in Zweifelsfällen.', 'Die höhere Würfelzahl beginnt.'])
-    : pick(['Eine Person spielt mit den Quadraten, die andere mit den Rauten.', 'Legt den Spielplan zwischen euch. Die Prüfkarten liegen daneben.', 'Wer gerade nicht erklärt, prüft mit der Prüfkarte.', 'Würfelt. Die höhere Zahl fängt an.'],
-      ['Eine Person spielt mit den Quadraten, die andere mit den Rauten.', 'Legt den Spielplan zwischen euch und die Prüfkarten als Stapel daneben.', 'Wer gerade nicht erklärt, prüft. Diese Person liest die Prüfkarte, achtet auf die Zeit und liest Hilfen vor.', 'Würfelt einmal. Die höhere Zahl beginnt.'],
-      ['Quadrate gegen Rauten.', 'Spielplan zwischen euch, Prüfkarten als Stapel daneben.', 'Wer nicht erläutert, prüft: Prüfkarte, Zeit, Hilfen.', 'Die höhere Würfelzahl beginnt.']);
-  const star = n < 6;
+    ? pick(['Bildet zwei Teams. Eine Person ist die Spielleitung.', 'Die Spielleitung bekommt die Prüfkarten, das Nachschlageblatt und die Uhr.', 'Spielplan in die Mitte. Wer höher würfelt, beginnt.'],
+      ['Zwei Teams, dazu eine Spielleitung.', 'Die Spielleitung nimmt Prüfkarten, Nachschlageblatt und Uhr.', 'Spielplan in die Mitte, die höhere Würfelzahl beginnt.'],
+      ['Zwei Teams und eine Spielleitung.', 'Prüfkarten, Nachschlageblatt und Uhr liegen bei der Spielleitung.', 'Spielplan in die Mitte, die höhere Würfelzahl beginnt.'])
+    : pick(['Eine Person spielt mit den Quadraten, die andere mit den Rauten.', 'Die Prüfkarten liegen verdeckt neben dem Spielplan.', 'Wer höher würfelt, beginnt.'],
+      ['Quadrate gegen Rauten.', 'Die Prüfkarten liegen verdeckt neben dem Spielplan.', 'Die höhere Würfelzahl beginnt.'],
+      ['Quadrate gegen Rauten.', 'Prüfkarten verdeckt neben dem Spielplan.', 'Die höhere Würfelzahl beginnt.']);
   const dice = P.wuerfel
-    ? pick('Würfelt mit beiden Würfeln. Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. So findet ihr euer Feld.' + (star ? ' Beim Stern sucht ihr euch die Zeile oder Spalte aus. Mit normalen Würfeln gilt: Ist die Zahl zu hoch, sucht ihr selbst aus.' : ''),
-      'Würfelt mit beiden Würfeln. Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Dort liegt euer Feld.' + (star ? ` Zeigt ein Würfel den Stern, wählt ihr die Zeile oder Spalte selbst. Mit normalen Würfeln gilt: Ist die Zahl höher als ${n}, wählt ihr selbst.` : ''),
-      'Blauer Würfel Zeile, gelber Würfel Spalte.' + (star ? ` Stern oder eine Zahl über ${n}: Zeile oder Spalte frei wählen.` : ''))
-    : pick('Würfelt mit zwei Würfeln. Legt vorher fest, welcher Würfel die Zeile zeigt und welcher die Spalte. So findet ihr euer Feld.' + (star ? ' Ist eine Zahl zu hoch, sucht ihr die Zeile oder Spalte selbst aus.' : ''),
-      'Würfelt mit zwei Würfeln. Vorher legt ihr fest, welcher die Zeile zeigt und welcher die Spalte. Dort liegt euer Feld.' + (star ? ` Ist eine Zahl höher als ${n}, wählt ihr die Zeile oder Spalte selbst.` : ''),
-      'Zwei Würfel, vorher festgelegt: einer für die Zeile, einer für die Spalte.' + (star ? ` Eine Zahl über ${n}: Zeile oder Spalte frei wählen.` : ''));
-  const explain = (G
-    ? pick('Ihr habt 30 Sekunden Zeit. Erklärt den Begriff mit euren eigenen Worten. Sagt, was es ist und woran man es erkennt.', 'Ihr habt 30 Sekunden. Erklärt den Begriff in eigenen Worten.', '30 Sekunden. Erläutert den Begriff fachsprachlich: Oberbegriff, Kernmerkmale, Abgrenzung.')
-    : pick('Wer dran ist, hat 30 Sekunden Zeit und erklärt den Begriff mit eigenen Worten. Sagt, was es ist und woran man es erkennt.', 'Wer am Zug ist, hat 30 Sekunden und erklärt den Begriff in eigenen Worten.', 'Wer am Zug ist, erläutert den Begriff in 30 Sekunden: Oberbegriff, Kernmerkmale, Abgrenzung.'))
-    + (ctx.hasPersons ? pick(' Bei einer Person sagt ihr, wer das ist und warum sie wichtig ist.', ' Bei Personen, Orten und Werken geht es darum, wer oder was das ist und warum es wichtig ist.', ' Bei Personen, Orten und Werken: Einordnung und Bedeutung.') : '')
-    + (ctx.hasBild ? pick(' Bei einem Notenbild sagt ihr, wie das Zeichen heißt.', ' Bei einem Notenbild wird der passende Begriff genannt.', ' Bei einem Notenbild wird der Begriff benannt.') : '');
+    ? pick('Würfelt mit beiden Würfeln. Blau zeigt die Zeile, Gelb die Spalte.' + (star ? ' Beim Stern oder einer zu hohen Zahl sucht ihr selbst aus.' : ''),
+      'Werft beide Würfel. Blau zeigt die Zeile, Gelb die Spalte.' + (star ? ' Bei Stern oder zu hoher Zahl wählt ihr selbst.' : ''),
+      'Blauer Würfel für die Zeile, gelber für die Spalte.' + (star ? ' Stern oder zu hohe Zahl heißt freie Wahl.' : ''))
+    : pick('Würfelt mit zwei Würfeln. Legt vorher fest, welcher die Zeile zeigt und welcher die Spalte.' + (star ? ` Ist eine Zahl höher als ${n}, sucht ihr selbst aus.` : ''),
+      'Zwei Würfel, vorher festgelegt, einer für die Zeile, einer für die Spalte.' + (star ? ` Bei einer Zahl über ${n} wählt ihr selbst.` : ''),
+      'Zwei Würfel für Zeile und Spalte, vorher festgelegt.' + (star ? ` Eine Zahl über ${n} heißt freie Wahl.` : ''));
+  const expl = (P.operatoren ? (G ? pick('Das andere Team zieht eine Operatorenkarte. Sie sagt, was ihr tun sollt. ', 'Das andere Team zieht eine Operatorenkarte, ihre Kriterien gelten. ', 'Das andere Team zieht eine Operatorenkarte, ihre Kriterien gelten. ')
+      : pick('Die andere Person zieht eine Operatorenkarte. Sie sagt, was du tun sollst. ', 'Die andere Person zieht eine Operatorenkarte, ihre Kriterien gelten. ', 'Das Gegenüber zieht eine Operatorenkarte, ihre Kriterien gelten. ')) : '')
+    + (G ? pick('30 Sekunden. Sagt mit euren Worten, was es ist und woran man es erkennt.', '30 Sekunden in eigenen Worten. Was ist es, woran erkennt man es?', '30 Sekunden mit Oberbegriff, Kernmerkmalen und Abgrenzung.')
+      : pick('Wer dran ist, erklärt in 30 Sekunden mit eigenen Worten, was es ist und woran man es erkennt.', 'Wer am Zug ist, erklärt in 30 Sekunden in eigenen Worten.', 'Wer am Zug ist, erläutert in 30 Sekunden mit Oberbegriff, Kernmerkmalen und Abgrenzung.'))
+    + (ctx.hasBild ? (G ? pick(' Bei einem Notenbild sagt ihr, wie das Zeichen heißt.', ' Bei einem Notenbild genügt der Begriff.', ' Bei einem Notenbild genügt der Begriff.') : pick(' Bei einem Notenbild sagst du, wie das Zeichen heißt.', ' Bei einem Notenbild genügt der Begriff.', ' Bei einem Notenbild genügt der Begriff.')) : '');
   const check = (G
-    ? pick('Die Spielleitung schaut auf die Prüfkarte. Habt ihr zwei von drei Punkten genannt? Dann bekommt ihr den Stein. Ihr müsst nicht genau dieselben Wörter sagen.', 'Die Spielleitung liest auf der Prüfkarte zum Feld mit und hakt die Kernmerkmale ab. Zwei von drei reichen für den Stein. Der genaue Wortlaut ist egal.', 'Die Spielleitung hakt die Kernmerkmale auf der Prüfkarte ab. Zwei von drei, sinngemäß und fachlich korrekt, ergeben den Stein.')
-    : pick('Die andere Person schaut auf die Prüfkarte. Wurden zwei von drei Punkten genannt? Dann gibt es den Stein. Es müssen nicht genau dieselben Wörter sein.', 'Die andere Person nimmt die Prüfkarte zum Feld, hört zu und hakt die Kernmerkmale ab. Zwei von drei reichen für den Stein. Der genaue Wortlaut ist egal.', 'Das Gegenüber hakt die Kernmerkmale auf der Prüfkarte ab. Zwei von drei, sinngemäß und fachlich korrekt, ergeben den Stein.'))
-    + (ctx.hasBild ? pick(' Beim Notenbild reicht der richtige Name.', ' Bei Notenbildern reicht der richtige Begriff.', ' Bei Notenbildern genügt der Begriff.') : '')
-    + (P.protokoll ? (G
-      ? pick(' Das andere Team schreibt auf dem Hörprotokoll mit und liest vor der Entscheidung vor.', ' Das andere Team schreibt auf dem Hörprotokoll mit und liest die Stichwörter vor der Entscheidung vor.', ' Das andere Team protokolliert mit und trägt die Stichwörter vor der Entscheidung vor.')
-      : pick(' Mit Hörprotokoll schreibt die prüfende Person erst bis zu drei Wörter auf. Dann schaut sie auf die Prüfkarte.', ' Mit Hörprotokoll notiert die prüfende Person erst bis zu drei Stichwörter und schaut dann auf die Prüfkarte.', ' Mit Hörprotokoll: erst bis zu drei Stichwörter notieren, dann die Prüfkarte aufdecken.')) : '');
-  const place = G ? pick('Geschafft? Dann legt ihr einen Stein auf das Feld. Sonst bleibt das Feld frei. Dann ist das andere Team dran.', 'Geschafft? Dann legt einen festen Stein auf das Feld. Sonst bleibt es frei. Danach ist das andere Team am Zug.', 'Bei Erfolg kommt ein fester Stein aufs Feld, sonst bleibt es frei. Danach ist das andere Team am Zug.')
-    : pick('Geschafft? Dann kommt ein Stein auf das Feld. Sonst bleibt das Feld frei. Dann ist die andere Person dran.', 'Geschafft? Dann kommt ein fester Stein auf das Feld. Sonst bleibt es frei. Danach ist die andere Person am Zug.', 'Bei Erfolg kommt ein fester Stein aufs Feld, sonst bleibt es frei. Danach ist die andere Person am Zug.');
+    ? pick('Die Spielleitung schaut auf die Prüfkarte. Zwei von drei Punkten reichen, andere Wörter sind erlaubt.', 'Die Spielleitung hakt auf der Prüfkarte ab. Zwei von drei Kernmerkmalen reichen, sinngemäß zählt.', 'Die Spielleitung hakt ab. Zwei von drei Kernmerkmalen, sinngemäß und fachlich korrekt.')
+    : pick('Die andere Person schaut auf die Prüfkarte. Zwei von drei Punkten reichen, andere Wörter sind erlaubt.', 'Die andere Person hakt auf der Prüfkarte ab. Zwei von drei Kernmerkmalen reichen, sinngemäß zählt.', 'Das Gegenüber hakt ab. Zwei von drei Kernmerkmalen, sinngemäß und fachlich korrekt.'))
+    + (P.protokoll ? (G ? pick(' Vorher liest das andere Team vor, was es aufgeschrieben hat.', ' Vorher liest das andere Team seine Stichwörter vor.', ' Vorher trägt das andere Team seine Stichwörter vor.')
+      : pick(' Mit Hörprotokoll schreibt sie erst mit und schaut dann auf die Karte.', ' Mit Hörprotokoll wird erst notiert, dann die Karte angesehen.', ' Mit Hörprotokoll erst notieren, dann aufdecken.')) : '');
+  const place = G
+    ? pick('Geschafft? Legt einen Stein auf das Feld. Dann ist das andere Team dran.', 'Geschafft? Dann kommt ein fester Stein aufs Feld. Danach ist das andere Team am Zug.', 'Bei Erfolg ein fester Stein, danach ist das andere Team am Zug.')
+    : pick('Geschafft? Dann kommt ein Stein auf das Feld. Danach ist die andere Person dran.', 'Geschafft? Dann kommt ein fester Stein aufs Feld. Danach ist die andere Person am Zug.', 'Bei Erfolg ein fester Stein, danach ist das Gegenüber am Zug.');
   T.steps = [['wuerfeln', 'Würfeln', dice]];
-  if (G) T.steps.push(['beraten', 'Beraten', pick('Euer Team berät 20 Sekunden. Dann erklärt eine Person aus dem Team. Ihr wechselt euch jedes Mal ab.', 'Euer Team berät 20 Sekunden lang. Dann erklärt eine Person, reihum jedes Mal eine andere.', '20 Sekunden Beratung im Team. Dann erläutert eine Person, reihum.')]);
-  T.steps.push(['erklaeren', pick('Erklären', 'Erklären', 'Erläutern'), explain], ['pruefen', 'Prüfen', check], ['setzen', 'Stein setzen', place]);
-  T.cards = [
-    ['hilfe', 'Hilfe und Wackelstein', pick(`Ihr wisst nicht weiter? Dann fragt nach einer Hilfe. ${SL} liest den Oberbegriff vor, danach auf Wunsch das Beispiel. Mit Hilfe gibt es nur einen Wackelstein. Er ist gestrichelt. Ein Wackelstein ist nicht sicher: Das andere Team kann ihn euch wegnehmen.`,
-      `Vor dem Erklären dürft ihr eine Hilfe verlangen. ${SL} liest zuerst den Oberbegriff vor, auf Wunsch danach das Beispiel. Mit Hilfe gibt es nur einen Wackelstein. Er ist gestrichelt und kann noch verloren gehen.`,
-      `Hilfen sind gestuft abrufbar: Oberbegriff, dann Beispiel. ${SL} liest vor. Jede Hilfe reduziert den Ertrag auf einen Wackelstein (gestrichelt), der erobert oder gefestigt werden kann.`) + pick(' Bei einem schweren Begriff (drei Sterne auf der Prüfkarte) bleibt der Stein auch mit Hilfe fest.', ' Bei schweren Begriffen (drei Sterne auf der Prüfkarte) bleibt der Stein auch mit Hilfe fest.', ' Schwere Begriffe (drei Sterne) ergeben auch mit Hilfe einen festen Stein.')],
-    ['angriff', 'Angreifen und Festigen', G
-      ? pick('Ein Wackelstein vom anderen Team? Erklärt den Begriff ohne Hilfe. Dann gehört das Feld euch, und ihr legt einen festen Stein hin. Ein eigener Wackelstein? Erklärt den Begriff ohne Hilfe. Dann wird daraus ein fester Stein.',
-        'Landet ihr auf einem Wackelstein des anderen Teams, dürft ihr angreifen. Erklärt ihr den Begriff ohne Hilfe, gehört das Feld euch, mit einem festen Stein. Einen eigenen Wackelstein könnt ihr festigen. Erklärt ihr den Begriff ohne Hilfe, wird daraus ein fester Stein. Statt anzugreifen oder zu festigen, dürft ihr auch ein freies Feld in derselben Zeile oder Spalte nehmen.',
-        'Fremder Wackelstein: Eine hilfefreie Erläuterung erobert das Feld (fester Stein). Eigener Wackelstein: Eine hilfefreie Erläuterung festigt ihn. Alternativ ein freies Feld derselben Zeile oder Spalte wählen.')
-      : pick('Ein fremder Wackelstein? Wer den Begriff ohne Hilfe erklärt, bekommt das Feld mit einem festen Stein. Ein eigener Wackelstein? Ohne Hilfe erklärt, wird daraus ein fester Stein.',
-        'Wer auf einem fremden Wackelstein landet, darf angreifen. Gelingt die Erklärung ohne Hilfe, wechselt das Feld den Besitz und bekommt einen festen Stein. Einen eigenen Wackelstein kann man festigen. Gelingt die Erklärung ohne Hilfe, wird daraus ein fester Stein. Statt anzugreifen oder zu festigen, darf man auch ein freies Feld in derselben Zeile oder Spalte nehmen.',
-        'Fremder Wackelstein: Eine hilfefreie Erläuterung erobert das Feld (fester Stein). Eigener Wackelstein: Eine hilfefreie Erläuterung festigt ihn. Alternativ ein freies Feld derselben Zeile oder Spalte wählen.')],
-    ['besetzt', 'Besetzte Felder und Pasch', ctx.pasch
-      ? pick('Auf dem Feld liegt schon ein fester Stein? Dann nehmt ein freies Feld in derselben Zeile oder Spalte. Zwei gleiche Zahlen heißen Pasch. Dann würfelt ihr mit einem Würfel das Ereignis aus. Die Tabelle steht bei den Zusatzregeln.',
-        'Liegt auf dem Feld schon ein fester Stein, wählt ihr ein freies Feld in derselben Zeile oder Spalte. Ist dort alles besetzt, wählt ihr frei. Bei einem Pasch, also zwei gleichen Zahlen, würfelt ihr mit einem Würfel das Ereignis aus (Tabelle bei den Zusatzregeln).',
-        'Fester Stein auf dem Feld: ein freies Feld derselben Zeile oder Spalte, notfalls frei. Pasch: Ein Würfel bestimmt das Ereignis (Tabelle bei den Zusatzregeln).')
-      : pick('Auf dem Feld liegt schon ein fester Stein? Dann nehmt ein freies Feld in derselben Zeile oder Spalte. Zwei gleiche Zahlen heißen Pasch. Dann dürft ihr euch ein Feld aussuchen.',
-      'Liegt auf dem Feld schon ein fester Stein, wählt ihr ein freies Feld in derselben Zeile oder Spalte. Ist dort alles besetzt, wählt ihr frei. Bei einem Pasch, also zwei gleichen Zahlen, dürft ihr ein freies Feld oder einen Wackelstein frei wählen.',
-      'Fester Stein auf dem Feld: ein freies Feld derselben Zeile oder Spalte, notfalls frei. Pasch: freie Wahl eines freien Feldes oder eines Wackelsteins.')],
-    G ? ['konter', 'Konter', pick('Das andere Team findet, die Erklärung reicht nicht? Dann darf es kontern. Eine Person aus diesem Team erklärt selbst, auch 30 Sekunden. Reicht nur diese Erklärung, bekommt das andere Team den Stein.',
-      'Findet das andere Team die Erklärung unvollständig, darf es kontern, bevor die Spielleitung entscheidet. Eine Person aus diesem Team erklärt dann selbst, ebenfalls 30 Sekunden. Reicht die erste Erklärung nicht, die zweite aber schon, bekommt das Team, das gekontert hat, den festen Stein. Konter gibt es nur auf freien Feldern.',
-      'Vor der Entscheidung darf das andere Team kontern und selbst erläutern (30 Sekunden). Genügt nur der Konter, erhält das konternde Team den festen Stein. Nur auf freien Feldern.')]
-      : ['fair', 'Fair prüfen', pick('Nur wer prüft, schaut auf die Prüfkarte. Ein Punkt zählt, wenn er gemeint war, auch mit anderen Wörtern. Seid ihr unsicher, fragt die Lehrkraft.',
-        'Die Prüfkarte sieht nur, wer prüft. Ein Kernmerkmal zählt, wenn es sinngemäß genannt wurde. Seid ihr unsicher, entscheidet ihr gemeinsam oder fragt die Lehrkraft.',
-        'Die Prüfkarte sieht nur, wer prüft. Ein Kernmerkmal zählt, wenn es sinngemäß und fachlich korrekt genannt wurde. Im Zweifel entscheidet ihr gemeinsam oder fragt die Lehrkraft.')]
+  if (G) T.steps.push(['beraten', 'Beraten', pick('Euer Team berät 20 Sekunden. Dann erklärt eine Person, jedes Mal eine andere.', '20 Sekunden Beratung im Team, dann erklärt eine Person, reihum.', '20 Sekunden Beratung, dann erläutert eine Person, reihum.')]);
+  T.steps.push(['erklaeren', pick('Erklären', 'Erklären', 'Erläutern'), expl], ['pruefen', 'Prüfen', check], ['setzen', 'Stein setzen', place]);
+  T.indexTitle = pick('Wenn das passiert', 'Sonderfälle', 'Sonderfälle');
+  T.indexHint = G ? pick('Dann liest die Spielleitung auf dem Nachschlageblatt nach.', 'Dann schlägt die Spielleitung auf dem Nachschlageblatt nach.', 'Dann schlägt die Spielleitung auf dem Nachschlageblatt nach.')
+    : pick('Dann schaut ihr auf dem Nachschlageblatt nach.', 'Dann schaut ihr auf dem Nachschlageblatt nach.', 'Dann gilt das Nachschlageblatt.');
+  /* Spielleitungskarte im Gruppenspiel, sonst Regeln fürs faire Prüfen */
+  T.lead = G
+    ? { title: 'Für die Spielleitung', rows: pick(
+      ['Du hast die Prüfkarten und die Uhr. Die Teams sehen die Karten nicht.', 'Sag „Los!“ und achte auf die 30 Sekunden. Hilfen liest du nur vor, wenn das Team fragt.', 'Hake ab, was gemeint war. Andere Wörter zählen auch.', 'Gibt es Streit, entscheidest du kurz. Besprochen wird nach dem Zug.', 'Karten von Feldern ohne Stein legst du zur Seite. Damit übt ihr später.'],
+      ['Prüfkarten und Uhr liegen bei dir, die Teams sehen die Karte nicht.', 'Startsignal geben und die 30 Sekunden im Blick behalten. Hilfen nur auf Wunsch vorlesen.', 'Abhaken, was sinngemäß genannt wurde. Der Wortlaut ist frei.', 'Im Streit kurz entscheiden, die fachliche Klärung folgt nach dem Zug.', 'Prüfkarten von Feldern ohne Stein zur Seite legen. Das ist der Wiederholungsstapel.'],
+      ['Prüfkarten und Uhr verwaltest du, die Teams sehen die Karte nicht.', 'Startsignal und 30 Sekunden, Hilfen nur auf Wunsch.', 'Gewertet wird, was sinngemäß und fachlich korrekt genannt wurde.', 'Strittige Fälle kurz entscheiden, fachlich geklärt wird nach dem Zug.', 'Prüfkarten ohne Stein bilden den Wiederholungsstapel.'])
+      .concat(P.protokoll ? [pick('Vor dem Abhaken liest das andere Team vor, was es aufgeschrieben hat.', 'Vor dem Abhaken liest das andere Team seine Stichwörter vor.', 'Vor dem Abhaken trägt das andere Team seine Stichwörter vor.')] : []) }
+    : { title: 'Fair prüfen', rows: pick(
+      ['Nur wer prüft, schaut auf die Prüfkarte.', 'Ein Punkt zählt, wenn er gemeint war, auch mit anderen Wörtern.', 'Karten von Feldern ohne Stein legt ihr zur Seite. Damit übt ihr später.', 'Seid ihr unsicher, fragt die Lehrkraft.'],
+      ['Die Prüfkarte sieht nur, wer prüft.', 'Ein Kernmerkmal zählt, wenn es sinngemäß genannt wurde.', 'Prüfkarten von Feldern ohne Stein kommen auf den Wiederholungsstapel.', 'Im Zweifel entscheidet ihr gemeinsam oder fragt die Lehrkraft.'],
+      ['Die Prüfkarte sieht nur, wer prüft.', 'Gewertet wird, was sinngemäß und fachlich korrekt genannt wurde.', 'Prüfkarten ohne Stein bilden den Wiederholungsstapel.', 'Im Zweifel gemeinsam entscheiden oder die Lehrkraft fragen.']) };
+  /* Kästen zum Nachschlagen; der Buchstabe steht auch auf der Spielkarte */
+  const B = [];
+  B.push({ k: 'H', icon: 'hilfe', idx: 'Hilfe', title: 'Hilfe und Wackelstein', text: G
+    ? pick('Ihr wisst nicht weiter? Dann fragt nach einer Hilfe. Die Spielleitung liest den Oberbegriff vor, auf Wunsch auch das Beispiel. Mit Hilfe gibt es nur einen Wackelstein (gestrichelt), den das andere Team erobern kann. Bei drei Sternen bleibt der Stein fest.',
+      'Vor dem Erklären darf das Team eine Hilfe verlangen, erst den Oberbegriff, dann das Beispiel. Mit Hilfe gibt es nur einen Wackelstein (gestrichelt), den die andere Seite erobern kann. Bei drei Sternen bleibt der Stein trotz Hilfe fest.',
+      'Hilfen auf Wunsch, erst Oberbegriff, dann Beispiel. Jede Hilfe ergibt nur einen Wackelstein (gestrichelt), der erobert werden kann. Drei Sterne ergeben auch mit Hilfe einen festen Stein.')
+    : pick('Du weißt nicht weiter? Dann frag nach einer Hilfe. Die andere Person liest den Oberbegriff vor, auf Wunsch auch das Beispiel. Mit Hilfe gibt es nur einen Wackelstein (gestrichelt), den die andere Person erobern kann. Bei drei Sternen bleibt der Stein fest.',
+      'Vor dem Erklären darf man eine Hilfe verlangen, erst den Oberbegriff, dann das Beispiel. Mit Hilfe gibt es nur einen Wackelstein (gestrichelt), den das Gegenüber erobern kann. Bei drei Sternen bleibt der Stein trotz Hilfe fest.',
+      'Hilfen auf Wunsch, erst Oberbegriff, dann Beispiel. Jede Hilfe ergibt nur einen Wackelstein (gestrichelt), der erobert werden kann. Drei Sterne ergeben auch mit Hilfe einen festen Stein.') });
+  B.push({ k: 'B', icon: ein ? 'besetzt' : 'angriff', idx: 'Feld besetzt', title: ein ? 'Feld besetzt' : pick('Feld besetzt, angreifen', 'Feld besetzt, Angriff', 'Besetzt, Angriff, Festigen'), text: ein
+    ? (G ? pick('Liegt dort ein fester Stein oder ein eigener Wackelstein? Dann nehmt ein freies Feld in derselben Zeile oder Spalte. Liegt dort ein Wackelstein vom anderen Team, dürft ihr angreifen. Erklärt ihr ohne Hilfe, gehört das Feld euch.',
+      'Liegt dort ein fester Stein oder ein eigener Wackelstein, nehmt ihr ein freies Feld in derselben Zeile oder Spalte, notfalls frei. Einen fremden Wackelstein erobert, wer ohne Hilfe erklärt.',
+      'Fester Stein oder eigener Wackelstein führen auf ein freies Feld derselben Zeile oder Spalte. Ein fremder Wackelstein wird durch eine hilfefreie Erläuterung erobert.')
+      : pick('Liegt dort ein fester Stein oder dein eigener Wackelstein? Dann nimm ein freies Feld in derselben Zeile oder Spalte. Liegt dort ein Wackelstein der anderen Person, darfst du angreifen. Erklärst du ohne Hilfe, gehört das Feld dir.',
+        'Liegt dort ein fester Stein oder ein eigener Wackelstein, nimmst du ein freies Feld in derselben Zeile oder Spalte, notfalls frei. Einen fremden Wackelstein erobert, wer ohne Hilfe erklärt.',
+        'Fester Stein oder eigener Wackelstein führen auf ein freies Feld derselben Zeile oder Spalte. Ein fremder Wackelstein wird durch eine hilfefreie Erläuterung erobert.'))
+    : (G ? pick('Liegt dort ein fester Stein? Dann nehmt ein freies Feld in derselben Zeile oder Spalte. Ein Wackelstein vom anderen Team? Erklärt ihr ohne Hilfe, gehört das Feld euch. Euer eigener Wackelstein? Ohne Hilfe erklärt, wird er fest.',
+      'Liegt dort ein fester Stein, nehmt ihr ein freies Feld in derselben Zeile oder Spalte, notfalls frei. Einen fremden Wackelstein erobert, wer ohne Hilfe erklärt. Einen eigenen Wackelstein festigt, wer ihn ohne Hilfe erklärt.',
+      'Ein fester Stein führt auf ein freies Feld derselben Zeile oder Spalte. Hilfefrei erläutert, wird ein fremder Wackelstein erobert und ein eigener gefestigt.')
+      : pick('Liegt dort ein fester Stein? Dann nimm ein freies Feld in derselben Zeile oder Spalte. Ein Wackelstein der anderen Person? Erklärst du ohne Hilfe, gehört das Feld dir. Dein eigener Wackelstein? Ohne Hilfe erklärt, wird er fest.',
+        'Liegt dort ein fester Stein, nimmst du ein freies Feld in derselben Zeile oder Spalte, notfalls frei. Einen fremden Wackelstein erobert, wer ohne Hilfe erklärt. Einen eigenen festigt, wer ihn ohne Hilfe erklärt.',
+        'Ein fester Stein führt auf ein freies Feld derselben Zeile oder Spalte. Hilfefrei erläutert, wird ein fremder Wackelstein erobert und ein eigener gefestigt.')) });
+  if (ctx.pasch) {
+    B.push({ k: 'P', icon: 'pasch', idx: 'Pasch', title: pick('Pasch: das Ereignis würfeln', 'Pasch-Ereignisse', 'Pasch-Ereignisse'), wide: true,
+      text: pick('Zwei gleiche Zahlen? Würfelt noch einmal mit einem Würfel. Die Zahl zeigt das Ereignis.', 'Bei einem Pasch bestimmt ein Würfel das Ereignis, höchstens alle drei Züge, sonst gilt freie Wahl.', 'Ein Würfel bestimmt das Ereignis, höchstens alle drei Züge, sonst freie Wahl.'),
+      rows: [
+        ['1 und 2', 'Freie Wahl', pick('Ihr sucht euch ein freies Feld oder einen Wackelstein aus.', 'Ein freies Feld oder ein Wackelstein nach Wahl.', 'Freies Feld oder Wackelstein nach Wahl.')],
+        ['3', 'Noch mal', pick('Freie Wahl. Schafft ihr den Begriff, seid ihr gleich noch einmal dran.', 'Freie Wahl. Gelingt der Begriff, ist dieselbe Seite sofort wieder am Zug.', 'Freie Wahl, bei Erfolg sofort ein weiterer Zug.')],
+        ['4', pairs ? 'Abgrenzung' : 'Angriff nach Wahl', pairs ? pick('Zieht eine Abgrenzungskarte. Sagt, was beide gemeinsam haben und woran man jeden erkennt. Geschafft? Dann kommt ein Stein auf ein freies Feld eurer Wahl.', 'Eine Abgrenzungskarte ziehen, Gemeinsamkeit und beide Merkmale nennen. Gelingt es, folgt ein fester Stein auf ein freies Feld nach Wahl.', 'Abgrenzungskarte, Gemeinsamkeit und beide Merkmale. Bei Erfolg fester Stein auf ein freies Feld nach Wahl.') : pick('Greift einen Wackelstein vom anderen Team an, den ihr euch aussucht.', 'Ein Wackelstein der anderen Seite nach Wahl wird angegriffen.', 'Angriff auf einen Wackelstein der anderen Seite nach Wahl.')],
+        ['5', 'Blitz', pick('Freie Wahl, aber nur 15 Sekunden Zeit.', 'Freie Wahl, aber nur 15 Sekunden zum Erklären.', 'Freie Wahl, 15 Sekunden.')],
+        ['6', 'Ohne Hilfe', pick('Freie Wahl, aber ohne Hilfe. Dafür steht der Stein fest.', 'Freie Wahl ohne Hilfen, dafür steht der Stein fest.', 'Freie Wahl ohne Hilfen, fester Stein.')]
+      ] });
+  } else {
+    B.push({ k: 'P', icon: 'pasch', idx: 'Pasch', title: 'Pasch', text: pairs
+      ? (G ? pick('Zwei gleiche Zahlen heißen Pasch. Dann zieht ihr eine Abgrenzungskarte mit zwei Begriffen, die man leicht verwechselt. Sagt, was beide gemeinsam haben und woran man jeden erkennt. Geschafft? Dann kommt ein Stein auf ein freies Feld eurer Wahl.', 'Bei zwei gleichen Zahlen wird eine Abgrenzungskarte gezogen. Erst die Gemeinsamkeit nennen, dann für jeden Begriff das Merkmal, das ihn abhebt. Gelingt es, kommt ein fester Stein auf ein freies Feld nach Wahl.', 'Bei einem Pasch wird eine Abgrenzungskarte gezogen. Gemeinsamkeit und beide Unterscheidungsmerkmale ergeben einen festen Stein auf ein freies Feld nach Wahl.')
+        : pick('Zwei gleiche Zahlen heißen Pasch. Dann ziehst du eine Abgrenzungskarte mit zwei Begriffen, die man leicht verwechselt. Sag, was beide gemeinsam haben und woran man jeden erkennt. Geschafft? Dann kommt dein Stein auf ein freies Feld deiner Wahl.', 'Bei zwei gleichen Zahlen wird eine Abgrenzungskarte gezogen. Erst die Gemeinsamkeit nennen, dann für jeden Begriff das Merkmal, das ihn abhebt. Gelingt es, kommt ein fester Stein auf ein freies Feld nach Wahl.', 'Bei einem Pasch wird eine Abgrenzungskarte gezogen. Gemeinsamkeit und beide Unterscheidungsmerkmale ergeben einen festen Stein auf ein freies Feld nach Wahl.'))
+      : (G ? pick('Zwei gleiche Zahlen heißen Pasch. Dann sucht ihr euch das Feld selbst aus.', 'Bei zwei gleichen Zahlen wählt ihr das Feld selbst.', 'Ein Pasch erlaubt freie Feldwahl.')
+        : pick('Zwei gleiche Zahlen heißen Pasch. Dann suchst du dir das Feld selbst aus.', 'Bei zwei gleichen Zahlen wählst du das Feld selbst.', 'Ein Pasch erlaubt freie Feldwahl.')) });
+  }
+  if (G && !ein) B.push({ k: 'K', icon: 'konter', idx: 'Konter', title: 'Konter', text: pick(
+    'Fehlt dem anderen Team etwas in der Erklärung? Dann darf es kontern, bevor die Spielleitung entscheidet. Eine Person erklärt selbst, auch 30 Sekunden. Reicht nur diese Erklärung, bekommt das konternde Team den Stein. Nur auf freien Feldern.',
+    'Hält das andere Team die Erklärung für unvollständig, darf es vor der Entscheidung kontern. Eine Person erklärt selbst, 30 Sekunden. Reicht nur der Konter, bekommt das konternde Team den festen Stein. Nur auf freien Feldern.',
+    'Vor der Entscheidung darf das andere Team kontern und selbst erläutern (30 Sekunden). Genügt nur der Konter, erhält es den festen Stein. Nur auf freien Feldern.') });
+  if (ctx.zeig) {
+    const mit = ctx.sel.some((t) => t.zeig && t.mit && t.kind !== 'bild');
+    const who = G ? 'Die Spielleitung' : 'Die andere Person';
+    B.push({ k: 'Z', icon: 'zeig', idx: 'Zeigen', title: 'Zeigefeld', text: pick(
+      `Auf Feldern mit „Zeigen“ macht ${G ? 'ihr' : 'man'} etwas vor, zum Beispiel klatschen, singen, dirigieren oder zeichnen. ${who} liest den Auftrag vor. Zwei von drei Punkten reichen. Hilfen gibt es nicht, dafür steht der Stein fest.`,
+      `Felder mit „Zeigen“ werden vorgemacht, etwa geklatscht, gesungen, dirigiert oder skizziert. ${who} liest den Auftrag vor, zwei von drei Beobachtungsmerkmalen genügen. Keine Hilfen, dafür ein fester Stein.`,
+      `Felder mit „Zeigen“ werden ausgeführt. ${who} liest den Auftrag vor, zwei von drei Beobachtungsmerkmalen genügen. Keine Hilfen, fester Stein.`)
+      + (mit ? pick(' Steht auf der Karte „Begleitung“, spielt eine Person den Grundschlag dazu.', ' Bei „Begleitung“ übernimmt eine Person Grundschlag oder Groove, die Karte sagt wie.', ' Bei „Begleitung“ übernimmt eine Person Grundschlag oder Groove.') : '') });
+  }
+  B.push({ k: 'V', icon: 'vier', idx: 'Vier in einer Reihe', title: pick('Vier in einer Reihe', 'Vier in einer Reihe', 'Vernetzungszug'), wide: true, model: true, text: (G
+    ? pick('Vier eigene Steine in einer Reihe, auch schräg? Wackelsteine zählen mit. Nehmt zwei der vier Begriffe und sagt einen Satz, der beide richtig verbindet, am besten mit „weil“. Die Spielleitung entscheidet. Stimmt der Satz, habt ihr gewonnen. Sonst versucht ihr es im nächsten Zug noch einmal.',
+      'Vier eigene Steine in einer Reihe, auch diagonal, Wackelsteine zählen mit. Zwei der vier Begriffe werden in einem Satz verbunden, der eine Beziehung zeigt. „Beide gehören zum Thema“ reicht nicht. Die Spielleitung entscheidet. Gelingt der Satz, gewinnt ihr, sonst folgt im nächsten eigenen Zug ein neuer Versuch.',
+      'Vier eigene Steine in einer Reihe (auch diagonal, Wackelsteine zählen) eröffnen den Vernetzungszug. Zwei Begriffe werden in einem Satz verknüpft, der die Beziehung benennt und begründet. Bloße Themenzugehörigkeit genügt nicht. Über den Satz entscheidet die Spielleitung, misslingt er, folgt im nächsten Zug ein neuer Versuch.')
+    : pick('Vier eigene Steine in einer Reihe, auch schräg? Wackelsteine zählen mit. Nimm zwei der vier Begriffe und sag einen Satz, der beide richtig verbindet, am besten mit „weil“. Ob er stimmt, entscheidet ihr gemeinsam, im Zweifel die Lehrkraft. Sonst gibt es im nächsten Zug einen neuen Versuch.',
+      'Vier eigene Steine in einer Reihe, auch diagonal, Wackelsteine zählen mit. Zwei der vier Begriffe werden in einem Satz verbunden, der eine Beziehung zeigt. „Beide gehören zum Thema“ reicht nicht. Ihr entscheidet gemeinsam, im Zweifel die Lehrkraft. Sonst folgt im nächsten eigenen Zug ein neuer Versuch.',
+      'Vier eigene Steine in einer Reihe (auch diagonal, Wackelsteine zählen) eröffnen den Vernetzungszug. Zwei Begriffe werden in einem Satz verknüpft, der die Beziehung benennt und begründet. Bloße Themenzugehörigkeit genügt nicht. Entschieden wird gemeinsam, im Zweifel von der Lehrkraft.')) });
+  B.push({ k: 'E', icon: 'ende', idx: 'Spielende', title: 'Spielende', text: pick(
+    'Wer den Vierklang schafft, gewinnt sofort. Ist das Brett voll oder die Zeit um, gewinnt, wer mehr Steine hat. Bei gleich vielen Steinen zählen die schweren Begriffe. Unter die Steine dürft ihr jederzeit schauen.',
+    'Ein Vierklang gewinnt sofort. Bei vollem Brett oder abgelaufener Spielzeit gewinnt, wer mehr Steine hat, bei Gleichstand zuerst nach schweren Begriffen, dann nach festen Steinen. Unter die Steine darf man jederzeit schauen.',
+    'Ein Vierklang entscheidet sofort. Sonst zählen bei vollem Brett oder Spielende die Steine, bei Gleichstand zuerst schwere Begriffe, dann feste Steine.') });
+  T.boxes = B;
+  return T;
+}
+/* Kopfkarte der Spielkarte in der Paketfarbe */
+function prPlayHead(ctx, set, sub) {
+  const K = ctx.K, doc = K.doc, cov = ctx.cover, pal = cov.pal;
+  const hx = 12, hy = 11, hw = 186, hh = 50;
+  if (!ctx.spar) {
+    K.fillC(pal.dark); K.rr(hx, hy + 1.4, hw, hh, 6, 'F'); K.fillC(pal.base); K.rr(hx, hy, hw, hh, 6, 'F');
+    K.clipRR(hx, hy, hw, hh, 6, () => { K.fillC(prMix(pal.base, '#FFFFFF', 0.12)); doc.circle(hx + hw - 26, hy + hh / 2, 38, 'F'); K.fillC(prMix(pal.base, '#FFFFFF', 0.22)); doc.circle(hx + hw - 26, hy + hh / 2, 25, 'F'); });
+  } else { K.fillC('#FFFFFF'); K.drawC(pal.base); K.lw(0.8); K.rr(hx, hy, hw, hh, 6, 'FD'); }
+  const on = ctx.spar ? PR_C.ink : pal.on, onSoft = ctx.spar ? PR_C.muted : (pal.on === '#FFFFFF' ? prMix(pal.base, '#FFFFFF', 0.78) : prMix(pal.base, PR_C.ink, 0.7));
+  K.fillC(ctx.spar ? pal.light : '#FFFFFF'); doc.circle(hx + hw - 26, hy + hh / 2, 16, 'F');
+  K.icon(cov.icon, hx + hw - 26 - 11, hy + hh / 2 - 11, 22, pal.base);
+  K.stone('A', hx + hw - 49, hy + 12, 7, false); K.stone('B', hx + hw - 8.5, hy + hh - 10, 7, false);
+  K.logo(hx + 8, hy + 7.5, 9.5, ctx.spar ? PR_C.ink : on);
+  K.text('VIERKLANG', hx + 22.5, hy + 15.3, 't', 22, on, { cs: 0.4 });
+  K.text(sub, hx + 8.4, hy + 23.4, 'n9', 9, onSoft);
+  const tf = K.fit(ctx.pack.title, 't', hw - 70, 12, { max: 16, min: 9, lh: 1.02, maxLines: 2, hyAt: 0.7 });
+  K.block(tf, hx + 8.4, hy + 26.2, hw - 70, tf.h, 'left', 'top', 't', on);
+  const chips = [ctx.multi ? 'Satz ' + set.no : '', ctx.group ? 'Lerngruppe ' + ctx.group : '', ctx.gruppe ? 'Gruppenspiel' : 'Partnerspiel', `Brett ${ctx.n} × ${ctx.n}`, ctx.einstieg ? 'Einstieg' : '', ctx.pack.grade].filter(Boolean);
+  let cx = hx + 8.4; const cyy = hy + hh - 10.2;
+  chips.forEach((ch, i) => {
+    const w = K.tw(ch, 'n9', 7.4) + 6.2;
+    if (cx + w > hx + hw - 52) return;
+    const gold = ctx.multi && i === 0;
+    if (ctx.spar) { K.fillC('#FFFFFF'); K.drawC(gold ? PR_C.goldDark : pal.base); K.lw(0.3); K.rr(cx, cyy, w, 6, 3, 'FD'); }
+    else { K.fillC(gold ? PR_C.gold : (pal.on === '#FFFFFF' ? prMix(pal.base, '#FFFFFF', 0.2) : prMix(pal.base, '#FFFFFF', 0.45))); K.rr(cx, cyy, w, 6, 3, 'F'); }
+    K.text(ch, cx + w / 2, cyy + 3 + K.cap(7.4) / 2, 'n9', 7.4, gold ? PR_C.ink : (ctx.spar ? pal.dark : on), { align: 'center' });
+    cx += w + 2;
+  });
+  return hy + hh;
+}
+function prLetter(ctx, x, y, d, ch) {
+  const K = ctx.K;
+  if (ctx.spar) { K.fillC('#FFFFFF'); K.drawC(PR_C.accent); K.lw(0.4); K.doc.circle(x + d / 2, y + d / 2, d / 2, 'FD'); }
+  else { K.fillC(PR_C.accent); K.doc.circle(x + d / 2, y + d / 2, d / 2, 'F'); }
+  K.text(ch, x + d / 2, y + d / 2 + K.cap(d * 1.6) / 2, 't', d * 1.6, ctx.spar ? PR_C.accent : '#FFFFFF', { align: 'center' });
+}
+function prBoxIcon(ctx, key, x, y, s) {
+  const K = ctx.K;
+  if (key === 'hilfe' || key === 'angriff' || key === 'besetzt' || key === 'konter') return prCardIcon(ctx, key, x, y, s);
+  if (key === 'zeig' || key === 'paare' || key === 'ops') return prZusatzIcon(ctx, key, x, y, s);
+  if (key === 'pasch') { prRowDie(ctx, x + s * 0.02, y + s * 0.24, s * 0.46, 3); prColDie(ctx, x + s * 0.52, y + s * 0.24, s * 0.46, 3); return; }
+  if (key === 'vier') { prGoalArt(ctx, x + s * 0.06, y + s * 0.06, s * 0.88); return; }
+  if (key === 'bild') { K.fillC(PR_C.ink); K.doc.ellipse(x + s * 0.38, y + s * 0.7, s * 0.17, s * 0.12, 'F'); K.drawC(PR_C.ink); K.lw(s * 0.07); K.doc.line(x + s * 0.54, y + s * 0.68, x + s * 0.54, y + s * 0.16); return; }
+  K.stone('A', x + s * 0.32, y + s / 2, s * 0.4, false); K.stone('B', x + s * 0.7, y + s / 2, s * 0.34, false);
+}
+/* Seite 1 je Satz: alles, was man zum Anfangen braucht */
+function pageSpielkarte(ctx, set) {
+  const K = ctx.K, E = ctx.easy, T = prPlayTexts(ctx);
+  ctx.curSet = set.no;
+  K.page('portrait');
+  const top = prPlayHead(ctx, set, E ? 'Spielkarte · damit geht es los' : 'Spielkarte · das Erklärspiel auf Papier') + 6;
+  const lay = (sc) => {
+    const body = (E ? 10.6 : 10.2) * sc;
+    const goal = K.rich([[T.goal, 'n8']], body + 0.4 * sc, 186 - 44, { lh: 1.34 });
+    const setW = (186 - 2 * 4) / 3 - 10;
+    const setup = T.setup.map((s) => K.rich([[s, 'n6']], body - 0.8 * sc, setW, { lh: 1.28 }));
+    const ic = 15 * sc;
+    const steps = T.steps.map((s) => K.rich([[s[1] + '. ', 'n9'], [s[2], 'n6']], body, 186 - ic - 6, { lh: 1.32 }));
+    const items = T.boxes.map((b) => ({ b, w: 7.8 + K.tw(b.idx, 'n9', 8.6 * sc) + 3.6 }));
+    const rowsI = []; let cur = [], cw = 0;
+    items.forEach((it) => { if (cw + it.w > 186 && cur.length) { rowsI.push(cur); cur = []; cw = 0; } cur.push(it); cw += it.w + 3; });
+    if (cur.length) rowsI.push(cur);
+    const hint = K.rich([[T.indexHint, 'n6', PR_C.muted]], body - 1.2 * sc, 186, { lh: 1.3 });
+    const goalH = Math.max(34, goal.h + 10);
+    const setupH = 12 + Math.max.apply(null, setup.map((r) => r.h)) + 4;
+    const stepsH = 9 + steps.reduce((a, r) => a + Math.max(ic, r.h) + 3.4 * sc, 0);
+    const indexH = 9 + rowsI.length * 8.4 + 1.5 + hint.h;
+    return { sc, body, goal, setup, setW, ic, steps, rowsI, hint, goalH, setupH, stepsH, indexH, total: goalH + 5 + setupH + 6 + stepsH + 4 + indexH };
+  };
+  let L = null;
+  for (let sc = 1; sc >= 0.78; sc -= 0.02) { L = lay(sc); if (top + L.total <= 283) break; }
+  if (top + L.total > 283) K.warn.push('Spielkarte zu voll: ' + ctx.pack.title);
+  let y = top;
+  /* Ziel */
+  prPanel(ctx, 12, y, 186, L.goalH, 'indigo');
+  prGoalArt(ctx, 16, y + (L.goalH - 28) / 2, 28);
+  K.text(E ? 'Darum geht es' : 'Ziel', 50, y + 7.6, 't', 12.5, PR_C.accentDark);
+  L.goal.draw(50, y + 10.4);
+  y += L.goalH + 5;
+  /* Vor dem Start */
+  prPanel(ctx, 12, y, 186, L.setupH, 'plain');
+  K.text(E ? 'Vor dem Start' : 'Aufbau', 17, y + 7.6, 't', 12, PR_C.ink);
+  L.setup.forEach((r, i) => { const x = 17 + i * ((186 - 8) / 3); prNumBadge(ctx, x, y + 11 + (r.lh - 4.6) / 2, 4.6, i + 1, PR_C.accent); r.draw(x + 6.6, y + 11); });
+  y += L.setupH + 6;
+  /* Ein Zug */
+  K.text(E ? 'So geht ein Zug' : 'Ein Zug', 12, y + K.cap(14), 't', 14, PR_C.ink);
+  K.text(ctx.gruppe ? (E ? 'Team für Team, immer abwechselnd' : 'Team für Team im Wechsel') : 'immer abwechselnd', 12 + K.tw(E ? 'So geht ein Zug' : 'Ein Zug', 't', 14) + 4, y + K.cap(14), 'n8', 8.4, PR_C.muted);
+  y += 9;
+  T.steps.forEach((s, i) => {
+    const r = L.steps[i], h = Math.max(L.ic, r.h);
+    prStepIcon(ctx, s[0], 12, y, L.ic);
+    r.draw(12 + L.ic + 5, y + Math.max(0, (L.ic - r.h) / 2 - 0.4));
+    y += h + 3.4 * L.sc;
+  });
+  y += 4;
+  /* Sonderfälle mit Verweis aufs Nachschlageblatt */
+  K.drawC(PR_C.line); K.lw(0.3); K.dash(null); K.doc.line(12, y, 198, y);
+  y += 2.5;
+  K.text(T.indexTitle, 12, y + K.cap(12), 't', 12, PR_C.ink);
+  y += 6.5;
+  L.rowsI.forEach((row) => {
+    let x = 12;
+    row.forEach((it) => {
+      K.fillC(ctx.spar ? '#FFFFFF' : PR_C.accentLight); K.drawC(PR_C.accent); K.lw(0.25); K.rr(x, y, it.w, 6.8, 3.4, ctx.spar ? 'FD' : 'F');
+      prLetter(ctx, x + 0.6, y + 0.6, 5.6, it.b.k);
+      K.text(it.b.idx, x + 7.8, y + 3.4 + K.cap(8.6 * L.sc) / 2, 'n9', 8.6 * L.sc, PR_C.accentDark);
+      x += it.w + 3;
+    });
+    y += 8.4;
+  });
+  L.hint.draw(12, y + 1.5);
+}
+/* Seite 2 je Satz: Spielleitung und Sonderfälle zum Nachschlagen */
+function pageNachschlagen(ctx, set) {
+  const K = ctx.K, E = ctx.easy, T = prPlayTexts(ctx);
+  ctx.curSet = set.no;
+  const byId = {}; ctx.sel.forEach((t) => { byId[t.id] = t; });
+  const model = prPickModels(ctx, 1)[0];
+  const lay = (sc) => {
+    const body = (E ? 9.2 : 8.9) * sc;
+    const lead = T.lead.rows.map((r) => K.rich([[r, 'n6']], body, 186 - 16, { lh: 1.28 }));
+    const leadH = 11 + lead.reduce((a, r) => a + r.h + 1, 0) + 2.4;
+    const boxes = T.boxes.map((b) => {
+      const w = b.wide ? 186 : 89, tw = w - 10 - (b.k === 'V' ? 30 : 0);
+      const text = K.rich([[b.text, 'n6']], body, tw, { lh: 1.27 });
+      const ex = b.model && model && byId[model[0]] && byId[model[1]] ? K.rich([['Beispiel: ', 'n9', PR_C.accentDark], [`${byId[model[0]].term} + ${byId[model[1]].term}`, 'n9'], [' „' + model[2] + '“', 'n6']], body - 0.4 * sc, tw, { lh: 1.26 }) : null;
+      /* Ereignistabelle in zwei Spalten: links die ersten drei Zeilen, rechts der Rest */
+      const half = b.rows ? Math.ceil(b.rows.length / 2) : 0, colW = (w - 12) / 2;
+      const rows = b.rows ? b.rows.map((rw) => K.rich([[rw[1] + '. ', 'n9'], [rw[2], 'n6']], body - 0.2 * sc, colW - 21, { lh: 1.26 })) : null;
+      const rowH = rows ? range(0, half - 1).map((k) => Math.max(6.6, rows[k].h + 1.6, rows[k + half] ? rows[k + half].h + 1.6 : 0)) : [];
+      const rowsH = rows ? rowH.reduce((a, h) => a + h, 0) + 2 : 0;
+      const h = 13.6 + text.h + (ex ? 2 + ex.h : 0) + (rows ? 2 + rowsH : 0) + 3;
+      return { b, w, tw, text, ex, rows, rowH, half, colW, rowsH, h: b.k === 'V' ? Math.max(h, 33) : h };
+    });
+    /* schmale Kästen in zwei Spalten, jeweils in die kürzere; breite Kästen darunter über die ganze Breite */
+    const col = [0, 0], placed = [];
+    boxes.filter((bx) => !bx.b.wide).forEach((bx) => { const c = col[0] <= col[1] ? 0 : 1; placed.push({ bx, c, dy: col[c] }); col[c] += bx.h + 4; });
+    const narrowH = Math.max(col[0], col[1]);
+    const wide = boxes.filter((bx) => bx.b.wide);
+    const total = leadH + 5 + narrowH + wide.reduce((a, bx) => a + bx.h + 4, 0);
+    return { sc, body, lead, leadH, placed, narrowH, wide, total };
+  };
+  K.page('portrait');
+  let y = prHeader(ctx, 'Nachschlageblatt', set, { chip: ctx.gruppe ? 'für die Spielleitung' : 'zum Nachschlagen' });
+  let L = null;
+  for (let sc = 1; sc >= 0.78; sc -= 0.02) { L = lay(sc); if (y + L.total <= 285) break; }
+  if (y + L.total > 285) K.warn.push('Nachschlageblatt zu voll: ' + ctx.pack.title);
+  const drawBox = (bx, x, y0) => {
+    const w = bx.w, h = bx.h;
+    K.fillC('#FFFFFF'); K.drawC(ctx.spar ? PR_C.cut : PR_C.line); K.lw(0.3); K.rr(x, y0, w, h, 3.4, 'FD');
+    prLetter(ctx, x + 3.4, y0 + 3.4, 6.6, bx.b.k);
+    if (bx.b.k !== 'V') prBoxIcon(ctx, bx.b.icon, x + w - 13.4, y0 + 2.6, 10.4);
+    K.text(bx.b.title, x + 12.6, y0 + 8.4, 't', 11.5, PR_C.ink);
+    let ty = y0 + 13.6;
+    const tx = x + 5 + (bx.b.k === 'V' ? 30 : 0);
+    if (bx.b.k === 'V') prGoalArt(ctx, x + 5, y0 + 13.4, 25);
+    bx.text.draw(tx, ty); ty += bx.text.h + 2;
+    if (bx.ex) { bx.ex.draw(tx, ty); ty += bx.ex.h + 2; }
+    if (bx.rows) {
+      bx.rowH.forEach((rh, k) => {
+        if (k % 2 === 0) { K.fillC(ctx.spar ? '#FFFFFF' : PR_C.panel); K.rr(x + 4, ty, w - 8, rh, 1.8, 'F'); }
+        [k, k + bx.half].forEach((j, side) => {
+          const r = bx.rows[j]; if (!r) return;
+          const cx = x + 4 + side * (bx.colW + 4);
+          K.fillC(ctx.spar ? '#FFFFFF' : PR_C.gold); K.drawC(PR_C.goldDark); K.lw(0.3); K.rr(cx + 2, ty + (rh - 5.4) / 2, 15, 5.4, 1.8, ctx.spar ? 'FD' : 'F');
+          K.text(bx.b.rows[j][0], cx + 9.5, ty + rh / 2 + K.cap(6.6) / 2, 'n9', 6.6, PR_C.ink, { align: 'center' });
+          r.draw(cx + 20, ty + (rh - r.h) / 2);
+        });
+        ty += rh;
+      });
+    }
+  };
+  /* Spielleitung oder faires Prüfen */
+  prPanel(ctx, 12, y, 186, L.leadH, 'gold');
+  K.text(T.lead.title, 17, y + 7.6, 't', 12.5, PR_C.goldDark);
+  let ly = y + 11;
+  L.lead.forEach((r) => { K.fillC(PR_C.goldDark); K.doc.circle(18.2, ly + r.lh / 2, 0.9, 'F'); r.draw(22, ly); ly += r.h + 1; });
+  y += L.leadH + 5;
+  L.placed.forEach((pl) => drawBox(pl.bx, 12 + pl.c * 97, y + pl.dy));
+  y += L.narrowH;
+  L.wide.forEach((bx) => { drawBox(bx, 12, y); y += bx.h + 4; });
+}
+
+/* ---------- Lehrkraftblatt: einmal je Druck, aus den Angaben des Pakets und den Einstellungen ---------- */
+function prList(arr) { const a = arr.filter(Boolean); return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' und ' + a[a.length - 1]; }
+function prTeacherTexts(ctx) {
+  const G = ctx.gruppe, E = ctx.easy, H = ctx.hard, P = ctx.o.parts, n = ctx.n, pack = ctx.pack;
+  const pick = (e, m, h) => (E ? e : H ? h : m);
+  const musik = !pack.subject || /musik/i.test(pack.subject);
+  const pairsOn = !!(P.paare && ctx.pairs.length);
+  const L = {};
+  L.chips = [pack.grade, `Brett ${n} × ${n}`, ctx.sets.length === 1 ? '1 Satz' : ctx.sets.length + ' Sätze', G ? 'Gruppenspiel' : 'Partnerspiel', ctx.einstieg ? 'Regelumfang Einstieg' : 'alle Regeln', 'Sprache ' + (LANG_LABEL[ctx.level] || 'mittel')].filter(Boolean);
+  L.einordnung = musik
+    ? 'Übungs- und Sicherungsspiel für die Zeit nach der musikalischen Erarbeitung. Die Begriffe ordnen, was die Klasse vorher gehört, gesungen und gespielt hat.'
+    : 'Übungs- und Sicherungsspiel für die Zeit nach der Erarbeitung. Die Begriffe ordnen, was die Klasse vorher kennengelernt hat.';
+  L.module = pack.module || '';
+  L.fams = ctx.famList.filter((f) => ctx.sel.some((t) => t.family === f));
+  const table = [P.anleitung && 'Spielkarte und Nachschlageblatt', P.plan && 'Spielplan', P.pruef && 'Prüfkarten', P.steine && 'Spielsteinen', P.wuerfel && 'Würfelnetzen', P.satz && 'Satzbaukasten', pairsOn && 'Abgrenzungskarten', P.operatoren && 'Operatorenkarten'];
+  const cut = [P.pruef && 'Prüfkarten', P.steine && 'Spielsteine', P.wuerfel && 'Würfelnetze', pairsOn && 'Abgrenzungskarten', P.operatoren && 'Operatorenkarten', P.lern && 'Lernkarten'].filter(Boolean);
+  L.prep = [
+    table.some(Boolean) ? `Je ${G ? 'Tisch' : 'Paar'} ein Satz aus ${prList(table)}.${P.plan ? ' Den Spielplan am besten auf A3 drucken.' : ''}` : '',
+    cut.length ? `Auszuschneiden sind ${prList(cut)}.` : '',
+    `Dazu ${prList(['eine Uhr für 30 Sekunden', P.wuerfel ? '' : 'zwei Würfel in verschiedenen Farben', ctx.pasch ? 'ein weiterer Würfel für den Pasch' : ''])}.`,
+    P.protokoll ? 'Das Hörprotokoll für alle, die zuhören, einmal kopieren.' : ''
+  ].filter(Boolean);
+  const play = n <= 4 ? 15 : n === 5 ? 20 : 25;
+  L.ablauf = [
+    [5, 'Aufbau und Rollen', G ? 'Je Tisch ein Satz. Zwei Teams und eine Spielleitung festlegen.' : 'Je Paar ein Satz. Wer anfängt, entscheidet der Würfel.'],
+    [5, 'Einführen', `Eine Runde an der Tafel mit der App vorspielen oder den Sprechtext nutzen. Danach liest ${G ? 'jede Gruppe' : 'jedes Paar'} die Spielkarte.`],
+    [play, 'Spielen', 'Die Spielzeit vorher ansagen. Ist sie um, gewinnt, wer mehr Steine hat.'],
+    [10, 'Auswerten', 'Gelungene Vernetzungssätze vorlesen lassen und den Wiederholungsstapel sichten.']
   ];
-  T.goal = pick('Vier eigene Steine in einer Reihe? Das geht waagerecht, senkrecht oder schräg. Auch Wackelsteine zählen. Nehmt zwei der vier Begriffe und bildet einen Satz, der beide richtig verbindet. Stimmt der Satz, habt ihr gewonnen! Stimmt er nicht, bleibt die Reihe liegen. Im nächsten Zug dürft ihr statt zu würfeln einen neuen Satz probieren.',
-    'Liegen vier eigene Steine in einer Reihe, waagerecht, senkrecht oder diagonal, folgt der Vernetzungszug. Wackelsteine zählen mit. Wählt zwei der vier Begriffe und verbindet sie in einem fachlich stimmigen Satz. Ist der Satz stimmig, habt ihr den Vierklang und gewinnt. Wenn nicht, bleibt die Reihe liegen, und im nächsten eigenen Zug dürft ihr statt zu würfeln einen neuen Satz versuchen.',
-    'Vier eigene Steine in einer Reihe (waagerecht, senkrecht, diagonal; Wackelsteine zählen) eröffnen den Vernetzungszug. Zwei der vier Begriffe werden in einem Satz verknüpft, der eine Beziehung benennt und begründet: Ursache, Funktion, Gegensatz, Entwicklung oder Teil und Ganzes. Gelingt das, ist der Vierklang komplett. Andernfalls bleibt die Reihe liegen, und im nächsten eigenen Zug darf statt zu würfeln ein neuer Satz versucht werden.')
-    + (G ? pick(' Die Spielleitung entscheidet.', ' Ob der Satz stimmig ist, entscheidet die Spielleitung.', ' Die Spielleitung entscheidet über die Stimmigkeit.') : pick(' Seid ihr unsicher, fragt die Lehrkraft.', ' Ob der Satz stimmig ist, entscheidet ihr gemeinsam; im Zweifel fragt ihr die Lehrkraft.', ' Über die Stimmigkeit entscheidet ihr gemeinsam, im Zweifel die Lehrkraft.'));
-  T.bad = pick('Zu wenig ist: „Beide gehören zum Thema.“ Ein guter Satz hat einen Beweis, zum Beispiel ein „weil“.', '„Beide gehören zum Thema“ reicht nicht, der Satz muss eine Beziehung zeigen.', 'Eine bloße Zuordnung zum Thema genügt nicht. Der Satz muss die Beziehung benennen und begründen.');
-  T.end = pick('Wer den Vierklang schafft, gewinnt sofort. Ist das Brett voll oder die Zeit um? Dann gewinnt, wer mehr Steine hat. Bei gleich vielen Steinen gewinnt, wer mehr schwere Begriffe geschafft hat.',
-    'Ein Vierklang gewinnt sofort. Ist das Brett voll oder eine vereinbarte Spielzeit um, gewinnt die Seite mit mehr Steinen. Bei Gleichstand zählen zuerst die schweren Begriffe, dann die festen Steine.',
-    'Ein Vierklang entscheidet sofort. Bei vollem Brett oder abgelaufener Spielzeit zählt die Zahl der Steine, bei Gleichstand zuerst die schweren Begriffe, dann die festen Steine.');
-  T.peek = pick('Ihr dürft die Steine anheben und nachsehen, welcher Begriff darunter liegt.', 'Unter die Steine dürft ihr jederzeit schauen, um den Begriff darunter zu lesen.', 'Die Begriffe unter den Steinen dürfen jederzeit nachgelesen werden.');
-  T.teacher = 'Den Spielplan auf A3 vergrößert drucken. Eine Partie dauert etwa 20 bis 30 Minuten; eine feste Spielzeit macht das Ende planbar.' + (ctx.multi ? ' Prüfkarten und Lösungsübersicht passen nur zum Spielplan desselben Satzes.' : '');
-  /* Beispielzug für Klasse 5/6 mit einem Begriff aus diesem Satz */
-  if (E) {
-    const set = ctx.sets[(ctx.curSet || 1) - 1] || ctx.sets[0];
-    const cells = set && set.cells ? set.cells : [];
-    let ex = null;
-    for (let k = 0; k < cells.length; k++) { const t = cells[k]; const r = Math.floor(k / n) + 1, c = k % n + 1; if (t && r !== c && t.kind !== 'bild' && t.kind !== 'hoeren' && t.feats && t.feats.length >= 2 && t.term.length <= 24) { ex = { t, r, c }; break; } }
-    if (ex) {
-      const who = G ? 'Team Quadrat' : 'Mia';
-      T.example = {
-        title: 'So sieht ein Zug aus',
-        rows: [
-          ['Würfeln', `${who} würfelt. Blau zeigt ${ex.r}, Gelb zeigt ${ex.c}. Das Feld ist Zeile ${ex.r}, Spalte ${ex.c}: „${ex.t.term}“.`],
-          ['Erklären', `${G ? 'Eine Person aus dem Team' : 'Mia'} erklärt in 30 Sekunden, was „${ex.t.term}“ ist und woran man es erkennt.`],
-          ['Prüfen', `${SL} schaut auf die Prüfkarte zu Feld ${ex.r}/${ex.c}. Dort stehen zum Beispiel: „${ex.t.feats[0]}“ und „${ex.t.feats[1]}“. Beides wurde gesagt? Zwei Haken, das reicht.`],
-          ['Stein setzen', `${who} legt einen festen Stein auf das Feld. Jetzt ist die andere Seite dran.`]
-        ]
-      };
+  L.ablaufNote = 20 + play < 45 ? `Die übrigen ${45 - 20 - play} Minuten eignen sich für eine kurze Runde mit dem Wiederholungsstapel.` : '';
+  L.speech = G
+    ? pick('Ihr spielt in zwei Teams. Ihr würfelt ein Feld aus, beratet kurz, und eine Person erklärt den Begriff in 30 Sekunden mit eigenen Worten. Die Spielleitung prüft mit der Prüfkarte. Zwei von drei Punkten reichen für einen Stein. Wer vier Steine in einer Reihe hat, verbindet zwei der Begriffe in einem Satz. Stimmt der Satz, hat das Team gewonnen. Alles andere steht auf dem Nachschlageblatt.',
+      'Zwei Teams spielen gegeneinander. Ihr würfelt ein Feld, beratet kurz, dann erklärt eine Person den Begriff in 30 Sekunden in eigenen Worten. Die Spielleitung hakt auf der Prüfkarte ab, zwei von drei Kernmerkmalen bringen einen Stein. Vier Steine in einer Reihe eröffnen den Vernetzungszug, einen Satz, der zwei der Begriffe stimmig verbindet. Sonderfälle stehen auf dem Nachschlageblatt.',
+      'Zwei Teams und eine Spielleitung. Gewürfelt wird ein Feld, nach kurzer Beratung erläutert eine Person den Begriff in 30 Sekunden. Zwei von drei Kernmerkmalen auf der Prüfkarte bringen einen Stein. Vier Steine in einer Reihe eröffnen den Vernetzungszug, ein begründeter Satz verknüpft zwei der Begriffe. Sonderfälle regelt das Nachschlageblatt.')
+    : pick('Ihr spielt zu zweit. Ihr würfelt ein Feld aus und erklärt den Begriff dort in 30 Sekunden mit eigenen Worten. Die andere Person prüft mit der Prüfkarte. Zwei von drei Punkten reichen für einen Stein. Wer vier Steine in einer Reihe hat, verbindet zwei der Begriffe in einem Satz. Stimmt der Satz, ist das Spiel gewonnen. Alles andere steht auf dem Nachschlageblatt.',
+      'Ihr spielt zu zweit. Gewürfelt wird ein Feld, dann wird der Begriff in 30 Sekunden in eigenen Worten erklärt. Die andere Person hakt auf der Prüfkarte ab, zwei von drei Kernmerkmalen bringen einen Stein. Vier Steine in einer Reihe eröffnen den Vernetzungszug, einen Satz, der zwei der Begriffe stimmig verbindet. Sonderfälle stehen auf dem Nachschlageblatt.',
+      'Zu zweit wird gewürfelt und erläutert, 30 Sekunden je Begriff. Zwei von drei Kernmerkmalen auf der Prüfkarte bringen einen Stein. Vier Steine in einer Reihe eröffnen den Vernetzungszug, ein begründeter Satz verknüpft zwei der Begriffe. Sonderfälle regelt das Nachschlageblatt.');
+  /* Dieses Brett */
+  const ids = new Set(ctx.sel.map((t) => t.id)), byId = {}; ctx.sel.forEach((t) => { byId[t.id] = t; });
+  const hardT = ctx.sel.filter((t) => t.diff === 3).map((t) => t.term);
+  const conf = (pack.pairs || []).filter((q) => ids.has(q[0]) && ids.has(q[1])).map((q) => `${byId[q[0]].term} und ${byId[q[1]].term}`);
+  const zeigT = ctx.zeig ? ctx.sel.filter((t) => t.zeig && t.kind !== 'bild') : [];
+  const mitT = zeigT.filter((t) => t.mit);
+  const bildT = ctx.sel.filter((t) => t.kind === 'bild');
+  L.board = [['Schwer', hardT.length ? `${hardT.length} mit drei Sternen, zum Beispiel ${prList(hardT.slice(0, 4))}.` : 'Keine Begriffe mit drei Sternen.']];
+  if (conf.length) L.board.push(['Leicht verwechselt', conf.slice(0, 3).join('; ') + (conf.length > 3 ? ' und weitere.' : '.') + (pairsOn ? ' Die Abgrenzungskarten üben genau das.' : ' Dafür gibt es in der Druckwerkstatt Abgrenzungskarten.')]);
+  if (zeigT.length) {
+    const tasks = zeigT.map((t) => String((t.zeig && t.zeig.auftrag) || '')).join(' ');
+    const paper = /zeichn|skizz|tafel|notier|schreib/i.test(tasks), space = /dirigier|klatsch|tanz|beweg|stampf|schnips|patsch|sing|summ/i.test(tasks);
+    L.board.push(['Zeigefelder', `${zeigT.length}, zum Beispiel „${zeigT[0].term}“.` + (space ? ' Platz zum Vormachen einplanen, an mehreren Tischen wird es lauter.' : '') + (paper ? ' Papier oder Tafel für Skizzen bereitlegen.' : '')]);
+  }
+  if (mitT.length) L.board.push(['Mitspielfelder', `${mitT.length}. Eine Person spielt die Begleitung, die Prüfkarte sagt wie.`]);
+  if (bildT.length) L.board.push(['Notenbilder', `${bildT.length}. Sie stehen als Bild auf dem Spielplan, genannt wird der Begriff.`]);
+  if (ctx.links.length) L.board.push(['Mustersätze', `${ctx.links.length} für den Vernetzungszug` + (P.satz || P.loesung ? ', ' + prList([P.satz && 'im Satzbaukasten', P.loesung && 'in der Lösungsübersicht']) : '') + '. Andere stimmige Sätze zählen genauso.']);
+  /* Fallstricke, höchstens fünf */
+  const F = [];
+  if (!pack.checked) F.push(['KI-Entwurf', 'Lies die Prüfkarten vor dem Einsatz durch. Fehler auf einer Karte prägen sich beim Spielen ein.']);
+  F.push(['Wortlaut', 'Gezählt wird, was sinngemäß gesagt wurde. Kläre diese Schiedsregel vor dem Start.']);
+  if (G) F.push(E ? ['Spielleitung', 'In Klasse 5 und 6 ist die Rolle anfangs schwer. Übernimm sie im ersten Spiel selbst oder gib sie einer sicheren Person, später reihum.'] : ['Strenge Prüfung', 'Im Wettbewerb prüfen Teams die Gegenseite oft sehr streng. Sprich das vor dem Start an.']);
+  else F.push(['Verdeckte Karte', 'Die Prüfkarte bleibt verdeckt, bis erklärt wurde. Sonst werden die Merkmale nur abgelesen.']);
+  F.push(E ? ['Aufzählen', 'Wörter aufzuzählen ist noch keine Erklärung. Lass fragen, woran man den Begriff erkennt.'] : ['Aufsagen', 'Zwei Stichwörter sind noch keine Erklärung. Im Zweifel ein Beispiel verlangen.']);
+  F.push(['Vernetzungssatz', '„Beide gehören zum Thema“ reicht nicht. Ein guter Satz nennt eine Beziehung, oft mit „weil“ oder „dadurch“.']);
+  if (zeigT.length) F.push(['Vormachen', 'Manche trauen sich nicht. Erlaube, dass das ganze Team mitmacht.']);
+  if (ctx.multi) F.push(['Mehrere Sätze', 'Prüfkarten und Lösungsübersicht passen nur zum Spielplan mit derselben Satznummer.']);
+  if (!ctx.einstieg) F.push(['Erstes Spiel', 'Mit dem Regelumfang „Einstieg“ fällt der Start leichter.']);
+  L.fallen = F.slice(0, 5);
+  /* Sicherung */
+  L.sicherung = [
+    'Wiederholungsstapel. Die Prüfkarten der Felder ohne Stein sammeln, sie sind der Einstieg in die nächste Stunde.',
+    P.loesung ? 'Lösungsübersicht mit Brett, Kernmerkmalen und Mustersätzen für dich.' : '',
+    P.protokoll ? 'Hörprotokolle einsammeln. Sie zeigen, was beim Zuhören angekommen ist.' : '',
+    P.lern ? 'Lernkarten zum Falten für die Einzelarbeit.' : ''
+  ].filter(Boolean);
+  L.qr = !pack.own && typeof lkURL === 'function' ? { url: lkURL(pack, 'ueben'), note: pack.edited ? 'Der Link öffnet die Originalfassung, deine Anpassungen liegen nur in deinem Browser.' : '' } : null;
+  L.own = String(pack.lk || '').trim();
+  return L;
+}
+/* QR-Code als Vektorgrafik; Läufe dunkler Module werden zusammengefasst */
+function prQR(ctx, text, x, y, size) {
+  const q = typeof qrMatrix === 'function' ? qrMatrix(text) : null; if (!q) return false;
+  const K = ctx.K, n = q.getModuleCount(), m = size / (n + 4);
+  K.fillC('#FFFFFF'); K.rect(x, y, size, size, 'F');
+  K.fillC('#111111');
+  for (let r = 0; r < n; r++) {
+    let c = 0;
+    while (c < n) {
+      if (!q.isDark(r, c)) { c++; continue; }
+      let e = c; while (e + 1 < n && q.isDark(r, e + 1)) e++;
+      K.doc.rect(x + (c + 2) * m, y + (r + 2) * m, (e - c + 1) * m, m * 1.04, 'F');
+      c = e + 1;
     }
   }
-  return T;
+  return true;
+}
+function pageLehrkraft(ctx) {
+  const K = ctx.K, L = prTeacherTexts(ctx), W = 89, X2 = 109;
+  K.page('portrait');
+  let y0 = prHeader(ctx, 'Für die Lehrkraft', null, { chip: 'Lehrkraftblatt' });
+  let cx = 12;
+  L.chips.forEach((ch) => {
+    const w = K.tw(ch, 'n9', 7) + 6; if (cx + w > 198) return;
+    K.fillC(ctx.spar ? '#FFFFFF' : PR_C.panel); K.drawC(PR_C.line); K.lw(0.25); K.rr(cx, y0 - 1.5, w, 5.8, 2.9, ctx.spar ? 'FD' : 'F');
+    K.text(ch, cx + w / 2, y0 - 1.5 + 2.9 + K.cap(7) / 2, 'n9', 7, PR_C.muted, { align: 'center' });
+    cx += w + 2;
+  });
+  y0 += 7.5;
+  const lay = (sc) => {
+    const b = 8.3 * sc, sm = 7.3 * sc;
+    const gap = (h) => ({ h, draw: () => {} });
+    const sec = (title) => ({ h: 7 * sc, draw: (x, y) => K.text(title, x, y + K.cap(10.8 * sc), 't', 10.8 * sc, PR_C.ink) });
+    const rich = (segs, size, w) => K.rich(segs, size, w, { lh: 1.3 });
+    const left = [], right = [];
+    left.push(sec('Einordnung'), rich([[L.einordnung, 'n6']], b, W));
+    if (L.module) left.push(gap(1.2), rich((/^lehrplan/i.test(L.module) ? [] : [['Lehrplan ', 'n9', PR_C.muted]]).concat([[L.module, 'n8', PR_C.muted]]), sm, W));
+    if (L.fams.length) left.push(gap(1.4), rich([['Vorher erarbeitet. ', 'n9'], [L.fams.join(' · '), 'n6']], b, W));
+    left.push(gap(4), sec('Vorbereitung'));
+    L.prep.forEach((t) => { const r = rich([[t, 'n6']], b, W - 4); left.push({ h: r.h + 1, draw: (x, y) => { K.fillC(PR_C.accent); K.doc.circle(x + 1, y + r.lh / 2, 0.8, 'F'); r.draw(x + 4, y); } }); });
+    left.push(gap(3), sec('Ablauf für 45 Minuten'));
+    L.ablauf.forEach((a) => {
+      const r = rich([[a[1] + '. ', 'n9'], [a[2], 'n6']], b, W - 15);
+      left.push({ h: Math.max(6, r.h) + 1.8, draw: (x, y) => {
+        K.fillC(ctx.spar ? '#FFFFFF' : PR_C.goldLight); K.drawC(PR_C.goldDark); K.lw(0.25); K.rr(x, y + 0.2, 12.4, 5.2, 2, ctx.spar ? 'FD' : 'FD');
+        K.text(a[0] + ' Min.', x + 6.2, y + 0.2 + 2.6 + K.cap(6.4 * sc) / 2, 'n9', 6.4 * sc, PR_C.goldDark, { align: 'center' });
+        r.draw(x + 15, y);
+      } });
+    });
+    if (L.ablaufNote) { left.push(rich([[L.ablaufNote, 'n6', PR_C.muted]], sm, W)); }
+    const sp = rich([[L.speech, 'n6']], b, W - 8);
+    left.push(gap(4), { h: 10 + sp.h + 3, draw: (x, y) => {
+      prPanel(ctx, x, y, W, 10 + sp.h + 3, 'gold');
+      K.text('Sprechtext zum Einführen', x + 4, y + 6.6, 't', 10.4 * sc, PR_C.goldDark);
+      sp.draw(x + 4, y + 9.6);
+    } });
+    right.push(sec('Dieses Brett'));
+    L.board.forEach((r0) => { const r = rich([[r0[0] + '. ', 'n9'], [r0[1], 'n6']], b, W); right.push(r, gap(1.4)); });
+    right.push(gap(2.6), sec('Fallstricke'));
+    L.fallen.forEach((f) => {
+      const r = rich([[f[0] + '. ', 'n9', '#B8431F'], [f[1], 'n6']], b, W - 4);
+      right.push({ h: r.h + 1.6, draw: (x, y) => { K.fillC('#B8431F'); K.doc.circle(x + 1, y + r.lh / 2, 0.8, 'F'); r.draw(x + 4, y); } });
+    });
+    right.push(gap(2.6), sec('Sicherung'));
+    L.sicherung.forEach((t) => { const r = rich([[t, 'n6']], b, W - 4); right.push({ h: r.h + 1.2, draw: (x, y) => { K.fillC(PR_C.accent); K.doc.circle(x + 1, y + r.lh / 2, 0.8, 'F'); r.draw(x + 4, y); } }); });
+    if (L.qr) {
+      const qs = 24 * Math.max(0.9, sc);
+      const cap = rich([['Karten üben zu Hause. ', 'n9'], ['QR-Code scannen oder den Link aufrufen. Ohne Konto, der Lernstand bleibt im Browser.', 'n6']], sm + 0.4, W - qs - 4);
+      const url = K.rich([[L.qr.url, 'n8', PR_C.muted]], 6 * sc, W - qs - 4, { lh: 1.2 });
+      const note = L.qr.note ? K.rich([[L.qr.note, 'n6', PR_C.muted]], 6.4 * sc, W - qs - 4, { lh: 1.2 }) : null;
+      const h = Math.max(qs, cap.h + 1.4 + url.h + (note ? 1 + note.h : 0));
+      right.push(gap(1.6), { h, draw: (x, y) => {
+        prQR(ctx, L.qr.url, x, y, qs);
+        K.drawC(PR_C.line); K.lw(0.25); K.rr(x, y, qs, qs, 1.2, 'S');
+        let ty = y + 1; cap.draw(x + qs + 4, ty); ty += cap.h + 1.4; url.draw(x + qs + 4, ty); ty += url.h + 1; if (note) note.draw(x + qs + 4, ty);
+      } });
+    }
+    if (L.own) {
+      const r = rich([[L.own, 'n6']], b, W - 8);
+      right.push(gap(3.4), { h: 10 + r.h + 3, draw: (x, y) => {
+        prPanel(ctx, x, y, W, 10 + r.h + 3, 'indigo');
+        K.text('Dein Hinweis zum Paket', x + 4, y + 6.6, 't', 10.4 * sc, PR_C.accentDark);
+        r.draw(x + 4, y + 9.6);
+      } });
+    }
+    const sum = (arr) => arr.reduce((a, bl) => a + bl.h, 0);
+    return { left, right, h: Math.max(sum(left), sum(right)) };
+  };
+  let Lay = null;
+  for (let sc = 1; sc >= 0.8; sc -= 0.02) { Lay = lay(sc); if (y0 + Lay.h <= 284) break; }
+  if (y0 + Lay.h > 284) K.warn.push('Lehrkraftblatt zu voll: ' + ctx.pack.title);
+  let y = y0; Lay.left.forEach((bl) => { bl.draw(12, y); y += bl.h; });
+  y = y0; Lay.right.forEach((bl) => { bl.draw(X2, y); y += bl.h; });
+  K.drawC(PR_C.line); K.lw(0.25); K.dash(null); K.doc.line(X2 - 4, y0, X2 - 4, y0 + Lay.h);
 }
 
 function prStepIcon(ctx, key, x, y, s) {
@@ -20934,124 +21347,6 @@ function prCardIcon(ctx, key, x, y, s) {
   else if (key === 'konter') { K.stone('A', x + s * 0.28, y + s / 2, s * 0.4, false); K.drawC(PR_C.muted); K.lw(0.4); K.doc.line(x + s * 0.47, y + s / 2, x + s * 0.65, y + s / 2); K.poly([[x + s * 0.5, y + s * 0.43], [x + s * 0.44, y + s / 2], [x + s * 0.5, y + s * 0.57]], 'S'); K.poly([[x + s * 0.62, y + s * 0.43], [x + s * 0.68, y + s / 2], [x + s * 0.62, y + s * 0.57]], 'S'); K.stone('B', x + s * 0.84, y + s / 2, s * 0.34, false); }
   else { K.fillC('#FFFFFF'); K.drawC(PR_C.goldDark); K.lw(0.3); K.rr(x + s * 0.3, y + s * 0.1, s * 0.42, s * 0.8, s * 0.08, 'FD'); K.check(x + s * 0.38, y + s * 0.3, s * 0.13, PR_C.goldDark); K.tick(x + s * 0.38, y + s * 0.3, s * 0.13, PR_C.accent); K.check(x + s * 0.38, y + s * 0.52, s * 0.13, PR_C.goldDark); }
 }
-function pageAnleitung(ctx, set) {
-  const K = ctx.K, doc = K.doc, E = ctx.easy, cov = ctx.cover, pal = cov.pal;
-  ctx.curSet = set.no;
-  const T = prRuleTexts(ctx), bodyS = E ? 9.8 : 9.3;
-  K.page('portrait');
-  /* Kopfkarte */
-  const hx = 12, hy = 11, hw = 186, hh = 56;
-  if (!ctx.spar) {
-    K.fillC(pal.dark); K.rr(hx, hy + 1.4, hw, hh, 6, 'F'); K.fillC(pal.base); K.rr(hx, hy, hw, hh, 6, 'F');
-    K.clipRR(hx, hy, hw, hh, 6, () => { K.fillC(prMix(pal.base, '#FFFFFF', 0.12)); doc.circle(hx + hw - 26, hy + hh / 2, 40, 'F'); K.fillC(prMix(pal.base, '#FFFFFF', 0.22)); doc.circle(hx + hw - 26, hy + hh / 2, 27, 'F'); });
-  } else { K.fillC('#FFFFFF'); K.drawC(pal.base); K.lw(0.8); K.rr(hx, hy, hw, hh, 6, 'FD'); }
-  const on = ctx.spar ? PR_C.ink : pal.on, onSoft = ctx.spar ? PR_C.muted : (pal.on === '#FFFFFF' ? prMix(pal.base, '#FFFFFF', 0.78) : prMix(pal.base, PR_C.ink, 0.7));
-  K.fillC(ctx.spar ? pal.light : '#FFFFFF'); doc.circle(hx + hw - 26, hy + hh / 2, 17.5, 'F');
-  K.icon(cov.icon, hx + hw - 26 - 12, hy + hh / 2 - 12, 24, pal.base);
-  K.stone('A', hx + hw - 50, hy + 13, 7.5, false); K.stone('B', hx + hw - 8.5, hy + hh - 11, 7.5, false);
-  K.logo(hx + 8, hy + 7.5, 9.5, ctx.spar ? PR_C.ink : on);
-  K.text('VIERKLANG', hx + 22.5, hy + 15.3, 't', 22, on, { cs: 0.4 });
-  K.text(E ? 'Das Erklärspiel zum Ausdrucken' : 'Das Erklärspiel auf Papier', hx + 8.4, hy + 23.4, 'n9', 9, onSoft);
-  const tf = K.fit(ctx.pack.title, 't', hw - 72, 16, { max: 17, min: 11, lh: 1.02, maxLines: 2, hyAt: 0.7 });
-  K.block(tf, hx + 8.4, hy + 26.4, hw - 72, tf.h, 'left', 'top', 't', on);
-  const chips = [ctx.multi ? 'Satz ' + set.no : '', ctx.group ? 'Lerngruppe ' + ctx.group : '', ctx.gruppe ? 'Gruppenspiel' : 'Partnerspiel', `Brett ${ctx.n} × ${ctx.n}`, ctx.pack.grade].filter(Boolean);
-  let cx = hx + 8.4; const cyy = hy + hh - 10.4;
-  chips.forEach((ch, i) => {
-    const w = K.tw(ch, 'n9', 7.4) + 6.2;
-    if (cx + w > hx + hw - 50) return;
-    const gold = ctx.multi && i === 0;
-    if (ctx.spar) { K.fillC('#FFFFFF'); K.drawC(gold ? PR_C.goldDark : pal.base); K.lw(0.3); K.rr(cx, cyy, w, 6, 3, 'FD'); }
-    else { K.fillC(gold ? PR_C.gold : (pal.on === '#FFFFFF' ? prMix(pal.base, '#FFFFFF', 0.2) : prMix(pal.base, '#FFFFFF', 0.45))); K.rr(cx, cyy, w, 6, 3, 'F'); }
-    K.text(ch, cx + w / 2, cyy + 3 + K.cap(7.4) / 2, 'n9', 7.4, gold ? PR_C.ink : (ctx.spar ? pal.dark : on), { align: 'center' });
-    cx += w + 2;
-  });
-  let y = hy + hh + 7;
-  /* Einleitung */
-  const intro = K.rich([[T.intro, 'n8']], E ? 10.4 : 10, 186, { lh: 1.36 });
-  intro.draw(12, y); y += intro.h + 6;
-  /* Material und Aufbau */
-  const colW = 89;
-  const matR = T.material.map((m) => K.rich([[m, 'n6']], bodyS, colW - 9, { lh: 1.28 }));
-  const setR = T.setup.map((m) => K.rich([[m, 'n6']], bodyS, colW - 11, { lh: 1.28 }));
-  const matH = 13 + matR.reduce((a, r) => a + r.h + 1.3, 0) + 2, setH = 13 + setR.reduce((a, r) => a + r.h + 1.6, 0) + 2;
-  const boxH = Math.max(matH, setH);
-  prPanel(ctx, 12, y, colW, boxH, 'plain'); prPanel(ctx, 12 + colW + 8, y, colW, boxH, 'plain');
-  K.text(E ? 'Das braucht ihr' : 'Ihr braucht', 17, y + 8, 't', 12.5, PR_C.ink);
-  K.text('Aufbau', 17 + colW + 8, y + 8, 't', 12.5, PR_C.ink);
-  let my = y + 11.5;
-  matR.forEach((r) => { K.check(17, my + (r.lh - 3.2) / 2, 3.2, PR_C.accent); r.draw(22.6, my); my += r.h + 1.3; });
-  my = y + 11.5;
-  setR.forEach((r, i) => { prNumBadge(ctx, 17 + colW + 8, my + (r.lh - 4.6) / 2, 4.6, i + 1, PR_C.accent); r.draw(17 + colW + 8 + 6.6, my); my += r.h + 1.6; });
-  y += boxH + 7;
-  /* Ablauf einer Runde */
-  K.text('So läuft eine Runde', 12, y + K.cap(14), 't', 14, PR_C.ink);
-  K.text(ctx.gruppe ? 'immer abwechselnd, Team für Team' : 'immer abwechselnd', 12 + K.tw('So läuft eine Runde', 't', 14) + 4, y + K.cap(14), 'n8', 8.4, PR_C.muted);
-  y += 8.4;
-  const ic = 13.5;
-  const stepR = T.steps.map((s) => K.rich([[s[1] + '. ', 'n9'], [s[2], 'n6']], bodyS, 186 - ic - 6, { lh: 1.3 }));
-  const page1Bottom = 280;
-  let i = 0;
-  for (; i < T.steps.length; i++) {
-    const h = Math.max(ic, stepR[i].h) + 3.2;
-    if (y + h > page1Bottom) break;
-    prStepIcon(ctx, T.steps[i][0], 12, y, ic);
-    stepR[i].draw(12 + ic + 5, y + Math.max(0, (ic - stepR[i].h) / 2 - 0.4));
-    y += h;
-  }
-  /* Seite 2 */
-  K.page('portrait');
-  y = prHeader(ctx, 'Anleitung', set, { chip: ctx.gruppe ? 'Gruppenspiel' : 'Partnerspiel' });
-  if (i < T.steps.length) {
-    K.text('So läuft eine Runde (Fortsetzung)', 12, y + K.cap(13), 't', 13, PR_C.ink); y += 8;
-    for (; i < T.steps.length; i++) { const h = Math.max(ic, stepR[i].h) + 3.2; prStepIcon(ctx, T.steps[i][0], 12, y, ic); stepR[i].draw(12 + ic + 5, y + Math.max(0, (ic - stepR[i].h) / 2 - 0.4)); y += h; }
-    y += 3;
-  }
-  if (T.example) {
-    const exR = T.example.rows.map((r) => K.rich([[r[0] + '. ', 'n9', PR_C.accentDark], [r[1], 'n6']], bodyS - 0.4, 186 - 10 - 8, { lh: 1.3 }));
-    const exH = 11 + exR.reduce((a, r) => a + r.h + 1.8, 0) + 2;
-    prPanel(ctx, 12, y, 186, exH, 'gold');
-    K.text(T.example.title, 17, y + 7.4, 't', 12.5, PR_C.goldDark);
-    let ey = y + 11;
-    exR.forEach((r, k) => { prNumBadge(ctx, 17, ey + (r.lh - 4.4) / 2, 4.4, k + 1, PR_C.goldDark); r.draw(24, ey); ey += r.h + 1.8; });
-    y += exH + 6;
-  }
-  K.text(E ? 'Besondere Regeln' : 'Weitere Regeln', 12, y + K.cap(14), 't', 14, PR_C.ink); y += 8.4;
-  const cw2 = 89, cardR = T.cards.map((c) => K.rich([[c[2], 'n6']], bodyS - 0.3, cw2 - 10, { lh: 1.28 }));
-  for (let k = 0; k < T.cards.length; k += 2) {
-    const h = 15.5 + Math.max(cardR[k].h, cardR[k + 1] ? cardR[k + 1].h : 0) + 3;
-    [k, k + 1].forEach((j, col) => {
-      if (!T.cards[j]) return;
-      const x = 12 + col * (cw2 + 8);
-      K.fillC('#FFFFFF'); K.drawC(ctx.spar ? PR_C.cut : PR_C.line); K.lw(0.3); K.rr(x, y, cw2, h, 3.4, 'FD');
-      prCardIcon(ctx, T.cards[j][0], x + 4, y + 3, 11);
-      K.text(T.cards[j][1], x + 18, y + 10.2, 't', 11.5, PR_C.ink);
-      cardR[j].draw(x + 5, y + 15.5);
-    });
-    y += h + 5;
-  }
-  /* Vierklang */
-  const goalR = K.rich([[T.goal, 'n6']], bodyS, 186 - 62, { lh: 1.3 });
-  const model = prPickModels(ctx, 1)[0];
-  const byId = {}; ctx.sel.forEach((t) => { byId[t.id] = t; });
-  const exR = model ? K.rich([['Beispiel: ', 'n9', PR_C.accentDark], [`${byId[model[0]].term} + ${byId[model[1]].term}`, 'n9'], [' „' + model[2] + '“', 'n6']], bodyS - 0.4, 186 - 62, { lh: 1.28 }) : null;
-  const badR = K.rich([[T.bad, 'n6', PR_C.muted]], bodyS - 0.6, 186 - 62, { lh: 1.28 });
-  const gh = Math.max(52, 12 + goalR.h + (exR ? 2.6 + exR.h : 0) + 1.6 + badR.h + 4);
-  prPanel(ctx, 12, y, 186, gh, 'indigo');
-  prGoalArt(ctx, 17, y + (gh - 44) / 2, 44);
-  K.text(E ? 'Vierklang!' : 'Vierklang: so gewinnt ihr', 70, y + 8.6, 't', 13, PR_C.accentDark);
-  let gy = y + 11.6;
-  goalR.draw(70, gy); gy += goalR.h + 2.6;
-  if (exR) { exR.draw(70, gy); gy += exR.h + 1.6; }
-  badR.draw(70, gy);
-  y += gh + 6;
-  /* Spielende und Tipps */
-  const endR = K.rich([['Spielende. ', 'n9'], [T.end, 'n6']], bodyS, 186, { lh: 1.3 });
-  const peekR = K.rich([['Tipp. ', 'n9'], [T.peek, 'n6']], bodyS, 186, { lh: 1.3 });
-  endR.draw(12, y); y += endR.h + 2.4;
-  peekR.draw(12, y); y += peekR.h + 5;
-  const tR = K.rich([['Für die Lehrkraft: ', 'n9', PR_C.goldDark], [T.teacher, 'n6', PR_C.ink]], 8.4, 186 - 10, { lh: 1.3 });
-  if (y + tR.h + 6 <= 282) { prPanel(ctx, 12, y, 186, tR.h + 6, 'gold'); tR.draw(17, y + 3); }
-}
 function prGoalArt(ctx, x, y, s) {
   const K = ctx.K, n = 4, g = 1.1, c = (s - g * (n + 1)) / n;
   if (ctx.spar) { K.fillC('#FFFFFF'); K.drawC(PR_C.cut); K.lw(0.3); K.rr(x, y, s, s, 3, 'FD'); }
@@ -21064,71 +21359,7 @@ function prGoalArt(ctx, x, y, s) {
   }
   K.drawC(PR_C.gold); K.lw(1.6); K.doc.line(x + g + c / 2, y + g + c / 2, x + g + 3 * (c + g) + c / 2, y + g + 3 * (c + g) + c / 2);
 }
-
-/* ---------- Zusatzregeln: Zeigefelder, Abgrenzungskarten, Operatoren, Pasch-Ereignisse ---------- */
-function prZusatzTexts(ctx) {
-  const E = ctx.easy, H = ctx.hard, G = ctx.gruppe, P = ctx.o.parts;
-  const pick = (e, m, h) => (E ? e : H ? h : m);
-  const SL = G ? 'die Spielleitung' : 'die andere Person';
-  const cards = [];
-  if (ctx.zeig) cards.push(['zeig', 'Zeigefelder', pick(
-    `Auf manchen Feldern steht „Zeigen“. Hier wird nichts erklärt, sondern vorgemacht: klatschen, singen, dirigieren oder an die Tafel zeichnen. Der Auftrag steht auf der Prüfkarte. ${G ? 'Das andere Team schaut' : 'Die andere Person schaut'} genau hin. Zwei von drei Punkten auf der Karte reichen für den Stein. Hilfen gibt es hier nicht, dafür steht der Stein immer fest.`,
-    `Felder mit dem Vermerk „Zeigen“ werden vorgemacht statt erklärt: klatschen, singen, dirigieren, skizzieren. Den Auftrag liest ${SL} von der Prüfkarte vor. ${G ? 'Das andere Team beobachtet' : 'Die andere Person beobachtet'} anhand der drei Beobachtungsmerkmale, zwei genügen für den Stein. Hilfen gibt es nicht, der Stein steht fest.`,
-    `Felder mit dem Vermerk „Zeigen“ werden ausgeführt statt erläutert. ${SL.charAt(0).toUpperCase() + SL.slice(1)} liest den Auftrag vor; beobachtet wird anhand von drei Merkmalen, zwei genügen. Keine Hilfen, fester Stein.`)]);
-  if (P.paare && ctx.pairs.length) cards.push(['paare', 'Abgrenzungskarten', pick(
-    `Auf den Abgrenzungskarten stehen zwei Begriffe, die man leicht verwechselt. Beim Pasch${ctx.pasch ? ' mit dem Ereignis „Abgrenzung“' : ''} zieht ${G ? 'euer Team' : 'ihr'} eine Karte. Sagt, was beide gemeinsam haben, und zu jedem der beiden Begriffe, woran man ihn erkennt. Alles richtig? Dann dürft ihr einen Stein auf ein freies Feld eurer Wahl legen.`,
-    `Abgrenzungskarten zeigen zwei leicht verwechselbare Begriffe. ${ctx.pasch ? 'Beim Ereignis „Abgrenzung“' : 'Bei einem Pasch'} wird eine Karte gezogen. Zuerst wird die Gemeinsamkeit genannt, dann für jeden Begriff das Kurzmerkmal, das ihn vom anderen abhebt. Alles genannt: ein fester Stein auf ein freies Feld nach Wahl. Sonst bleibt alles, wie es ist.`,
-    `Abgrenzungskarten: zwei verwechselbare Begriffe. ${ctx.pasch ? 'Beim Ereignis „Abgrenzung“' : 'Bei einem Pasch'} wird gezogen. Gemeinsamkeit und beide Unterscheidungsmerkmale genannt: fester Stein auf ein freies Feld nach Wahl.`)]);
-  if (P.operatoren) cards.push(['ops', 'Operatorenkarten', pick(
-    `Vor dem Erklären zieht ${G ? 'das andere Team' : 'die andere Person'} eine Operatorenkarte. Darauf steht, was ihr tun sollt: erklären, beschreiben, zuordnen oder zeigen. Auf der Karte steht auch, was dann gezählt wird.`,
-    `Vor dem Erklären zieht ${G ? 'das andere Team' : 'die andere Person'} eine Operatorenkarte: erklären, erläutern, vergleichen oder einordnen. Die Karte nennt die Kriterien, die statt der Kernmerkmale gelten. Beim Vergleichen wird ein Nachbarbegriff vom Brett dazugenommen (gleiche Farbe).`,
-    `Vor der Erläuterung zieht ${G ? 'das andere Team' : 'das Gegenüber'} eine Operatorenkarte (erläutern, vergleichen, einordnen, erklären). Die Kriterien der Karte ersetzen die Kernmerkmale; ein Pflichtpunkt muss immer genannt sein. Vergleichen: mit einem Nachbarbegriff derselben Familienfarbe.`)]);
-  const ev = ctx.pasch ? [
-    ['1 und 2', 'Freie Wahl', pick('Ihr sucht euch ein freies Feld oder einen Wackelstein aus.', 'Ein freies Feld oder ein Wackelstein nach Wahl.', 'Freies Feld oder Wackelstein nach Wahl.')],
-    ['3', 'Noch mal', pick('Freie Wahl. Schafft ihr den Begriff, seid ihr gleich noch einmal dran.', 'Freie Wahl. Gelingt der Begriff, ist dieselbe Seite sofort wieder am Zug.', 'Freie Wahl; bei Erfolg sofort ein weiterer Zug.')],
-    ['4', P.paare && ctx.pairs.length ? 'Abgrenzung' : 'Angriff nach Wahl', P.paare && ctx.pairs.length ? pick('Zieht eine Abgrenzungskarte (siehe links).', 'Eine Abgrenzungskarte ziehen (siehe oben).', 'Abgrenzungskarte ziehen (siehe oben).') : pick('Greift einen Wackelstein vom anderen Team an, den ihr euch aussucht.', 'Ein Wackelstein der anderen Seite nach Wahl wird angegriffen.', 'Angriff auf einen Wackelstein der anderen Seite nach Wahl.')],
-    ['5', 'Blitz', pick('Freie Wahl, aber nur 15 Sekunden Zeit.', 'Freie Wahl, aber nur 15 Sekunden zum Erklären.', 'Freie Wahl, 15 Sekunden.')],
-    ['6', 'Ohne Hilfe', pick('Freie Wahl, aber ohne Hilfe. Dafür steht der Stein fest.', 'Freie Wahl ohne Hilfen; dafür steht der Stein fest.', 'Freie Wahl ohne Hilfen, fester Stein.')]
-  ] : null;
-  return { cards, ev };
-}
-function pageZusatz(ctx, set) {
-  const Z = prZusatzTexts(ctx);
-  if (!Z.cards.length && !Z.ev) return;
-  const K = ctx.K, E = ctx.easy, bodyS = E ? 9.8 : 9.3;
-  K.page('portrait');
-  let y = prHeader(ctx, 'Zusatzregeln', set, { chip: ctx.gruppe ? 'Gruppenspiel' : 'Partnerspiel' });
-  const intro = K.rich([[E ? 'Diese Regeln gelten zusätzlich. Sie machen das Spiel abwechslungsreicher.' : 'Diese Regeln kommen zu den Grundregeln hinzu. Die Lehrkraft entscheidet, welche davon gelten.', 'n6', PR_C.muted]], bodyS, 186, { lh: 1.3 });
-  intro.draw(12, y); y += intro.h + 5;
-  const cw2 = 89, cardR = Z.cards.map((c) => K.rich([[c[2], 'n6']], bodyS - 0.3, cw2 - 10, { lh: 1.28 }));
-  for (let k = 0; k < Z.cards.length; k += 2) {
-    const h = 15.5 + Math.max(cardR[k].h, cardR[k + 1] ? cardR[k + 1].h : 0) + 3;
-    [k, k + 1].forEach((j, col) => {
-      if (!Z.cards[j]) return;
-      const x = 12 + col * (cw2 + 8);
-      K.fillC('#FFFFFF'); K.drawC(ctx.spar ? PR_C.cut : PR_C.line); K.lw(0.3); K.rr(x, y, cw2, h, 3.4, 'FD');
-      prZusatzIcon(ctx, Z.cards[j][0], x + 4, y + 3, 11);
-      K.text(Z.cards[j][1], x + 18, y + 10.2, 't', 11.5, PR_C.ink);
-      cardR[j].draw(x + 5, y + 15.5);
-    });
-    y += h + 5;
-  }
-  if (Z.ev) {
-    y += 2;
-    K.text(E ? 'Pasch: Das Ereignis würfeln' : 'Pasch-Ereignisse', 12, y + K.cap(14), 't', 14, PR_C.ink); y += 8;
-    const sub = K.rich([[E ? 'Zwei gleiche Zahlen? Dann würfelt ihr mit einem Würfel noch einmal. Die Zahl zeigt das Ereignis.' : 'Bei einem Pasch wird mit einem Würfel das Ereignis bestimmt. Höchstens alle drei Züge, sonst gilt freie Wahl.', 'n6', PR_C.muted]], bodyS, 186, { lh: 1.3 });
-    sub.draw(12, y); y += sub.h + 3;
-    Z.ev.forEach((row, i) => {
-      const r = K.rich([[row[1] + '. ', 'n9'], [row[2], 'n6']], bodyS, 186 - 26, { lh: 1.3 });
-      const h = Math.max(8.5, r.h + 3);
-      if (i % 2 === 0) prPanel(ctx, 12, y, 186, h, 'plain');
-      K.fillC(ctx.spar ? '#FFFFFF' : PR_C.gold); K.drawC(PR_C.goldDark); K.lw(0.3); K.rr(15, y + (h - 6.4) / 2, 16, 6.4, 2, ctx.spar ? 'FD' : 'F');
-      K.text(row[0], 23, y + h / 2 + K.cap(7) / 2, 'n9', 7, PR_C.ink, { align: 'center' });
-      r.draw(36, y + (h - r.h) / 2);
-      y += h;
-    });
-  }
-}
+/* Symbole der Zusatzkästen */
 function prZusatzIcon(ctx, key, x, y, s) {
   const K = ctx.K;
   if (key === 'zeig') { K.fillC('#FFFFFF'); K.drawC('#B8431F'); K.lw(0.45); K.rr(x + s * 0.3, y + s * 0.12, s * 0.42, s * 0.76, s * 0.1, 'FD'); K.drawC('#B8431F'); K.lw(0.5); [0.4, 0.55, 0.7].forEach((f) => K.doc.line(x + s * f, y + s * 0.2, x + s * f, y + s * 0.5)); }
@@ -21298,8 +21529,9 @@ async function buildPrintPdf(JsPDF, o, progress) {
   ctx.solidReal = Math.ceil((ctx.solid + 8) / cols) * cols - 8;
   await prPrepareImages(ctx);
   const P = o.parts, jobs = [];
+  if (P.lehrkraft) jobs.push(() => pageLehrkraft(ctx));
   ctx.sets.forEach((set) => {
-    if (P.anleitung) { jobs.push(() => pageAnleitung(ctx, set)); jobs.push(() => pageZusatz(ctx, set)); }
+    if (P.anleitung) { jobs.push(() => pageSpielkarte(ctx, set)); jobs.push(() => pageNachschlagen(ctx, set)); }
     if (P.plan) jobs.push(() => pageSpielplan(ctx, set));
     if (P.satz) jobs.push(() => pageSatz(ctx, set));
     if (P.pruef) jobs.push(() => pagesPruef(ctx, set));
@@ -21390,6 +21622,7 @@ const PRINT_ACTIONS = {
     else if (k === 'lang' && ['auto', 'easy', 'mid', 'hard'].includes(v)) pr.lang = v;
     else if (k === 'zeig') pr.zeig = v === 'an';
     else if (k === 'pasch') pr.pasch = v === 'ereignis';
+    else if (k === 'regeln') pr.regeln = v === 'voll' ? 'voll' : 'einstieg';
     pr.status = ''; prSave(); renderPrintStudio(`[data-act="pr-set"][data-k="${k}"][data-v="${v}"]`);
   },
   'pr-sets': (el) => { if (!pr || prBusy) return; pr.sets = clamp(pr.sets + (parseInt(el.dataset.v, 10) || 0), 1, 8); pr.status = ''; prSave(); renderPrintStudio(`[data-act="pr-sets"][data-v="${el.dataset.v}"]`); },
@@ -23488,13 +23721,16 @@ const TEACHER_TEXT = {
       <li><b>Datensparsam:</b> Es werden nur Vorname, Team, Schätzung und Satz während des Spiels übertragen. Nach dem Spiel bleibt davon nichts gespeichert.</li>
     </ul>`,
   druck: `
-    <p class="tq-lead">Die Druckversion macht aus einem Paket Spielplan, Prüfkarten, Spielsteine, Würfelnetze, Anleitung, Lernkarten und Lösungsübersicht als PDF.</p>
+    <p class="tq-lead">Die Druckversion macht aus einem Paket ein PDF mit Spielkarte, Nachschlageblatt, Spielplan, Prüfkarten, Spielsteinen, Würfelnetzen, Lernkarten und Lösungsübersicht, dazu ein Lehrkraftblatt.</p>
     <ul class="tq-list">
       <li><b>Wann drucken:</b> ohne Beamer, für Gruppenarbeit mit drei bis vier Brettern parallel, als Freiarbeitsmaterial oder für die Vertretung.</li>
-      <li><b>Sprachstufe:</b> Die Anleitung gibt es in drei Fassungen, in der einfachen mit einem Beispielzug. Die Stufe folgt der Klassenstufe des Pakets, du kannst sie umstellen.</li>
+      <li><b>Spielkarte und Nachschlageblatt:</b> Auf dem Tisch liegt eine Seite mit Ziel, Aufbau und einem Zug in wenigen Schritten. Sonderfälle wie Hilfe, besetztes Feld, Pasch oder der Satz beim Vierklang stehen mit Buchstaben auf dem Nachschlageblatt und werden erst gelesen, wenn sie eintreten. Im Gruppenspiel gehört das Nachschlageblatt der Spielleitung, oben steht ihre Karte.</li>
+      <li><b>Regelumfang:</b> „Einstieg“ lässt Festigen, Pasch-Ereignisse und Konter weg und eignet sich fürs erste Spiel. „Alle Regeln“ entspricht dem Spiel in der App.</li>
+      <li><b>Lehrkraftblatt:</b> Eine Seite vorneweg mit Einordnung, Lehrplanbezug, Vorbereitung, Ablauf für 45 Minuten, Sprechtext zum Einführen, den Besonderheiten des Bretts, Fallstricken und einem QR-Code zu „Karten üben“. Einen eigenen Hinweis zum Paket trägst du in der Werkstatt ein, er erscheint dort ebenfalls.</li>
+      <li><b>Sprachstufe:</b> Spielkarte und Nachschlageblatt gibt es in drei Sprachstufen. Die Stufe folgt der Klassenstufe des Pakets, du kannst sie umstellen.</li>
       <li><b>Zeigefelder und Abgrenzungsfelder</b> erscheinen auf den Prüfkarten mit Auftrag und Beobachtungsmerkmalen beziehungsweise mit Gemeinsamkeit, Kurzmerkmalen und Unterscheidungssatz.</li>
       <li><b>Operatorenkarten:</b> In der mittleren und der Oberstufenfassung liegt eine Seite mit Operatorenkarten bei. Vor dem Erklären zieht das andere Team eine Karte oder würfelt den Operator aus.</li>
-      <li><b>Pasch-Ereignisse</b> stehen als kleine Tabelle in der Anleitung: Mit einem Würfel wird das Ereignis bestimmt.</li>
+      <li><b>Pasch-Ereignisse</b> stehen bei „alle Regeln“ als kleine Tabelle auf dem Nachschlageblatt. Ein Würfel bestimmt das Ereignis.</li>
       <li><b>Album:</b> Die gesammelten Karten einer Gruppe lassen sich als PDF ausgeben, zum Aushängen oder Mitgeben.</li>
       <li><b>Hörprotokoll:</b> Ein Bogen für acht Züge zum Kopieren. Wer zuhört, notiert bis zu drei Stichwörter, hakt nach dem Aufdecken ab, was auf der Prüfkarte steht, und ergänzt, was gefehlt hat. Im Gruppenspiel schreibt das andere Team mit, im Partnerspiel notiert die prüfende Person erst und schaut dann auf die Karte. In der Druckwerkstatt ist das Hörprotokoll anfangs nicht angekreuzt.</li>
     </ul>`,
@@ -24532,20 +24768,24 @@ const ACTIONS = {
   'pack': (el) => { settings.packId = el.dataset.id; const sz = sizesFor(findPack(settings.packId)); if (sz.length) settings.size = sz[sz.length - 1]; saveSettings(); Sound.tick(); renderStart(); },
   'filter': (el) => {
     settings.gradeFilter = el.dataset.v;
-    const list = packsFor(settings.gradeFilter);
-    if (list.length && !list.some((p) => p.id === settings.packId)) { settings.packId = list[0].id; const sz = sizesFor(list[0]); if (sz.length) settings.size = sz[sz.length - 1]; }
+    const list0 = packsFor(settings.gradeFilter);
+    if (list0.length && !list0.some((p) => p.id === settings.packId)) { settings.packId = list0[0].id; const sz = sizesFor(list0[0]); if (sz.length) settings.size = sz[sz.length - 1]; }
+    subFilterHeal(findPack(settings.packId));
     saveSettings(); const c = $('#carousel'); if (c) c.scrollLeft = 0; carouselFocus = true; renderStart();
   },
   'car': (el) => scrollCarousel(parseInt(el.dataset.d, 10) || 1),
   'pack-view': (el) => {
+    const cur = findPack(settings.packId);
     settings.packView = el.dataset.v === 'thema' ? 'thema' : 'klasse';
-    if (settings.packView === 'thema') { const cur = findPack(settings.packId); settings.topicFilter = cur ? (cur.own ? 'own' : packTopic(cur)) : 'all'; }
+    /* Im Thema zeigt die Auswahlliste zunächst alle Klassen; eine dort gewählte Klasse wird beim Zurückwechseln zum Knopf */
+    if (settings.packView === 'thema') { settings.topicFilter = cur ? (cur.own ? 'own' : packTopic(cur)) : 'all'; settings.gradeSub = 'all'; }
+    else { if (subGrade()) settings.gradeFilter = String(subGrade()); settings.topicSub = 'all'; }
+    subFilterHeal(findPack(settings.packId));
     saveSettings(); const c = $('#carousel'); if (c) c.scrollLeft = 0; carouselFocus = true; renderStart();
   },
   'tfilter': (el) => {
     settings.topicFilter = el.dataset.v;
-    const list = packsForTopic(settings.topicFilter);
-    if (list.length && !list.some((p) => p.id === settings.packId)) { settings.packId = list[0].id; const sz = sizesFor(list[0]); if (sz.length) settings.size = sz[sz.length - 1]; }
+    subFilterHeal(findPack(settings.packId));
     saveSettings(); const c = $('#carousel'); if (c) c.scrollLeft = 0; carouselFocus = true; renderStart();
   },
   'st-step': (el) => goStep(el.dataset.v),
@@ -24691,6 +24931,11 @@ document.addEventListener('input', (e) => {
 });
 document.addEventListener('change', async (e) => {
   const el = e.target;
+  if (el.dataset && el.dataset.fsub && view === 'start') {
+    if (el.dataset.fsub === 'grade') settings.gradeSub = el.value; else settings.topicSub = el.value;
+    subFilterHeal(findPack(settings.packId));
+    saveSettings(); const c = $('#carousel'); if (c) c.scrollLeft = 0; carouselFocus = true; renderStart(); return;
+  }
   if (el.dataset && el.dataset.coach === 'rules') { settings.showRules = el.checked; saveSettings(); return; }
   if (el.dataset && el.dataset.wsf && el.type === 'checkbox') { updatePackMeta('checked', el.checked); return; }
   if (el.id === 'tf-kind') { renderMediaField(); return; }
