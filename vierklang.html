@@ -1678,6 +1678,113 @@ select.field { appearance: auto; }
 .kr-lock { border: 1.5px dashed #C9CDE4 !important; background: #FBFBFE !important; box-shadow: none !important; }
 @media (max-width: 900px) { .kr-tasks { grid-template-columns: minmax(0, 1fr); } }
 
+/* ---------- Rätselarten: Auswahl, Lückensätze, Suchsel, Kuckucksei ---------- */
+.rx-arts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 4px 0 14px; }
+.rx-art { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 10px 12px; border-radius: 16px; border: 2px solid #DCDFF0 !important; background: #FFFFFF !important; color: #23264F !important; font: inherit; text-align: left; cursor: pointer; box-shadow: 0 4px 0 #DCDFF0 !important; }
+.rx-art:hover { border-color: #9EA3CC !important; }
+.rx-art.on { border-color: #2B2E8C !important; background: #EEF0FF !important; box-shadow: 0 4px 0 #2B2E8C !important; }
+.rx-art:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 2px; }
+.rx-art-i { flex: none; display: grid; place-items: center; width: 44px; height: 36px; border-radius: 10px; background: #F4F6FB !important; }
+.rx-art.on .rx-art-i { background: #FFFFFF !important; }
+.rx-art-i svg { width: 38px; height: 30px; }
+.rx-art-i svg rect, .rx-art-i svg ellipse, .rx-art-i svg circle { fill: #FFFFFF !important; stroke: #2B2E8C !important; stroke-width: 1.6; }
+.rx-art-i svg .rx-gp { fill: #FFD98A !important; stroke: #B87700 !important; }
+.rx-art-i svg .rx-ln { fill: none !important; stroke: #2B2E8C !important; stroke-width: 2; stroke-linecap: round; }
+.rx-art-i svg text { font: 800 8px system-ui, sans-serif; fill: #2B2E8C !important; }
+.rx-art-t { display: flex; flex-direction: column; min-width: 0; }
+.rx-art-t b { font-size: 0.98rem; line-height: 1.2; }
+.rx-art-t small { color: #5A5F86 !important; font-size: 0.8rem; line-height: 1.3; }
+@media (max-width: 900px) { .rx-arts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .rx-art { padding: 8px; gap: 8px; } .rx-art-i { width: 36px; height: 30px; } .rx-art-i svg { width: 30px; height: 24px; } }
+
+/* Vorschau in der Einrichtung */
+.rx-prevs, .rx-prevk { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 8px; color: #23264F !important; line-height: 1.5; }
+.rx-prevs li { display: flex; align-items: flex-start; gap: 8px; }
+.rx-ptx { flex: 1; min-width: 0; }
+.rx-pg { color: #9EA3CC !important; letter-spacing: 0.04em; }
+.rx-pg.on { color: #1F6A3E !important; }
+.rx-prevk li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.rx-pk { padding: 3px 10px; border-radius: 999px; background: #F4F6FB !important; border: 1px solid #DCDFF0 !important; font-weight: 700; font-size: 0.9rem; }
+.rx-pk.on { background: #FFF3D6 !important; border-color: #F4A51C !important; color: #5C3F00 !important; }
+.rx-prevk small { flex-basis: 100%; color: #5A5F86 !important; }
+
+/* Lückensätze */
+.rx-sents { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.rx-sent { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 18px; background: #FFFFFF !important; border: 1px solid #DCDFF0 !important; }
+.rx-sent.done { border-color: #B9DEC6 !important; }
+.rx-sh { display: flex; align-items: center; gap: 8px; }
+.rx-st { margin: 0; font-size: 1.08rem; line-height: 2.3; color: #23264F !important; }
+.rx-gw { position: relative; display: inline-block; margin: 0 2px; vertical-align: baseline; }
+.rx-gap { min-width: 4.5em; max-width: 100%; padding: 2px 6px 2px 8px; border: 0 !important; border-bottom: 2.5px solid #4C4FD8 !important; border-radius: 8px 8px 0 0; background: #EEF0FF !important; color: #23264F !important; font: inherit; font-weight: 800; line-height: 1.4; }
+.rx-gap:focus { outline: 3px solid #FFB020 !important; outline-offset: 1px; background: #FFFFFF !important; }
+.rx-gap::placeholder { color: #8B90B5 !important; font-weight: 700; }
+.rx-gap:disabled { opacity: 1; -webkit-text-fill-color: #1F6A3E !important; color: #1F6A3E !important; background: #EFF9F2 !important; border-bottom-color: #36B176; }
+.rx-gw.s-r .rx-gap:disabled { -webkit-text-fill-color: #8A5A00 !important; color: #8A5A00 !important; background: #FFF9EC !important; border-bottom-color: #F4A51C; }
+.rx-gw.s-x .rx-gap { background: #FFF4F2 !important; border-bottom-color: #D9434E; }
+.rx-gn { position: absolute; top: -9px; right: -6px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: #4C4FD8 !important; color: #FFFFFF !important; font-style: normal; font-size: 0.68rem; font-weight: 900; line-height: 16px; text-align: center; }
+.rx-gw.s-o .rx-gn, .rx-gw.s-h .rx-gn { background: #36B176 !important; }
+.rx-gw.s-r .rx-gn { background: #F4A51C !important; }
+.rx-chs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; }
+.rx-chs > span:first-child { font-weight: 800; color: #6A3BB5 !important; font-size: 0.85rem; min-width: 60px; }
+.kr-chip.sm { min-height: 32px; padding: 3px 10px; font-size: 0.86rem; }
+@media (max-width: 520px) { .rx-sent { padding: 12px; } .rx-st { font-size: 1rem; line-height: 2.2; } }
+
+/* Suchsel */
+.rx-board { container-type: inline-size; }
+.rx-sg { display: grid; grid-template-columns: repeat(var(--rx-s), minmax(0, 1fr)); gap: 2px; width: min(100%, calc(var(--rx-s) * 44px)); margin: 0 auto; padding: 6px; border-radius: 14px; background: #FFFFFF !important; border: 1.5px solid #23264F !important; }
+.rx-sg.prev { width: min(100%, calc(var(--rx-s) * 30px)); gap: 1px; padding: 4px; }
+.rx-sc { aspect-ratio: 1; min-width: 0; display: grid; place-items: center; padding: 0; border: 0 !important; border-radius: 6px; background: transparent !important; color: #23264F !important; font: inherit; font-weight: 800; font-size: min(22px, calc(100cqw / var(--rx-s) * 0.5)); line-height: 1; cursor: pointer; }
+.rx-sg.prev .rx-sc { cursor: default; font-size: min(15px, calc(100cqw / var(--rx-s) * 0.5)); }
+.rx-sc:hover { background: #EEF0FA !important; }
+.rx-sc:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 0; }
+.rx-sc.f { color: #FFFFFF !important; }
+.rx-sc.w0 { background: #4C4FD8 !important; } .rx-sc.w1 { background: #1F8A96 !important; } .rx-sc.w2 { background: #C1502E !important; }
+.rx-sc.w3 { background: #6A3BB5 !important; } .rx-sc.w4 { background: #3A9A55 !important; } .rx-sc.w5 { background: #C8478E !important; }
+.rx-sc.x2 { box-shadow: inset 0 0 0 2px #23264F !important; }
+.rx-sc.act { box-shadow: inset 0 0 0 3px #FFB020 !important; }
+.rx-sc.sel { background: #FFB020 !important; color: #23264F !important; box-shadow: 0 0 0 3px #23264F !important; }
+.rx-sc.hint { box-shadow: inset 0 0 0 3px #6A3BB5 !important; background: #F5F0FF !important; }
+.rx-count { margin: 8px 0 0; text-align: center; color: #5A5F86 !important; font-weight: 800; font-size: 0.9rem; }
+.rx-clues h3 { margin: 0 0 6px; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #5A5F86 !important; }
+.rx-solk { padding: 2px 8px; border-radius: 999px; background: #FFF3D6 !important; color: #8A5A00 !important; font-size: 0.76rem; font-weight: 800; white-space: nowrap; }
+.rx-solk.sm { flex: none; padding: 1px 6px; font-size: 0.7rem; }
+
+@media (max-width: 900px) { .rx-splay { grid-template-areas: "board" "act" "side"; } }
+
+/* Kuckucksei */
+.rx-dots { display: flex; flex-wrap: wrap; gap: 6px; }
+.rx-dot { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #D3D6EA !important; background: #FFFFFF !important; color: #3A3F7A !important; font: inherit; font-weight: 900; font-size: 0.86rem; cursor: pointer; }
+.rx-dot.on { border-color: #2B2E8C !important; box-shadow: 0 0 0 2px #2B2E8C !important; }
+.rx-dot.s-o, .rx-dot.s-h { background: #E3F3E8 !important; border-color: #36B176 !important; color: #1F6A3E !important; }
+.rx-dot.s-a { background: #F4F9EA !important; border-color: #8CC63F !important; color: #3E5A12 !important; }
+.rx-dot.s-x, .rx-dot.s-p { background: #FFF4F2 !important; border-color: #D9434E !important; color: #8E2A22 !important; }
+.rx-dot.s-e { background: #EEF0FA !important; }
+.rx-dot:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 2px; }
+.rx-eggs { display: grid; grid-template-columns: repeat(4, minmax(0, 160px)); justify-content: center; gap: 14px; }
+.rx-egg { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; aspect-ratio: 4 / 5; min-height: 0; padding: 16px 10px 12px; border-radius: 50% 50% 46% 46% / 60% 60% 40% 40%; border: 2.5px solid #D3D6EA !important; background: #FFFDF6 !important; color: #23264F !important; font: inherit; text-align: center; cursor: pointer; box-shadow: 0 5px 0 #E6E2D3 !important; }
+.rx-egg b { font-size: 1rem; line-height: 1.2; overflow-wrap: anywhere; }
+.rx-egg small { color: #5A5F86 !important; font-weight: 700; font-size: 0.76rem; }
+.rx-egg:hover:not(:disabled) { border-color: #2B2E8C !important; }
+.rx-egg.on { border-color: #2B2E8C !important; background: #EEF0FF !important; box-shadow: 0 5px 0 #2B2E8C !important; }
+.rx-egg.odd { border-color: #F4A51C !important; background: #FFF3D6 !important; box-shadow: 0 5px 0 #D99400 !important; }
+.rx-egg.wrong { border-color: #D9434E !important; background: #FFF4F2 !important; }
+.rx-egg.in { opacity: 0.55; }
+.rx-egg:disabled { cursor: default; }
+.rx-egg:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 3px; }
+.rx-kb { display: block; margin-top: 4px; }
+.rx-kb i { font-style: normal; font-weight: 800; color: #23264F !important; margin-right: 4px; }
+.rx-groups { margin: 0; padding: 8px 12px; border-radius: 12px; background: #F4F6FB !important; color: #3A3E6B !important; line-height: 1.45; }
+.rx-groups b { margin-right: 6px; color: #23264F !important; }
+.rx-whyl { font-weight: 800; color: #23264F !important; }
+.rx-round textarea.field { min-height: 84px; resize: vertical; font: inherit; line-height: 1.4; }
+@media (max-width: 700px) { .rx-eggs { grid-template-columns: repeat(2, minmax(0, 150px)); } }
+
+/* Album im Rätsel */
+.kr-tag.kr-card { background: #FFF3D6 !important; color: #8A5A00 !important; }
+.kr-albumn { display: flex; align-items: center; gap: 6px; font-weight: 700; color: #5C3F00 !important; }
+.kr-albumn .star { width: 18px; height: 18px; }
+.kr-albumn .star-fill { fill: #FFB020 !important; }
+
 </style>
 </head>
 <body>
@@ -15781,7 +15888,7 @@ const DEFAULTS = {
   soloName: '', levelSolo: 2, botLevel: 'mittel', showRules: true, gradeFilter: 'auto', lang: 'auto',
   zeig: true, pairs: true, ops: 'auto', pasch: 'ereignis', geheim: false, blitz: false, album: true,
   packView: 'klasse', topicFilter: 'all', gradeSub: 'all', topicSub: 'all', linkBase: 'web', mitspiel: true, notiz: true, protokoll: false,
-  krLevel: 'mittel', krCount: 10, krKopf: true
+  krLevel: 'mittel', krCount: 10, krKopf: true, krArt: 'kreuz'
 };
 /* Themen der Pakete: feste Zuordnung über die Paket-id, sonst Schlüsselwörter aus Titel und Lehrplanbezug */
 const TOPICS = [
@@ -18658,7 +18765,7 @@ const MODE_TEXT = {
   tafel: ['Tafel', 'Zwei Teams an Tafel oder Beamer. Die App ruft auf, wer erklärt.'],
   duell: ['Duell', 'Zu zweit an einem iPad oder Handy. Ihr prüft euch gegenseitig.'],
   solo: ['Solo', 'Allein gegen den Klangbot, in drei Stufen. Mit Prüffragen zum Ankreuzen und Abhaken und mit Lernbilanz.'],
-  raetsel: ['Rätsel', 'Kreuzworträtsel aus den Begriffen: erst aus dem Kopf, dann ins Gitter. Am Gerät, per QR-Code oder gedruckt.'],
+  raetsel: ['Rätsel', 'Kreuzworträtsel, Lückensätze, Suchsel oder Kuckucksei aus den Begriffen. Am Gerät, per QR-Code oder gedruckt.'],
   papier: ['Auf Papier', 'Spielplan, Prüfkarten, Steine und Spielkarte als PDF zum Ausdrucken.']
 };
 function modeCard(m) {
@@ -18685,8 +18792,8 @@ function modeSettings() {
       ${rule('Klangbot', seg('botLevel', [['entspannt', 'entspannt'], ['mittel', 'mittel'], ['stark', 'stark']], s.botLevel), 'Je stärker, desto öfter erklärt er richtig und desto klüger setzt er.')}
     </div>`;
   if (s.mode === 'raetsel') return `<ul class="ms-list">
-      <li>Kreuzworträtsel mit 5 bis 15 Begriffen dieses Pakets, gemischt nach Themen und Schwierigkeit</li><li>Hinweise in drei Stufen zum selben Gitter, mit Hörbeispielen und Notenbildern</li><li>Drei Schritte: aus dem Kopf, ins Gitter, weiterdenken</li><li>Hier lösen, per Link und QR-Code an die Klasse geben oder als PDF drucken</li>
-    </ul><p class="ms-note">Im nächsten Schritt wählst du die Wörter und stellst Hinweise und Lösungswort ein.</p>`;
+      <li>Vier Rätselarten: Kreuzworträtsel, Lückensätze aus den Mustersätzen, Suchsel mit Hinweisen und Kuckucksei mit Begründung</li><li>Hinweise in drei Stufen, mit Hörbeispielen und Notenbildern</li><li>Zum Schluss erklären und verbinden, Sammelkarten fürs Album</li><li>Hier lösen, per Link und QR-Code an die Klasse geben oder als PDF drucken</li>
+    </ul><p class="ms-note">Im nächsten Schritt wählst du die Rätselart und die Wörter.</p>`;
   return `<ul class="ms-list">
       <li>Spielplan mit Würfelraster und Begriffen</li><li>Prüfkarten im Sammelkartenformat</li><li>Spielsteine und Würfelnetze zum Ausschneiden</li><li>Spielkarte mit Nachschlageblatt, Lehrkraftblatt, Lernkarten und Lösungsübersicht</li>
     </ul><p class="ms-note">Im nächsten Fenster passt du den Druck an deine Lerngruppe an: Klasse, Brettgröße, Spielform auf Papier und Zahl der Sätze.</p>`;
@@ -18763,7 +18870,7 @@ function renderStart() {
       ? `<div class="fl-row" role="group" aria-label="Thema">${viewToggle}${tchip('all', 'Alle')}${topicsInUse().map((t) => tchip(t[0], t[1])).join('')}${ownPacks.length ? tchip('own', 'Eigene') : ''}</div>`
       : `<div class="fl-row" role="group" aria-label="Klassenstufe">${viewToggle}${chip('all', 'Alle')}<span class="fl-l">Klasse</span>${grades.map((g) => chip(String(g), String(g), 'Klasse ' + g)).join('')}${chip('own', 'Eigene')}</div>`;
     const lgBar = typeof lgBarHTML === 'function' ? lgBarHTML() : '';
-    main = `<div class="st3-hero"><h1>Welches Paket spielt ihr heute?</h1>${lgBar ? '' : '<p>Jedes Paket ist ein Brett voller Begriffe. Wer gut erklärt, holt sich die Steine.</p>'}</div>
+    main = `<div class="st3-hero"><h1>Welches Paket spielt ihr heute?</h1>${lgBar ? '' : '<p>Jedes Paket bündelt die Begriffe eines Themas. Ihr spielt sie am Brett, löst sie als Rätsel oder druckt sie aus. Was ihr sicher könnt, kommt als Karte ins Album.</p>'}</div>
       ${lgBar}
       ${canResume ? `<div class="resume"><div class="resume-t"><b>Laufendes Spiel</b><span>${esc(saved.packTitle)} · ${esc(saved.teams.A.name)} gegen ${esc(saved.teams.B.name)}</span></div><div class="resume-a"><button type="button" class="btn ghost" data-act="discard">Verwerfen</button><button type="button" class="btn primary" data-act="resume">Fortsetzen</button></div></div>` : ''}
       ${filterRow}${subFilterHTML(pack)}
@@ -18822,7 +18929,7 @@ function renderStart() {
       s.select === 'wuerfel' ? rule('Pasch', seg('pasch', [['ereignis', 'Ereignis'], ['wahl', 'freie Wahl']], s.pasch), s.pasch === 'ereignis' ? 'Höchstens alle drei Züge: Noch mal, Blitz, Ohne Hilfe, Angriff nach Wahl oder freie Wahl.' : 'Pasch heißt freie Wahl.') : '<p class="ms-note">Pasch-Ereignisse gibt es beim Würfeln mit zwei Würfeln.</p>',
       sw('geheim', 'Geheimauftrag', 'Jede Seite bekommt ein verdecktes Ziel. Erfüllt zählt es am Ende als Bonusstein.'),
       sw('blitz', 'Blitzrunde', '4 × 4 Brett, 45 Sekunden je Erklärung, drei Runden. Brett und Zeiten werden dafür gesetzt.'),
-      sw('album', 'Album führen', 'Feste Steine werden zu Sammelkarten, hilfefrei erklärte zu Goldkarten.')
+      sw('album', 'Album führen', 'Feste Steine werden zu Sammelkarten, hilfefrei erklärte zu Goldkarten. Gilt auch für das Rätsel.')
     ].join('');
     const cv = packCover(pack), col = COVER[cv.color] || COVER.indigo;
     main = `<div class="st3-hero"><h1>Alles bereit?</h1><p>Ein Blick auf die Regeln, dann geht es los. Vor dem ersten Zug zeigt eine Kurzanleitung den Ablauf.</p></div>
@@ -18991,7 +19098,7 @@ function show(v) {
 let coachPending = false;
 function startNewGame(again, carry) {
   if (settings.mode === 'papier') { openPrintFromStart(); return; }
-  if (settings.mode === 'raetsel') { if (typeof krSetupPack === 'function') { const p = krSetupPack(); krBegin(p, krCfg(p), krLevelNow(), settings.krKopf !== false, 'setup'); } return; }
+  if (settings.mode === 'raetsel') { if (typeof krStartSetup === 'function') krStartSetup(); return; }
   if (!createGame(carry)) return;
   if (typeof lgRememberStart === 'function') lgRememberStart();
   closeModal(); show('game'); startTurn(); requestWakeLock();
@@ -20298,11 +20405,12 @@ function prKit(JsPDF, spar) {
     const lh = size * PR_PT * (o.lh || 1.32), toks = [];
     segs.forEach((sg) => {
       const f = sg[1] || 'n6', col = sg[2] || o.color || PR_C.ink;
-      String(sg[0]).split(/(\s+)/).forEach((p) => { if (!p) return; if (/^\s+$/.test(p)) toks.push({ sp: true, f }); else toks.push({ t: p, f, col }); });
+      String(sg[0]).split(/(\s+)/).forEach((p) => { if (!p) return; if (/^\s+$/.test(p)) toks.push(p.indexOf('\u2028') >= 0 ? { br: true } : { sp: true, f }); else toks.push({ t: p, f, col }); });
     });
     const lines = []; let cur = [], cw = 0, sp = null;
     const fits = (ww, spw) => cw + spw + ww <= w + 0.01;
     toks.forEach((tk) => {
+      if (tk.br) { if (cur.length) lines.push(cur); cur = []; cw = 0; sp = null; return; }
       if (tk.sp) { if (cur.length) sp = tk.f; return; }
       let t = tk.t, ww = K.tw(t, tk.f, size);
       const spw = cur.length && sp ? K.tw(' ', sp, size) : 0;
@@ -23876,23 +23984,50 @@ const TEACHER_TEXT = {
       <li>Yang, C., Luo, L., Vadillo, M. A., Yu, R. und Shanks, D. R. (2021). Testing (quizzing) boosts classroom learning. A systematic and meta-analytic review. Psychological Bulletin.</li>
     </ul>`,
   raetsel: `
-    <p class="tq-lead">Das Rätsel ist eine Abrufübung für die Zeit nach der Erarbeitung. Aus den Begriffen eines Pakets entsteht ein Kreuzworträtsel mit drei Schritten: aus dem Kopf, ins Gitter, weiterdenken.</p>
+    <p class="tq-lead">Das Rätsel ist eine Abrufübung für die Zeit nach der Erarbeitung. Aus den Begriffen eines Pakets entstehen vier Rätselarten: Kreuzworträtsel, Lückensätze, Suchsel und Kuckucksei. Jede lässt sich am Gerät lösen, per Link teilen und drucken.</p>
+    <h3>Kreuzworträtsel</h3>
     <ul class="tq-list">
       <li><b>Aus dem Kopf.</b> Zuerst schreiben alle ohne Gitter auf, was ihnen zu jedem Hinweis einfällt. Erst danach tragen sie ein. Die Kreuzungsbuchstaben dienen dann der Selbstkontrolle. Abrufen sichert Wissen auch im Klassenzimmer (Yang u. a. 2021). Mit leichten Buchstabenhilfen geübte Wörter blieben in einer kleinen Studie kaum hängen (Mueller und Veinott 2018, siehe Forschung).</li>
       <li><b>Ins Gitter.</b> Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe. Passt es dort nicht, stimmt eines der Wörter noch nicht. Am Gerät zeigt „Prüfen“ das Ergebnis und danach die Erklärung zum Wort.</li>
       <li><b>Weiterdenken.</b> Ein weiterer Begriff des Pakets steckt als Lösungswort in den Kreisen. Die Lernenden erklären ihn mit eigenen Worten und haken danach ab, welche Kernmerkmale sie genannt haben. Dann verbinden sie ihn in einem Satz mit einem Rätselwort und vergleichen mit einem Mustersatz. Zu beidem gibt es drei gestufte Hilfen, zum Erklären Oberbegriff, Beispiel und Satzanfang, zum Verbinden passende Wörter, Satzmuster und ein Beispielsatz mit anderen Wörtern. Sich etwas selbst zu erklären fördert das Verstehen (Bisra u. a. 2018).</li>
       <li><b>Hinweisstufen.</b> Leicht heißt Erklärung in einem Satz und Wortspeicher, mittel nur die Erklärung, schwer nur typische Merkmale. Alle Stufen haben dasselbe Gitter und dieselbe Lösung. Hör- und Notenbegriffe erscheinen in jeder Stufe als Klang oder Bild.</li>
       <li><b>Gestufte Hilfen.</b> Je Wort drei Hilfen: Oberbegriff, Beispiel, Anfangsbuchstabe. Am Gerät per Knopf, auf Papier als Hilfekarten zum Ausschneiden (Schmidt-Weigand u. a. 2008). Wörter mit Hilfe kommen am Ende in „Karten üben“.</li>
-      <li><b>Einsatz.</b> Exit-Rätsel mit fünf Wörtern, Übung mit acht bis zehn Wörtern, Wiederholung vor einer Lernkontrolle mit zwölf bis fünfzehn. Eine Woche später dasselbe Rätsel mit einer anderen Hinweisstufe lösen lassen.</li>
-      <li><b>Link und QR-Code.</b> Der Link öffnet genau dieses Rätsel, auf jedem Gerät mit demselben Gitter. Für Differenzierung lassen sich drei Links mit verschiedenen Hinweisstufen erzeugen. Eigene Pakete und Anpassungen liegen nur im eigenen Browser.</li>
-      <li><b>Drucken.</b> Rätselblatt mit Antwortlinien für Schritt 1, wahlweise in allen drei Stufen, dazu Hilfekarten, Lösung und ein Lehrkraftblatt mit Ablauf, Fallstricken und QR-Code. Auf Wunsch ist das Rätselblatt ausfüllbar, etwa im Acrobat Reader. Hörbeispiele spielst du in der Einrichtung unter der Vorschau vor.</li>
       <li><b>Was ins Gitter passt.</b> Begriffe mit 3 bis 14 Buchstaben aus höchstens drei Teilen. Werktitel und Begriffe mit Alternativen oder Sonderzeichen bleiben draußen, lange Namen stehen mit dem Nachnamen. Ä, Ö, Ü und ß stehen in einem Kästchen. Bei mehrteiligen Begriffen nennt die Klammer die Längen, im Gitter trennt ein dicker Strich die Teile.</li>
+    </ul>
+    <h3>Lückensätze</h3>
+    <ul class="tq-list">
+      <li><b>Aufbau.</b> Jeder Satz stammt aus den Mustersätzen des Pakets und verbindet zwei Begriffe. Beide fehlen. Wer sie einsetzt, ruft die Begriffe ab und liest zugleich, wie sie zusammenhängen. Die App nimmt nur Sätze, in denen jeder der beiden Begriffe genau einmal vorkommt.</li>
+      <li><b>Hinweisstufen.</b> Leicht mit Wortspeicher, mittel mit dem Anfangsbuchstaben in der Lücke, schwer mit leeren Lücken. Eine Endung wie das n im Plural steht schon hinter der Lücke.</li>
+      <li><b>Hilfen.</b> Je Satz drei Stufen: Oberbegriffe, eine Auswahl aus vier Wörtern, Anfangsbuchstaben.</li>
+      <li><b>Weiterdenken.</b> Ein Wort erklären und mit einem Wort verbinden, mit dem es in keinem Satz stand. Der eigene Satz zeigt, ob der Zusammenhang verstanden ist.</li>
+    </ul>
+    <h3>Suchsel</h3>
+    <ul class="tq-list">
+      <li><b>Mit Hinweisen.</b> Zu jedem Wort gibt es einen Hinweis aus dem Paket. Mit sichtbarer Wortliste wäre das Suchsel eine reine Suchaufgabe, deshalb gibt es die Liste nur bei leicht. Mit „Erst aus dem Kopf“ schreiben alle die Wörter zuerst auf und suchen dann.</li>
+      <li><b>Richtungen.</b> Zwei, vier oder acht Richtungen, getrennt von der Hinweisstufe einstellbar. So haben alle Stufen dasselbe Gitter.</li>
+      <li><b>Lösungswort.</b> Bei einigen Hinweisen steht ein Feld mit einer Buchstabennummer, etwa „Feld 3: 2. Buchstabe“. Die Buchstaben ergeben ein weiteres Wort des Pakets, das danach erklärt und verbunden wird. Die übrigen Felder im Gitter sind zufällige Buchstaben.</li>
+      <li><b>Am Gerät.</b> Ersten und letzten Buchstaben eines Wortes antippen. Gefunden heißt richtig geschrieben. Die dritte Hilfe markiert das Anfangsfeld.</li>
+    </ul>
+    <h3>Kuckucksei</h3>
+    <ul class="tq-list">
+      <li><b>Aufbau.</b> Je vier Begriffe, drei aus einer Gruppe des Pakets, einer aus einer anderen. Die Gruppen sind die Themenfamilien des Pakets.</li>
+      <li><b>Begründen.</b> Wer das Ei findet, schreibt auf, warum es nicht passt, und möglichst auch, was die anderen drei verbindet. Bei schwer ist die Begründung ausführlicher.</li>
+      <li><b>Andere Lösungen.</b> Die Gruppen sind Ordnungshilfen und nicht immer trennscharf. Wählt jemand ein anderes Ei, zeigt die App die gedachte Lösung, und die Lernenden schätzen selbst ein, ob ihre Begründung trägt. Das Gespräch darüber lohnt sich.</li>
+      <li><b>Hilfen.</b> Erst die Oberbegriffe der vier Begriffe, dann die Gruppe, zuletzt fällt ein Begriff weg.</li>
+    </ul>
+    <h3>Für alle Rätselarten</h3>
+    <ul class="tq-list">
+      <li><b>Sammelkarten.</b> Was ohne Hilfe gelingt, kommt als Karte ins Album. Im Kreuzworträtsel und im Suchsel sind das die Wörter, die schon aus dem Kopf richtig waren, ohne diesen Schritt die Wörter, die im ersten Versuch ohne Hilfe gelingen. Bei Lückensätzen und Kuckucksei zählt der erste Versuch ohne Hilfe. Wer das Lösungswort oder ein gewähltes Wort mit mindestens zwei Kernmerkmalen erklärt und es verbindet, bekommt dafür eine Goldkarte. Der Schalter „Album führen“ bei den Spielregeln gilt auch für das Rätsel.</li>
+      <li><b>Einsatz.</b> Exit-Rätsel mit fünf Wörtern oder Sätzen, Übung mit acht bis zehn, Wiederholung vor einer Lernkontrolle mit zwölf. Eine Woche später dasselbe Rätsel mit einer anderen Hinweisstufe oder in einer anderen Rätselart lösen lassen.</li>
+      <li><b>Link und QR-Code.</b> Der Link öffnet genau dieses Rätsel, auf jedem Gerät gleich. Für Differenzierung lassen sich drei Links mit verschiedenen Hinweisstufen erzeugen. Eigene Pakete und Anpassungen liegen nur im eigenen Browser.</li>
+      <li><b>Drucken.</b> Zu jeder Rätselart gibt es ein Rätselblatt, wahlweise in allen drei Stufen, dazu Hilfekarten, Lösung und ein Lehrkraftblatt mit Ablauf, Fallstricken und QR-Code. Auf Wunsch ist das Rätselblatt ausfüllbar, etwa im Acrobat Reader. Hörbeispiele spielst du am Gerät vor, im Kreuzworträtsel in der Einrichtung unter der Vorschau, im Suchsel beim Hinweis.</li>
     </ul>
     <h3>Grenzen</h3>
     <ul class="tq-list">
       <li><b>Begriffswissen.</b> Das Rätsel sichert Namen und Merkmale. Ob jemand ein Ostinato hört oder spielt, zeigt sich beim Hören und Musizieren.</li>
       <li><b>Wortspeicher ohne Artikel.</b> Die Pakete enthalten keine Artikel. Für Sprachbildung lohnt es sich, die Artikel beim Besprechen zu ergänzen.</li>
       <li><b>Schreibweise.</b> Am Gerät zählt nur die genaue Schreibweise, ae, oe und ue gelten dabei für Ä, Ö und Ü. Kleine Tippfehler meldet die App als „fast“.</li>
+      <li><b>Wiedererkennen.</b> Die Lückensätze stammen aus dem Paket. Wer sie kennt, erinnert sich an den Wortlaut. Neu gedacht wird beim eigenen Satz im Weiterdenken.</li>
     </ul>`,
   zehn: `
     <p class="tq-lead">Die Blitzrunde ist die kleinste sinnvolle Einheit: 4 × 4 Felder, 45 Sekunden je Erklärung, kurze Beratung, drei Runden.</p>
@@ -25099,9 +25234,12 @@ function krClue(t, a, level) {
   return { text: krCap(krMask(o[1], t, a)), src: o[0], masked: true };
 }
 /* Drei Hilfen: zwei inhaltliche, zuletzt der Anfangsbuchstabe */
+/* Maskierter Text, der kaum noch etwas sagt, etwa „Ein …“ */
+const KR_STOP = /^(ein|eine|einer|eines|einem|einen|der|die|das|den|dem|des|und|oder|mit|von|für|zum|zur|im|in|am|an|auf|aus|bei|ist|sind|wie|als)$/i;
+function krPoor(m) { const content = String(m).replace(/…/g, ' ').split(/\s+/).filter((w) => /\p{L}{3,}/u.test(w) && !KR_STOP.test(w.replace(/[^\p{L}]/gu, ''))); return /…/.test(m) && content.length < 2; }
 function krHelps(t, a, level) {
   const clue = krClue(t, a, level), out = [];
-  const add = (k, label, text) => { text = String(text || '').trim(); if (!text || out.length >= 2 || out.some((x) => x.text === text) || text === clue.text) return; out.push({ k, label, text: krCap(krLeaks(text, t, a) ? krMask(text, t, a) : text) }); };
+  const add = (k, label, text) => { text = String(text || '').trim(); if (!text || out.length >= 2 || out.some((x) => x.text === text) || text === clue.text) return; const v = krCap(krLeaks(text, t, a) ? krMask(text, t, a) : text); if (krPoor(v)) return; out.push({ k, label, text: v }); };
   add('ober', 'Oberbegriff', t.hints && t.hints.ober);
   if (isMedia(t)) add('expl', 'Erklärung', krFirst(t));
   add('bsp', 'Beispiel', t.hints && t.hints.beispiel);
@@ -25333,7 +25471,9 @@ function krCodeRead(pack, code) {
   if (vals.some((v) => v < 0) || LN_B32[lnSum(vals)] !== s.slice(-1)) return { err: 'Der Rätselcode ist nicht vollständig.' };
   const bits = lnB32ToBits(body); if (!bits) return { err: 'Der Rätselcode ist nicht vollständig.' };
   let p = 0; const get = (n) => { const v = parseInt(bits.slice(p, p + n), 2); p += n; return v; };
-  if (get(2) !== 1) return { err: 'Dieser Rätselcode stammt aus einer anderen Fassung.' };
+  const ver = get(2);
+  if (ver === 2 && typeof rxCodeDecode === 'function') return rxCodeDecode(pack, bits, p);
+  if (ver !== 1) return { err: 'Dieser Rätselcode stammt aus einer anderen Fassung.' };
   const lv = get(2), kopf = get(1) === 1, si = get(8), seed = get(16), sig = get(10), n = get(8);
   const el = krEligible(pack);
   if (n !== el.length || bits.length < p + n) return { err: 'Das Rätsel passt nicht zur Fassung des Pakets auf diesem Gerät.' };
@@ -25374,9 +25514,11 @@ function krGridHTML(m, opt) {
 function krLevelNow() { return KR_LEVELS.some((x) => x[0] === settings.krLevel) ? settings.krLevel : 'mittel'; }
 function krMediaChip(t) { return isMedia(t) ? `<span class="kr-chip-m">${t.kind === 'hoeren' ? 'Klang' : 'Bild'}</span>` : ''; }
 function krSetupHTML(pack) {
+  const art = typeof rxArt === 'function' ? rxArt() : 'kreuz';
+  if (art !== 'kreuz') return rxSetupHTML(pack, art);
   const el = krEligible(pack);
   const back = `<button type="button" class="btn ghost" data-act="st-step" data-v="2">${iconArrow(-1)}Zurück</button>`;
-  if (el.length < 3) return `<div class="st3-hero"><h1>Rätsel</h1><p>In diesem Paket passen zu wenige Begriffe in ein Kreuzworträtsel. Werktitel, sehr lange Begriffe und Begriffe mit Sonderzeichen bleiben draußen.</p></div><div class="st3-cta">${back}</div>`;
+  if (el.length < 3) return `<div class="st3-hero"><h1>Rätsel</h1><p>In diesem Paket passen zu wenige Begriffe in ein Kreuzworträtsel. Werktitel, sehr lange Begriffe und Begriffe mit Sonderzeichen bleiben draußen. Wähl eine andere Rätselart.</p></div>${typeof rxArtHTML === 'function' ? rxArtHTML('kreuz', pack) : ''}<div class="st3-cta">${back}</div>`;
   const cfg = krCfg(pack), m = krModel(pack, cfg), lv = krLevelNow(), chosen = new Set(cfg.ids), cnt = cfg.ids.length;
   const nOut = playable(pack).length - el.length;
   const seg = (act, opts, cur, dis) => `<div class="seg">${opts.map((o) => `<button type="button" class="seg-btn${String(cur) === String(o[0]) ? ' on' : ''}" data-act="${act}" data-v="${o[0]}" aria-pressed="${String(cur) === String(o[0])}"${dis && dis(o[0]) ? ' disabled' : ''}>${o[1]}</button>`).join('')}</div>`;
@@ -25391,7 +25533,8 @@ function krSetupHTML(pack) {
   const media = m.items.filter((it) => it.t.kind === 'hoeren' && isMedia(it.t));
   const warn = m.missing.length ? `<p class="kr-warn">Nicht ins Gitter gepasst: ${esc(m.missing.join(', '))}. Tausche ${m.missing.length === 1 ? 'das Wort' : 'die Wörter'} aus oder ordne neu an.</p>` : '';
   const cv = packCover(pack), col = COVER[cv.color] || COVER.indigo;
-  return `<div class="st3-hero"><h1>Rätsel einrichten</h1><p>Wörter wählen, Hinweise einstellen. Dann hier lösen, als Link an die Klasse geben oder ausdrucken.</p></div>
+  return `<div class="st3-hero"><h1>Rätsel einrichten</h1><p>Rätselart und Wörter wählen, Hinweise einstellen. Dann hier lösen, als Link an die Klasse geben oder ausdrucken.</p></div>
+    ${typeof rxArtHTML === 'function' ? rxArtHTML('kreuz', pack) : ''}
     <div class="sum kr-sum0">
       <div class="sum-pack"><span class="sum-cover" style="background:linear-gradient(160deg, ${col[0]}, ${col[1]})">${coverIcon(cv.icon, cv.color)}</span><span class="sum-t"><b>${esc(pack.title)}</b><small>${esc(gradeLabel(pack))}${gradeLabel(pack) ? ' · ' : ''}${el.length} von ${playable(pack).length} Begriffen passen ins Gitter</small></span></div>
       <div class="sum-mode"><span class="sum-mi">${MODE_ICON.raetsel}</span><span class="sum-t"><b>Rätsel</b><small>${m.items.length} Wörter · Hinweise ${esc(lv)}${m.sol ? ' · Lösungswort' : ''}</small></span></div>
@@ -25427,6 +25570,11 @@ function krSetupHTML(pack) {
     <div class="st3-cta kr-cta">${back}<button type="button" class="btn ghost cta-adapt" data-act="kr-link"${m.items.length < 2 ? ' disabled' : ''}>${lgIcon('link')}<span>Link und QR</span></button><button type="button" class="btn ghost cta-adapt" data-act="kr-print"${m.items.length < 2 ? ' disabled' : ''}>Als PDF</button><button type="button" class="btn cta go" data-act="kr-start" data-primary${m.items.length < 2 ? ' disabled' : ''}>Hier lösen${iconNext()}</button></div>`;
 }
 function krSetupPack() { return findPack(settings.packId) || BUILTIN[0]; }
+function krStartSetup() {
+  const pack = krSetupPack(), art = typeof rxArt === 'function' ? rxArt() : 'kreuz';
+  if (art !== 'kreuz') return rxBegin(pack, art, rxCfg(pack, art), krLevelNow(), settings.krKopf !== false, 'setup');
+  return krBegin(pack, krCfg(pack), krLevelNow(), settings.krKopf !== false, 'setup');
+}
 function krSetupChange(fn) {
   const pack = krSetupPack(), cfg = krCfg(pack);
   if (fn(cfg, pack) === false) return;
@@ -25435,7 +25583,8 @@ function krSetupChange(fn) {
 
 /* ---------- Lösen ---------- */
 function krPack() { return kreuz ? findPack(kreuz.packId) : null; }
-function krM() { const p = krPack(); return p ? krModel(p, kreuz.cfg) : null; }
+function krArtNow() { return kreuz && kreuz.art ? kreuz.art : 'kreuz'; }
+function krM() { const p = krPack(); if (!p) return null; return krArtNow() === 'kreuz' ? krModel(p, kreuz.cfg) : rxModel(p, kreuz.art, kreuz.cfg); }
 function krItem(id) { const m = krM(); return m ? m.items.find((it) => it.id === id) || null : null; }
 function krSt(id) { if (!kreuz.st[id]) kreuz.st[id] = { res: '', tries: 0, helps: 0, shown: false }; return kreuz.st[id]; }
 function krRunKey(pack, cfg, level, kopf) { return [pack.id, cfg.ids.join(','), cfg.seed, cfg.sol, level, kopf ? 1 : 0].join('|'); }
@@ -25443,16 +25592,35 @@ function krBegin(pack, cfg, level, kopf, from) {
   const m = krModel(pack, cfg);
   if (!m.lay || m.items.length < 2) { toast('Für ein Rätsel braucht es mindestens zwei Wörter im Gitter.'); return false; }
   const key = krRunKey(pack, cfg, level, kopf);
-  kreuz = { packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level, kopf, from, key, phase: kopf ? 'kopf' : 'gitter', ent: {}, st: {}, act: m.items[0].id, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false, exTarget: '', exHelps: 0, exText: '', exDone: false, exTicks: [], vbPartner: '', vbHelps: 0, vbJudge: null, vbSwap: false };
-  const saved = store.get(KEY_KR_RUN, null);
-  if (saved && saved.key === key) KR_RUN_KEYS.forEach((k) => { if (saved[k] !== undefined) kreuz[k] = saved[k]; });
+  kreuz = Object.assign({ art: 'kreuz', packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level, kopf, from, key, phase: kopf ? 'kopf' : 'gitter', act: m.items[0].id }, KR_FRESH());
+  krRunRestore();
   if (!kopf && kreuz.phase === 'kopf') kreuz.phase = 'gitter';
   if (!m.items.some((it) => it.id === kreuz.act)) kreuz.act = m.items[0].id;
   closeModal(); show('cross'); requestWakeLock();
   return true;
 }
-const KR_RUN_KEYS = ['phase', 'ent', 'st', 'act', 'solTyped', 'solOk', 'solShown', 'sent', 'saved', 'exTarget', 'exHelps', 'exText', 'exDone', 'exTicks', 'vbPartner', 'vbHelps', 'vbJudge', 'vbSwap'];
-function krSaveNow() { if (!kreuz) return; const o = { key: kreuz.key }; KR_RUN_KEYS.forEach((k) => { o[k] = kreuz[k]; }); store.set(KEY_KR_RUN, o); }
+const KR_RUN_KEYS = ['phase', 'ent', 'st', 'act', 'solTyped', 'solOk', 'solShown', 'sent', 'saved', 'exTarget', 'exHelps', 'exText', 'exDone', 'exTicks', 'vbPartner', 'vbHelps', 'vbJudge', 'vbSwap', 'kopfOk', 'album', 'albumGold', 'rx'];
+const KR_FRESH = () => ({ ent: {}, st: {}, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false, exTarget: '', exHelps: 0, exText: '', exDone: false, exTicks: [], vbPartner: '', vbHelps: 0, vbJudge: null, vbSwap: false, kopfOk: {}, album: {}, albumGold: '', rx: {} });
+/* Gespeicherte Läufe: die letzten acht Rätsel, damit ein Wechsel der Rätselart nichts verliert */
+function krRunsLoad() {
+  const s = store.get(KEY_KR_RUN, null);
+  if (s && s.runs && typeof s.runs === 'object') return { runs: s.runs, order: Array.isArray(s.order) ? s.order : Object.keys(s.runs) };
+  if (s && s.key) return { runs: { [s.key]: s }, order: [s.key] };
+  return { runs: {}, order: [] };
+}
+function krRunRestore() {
+  const saved = krRunsLoad().runs[kreuz.key];
+  if (saved) KR_RUN_KEYS.forEach((k) => { if (saved[k] !== undefined) kreuz[k] = saved[k]; });
+  ['kopfOk', 'album', 'rx', 'ent', 'st'].forEach((k) => { if (!kreuz[k] || typeof kreuz[k] !== 'object') kreuz[k] = {}; });
+}
+function krSaveNow() {
+  if (!kreuz) return;
+  const o = { key: kreuz.key }; KR_RUN_KEYS.forEach((k) => { o[k] = kreuz[k]; });
+  const all = krRunsLoad(); all.runs[kreuz.key] = o;
+  all.order = [kreuz.key].concat(all.order.filter((k) => k !== kreuz.key)).slice(0, 8);
+  Object.keys(all.runs).forEach((k) => { if (!all.order.includes(k)) delete all.runs[k]; });
+  store.set(KEY_KR_RUN, all);
+}
 const krSaveSoon = debounce(krSaveNow, 300);
 function krCmp(s) { return (typeof lnNorm === 'function' ? lnNorm(s) : String(s || '').toLowerCase()).replace(/\s+/g, ''); }
 function krRight(it, typed) {
@@ -25471,6 +25639,7 @@ function krEntryLetters(it, typed) {
 }
 function krDone(id) { const st = kreuz.st[id]; return !!(st && (st.res === 'ok' || st.shown)); }
 function krStatus(it) {
+  if (krArtNow() === 'luecke' && typeof rxTermStatus === 'function') return rxTermStatus(it.id);
   const st = kreuz.st[it.id] || {};
   if (st.shown) return 'r';
   if (st.res === 'ok') return st.helps ? 'h' : 'o';
@@ -25507,11 +25676,17 @@ function krBankHTML(m) {
   const list = m.items.map((it) => ({ w: it.a.shown, done: krDone(it.id) })).sort((x, y) => x.w.localeCompare(y.w, 'de'));
   return `<div class="kr-bank"><span class="kr-bank-h">Wortspeicher</span>${list.map((x) => `<span class="kr-bw${x.done ? ' done' : ''}">${esc(x.w)}</span>`).join('')}</div>`;
 }
+function krSteps() {
+  const a = krArtNow();
+  if (a !== 'kreuz' && typeof rxSteps === 'function') return rxSteps(a);
+  return (kreuz.kopf ? [['kopf', 'Aus dem Kopf', 'Zurück zu Schritt 1']] : []).concat([['gitter', 'Ins Gitter', 'Zurück ins Gitter'], ['weiter', 'Weiterdenken']]);
+}
+function krArtName(a) { const x = typeof RX_ARTS === 'object' ? RX_ARTS.find((r) => r[0] === a) : null; return x ? x[1] : 'Kreuzworträtsel'; }
 function krHead(pack) {
-  const k = kreuz, steps = (k.kopf ? [['kopf', 'Aus dem Kopf']] : []).concat([['gitter', 'Ins Gitter'], ['weiter', 'Weiterdenken']]);
+  const k = kreuz, steps = krSteps();
   return `<header class="kr-top">
     <div class="kr-top-row"><button type="button" class="btn ghost" data-act="kr-back">${iconArrow(-1)}${k.from === 'setup' ? 'Einrichtung' : 'Startseite'}</button>
-    <div class="ln-title">${logoSVG('logo-sm')}<span><b>Rätsel</b><small>${esc(pack.title)} · Hinweise ${esc(k.level)}</small></span></div>
+    <div class="ln-title">${logoSVG('logo-sm')}<span><b>${esc(krArtName(krArtNow()))}</b><small>${esc(pack.title)} · Hinweise ${esc(k.level)}</small></span></div>
     <button type="button" class="tool icon kr-info" data-act="kr-info" aria-label="So geht das Rätsel">${iconQ()}</button></div>
     <nav class="kr-steps" aria-label="Schritte">${steps.map((s, i) => `<button type="button" class="kr-step${k.phase === s[0] ? ' on' : ''}" data-act="kr-phase" data-v="${s[0]}" aria-current="${k.phase === s[0] ? 'step' : 'false'}"><span>${i + 1}</span>${s[1]}</button>`).join('')}</nav>
   </header>`;
@@ -25527,6 +25702,7 @@ function krKopfHTML(m) {
 function krActHTML(m, it) {
   const st = krSt(it.id), helps = krHelps(it.t, it.a, kreuz.level), shownHelps = helps.slice(0, st.helps), done = krDone(it.id);
   const tag = st.shown ? 'aufgedeckt' : st.res === 'ok' ? (st.helps ? 'mit Hilfe richtig' : 'richtig') : '';
+  const card = kreuz.album && kreuz.album[it.id] ? '<span class="kr-tag kr-card">Karte fürs Album</span>' : '';
   let fb = '';
   if (st.res === 'ok') fb = `<div class="kr-fb ok"><b>Richtig.</b> ${esc(it.t.expl)}</div>`;
   else if (st.shown) fb = `<div class="kr-fb shown"><b>${esc(it.a.shown)}.</b> ${esc(it.t.expl)}</div>`;
@@ -25534,7 +25710,7 @@ function krActHTML(m, it) {
   else if (st.res === 'no') fb = `<div class="kr-fb no">Das passt noch nicht. ${st.tries >= 2 ? 'Du kannst dir die Lösung zeigen lassen.' : 'Nimm eine Hilfe oder schau auf die Kreuzungen.'}</div>`;
   const canShow = !done && (st.tries >= 2 || st.helps >= 3);
   return `<div class="kr-act" id="kr-act">
-    <div class="kr-act-h"><span class="kr-num">${it.num} ${it.dir === 'a' ? '→ waagerecht' : '↓ senkrecht'}</span><span class="kr-len">${esc(krLenText(it.a))}</span>${tag ? `<span class="kr-tag ${st.shown ? 'shown' : 'ok'}">${tag}</span>` : ''}</div>
+    <div class="kr-act-h"><span class="kr-num">${it.num} ${it.dir === 'a' ? '→ waagerecht' : '↓ senkrecht'}</span><span class="kr-len">${esc(krLenText(it.a))}</span>${tag ? `<span class="kr-tag ${st.shown ? 'shown' : 'ok'}">${tag}</span>` : ''}${card}</div>
     ${krClueHTML(it)}
     ${shownHelps.length ? `<ul class="kr-helps">${shownHelps.map((h) => `<li><b>${esc(h.label)}</b> ${esc(h.text)}</li>`).join('')}</ul>` : ''}
     <div class="ln-type kr-type"><input id="kr-act-in" class="ln-input" type="text" value="${esc(done ? it.a.shown : kreuz.ent[it.id] || '')}"${done ? ' disabled' : ''} autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Wort eintippen" aria-label="Wort zu ${it.num} ${it.dir === 'a' ? 'waagerecht' : 'senkrecht'}">${done ? '' : '<button type="button" class="btn primary" data-act="kr-check">Prüfen</button>'}</div>
@@ -25662,14 +25838,14 @@ function krSentCheck(text, m, tgt, partner) {
   const hasP = partner ? krHasWord(text, partner.t, partner.a.shown) : m.items.some((it) => it.id !== tgt.id && krHasWord(text, it.t, it.a.shown));
   return { hasT, hasP, rel: KR_REL.test(text) };
 }
-function krSolHTML(m, letters) {
+function krSolHTML(m, fromGrid) {
   const sol = m.sol; if (!sol) return '';
-  const fromGrid = sol.cells.map((rc) => (letters[rc[0] + ',' + rc[1]] || {}).ch || '');
+  fromGrid = fromGrid || [];
   const showAll = kreuz.solOk || kreuz.solShown;
-  const boxes = sol.cells.map((rc, i) => `<span class="kr-sb${showAll || fromGrid[i] ? ' on' : ''}"><em>${i + 1}</em><b>${esc(showAll ? sol.a.letters[i] : fromGrid[i])}</b></span>`).join('');
-  return `<section class="kr-box kr-solw"><h3>Lösungswort</h3><p class="kr-note">Die Buchstaben aus den Kreisen im Gitter, der Reihe nach.</p><div class="kr-sbs">${boxes}</div>
+  const boxes = sol.a.letters.map((x, i) => `<span class="kr-sb${showAll || fromGrid[i] ? ' on' : ''}"><em>${i + 1}</em><b>${esc(showAll ? sol.a.letters[i] : fromGrid[i] || '')}</b></span>`).join('');
+  return `<section class="kr-box kr-solw"><h3>Lösungswort</h3><p class="kr-note">${esc(m.solNote || 'Die Buchstaben aus den Kreisen im Gitter, der Reihe nach.')}</p><div class="kr-sbs">${boxes}</div>
     ${showAll ? `<div class="kr-fb ${kreuz.solOk ? 'ok' : 'shown'}"><b>${esc(sol.a.shown)}.</b> ${kreuz.solOk ? 'Richtig.' : 'Das ist das Lösungswort.'}</div>`
-      : `<div class="ln-type kr-type"><input id="kr-sol-in" class="ln-input" type="text" value="${esc(kreuz.solTyped || fromGrid.join(''))}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Lösungswort" aria-label="Lösungswort"><button type="button" class="btn primary" data-act="kr-solcheck">Prüfen</button></div>${kreuz.solRes === 'no' ? '<div class="kr-fb no">Das passt noch nicht. Prüf die Buchstaben in den Kreisen.</div>' : ''}<div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="kr-solshow">Lösungswort zeigen</button></div>`}
+      : `<div class="ln-type kr-type"><input id="kr-sol-in" class="ln-input" type="text" value="${esc(kreuz.solTyped || fromGrid.join(''))}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Lösungswort" aria-label="Lösungswort"><button type="button" class="btn primary" data-act="kr-solcheck">Prüfen</button></div>${kreuz.solRes === 'no' ? `<div class="kr-fb no">Das passt noch nicht. ${esc(m.solRetry || 'Prüf die Buchstaben in den Kreisen.')}</div>` : ''}<div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="kr-solshow">Lösungswort zeigen</button></div>`}
   </section>`;
 }
 function krHelpList(list, n) { return n ? `<ul class="kr-helps">${list.slice(0, n).map((h) => `<li><b>${esc(h.label)}</b> ${esc(h.text)}</li>`).join('')}</ul>` : ''; }
@@ -25700,7 +25876,8 @@ function krVbHTML(m, pack, tgt) {
   const W = krWt(pack), helps = krVbHelps(m, tgt, pack), n = Math.min(kreuz.vbHelps || 0, helps.length);
   const partner = m.items.find((it) => it.id === kreuz.vbPartner && it.id !== tgt.id) || null;
   const star = n >= 1 ? new Set(helps[0].ids || []) : new Set();
-  const chips = m.items.filter((it) => it.id !== tgt.id).map((it) => `<button type="button" class="kr-chip${partner && partner.id === it.id ? ' on' : ''}${star.has(it.id) ? ' near' : ''}" data-act="kr-vbpartner" data-id="${esc(it.id)}" aria-pressed="${!!(partner && partner.id === it.id)}">${esc(it.a.shown)}${star.has(it.id) ? ' <span class="kr-chip-m">passt</span>' : ''}</button>`).join('');
+  const cooc = m.cooc && m.cooc[tgt.id] ? m.cooc[tgt.id] : null;
+  const chips = m.items.filter((it) => it.id !== tgt.id && !(cooc && cooc.includes(it.id))).map((it) => `<button type="button" class="kr-chip${partner && partner.id === it.id ? ' on' : ''}${star.has(it.id) ? ' near' : ''}" data-act="kr-vbpartner" data-id="${esc(it.id)}" aria-pressed="${!!(partner && partner.id === it.id)}">${esc(it.a.shown)}${star.has(it.id) ? ' <span class="kr-chip-m">passt</span>' : ''}</button>`).join('');
   const wa = partner && kreuz.vbSwap ? partner.a.shown : tgt.a.shown, wb = partner ? (kreuz.vbSwap ? tgt.a.shown : partner.a.shown) : '';
   const pats = n >= 2 ? `<div class="kr-pats">${krPatterns(pack).map((pt, i) => `<button type="button" class="kr-pat" data-act="kr-vbpat" data-i="${i}"><small>${esc(pt[0])}</small>${esc(krFill(pt[1], wa, wb))}</button>`).join('')}${partner ? `<button type="button" class="btn sm ghost kr-swap" data-act="kr-vbswap" aria-pressed="${!!kreuz.vbSwap}">${iconSwap()}Wörter tauschen</button>` : ''}</div>` : '';
   let fb = '';
@@ -25715,12 +25892,12 @@ function krVbHTML(m, pack, tgt) {
         + (model ? `<div class="kr-cmp"><b>So könnte der Satz gehen</b> ${esc(model)}</div>` : alt ? `<div class="kr-cmp"><b>Ein Mustersatz mit „${esc(alt.w)}“</b> ${esc(alt.s)}</div>` : '')
         + `<details class="kr-ref"><summary>Erklärungen zum Nachlesen</summary><p><b>${esc(tgt.a.shown)}</b> ${esc(tgt.t.expl)}</p>${partner ? `<p><b>${esc(partner.a.shown)}</b> ${esc(partner.t.expl)}</p>` : ''}</details>`
         + `<div class="kr-act-a kr-judge"><span>Zeigt dein Satz den Zusammenhang?</span><button type="button" class="btn sm${kreuz.vbJudge === false ? ' on' : ''}" data-act="kr-vbjudge" data-v="0" aria-pressed="${kreuz.vbJudge === false}">Ich überarbeite ihn</button><button type="button" class="btn sm${kreuz.vbJudge === true ? ' primary' : ''}" data-act="kr-vbjudge" data-v="1" aria-pressed="${kreuz.vbJudge === true}">Ja, er zeigt ihn</button></div>`
-        + (kreuz.vbJudge === true ? `<div class="kr-fb ok">Geschafft. Wer mag, verbindet „${esc(tgt.a.shown)}“ noch mit einem zweiten Wort aus dem Rätsel.</div>`
+        + (kreuz.vbJudge === true ? `<div class="kr-fb ok">Geschafft.${kreuz.albumGold === tgt.id ? ` „${esc(tgt.a.shown)}“ kommt als Goldkarte ins Album.` : ''} Wer mag, verbindet „${esc(tgt.a.shown)}“ noch mit einem zweiten Wort aus dem Rätsel.</div>`
           : kreuz.vbJudge === false ? `<div class="kr-fb near">${esc(W.vbFix)}${n < 2 ? ' Die Satzmuster in Hilfe 2 zeigen, wie das geht.' : ''} Dann prüfst du den Satz noch einmal.</div>` : '');
     }
   }
   return `<section class="kr-box kr-task kr-vb"><h3><span class="kr-tn">2</span>Verbinden</h3>
-    <p class="kr-how">${esc(W.vbHow)}</p>
+    <p class="kr-how">${esc(W.vbHow)}${cooc ? ' Nimm ein Wort, das in den Lückensätzen nicht mit ihm zusammen stand.' : ''}</p>
     <div class="kr-pair"><span class="kr-pa">${esc(tgt.a.shown)}</span><i>+</i><span class="kr-pb${partner ? ' on' : ''}">${partner ? esc(partner.a.shown) : 'ein Wort aus dem Rätsel'}</span></div>
     <div class="kr-chips" role="group" aria-label="Wort zum Verbinden">${chips}</div>
     ${krHelpList(helps, n)}${pats}
@@ -25730,8 +25907,14 @@ function krVbHTML(m, pack, tgt) {
     <p class="kr-note">Zu zweit geht es auch mündlich: Erklärt euch abwechselnd ein Wort aus dem Rätsel, ohne es zu nennen.</p>
   </section>`;
 }
+function krSolFromGrid(m) {
+  if (!m.sol) return [];
+  if (krArtNow() !== 'kreuz') return typeof rxSolFromGrid === 'function' ? rxSolFromGrid(m) : [];
+  const L = krGridLetters(m);
+  return m.sol.cells.map((rc) => (L[rc[0] + ',' + rc[1]] || {}).ch || '');
+}
 function krWeiterHTML(m) {
-  const pack = krPack(), letters = krGridLetters(m), tgt = krTarget(m);
+  const pack = krPack(), tgt = krTarget(m), steps = krSteps(), wi = steps.findIndex((x) => x[0] === 'weiter'), prev = steps[Math.max(0, wi - 1)];
   const locked = m.sol && !(kreuz.solOk || kreuz.solShown);
   const c = krCounts(m), rep = krRepeatIds(m);
   const lbl = { o: 'ohne Hilfe', h: 'mit Hilfe', r: 'aufgedeckt', x: 'noch offen' };
@@ -25739,27 +25922,29 @@ function krWeiterHTML(m) {
   const tasks = !tgt ? '' : locked
     ? '<section class="kr-box kr-task kr-lock"><h3>Erklären und verbinden</h3><p class="kr-note">Finde zuerst das Lösungswort. Dann erklärst du es hier und verbindest es mit einem Wort aus dem Rätsel.</p></section>'
     : `<div class="kr-tasks">${krExHTML(m, pack, tgt)}${krVbHTML(m, pack, tgt)}</div>`;
-  return `<p class="kr-lead"><b>Schritt ${kreuz.kopf ? 3 : 2}.</b> Weiterdenken heißt erklären und verbinden. ${m.sol ? 'Zuerst kommt das Lösungswort.' : ''}</p>
-    ${krSolHTML(m, letters)}
+  return `<p class="kr-lead"><b>Schritt ${wi + 1}.</b> Weiterdenken heißt erklären und verbinden. ${m.sol ? 'Zuerst kommt das Lösungswort.' : ''}</p>
+    ${krSolHTML(m, krSolFromGrid(m))}
     ${tasks}
     <section class="kr-box kr-bil"><h3>Deine Bilanz</h3>
       <div class="kr-sumrow">${['o', 'h', 'r', 'x'].map((k) => `<div class="kr-sn s-${k}"><b>${c[k]}</b><span>${lbl[k]}</span></div>`).join('')}</div>
       ${rep.length ? `<p class="kr-note">Wörter mit Hilfe, aufgedeckt oder noch offen kommen in „Karten üben“ in Fach 1 und werden dort wiederholt.</p><div class="kr-act-a"><button type="button" class="btn" data-act="kr-kartei"${kreuz.saved ? ' disabled' : ''}>${kreuz.saved ? 'Liegt in „Karten üben“' : (rep.length === 1 ? 'Ein Wort' : rep.length + ' Wörter') + ' in „Karten üben“ legen'}</button>${kreuz.saved ? '<button type="button" class="btn ghost" data-act="kr-learn">Karten üben öffnen</button>' : ''}</div>` : '<p class="kr-note">Alle Wörter ohne Hilfe gelöst.</p>'}
+      ${krAlbumLine()}
       <div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="kr-explall" aria-expanded="${!!kreuz.showAll}">${kreuz.showAll ? 'Erklärungen ausblenden' : 'Alle Erklärungen ansehen'}</button></div>${explList}
     </section>
-    <div class="ln-actions"><button type="button" class="btn ghost" data-act="kr-phase" data-v="gitter">${iconArrow(-1)}Zurück ins Gitter</button><button type="button" class="btn" data-act="kr-again">Noch einmal</button><button type="button" class="btn primary" data-act="kr-back">${kreuz.from === 'setup' ? 'Zur Einrichtung' : 'Fertig'}</button></div>`;
+    <div class="ln-actions"><button type="button" class="btn ghost" data-act="kr-phase" data-v="${prev[0]}">${iconArrow(-1)}${esc(prev[2] || 'Zurück')}</button><button type="button" class="btn" data-act="kr-again">Noch einmal</button><button type="button" class="btn primary" data-act="kr-back">${kreuz.from === 'setup' ? 'Zur Einrichtung' : 'Fertig'}</button></div>`;
 }
 function krRender() {
   const el = $('#v-cross'); if (!el) return;
   const pack = krPack(), m = krM();
-  if (!kreuz || !pack || !m || !m.lay) { el.innerHTML = ''; return; }
+  if (!kreuz || !pack || !m || (krArtNow() === 'kreuz' && !m.lay)) { el.innerHTML = ''; return; }
   const top = el.scrollTop;
-  const body = kreuz.phase === 'kopf' ? krKopfHTML(m) : kreuz.phase === 'weiter' ? krWeiterHTML(m) : krGitterHTML(m);
-  el.innerHTML = `<div class="ln kr kr-p-${kreuz.phase}">${krHead(pack)}${body}</div>`;
+  const art = krArtNow();
+  const body = art !== 'kreuz' ? rxBody(m) : kreuz.phase === 'kopf' ? krKopfHTML(m) : kreuz.phase === 'weiter' ? krWeiterHTML(m) : krGitterHTML(m);
+  el.innerHTML = `<div class="ln kr kr-p-${kreuz.phase} rx-${art}">${krHead(pack)}${body}</div>`;
   el.scrollTop = top;
 }
 function krRefreshBoard() {
-  const m = krM(), b = $('#kr-board'); if (!m || !b) return;
+  const m = krM(), b = $('#kr-board'); if (!m || !b || krArtNow() !== 'kreuz') return;
   const it = m.items.find((x) => x.id === kreuz.act) || m.items[0], letters = krGridLetters(m);
   b.innerHTML = krGridHTML(m, { letters, act: krWordCells(it) });
   const cf = $('#kr-conf'); if (cf) cf.hidden = !krConflicts(letters);
@@ -25769,16 +25954,55 @@ function krFocusInput() {
 }
 function krSetPhase(p) {
   if (!kreuz) return;
-  if (p === 'kopf' && !kreuz.kopf) p = 'gitter';
-  kreuz.phase = ['kopf', 'gitter', 'weiter'].includes(p) ? p : 'gitter';
+  const ok = krSteps().map((x) => x[0]);
+  if (kreuz.phase === 'kopf' && p !== 'kopf') krKopfRecord();
+  kreuz.phase = ok.includes(p) ? p : ok.find((x) => x !== 'kopf') || ok[0];
   krSaveNow(); krRender(); const el = $('#v-cross'); if (el) el.scrollTop = 0;
+}
+/* Was beim Verlassen von Schritt 1 schon stimmt, zählt als aus dem Kopf gewusst. Spätere Korrekturen zählen nicht. */
+function krKopfRecord() {
+  const m = krM(); if (!m || !kreuz.kopf) return;
+  kreuz.kopfOk = kreuz.kopfOk || {};
+  m.items.forEach((it) => { if (!kreuz.kopfOk[it.id] && krRight(it, kreuz.ent[it.id])) kreuz.kopfOk[it.id] = 1; });
+}
+/* Sammelkarten: ein Wort, das aus dem Kopf stimmte (ohne Schritt 1: ohne Hilfe im ersten Versuch) */
+function krAlbumOn() { return settings.album !== false && typeof albumRecord === 'function'; }
+function krAlbumWord(id, firstTry) {
+  if (!kreuz || !krAlbumOn()) return false;
+  kreuz.album = kreuz.album || {};
+  if (kreuz.album[id]) return false;
+  const ok = kreuz.kopf && krArtNow() !== 'luecke' && krArtNow() !== 'kuckuck' ? !!(kreuz.kopfOk && kreuz.kopfOk[id]) : !!firstTry;
+  if (!ok) return false;
+  albumRecord(kreuz.packId, id, false); kreuz.album[id] = 1;
+  return true;
+}
+/* Goldkarte: das Wort ist erklärt (genug Kernmerkmale) und verbunden (Satz zeigt den Zusammenhang) */
+function krAlbumGold(m) {
+  if (!kreuz || !krAlbumOn() || !kreuz.exDone || kreuz.vbJudge !== true) return false;
+  const tgt = krTarget(m); if (!tgt || kreuz.albumGold === tgt.id) return false;
+  const feats = (tgt.t.feats || []).slice(0, 3), need = Math.min(2, feats.length), have = feats.filter((f, i) => (kreuz.exTicks || [])[i]).length;
+  if (have < need) return false;
+  albumRecord(kreuz.packId, tgt.id, true); kreuz.albumGold = tgt.id;
+  return true;
+}
+function krAlbumLine() {
+  const n = Object.keys(kreuz.album || {}).length + (kreuz.albumGold ? 1 : 0);
+  if (!krAlbumOn()) return '';
+  return n ? `<p class="kr-note kr-albumn">${starSVG('kr-star')}${n === 1 ? 'Eine Karte' : n + ' Karten'} fürs Album${kreuz.albumGold ? ', davon eine Goldkarte' : ''}.</p><div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="album-open">Album öffnen</button></div>`
+    : `<p class="kr-note">${krAlbumRule()}</p>`;
+}
+function krAlbumRule() {
+  const a = krArtNow(), gold = ' Ein Wort, das du erklärst und verbindest, wird zur Goldkarte.';
+  if (a === 'kuckuck') return 'Kuckuckseier, die du im ersten Versuch ohne Hilfe findest, kommen als Karte ins Album.';
+  if (a === 'luecke') return 'Begriffe, die du im ersten Versuch ohne Hilfe einsetzt, kommen als Karte ins Album.' + gold;
+  return (kreuz.kopf ? 'Wörter, die du schon in Schritt 1 aus dem Kopf wusstest, kommen als Karte ins Album.' : 'Wörter, die du im ersten Versuch ohne Hilfe schaffst, kommen als Karte ins Album.') + gold;
 }
 function krCheck(id) {
   const it = krItem(id); if (!it || krDone(id)) return;
   const typed = String(kreuz.ent[id] || '').trim();
   if (!typed) { toast('Erst ein Wort eintippen.'); krFocusInput(); return; }
   const st = krSt(id); st.tries++;
-  if (krRight(it, typed)) { st.res = 'ok'; Sound.tick(); }
+  if (krRight(it, typed)) { st.res = 'ok'; krAlbumWord(id, st.tries === 1 && !st.helps); Sound.tick(); }
   else { st.res = krNear(it, typed) ? 'near' : 'no'; Sound.no(); }
   krSaveNow(); krRender();
   if (st.res !== 'ok') krFocusInput();
@@ -25791,7 +26015,7 @@ function krCheckAll() {
     if (krDone(it.id)) return;
     const typed = String(kreuz.ent[it.id] || '').trim(); if (!typed) return;
     const st = krSt(it.id); st.tries++; n++;
-    if (krRight(it, typed)) { st.res = 'ok'; ok++; } else st.res = krNear(it, typed) ? 'near' : 'no';
+    if (krRight(it, typed)) { st.res = 'ok'; ok++; krAlbumWord(it.id, st.tries === 1 && !st.helps); } else st.res = krNear(it, typed) ? 'near' : 'no';
   });
   if (!n) { toast('Es gibt nichts Neues zu prüfen.'); return; }
   if (ok) Sound.tick(); else Sound.no();
@@ -25805,7 +26029,7 @@ function krNextId(m) {
 }
 function krToKartei() {
   const m = krM(); if (!m || !kreuz) return;
-  const ids = krRepeatIds(m); if (!ids.length) return;
+  const ids = krArtNow() === 'kuckuck' && typeof rxKuRepeat === 'function' ? rxKuRepeat(m) : krRepeatIds(m); if (!ids.length) return;
   if (typeof karteiWrite === 'function') karteiWrite(kreuz.packId, (k) => { ids.forEach((id) => { const s = k.cards[id]; k.cards[id] = { box: 1, due: lnDay(0), n: s && s.n ? s.n : 0 }; }); });
   kreuz.saved = true; krSaveNow();
   toast(ids.length === 1 ? 'Ein Wort liegt jetzt in Fach 1 von „Karten üben“.' : `${ids.length} Wörter liegen jetzt in Fach 1 von „Karten üben“.`);
@@ -25821,15 +26045,17 @@ function krOpenCode(packId, code) {
   const r = krCodeRead(pack, code);
   if (r.err) { toast(r.err); return false; }
   settings.packId = pack.id; saveSettings();
+  if (r.art && r.art !== 'kreuz') return rxBegin(pack, r.art, r.cfg, r.level, r.kopf, 'link');
   return krBegin(pack, r.cfg, r.level, r.kopf, 'link');
 }
 
 /* ---------- Link und QR ---------- */
 let krLk = { level: '' };
 function krLinkHTML() {
-  const pack = krSetupPack(), cfg = krCfg(pack), m = krModel(pack, cfg);
-  const level = krLk.level || krLevelNow();
-  const code = krCodeMake(pack, cfg, m.sol ? m.sol.id : '', level, settings.krKopf !== false);
+  const pack = krSetupPack(), art = typeof rxArt === 'function' ? rxArt() : 'kreuz', level = krLk.level || krLevelNow();
+  let code = '';
+  if (art === 'kreuz') { const cfg = krCfg(pack), m = krModel(pack, cfg); code = krCodeMake(pack, cfg, m.sol ? m.sol.id : '', level, settings.krKopf !== false); }
+  else code = rxCodeMake(pack, art, rxCfg(pack, art), level, settings.krKopf !== false);
   if (!code) return `<h2>Link zum Rätsel</h2><p>Dieses Paket hat zu viele Begriffe für einen Rätsellink. Drucke das Rätsel aus oder teile es aus einem kleineren Paket.</p><div class="modal-actions"><button type="button" class="btn primary" data-act="modal-close">Schließen</button></div>`;
   const url = krURL(pack, code), qr = typeof qrSVG === 'function' ? qrSVG(url) : '';
   const bk = settings.linkBase && LK_BASE[settings.linkBase] ? settings.linkBase : 'web';
@@ -25837,7 +26063,7 @@ function krLinkHTML() {
   const warn = pack.own ? '<p class="dl-warn">Eigene Pakete liegen nur in diesem Browser. Auf anderen Geräten öffnet der Link das Rätsel nicht. Drucke es aus oder gib das Paket in der Werkstatt als Datei weiter.</p>'
     : pack.edited ? '<p class="dl-warn">Deine Anpassungen an diesem Paket liegen nur in diesem Browser. Passt die Fassung auf einem anderen Gerät nicht, meldet der Link das.</p>' : '';
   return `<h2>Rätsel für die Klasse</h2>
-    <p class="ms-note">Der Link öffnet genau dieses Rätsel: dieselben Wörter, dasselbe Gitter. Für Differenzierung lassen sich drei Links mit verschiedenen Hinweisstufen erzeugen.</p>
+    <p class="ms-note">Der Link öffnet genau dieses Rätsel: ${esc(krArtName(art))} mit denselben Wörtern in derselben Anordnung. Für Differenzierung lassen sich drei Links mit verschiedenen Hinweisstufen erzeugen.</p>
     <div class="dl-what seg" role="group" aria-label="Hinweisstufe">${KR_LEVELS.map((x) => `<button type="button" class="seg-btn${level === x[0] ? ' on' : ''}" data-act="kr-lk-level" data-v="${x[0]}" aria-pressed="${level === x[0]}">Hinweise ${x[1]}</button>`).join('')}</div>
     <div class="dl-row"><input id="kr-url" class="field mono" readonly value="${esc(url)}" aria-label="Link"><button type="button" class="btn" data-act="kr-lk-copy">Kopieren</button></div>
     ${qr ? `<div class="dl-qr">${qr}</div>` : ''}
@@ -25849,7 +26075,9 @@ function krLinkRefresh() { const card = document.querySelector('#modal .modal-ca
 
 /* ---------- Hilfe ---------- */
 function krInfoHTML() {
-  return `<h2>So geht das Rätsel</h2>
+  const art = kreuz && view === 'cross' ? krArtNow() : typeof rxArt === 'function' ? rxArt() : 'kreuz';
+  if (art !== 'kreuz' && typeof rxInfoHTML === 'function') return rxInfoHTML(art);
+  return `<h2>So geht das Kreuzworträtsel</h2>
     <ol class="rules-list">
       <li><b>Aus dem Kopf.</b> Lies jeden Hinweis und schreib das Wort auf, das dir einfällt. Noch ohne Gitter. Lücken sind erlaubt.</li>
       <li><b>Ins Gitter.</b> Trag die Wörter ein. Wo sich zwei Wörter kreuzen, steht derselbe Buchstabe. Passt es dort nicht, stimmt eines der beiden Wörter noch nicht.</li>
@@ -25857,6 +26085,7 @@ function krInfoHTML() {
       <li><b>Prüfen.</b> „Prüfen“ zeigt, ob ein Wort stimmt. Ist es richtig, liest du die Erklärung dazu. Nach zwei Versuchen kannst du dir die Lösung zeigen lassen.</li>
       <li><b>Weiterdenken.</b> Die Buchstaben in den Kreisen ergeben das Lösungswort. Erkläre es mit eigenen Worten und hak ab, welche Merkmale du genannt hast. Dann verbindest du es in einem Satz mit einem Wort aus dem Rätsel. Zu beidem gibt es drei Hilfen.</li>
       <li><b>Üben.</b> Wörter, die du nur mit Hilfe geschafft hast, kannst du am Ende in „Karten üben“ legen.</li>
+      ${krAlbumOn() ? `<li><b>Album.</b> ${settings.krKopf !== false ? 'Wörter, die du schon in Schritt 1 aus dem Kopf wusstest, kommen als Karte ins Album.' : 'Wörter, die du im ersten Versuch ohne Hilfe schaffst, kommen als Karte ins Album.'} Ein Wort, das du erklärst und verbindest, wird zur Goldkarte.</li>` : ''}
     </ol>
     <p class="ms-note">Ä, Ö und Ü stehen in einem Kästchen. Beim Eintippen gehen auch ae, oe und ue. Bei Wörtern aus mehreren Teilen nennt die Klammer die Längen, zum Beispiel (5, 4) für „Halbe Note“. Im Gitter trennt ein dicker Strich die Teile.</p>
     <div class="modal-actions"><button type="button" class="btn primary" data-act="modal-close">Verstanden</button></div>`;
@@ -25891,7 +26120,7 @@ const KR_ACTIONS = {
     qrPNG(u.value).then((b) => saveFile(`vierklang-raetsel-${slug(pack.title)}-${krLk.level || krLevelNow()}_${today()}.png`, b, 'Das Bild ließ sich hier nicht speichern.'), () => toast('Der QR-Code ließ sich nicht erzeugen.'));
   },
   'kr-print': () => { if (typeof krPrintOpen === 'function') krPrintOpen(); else toast('Der Druck ist in dieser Fassung nicht verfügbar.'); },
-  'kr-start': () => { const pack = krSetupPack(); krBegin(pack, krCfg(pack), krLevelNow(), settings.krKopf !== false, 'setup'); },
+  'kr-start': () => krStartSetup(),
   'kr-info': () => openModal(krInfoHTML(), 'wide'),
   'kr-back': () => {
     const from = kreuz ? kreuz.from : 'setup';
@@ -25964,7 +26193,7 @@ const KR_ACTIONS = {
     if (!String(kreuz.exText || '').trim()) { toast('Erst eine Erklärung schreiben.'); if (ta) ta.focus(); return; }
     kreuz.exDone = true; kreuz.exTicks = []; Sound.tick(); krSaveNow(); krRender();
   },
-  'kr-extick': (el) => { if (!kreuz) return; const i = Number(el.dataset.i); kreuz.exTicks = (kreuz.exTicks || []).slice(); kreuz.exTicks[i] = !kreuz.exTicks[i]; krSaveNow(); krRender(); },
+  'kr-extick': (el) => { if (!kreuz) return; const i = Number(el.dataset.i); kreuz.exTicks = (kreuz.exTicks || []).slice(); kreuz.exTicks[i] = !kreuz.exTicks[i]; const m = krM(); if (m && krAlbumGold(m)) toast('Goldkarte fürs Album.'); krSaveNow(); krRender(); },
   'kr-exedit': () => { if (!kreuz) return; kreuz.exDone = false; krSaveNow(); krRender(); setTimeout(() => { const ta = $('#kr-ex-in'); if (ta) ta.focus(); }, 20); },
   'kr-vbpartner': (el) => { if (!kreuz) return; kreuz.vbPartner = el.dataset.id; kreuz.sentRes = null; kreuz.vbJudge = null; krSaveNow(); krRender(); },
   'kr-vbhelp': () => { if (!kreuz) return; kreuz.vbHelps = (kreuz.vbHelps || 0) + 1; Sound.tick(); krSaveNow(); krRender(); },
@@ -25984,7 +26213,7 @@ const KR_ACTIONS = {
     }, 20);
   },
   'kr-vbjudge': (el) => {
-    if (!kreuz) return; kreuz.vbJudge = el.dataset.v === '1'; krSaveNow(); krRender();
+    if (!kreuz) return; kreuz.vbJudge = el.dataset.v === '1'; const m = krM(); if (m) krAlbumGold(m); krSaveNow(); krRender();
     if (!kreuz.vbJudge) setTimeout(() => { const ta = $('#kr-sent-in'); if (ta) ta.focus(); }, 20);
   },
   'kr-kartei': () => krToKartei(),
@@ -25992,7 +26221,7 @@ const KR_ACTIONS = {
   'kr-explall': () => { if (!kreuz) return; kreuz.showAll = !kreuz.showAll; krRender(); },
   'kr-again': () => confirmBox('Das Rätsel neu beginnen?', 'Neu beginnen', () => {
     closeModal(); if (!kreuz) return;
-    Object.assign(kreuz, { phase: kreuz.kopf ? 'kopf' : 'gitter', ent: {}, st: {}, solTyped: '', solOk: false, solRes: null, solShown: false, sent: '', sentRes: null, saved: false, showAll: false, exTarget: '', exHelps: 0, exText: '', exDone: false, exTicks: [], vbPartner: '', vbHelps: 0, vbJudge: null, vbSwap: false });
+    Object.assign(kreuz, KR_FRESH(), { phase: krSteps()[0][0] });
     const m = krM(); if (m && m.items[0]) kreuz.act = m.items[0].id;
     krSaveNow(); krRender(); const el = $('#v-cross'); if (el) el.scrollTop = 0;
   }, 'Deine Einträge in diesem Rätsel werden gelöscht.')
@@ -26047,34 +26276,49 @@ function krPrLoad() {
 function krPrSave() { if (krPr) store.set(KEY_KR_PR, { parts: krPr.parts, stufen: krPr.stufen, color: krPr.color, fill: krPr.fill }); }
 
 /* ---------- Dialog ---------- */
+/* Was gedruckt wird: Modell und Zählung je Rätselart */
+function krPrInfo(pack) {
+  const art = typeof rxArt === 'function' ? rxArt() : 'kreuz';
+  if (art === 'kreuz') { const cfg = krCfg(pack), m = krModel(pack, cfg); return { art, cfg, m, n: m.items.length, unit: m.items.length === 1 ? 'Wort' : 'Wörter', cards: m.items.length + (m.sol ? 2 : 1), ok: !!m.lay && m.items.length >= 2 }; }
+  const cfg = rxCfg(pack, art), m = rxModel(pack, art, cfg);
+  if (art === 'luecke') return { art, cfg, m, n: m.sents.length, unit: 'Sätze', cards: m.sents.length + 1, ok: rxReady(m) };
+  if (art === 'such') return { art, cfg, m, n: m.items.length, unit: 'Wörter', cards: m.items.length + (m.sol ? 2 : 1), ok: rxReady(m) };
+  return { art, cfg, m, n: m.rounds.length, unit: 'Kuckuckseier', cards: m.rounds.length, ok: rxReady(m) };
+}
+const KR_PR_DESC = {
+  kreuz: { blatt: 'Gitter, Hinweise, Lösungswort, Erklären und Verbinden', hilfe: 'drei gestufte Hilfen je Wort und zum Weiterdenken', loesung: 'ausgefülltes Gitter, alle Wörter, Erwartung zum Weiterdenken' },
+  luecke: { blatt: 'Sätze mit Lücken, Erklären und Verbinden', hilfe: 'drei gestufte Hilfen je Satz und zum Weiterdenken', loesung: 'alle Sätze mit Lösung, Erwartung zum Weiterdenken' },
+  such: { blatt: 'Buchstabengitter, Hinweise, Lösungswort, Erklären und Verbinden', hilfe: 'drei gestufte Hilfen je Wort und zum Weiterdenken', loesung: 'Gitter mit markierten Wörtern, Erwartung zum Weiterdenken' },
+  kuckuck: { blatt: 'Kuckuckseier mit Linien für die Begründung', hilfe: 'drei gestufte Hilfen je Ei', loesung: 'gedachte Lösung mit Gruppen und Beispielbegründung' }
+};
 function krPrintHTML() {
-  const pack = krSetupPack(), cfg = krCfg(pack), m = krModel(pack, cfg), cov = prPackCover(pack), lv = krLevelNow();
+  const pack = krSetupPack(), info = krPrInfo(pack), m = info.m, cov = prPackCover(pack), lv = krLevelNow(), desc = KR_PR_DESC[info.art];
   const seg2 = (key, opts, val) => `<div class="seg pr-seg" role="radiogroup">${opts.map((o) => { const on = String(o[0]) === String(val); return `<button type="button" role="radio" class="seg-btn${on ? ' on' : ''}" aria-checked="${on}" data-act="kr-pr-set" data-k="${key}" data-v="${esc(o[0])}">${esc(o[1])}</button>`; }).join('')}</div>`;
   const tick = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  const nBl = krPr.stufen === 'alle' ? 3 : 1, cards = m.items.length + (m.sol ? 2 : 1);
+  const nBl = krPr.stufen === 'alle' ? 3 : 1, cards = info.cards;
   const pagesOf = { lehrkraft: '1 Seite', blatt: nBl === 1 ? '1 bis 2 Seiten' : 'je Stufe 1 bis 2 Seiten', hilfe: `etwa ${Math.max(1, Math.ceil(cards / 6))} ${cards > 6 ? 'Seiten' : 'Seite'}`, loesung: '1 Seite' };
-  const parts = KR_PR_PARTS.map((p) => { const on = !!krPr.parts[p[0]]; return `<button type="button" class="pr-part${on ? ' on' : ''}" role="checkbox" aria-checked="${on}" data-act="kr-pr-part" data-k="${p[0]}"><span class="pr-box">${on ? tick : ''}</span><span class="pr-part-t"><b>${esc(p[1])}</b><small>${esc(p[2])} · ${esc(pagesOf[p[0]])}</small></span></button>`; }).join('');
+  const parts = KR_PR_PARTS.map((p) => { const on = !!krPr.parts[p[0]]; return `<button type="button" class="pr-part${on ? ' on' : ''}" role="checkbox" aria-checked="${on}" data-act="kr-pr-part" data-k="${p[0]}"><span class="pr-box">${on ? tick : ''}</span><span class="pr-part-t"><b>${esc(p[1])}</b><small>${esc(desc[p[0]] || p[2])} · ${esc(pagesOf[p[0]])}</small></span></button>`; }).join('');
   const any = KR_PR_PARTS.some((p) => krPr.parts[p[0]]);
   return `<div class="pr-head">
       <span class="pr-badge" style="background:linear-gradient(160deg, ${cov.pal.g0}, ${cov.pal.g1});box-shadow:0 4px 0 ${prMix(cov.pal.g1, '#000000', 0.2)}">${coverIconSVG(cov.icon, cov.pal.on, 'pr-badge-ic')}</span>
-      <div class="pr-head-t"><h2>Rätsel drucken</h2><p class="pr-sub"><b>${esc(pack.title)}</b> · ${m.items.length} Wörter · Hinweise ${esc(lv)}</p></div>
+      <div class="pr-head-t"><h2>${esc(krArtName(info.art))} drucken</h2><p class="pr-sub"><b>${esc(pack.title)}</b> · ${info.n} ${esc(info.unit)} · Hinweise ${esc(lv)}</p></div>
     </div>
-    <p class="pr-intro">Dasselbe Gitter wie am Gerät und im Link. Für Differenzierung gibt es das Rätselblatt in allen drei Hinweisstufen, die Lösung ist überall gleich.</p>
+    <p class="pr-intro">${info.art === 'kreuz' || info.art === 'such' ? 'Dasselbe Gitter' : 'Dieselbe Auswahl'} wie am Gerät und im Link. Für Differenzierung gibt es das Rätselblatt in allen drei Hinweisstufen, die Lösung ist überall gleich.</p>
     <div class="pr-grid">
       <div class="pr-col">
         <div class="pr-row"><div class="pr-l">Rätselblatt<small>${krPr.stufen === 'alle' ? 'Je ein Blatt mit leichten, mittleren und schweren Hinweisen.' : `Nur die eingestellte Stufe: ${esc(lv)}.`}</small></div>${seg2('stufen', [['eine', 'eine Stufe'], ['alle', 'alle drei']], krPr.stufen)}</div>
         <div class="pr-row"><div class="pr-l">Farbe</div>${seg2('color', [['farbig', 'farbig'], ['spar', 'tintensparend']], krPr.color)}</div>
         <div class="pr-row"><div class="pr-l">Ausfüllbar<small>${krPr.fill ? 'Das Rätselblatt lässt sich auch am Gerät ausfüllen, etwa im Acrobat Reader.' : 'Nur zum Ausdrucken.'}</small></div>${seg2('fill', [['an', 'an'], ['aus', 'aus']], krPr.fill ? 'an' : 'aus')}</div>
-        <p class="kr-note">${settings.krKopf !== false ? 'Mit Antwortlinien für Schritt 1: erst aus dem Kopf, dann ins Gitter.' : 'Ohne Antwortlinien, weil „Erst aus dem Kopf“ ausgeschaltet ist.'}</p>
+        ${info.art === 'kreuz' || info.art === 'such' ? `<p class="kr-note">${settings.krKopf !== false ? 'Mit Antwortlinien für Schritt 1: erst aus dem Kopf, dann ins Gitter.' : 'Ohne Antwortlinien, weil „Erst aus dem Kopf“ ausgeschaltet ist.'}</p>` : ''}
       </div>
       <div class="pr-col"><div class="pr-row pr-parts-row"><div class="pr-l pr-l-flex"><span>Inhalte</span></div><div class="pr-parts">${parts}</div></div></div>
     </div>
-    <div class="pr-sum"><b>${any ? 'PDF zum Ausdrucken' : 'Nichts ausgewählt'}</b><span>${m.items.length} Wörter · ${krPr.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + esc(lv)} · ${krPr.color === 'spar' ? 'tintensparend' : 'farbig'}${krPr.fill && krPr.parts.blatt ? ' · ausfüllbar' : ''}</span>${pack.checked ? '' : '<span class="pr-ki">Die Inhalte sind ein KI-Entwurf. Die Fußzeile weist darauf hin.</span>'}</div>
+    <div class="pr-sum"><b>${any ? 'PDF zum Ausdrucken' : 'Nichts ausgewählt'}</b><span>${info.n} ${esc(info.unit)} · ${krPr.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + esc(lv)} · ${krPr.color === 'spar' ? 'tintensparend' : 'farbig'}${krPr.fill && krPr.parts.blatt ? ' · ausfüllbar' : ''}</span>${pack.checked ? '' : '<span class="pr-ki">Die Inhalte sind ein KI-Entwurf. Die Fußzeile weist darauf hin.</span>'}</div>
     <div class="modal-actions pr-actions"><p class="pr-status" id="kr-pr-status" role="status" aria-live="polite">${esc(krPr.status || '')}</p><button type="button" class="btn" data-act="modal-close">Schließen</button><button type="button" class="btn primary pr-make" id="kr-pr-make" data-act="kr-pr-make"${any && !prBusy ? '' : ' disabled'}>${prBusy ? 'PDF wird erstellt …' : 'PDF erstellen'}</button></div>`;
 }
 function krPrintOpen() {
-  const pack = krSetupPack(), m = krModel(pack, krCfg(pack));
-  if (!m.lay || m.items.length < 2) { toast('Für ein Rätsel braucht es mindestens zwei Wörter im Gitter.'); return; }
+  const pack = krSetupPack(), info = krPrInfo(pack);
+  if (!info.ok) { toast('Für dieses Rätsel reicht die Auswahl nicht.'); return; }
   krPr = krPrLoad(); modalCtx = { krPrint: true };
   openModal(krPrintHTML(), 'wide pr-modal');
 }
@@ -26291,8 +26535,8 @@ function krPatDraw(ctx, L, x, y) {
 function krWeiterBlock(ctx, w, lv, extra) {
   const K = ctx.K, m = ctx.m, W = krWt(ctx.pack), fs = 8.4, colW = (w - 8 - 6) / 2;
   const lab = m.sol ? { A: 'Lösungswort', B: 'Rätselwort' } : { A: 'Wort 1', B: 'Wort 2' };
-  const exTask = m.sol ? W.exPrint : 'Wähle ein Wort aus dem Rätsel, das dir schwerfiel, und erkläre es mit eigenen Worten.';
-  const vbTask = m.sol ? W.vbPrint : 'Verbinde zwei Wörter aus dem Rätsel in einem Satz, der zeigt, wie sie zusammenhängen.';
+  const exTask = (ctx.wtText && ctx.wtText.ex) || (m.sol ? W.exPrint : 'Wähle ein Wort aus dem Rätsel, das dir schwerfiel, und erkläre es mit eigenen Worten.');
+  const vbTask = (ctx.wtText && ctx.wtText.vb) || (m.sol ? W.vbPrint : 'Verbinde zwei Wörter aus dem Rätsel in einem Satz, der zeigt, wie sie zusammenhängen.');
   const exScaff = lv === 'leicht' ? [krPatLayout(K, W.exStart('{A}'), fs, colW, m.sol ? lab : { A: 'Wort' })] : [];
   const vbScaff = lv === 'schwer' ? [] : krPrPatterns(ctx, KR_PR_PAT[ctx.level] || KR_PR_PAT.mid).map((p) => krPatLayout(K, p[1], fs, colW, lab));
   const LS = 7, nLines = Math.min(7, (lv === 'schwer' ? 4 : 3) + Math.max(0, extra || 0));
@@ -26331,7 +26575,7 @@ function krBankBlock(ctx, w) {
 }
 function krSolRow(ctx, y) {
   const K = ctx.K, m = ctx.m; if (!m.sol) return 0;
-  const n = m.sol.cells.length, d = 7.2, gap = 1.6, lw = K.tw('Lösungswort', 't', 10.4) + 4;
+  const n = m.sol.a.letters.length, d = 7.2, gap = 1.6, lw = K.tw('Lösungswort', 't', 10.4) + 4;
   const total = lw + n * d + (n - 1) * gap, x0 = 12 + (186 - total) / 2;
   K.text('Lösungswort', x0, y + d / 2 + K.cap(10.4) / 2, 't', 10.4, PR_C.ink);
   for (let i = 0; i < n; i++) {
@@ -26455,19 +26699,19 @@ function krWtCards(ctx) {
   }
   return out;
 }
-function krPagesHilfe(ctx, lv) {
+function krPagesHilfe(ctx, lv, custom) {
   const K = ctx.K, doc = K.doc, m = ctx.m, W = 62, BOTTOM = 284;
   const mk = (head, hs, gold) => {
     const rs = hs.map((h) => K.rich([[h.text, 'n6', PR_C.ink]], 8.2, W - 8, { lh: 1.26 }));
     return { head, hs, rs, gold, h: Math.max(...rs.map((r) => r.h)) + 12 };
   };
-  const rows = m.items.map((it) => mk(`${it.num} ${krPrDirWord(it)}`, krHelps(it.t, it.a, lv), true));
-  const wt = krWtCards(ctx).map((c) => mk(c.head, c.hs, false));
+  const rows = custom ? custom.rows.map((r) => mk(r.head, r.hs, true)) : m.items.map((it) => mk(`${it.num} ${krPrDirWord(it)}`, krHelps(it.t, it.a, lv), true));
+  const wt = custom && custom.noWt ? [] : krWtCards(ctx).map((c) => mk(c.head, c.hs, false));
   let y = 0;
   const page = () => {
     K.page('portrait');
     y = prHeader(ctx, 'Hilfekarten', null, { chip: 'zum Ausschneiden' });
-    const r = K.rich([['Ausschneiden und am Pult auslegen, nach Wörtern sortiert. Erst Hilfe 1 nehmen, dann Hilfe 2, zuletzt Hilfe 3.', 'n6', PR_C.muted]], 8.4, 186, { lh: 1.3 });
+    const r = K.rich([[`Ausschneiden und am Pult auslegen, nach ${custom && custom.sortBy ? custom.sortBy : 'Wörtern'} sortiert. Erst Hilfe 1 nehmen, dann Hilfe 2, zuletzt Hilfe 3.`, 'n6', PR_C.muted]], 8.4, 186, { lh: 1.3 });
     r.draw(12, y); y += r.h + 3;
   };
   const draw = (row) => {
@@ -26572,10 +26816,10 @@ function krTeacherTexts(ctx, o) {
   L.own = String(pack.lk || '').trim();
   return L;
 }
-function krPageLehrkraft(ctx, o) {
-  const K = ctx.K, L = krTeacherTexts(ctx, o), W = 89, X2 = 109;
+function krPageLehrkraft(ctx, o, LL) {
+  const K = ctx.K, L = LL || krTeacherTexts(ctx, o), W = 89, X2 = 109;
   K.page('portrait');
-  let y0 = prHeader(ctx, 'Für die Lehrkraft', null, { chip: 'Rätsel' });
+  let y0 = prHeader(ctx, 'Für die Lehrkraft', null, { chip: L.chipTop || 'Rätsel' });
   let cx = 12;
   L.chips.forEach((ch) => {
     const w = K.tw(ch, 'n9', 7) + 6; if (cx + w > 198) return;
@@ -26604,7 +26848,7 @@ function krPageLehrkraft(ctx, o) {
     });
     left.push(gap(3), sec('Differenzierung'));
     L.diff.forEach((t) => left.push(bullet(t)));
-    right.push(sec('Dieses Rätsel'));
+    right.push(sec(L.boardTitle || 'Dieses Rätsel'));
     L.board.forEach((r0) => { const r = rich([[r0[0] + '. ', 'n9'], [r0[1], 'n6']], b, W); right.push(r, gap(1.4)); });
     right.push(gap(2.6), sec('Fallstricke'));
     L.fallen.forEach((f) => {
@@ -26615,7 +26859,7 @@ function krPageLehrkraft(ctx, o) {
     L.sicherung.forEach((t) => right.push(bullet(t)));
     if (L.qr) {
       const qs = 24 * Math.max(0.9, sc);
-      const cap = rich([['Dasselbe Rätsel am Gerät. ', 'n9'], ['QR-Code scannen oder den Link aufrufen, ohne Konto. Eintippen, prüfen, Hilfen, Lösungswort.', 'n6']], sm + 0.4, W - qs - 4);
+      const cap = rich([['Dasselbe Rätsel am Gerät. ', 'n9'], [L.qrText || 'QR-Code scannen oder den Link aufrufen, ohne Konto. Eintippen, prüfen, Hilfen, Lösungswort.', 'n6']], sm + 0.4, W - qs - 4);
       const url = K.rich([[L.qr.url, 'n8', PR_C.muted]], 6 * sc, W - qs - 4, { lh: 1.2 });
       const note = L.qr.note ? K.rich([[L.qr.note, 'n6', PR_C.muted]], 6.4 * sc, W - qs - 4, { lh: 1.2 }) : null;
       const h = Math.max(qs, cap.h + 1.4 + url.h + (note ? 1 + note.h : 0));
@@ -26646,6 +26890,7 @@ function krPageLehrkraft(ctx, o) {
 
 /* ---------- PDF ---------- */
 async function buildKrPdf(JsPDF, o) {
+  if (o.art && o.art !== 'kreuz' && typeof buildRxPdf === 'function') return buildRxPdf(JsPDF, o);
   const pack = findPack(o.packId); if (!pack) throw new Error('pack');
   const m = krModel(pack, o.cfg); if (!m.lay) throw new Error('lay');
   const level = langFor(pack);
@@ -26666,8 +26911,8 @@ async function buildKrPdf(JsPDF, o) {
 }
 async function krPrMake() {
   if (prBusy || !krPr) return;
-  const pack = krSetupPack(), cfg = krCfg(pack);
-  const o = { packId: pack.id, cfg: { ids: cfg.ids.slice(), seed: cfg.seed, sol: cfg.sol }, level: krLevelNow(), kopf: settings.krKopf !== false, parts: Object.assign({}, krPr.parts), stufen: krPr.stufen, color: krPr.color, fill: krPr.fill };
+  const pack = krSetupPack(), info = krPrInfo(pack), cfg = info.cfg;
+  const o = { art: info.art, packId: pack.id, cfg: JSON.parse(JSON.stringify(cfg)), level: krLevelNow(), kopf: settings.krKopf !== false, parts: Object.assign({}, krPr.parts), stufen: krPr.stufen, color: krPr.color, fill: krPr.fill };
   if (!KR_PR_PARTS.some((p) => o.parts[p[0]])) { toast('Bitte mindestens einen Inhalt ankreuzen.'); return; }
   prBusy = true; krPrStatus('PDF-Werkzeug wird geladen …', true);
   try {
@@ -26679,7 +26924,7 @@ async function krPrMake() {
     const kb = Math.round(res.buf.byteLength / 1024);
     if (downloads) {
       krPrStatus(`Fertig: ${res.pages} ${res.pages === 1 ? 'Seite' : 'Seiten'}, ${kb} KB. Abfrage zum Speichern …`, true);
-      await saveFile(`vierklang-raetsel-${slug(pack.title)}_${today()}.pdf`, new Blob([res.buf], { type: 'application/pdf' }), 'Das PDF ließ sich hier nicht speichern. Bitte später noch einmal versuchen.');
+      await saveFile(`vierklang-${{ kreuz: 'raetsel', luecke: 'lueckensaetze', such: 'suchsel', kuckuck: 'kuckucksei' }[o.art] || 'raetsel'}-${slug(pack.title)}_${today()}.pdf`, new Blob([res.buf], { type: 'application/pdf' }), 'Das PDF ließ sich hier nicht speichern. Bitte später noch einmal versuchen.');
       krPrStatus(`Fertig: ${res.pages} ${res.pages === 1 ? 'Seite' : 'Seiten'}, ${kb} KB.`, false);
     } else krPrStatus(`Fertig: ${res.pages} ${res.pages === 1 ? 'Seite' : 'Seiten'}, ${kb} KB. Speichern ist in dieser Vorschau nicht möglich.`, false);
   } catch (err) {
@@ -26702,6 +26947,1216 @@ Object.assign(KR_ACTIONS, {
   'kr-pr-part': (el) => { if (!krPr || prBusy) return; const k = el.dataset.k; if (!(k in krPr.parts)) return; krPr.parts[k] = !krPr.parts[k]; krPr.status = ''; krPrSave(); krPrRender(); },
   'kr-pr-make': () => krPrMake()
 });
+
+/* Vierklang · Teil 18: weitere Rätselarten
+   Lückensätze aus den Mustersätzen eines Pakets, Suchsel mit Hinweisen und Kuckucksei mit Begründung. Alle drei nutzen
+   den Rahmen aus Teil 16: Hinweisstufen, gestufte Hilfen, Weiterdenken, Karten üben, Album, Direktlink und Druck.
+   Jede Anordnung entsteht aus Auswahl und Startzahl auf jedem Gerät gleich. */
+
+const KEY_RX = 'vierklang.raetsel.arten.v1';
+const RX_ARTS = [
+  ['kreuz', 'Kreuzworträtsel', 'Aus dem Kopf, dann ins Gitter'],
+  ['luecke', 'Lückensätze', 'In Sätzen fehlen zwei Begriffe'],
+  ['such', 'Suchsel', 'Begriffe im Buchstabengitter finden'],
+  ['kuckuck', 'Kuckucksei', 'Was passt nicht? Mit Begründung']
+];
+const RX_ICON = {
+  kreuz: '<svg viewBox="0 0 40 32" aria-hidden="true"><rect x="4" y="12" width="8" height="8" rx="1.5"/><rect x="12" y="12" width="8" height="8" rx="1.5"/><rect x="20" y="12" width="8" height="8" rx="1.5"/><rect x="12" y="4" width="8" height="8" rx="1.5"/><rect x="12" y="20" width="8" height="8" rx="1.5"/><rect x="28" y="12" width="8" height="8" rx="1.5"/></svg>',
+  luecke: '<svg viewBox="0 0 40 32" aria-hidden="true"><path d="M4 9h8M22 9h14M4 17h16M30 17h6M4 25h10M24 25h10" class="rx-ln"/><rect x="13" y="5" width="8" height="7" rx="1.5" class="rx-gp"/><rect x="21" y="13" width="8" height="7" rx="1.5" class="rx-gp"/><rect x="15" y="21" width="8" height="7" rx="1.5" class="rx-gp"/></svg>',
+  such: '<svg viewBox="0 0 40 32" aria-hidden="true"><text x="5" y="11">K A</text><text x="5" y="20">T L</text><text x="5" y="29">S M</text><rect x="3" y="3" width="21" height="10" rx="5" class="rx-gp"/><circle cx="30" cy="20" r="5"/><path d="M33.5 23.5l4 4" class="rx-ln"/></svg>',
+  kuckuck: '<svg viewBox="0 0 40 32" aria-hidden="true"><ellipse cx="9" cy="18" rx="5" ry="6.5"/><ellipse cx="20" cy="18" rx="5" ry="6.5"/><ellipse cx="31" cy="17" rx="5.6" ry="7.4" class="rx-gp"/></svg>'
+};
+const RX_COUNTS = {
+  luecke: [[5, '5'], [8, '8'], [10, '10'], [12, '12']],
+  such: [[5, '5'], [8, '8'], [10, '10'], [12, '12']],
+  kuckuck: [[4, '4'], [6, '6'], [8, '8'], [10, '10']]
+};
+const RX_DEF_N = { luecke: 8, such: 10, kuckuck: 6 };
+const RX_LEVEL_TEXT = {
+  luecke: {
+    leicht: 'Ein Wortspeicher zeigt alle fehlenden Begriffe.',
+    mittel: 'In jeder Lücke steht der Anfangsbuchstabe.',
+    schwer: 'Die Lücken sind leer. Die Begriffe kommen ganz aus dem Kopf.'
+  },
+  such: KR_LEVEL_TEXT,
+  kuckuck: {
+    leicht: 'Die Gruppen des Pakets stehen dabei. Eine kurze Begründung reicht.',
+    mittel: 'Ohne Liste der Gruppen. Eine kurze Begründung reicht.',
+    schwer: 'Ohne Liste der Gruppen. Die Begründung nennt, was die anderen drei verbindet.'
+  }
+};
+const RX_DIRS = [[2, 'nur → und ↓'], [4, 'auch schräg'], [8, 'auch rückwärts']];
+const RX_DIRSETS = { 2: [[0, 1], [1, 0]], 4: [[0, 1], [1, 0], [1, 1], [-1, 1]], 8: [[0, 1], [1, 0], [1, 1], [-1, 1], [0, -1], [-1, 0], [-1, -1], [1, -1]] };
+let rxCache = {};
+const rxLinkCache = {}, rxLayCache = {};
+function rxArt() { return RX_ARTS.some((x) => x[0] === settings.krArt) ? settings.krArt : 'kreuz'; }
+
+/* ---------- Gemeinsames ---------- */
+function rxBase(t) { return String(t.term || '').replace(/\s*\([^)]*\)/g, '').replace(/\s+/g, ' ').trim(); }
+function rxItemOf(t, num) {
+  const a = krAnswer(t);
+  return { id: t.id, num, t, a: a || { id: t.id, letters: [], lens: [], seps: [], shown: rxBase(t), nach: false } };
+}
+function rxStoreAll() { const o = store.get(KEY_RX, {}); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }
+function rxCfgSave(pack, art, cfg) { const all = rxStoreAll(); all[pack.id] = Object.assign({}, all[pack.id], { [art]: JSON.parse(JSON.stringify(cfg)) }); store.set(KEY_RX, all); }
+function rxTerms(pack) { return pack && Array.isArray(pack.terms) ? pack.terms : []; }
+function rxCfg(pack, art) {
+  const s = (rxStoreAll()[pack.id] || {})[art];
+  if (art === 'luecke') {
+    const ok = new Set(rxLinks(pack).map((x) => x.key));
+    if (s && Array.isArray(s.ids)) { const ids = s.ids.filter((k) => ok.has(k)); if (ids.length >= 2) return { ids, seed: (s.seed >>> 0) % 65536 || 1 }; }
+    const cfg = { ids: rxLueckePick(pack, RX_DEF_N.luecke, krNewSeed()), seed: krNewSeed() }; rxCfgSave(pack, art, cfg); return cfg;
+  }
+  if (art === 'such') {
+    const ok = new Set(krEligible(pack).map((x) => x.t.id));
+    if (s && Array.isArray(s.ids)) { const ids = s.ids.filter((k) => ok.has(k)); if (ids.length >= 3) return { ids, seed: (s.seed >>> 0) % 65536 || 1, sol: typeof s.sol === 'string' ? s.sol : 'auto', dirs: [2, 4, 8].includes(s.dirs) ? s.dirs : 4 }; }
+    const cfg = { ids: krPick(pack, RX_DEF_N.such, krNewSeed()).map((x) => x.t.id), seed: krNewSeed(), sol: 'auto', dirs: 4 }; rxCfgSave(pack, art, cfg); return cfg;
+  }
+  const n = s && RX_COUNTS.kuckuck.some((c) => c[0] === s.n) ? s.n : RX_DEF_N.kuckuck;
+  if (s && s.seed) return { n, seed: (s.seed >>> 0) % 65536 || 1 };
+  const cfg = { n, seed: krNewSeed() }; rxCfgSave(pack, art, cfg); return cfg;
+}
+function rxModel(pack, art, cfg) {
+  const key = [art, pack.id, krHash(JSON.stringify(cfg)), krHash(rxTerms(pack).map((t) => t.id + ':' + t.term + ':' + (t.family || '') + ':' + String(t.expl || '').length).join('|') + '#' + (pack.links || []).length)].join('|');
+  if (rxCache.key === key && rxCache.model) return rxCache.model;
+  const model = art === 'luecke' ? rxModelLuecke(pack, cfg) : art === 'such' ? rxModelSuch(pack, cfg) : rxModelKuckuck(pack, cfg);
+  model.art = art; model.packId = pack.id;
+  rxCache = { key, model };
+  return model;
+}
+function rxReady(m) { return !!m && (m.art === 'luecke' ? m.sents.length >= 2 : m.art === 'such' ? !!m.lay && m.items.length >= 3 : m.rounds.length >= 2); }
+function rxSteps(art) {
+  if (art === 'luecke') return [['saetze', 'Lückensätze', 'Zurück zu den Sätzen'], ['weiter', 'Weiterdenken']];
+  if (art === 'kuckuck') return [['eier', 'Kuckuckseier', 'Zurück zu den Eiern'], ['weiter', 'Bilanz']];
+  return (kreuz && kreuz.kopf ? [['kopf', 'Aus dem Kopf', 'Zurück zu Schritt 1']] : []).concat([['gitter', 'Suchen', 'Zurück ins Gitter'], ['weiter', 'Weiterdenken']]);
+}
+function rxLangKey(pack) { return krLang(pack); }
+
+/* ---------- Lückensätze ---------- */
+/* Fundstelle eines Begriffs im Satz: ganzer Begriff, Lösungsform oder Nachname, am Wortanfang. Eine kurze Endung
+   (Teenager-n, Riff-s) bleibt stehen. Kommt der Begriff zweimal vor, taugt der Satz nicht. */
+function rxFindTerm(sentence, t) {
+  const a = krAnswer(t), base = rxBase(t), cands = [base, a && a.shown];
+  if (t.kind === 'person' || /\s/.test(base)) { const w = base.split(/\s+/); if (w[w.length - 1].length >= 4) cands.push(w[w.length - 1]); }
+  const uniq = Array.from(new Set(cands.filter((c) => c && c.length >= 2))).sort((x, y) => y.length - x.length);
+  for (const c of uniq) {
+    const re = new RegExp(`(^|[^\\p{L}\\-])(${krReEsc(c)})(n|s|e|en|es|er|ern|ns)?(?![\\p{L}])`, 'giu');
+    const hits = []; let mm;
+    while ((mm = re.exec(sentence))) { hits.push({ start: mm.index + mm[1].length, len: mm[2].length, text: mm[2], suf: mm[3] || '' }); if (re.lastIndex === mm.index) re.lastIndex++; }
+    if (hits.length === 1) return Object.assign(hits[0], { cand: c });
+    if (hits.length > 1) return null;
+  }
+  return null;
+}
+function rxLinks(pack) {
+  const ck = 'L|' + pack.id + '|' + krHash((pack.links || []).map((l) => l.join('~')).join('|') + rxTerms(pack).map((t) => t.id + t.term).join('|'));
+  if (rxLinkCache[ck]) return rxLinkCache[ck];
+  const byId = {}; rxTerms(pack).forEach((t) => { byId[t.id] = t; });
+  const out = [], seen = new Set();
+  (pack.links || []).forEach((l) => {
+    const A = byId[l[0]], B = byId[l[1]]; if (!A || !B || A.id === B.id) return;
+    const s = String(l[2] || '').replace(/\s+/g, ' ').trim(), words = s.split(' ').length;
+    const key = l[0] + '~' + l[1]; if (seen.has(key) || words < 6 || words > 34) return;
+    const ga = rxFindTerm(s, A), gb = rxFindTerm(s, B); if (!ga || !gb) return;
+    if (ga.start < gb.start + gb.len + gb.suf.length && gb.start < ga.start + ga.len + ga.suf.length) return;
+    seen.add(key);
+    out.push({ key, s, gaps: [Object.assign({ t: A }, ga), Object.assign({ t: B }, gb)].sort((x, y) => x.start - y.start) });
+  });
+  rxLinkCache[ck] = out;
+  return out;
+}
+/* Auswahl: möglichst viele verschiedene Begriffe, jeder höchstens zweimal, eher kurze Sätze */
+function rxLueckePick(pack, n, seed, keep) {
+  const L = rxLinks(pack), order = krShuffle(L, krRng(seed)), use = {}, pick = [], kept = new Set(keep || []);
+  const add = (x) => { pick.push(x); x.gaps.forEach((g) => { use[g.t.id] = (use[g.t.id] || 0) + 1; }); };
+  L.forEach((x) => { if (kept.has(x.key) && pick.length < n) add(x); });
+  const words = (x) => x.s.split(' ').length;
+  for (let round = 0; round < 3 && pick.length < n; round++) {
+    order.forEach((x) => {
+      if (pick.length >= n || pick.includes(x)) return;
+      const u = x.gaps.map((g) => use[g.t.id] || 0);
+      if (round === 0 && (u[0] || u[1] || words(x) > 26)) return;
+      if (round === 1 && (u[0] + u[1] > 1 || words(x) > 30)) return;
+      if (u[0] >= 2 || u[1] >= 2) return;
+      add(x);
+    });
+  }
+  return pick.map((x) => x.key);
+}
+function rxGapForms(g) {
+  const a = krAnswer(g.t), out = [krCmp(rxBase(g.t)), krCmp(g.text), a ? krCmp(a.shown) : ''].concat(typeof lnForms === 'function' ? lnForms(g.t).map((f) => f.replace(/\s+/g, '')) : []);
+  return Array.from(new Set(out.filter(Boolean)));
+}
+function rxModelLuecke(pack, cfg) {
+  const chosen = new Set(cfg.ids);
+  const sents = krShuffle(rxLinks(pack).filter((x) => chosen.has(x.key)), krRng((cfg.seed ^ 0x51A7) >>> 0)).map((x, i) => ({ key: x.key, num: i + 1, s: x.s, gaps: x.gaps.map((g, j) => Object.assign({}, g, { gid: (i + 1) + 'ab'[j], n: j + 1, forms: rxGapForms(g) })) }));
+  const items = [], seen = new Set(), cooc = {};
+  sents.forEach((x) => {
+    x.gaps.forEach((g) => { if (!seen.has(g.t.id)) { seen.add(g.t.id); items.push(rxItemOf(g.t, items.length + 1)); } });
+    const a = x.gaps[0].t.id, b = x.gaps[1].t.id;
+    (cooc[a] = cooc[a] || []).push(b); (cooc[b] = cooc[b] || []).push(a);
+  });
+  return { sents, items, cooc, sol: null, missing: [], seed: cfg.seed };
+}
+function rxGapRight(g, typed) { const x = krCmp(typed); return !!x && g.forms.includes(x); }
+function rxGapNear(g, typed) { const x = krCmp(typed), f = krCmp(g.text); return !!x && typeof lnDist === 'function' && lnDist(x, f) <= Math.max(1, lnTol(f.length)); }
+function rxGapStatus(g) {
+  const st = kreuz.st[g.gid] || {};
+  if (st.shown) return 'r';
+  if (st.res === 'ok') return st.helps ? 'h' : 'o';
+  if (st.res === 'no' || st.res === 'near') return 'x';
+  return String(kreuz.ent[g.gid] || '').trim() ? 'e' : '';
+}
+/* Status eines Begriffs über alle seine Lücken: das Schwächste zählt */
+function rxTermStatus(tid) {
+  const m = krM(); if (!m || !m.sents) return '';
+  const ss = []; m.sents.forEach((x) => x.gaps.forEach((g) => { if (g.t.id === tid) ss.push(rxGapStatus(g)); }));
+  if (!ss.length) return '';
+  for (const k of ['', 'e', 'x', 'r', 'h']) if (ss.includes(k)) return k;
+  return 'o';
+}
+function rxSentSt(num) { kreuz.rx.sent = kreuz.rx.sent || {}; if (!kreuz.rx.sent[num]) kreuz.rx.sent[num] = { helps: 0, tries: 0, shown: false, msg: '' }; return kreuz.rx.sent[num]; }
+function rxSentDone(x) { return x.gaps.every((g) => { const st = kreuz.st[g.gid] || {}; return st.res === 'ok' || st.shown; }); }
+function rxChoices(pack, g, seed) {
+  const pool = rxTerms(pack).filter((t) => t.id !== g.t.id && !isMedia(t));
+  const rnd = krRng((seed ^ krHash(g.gid + g.t.id)) >>> 0);
+  const same = krShuffle(pool.filter((t) => t.family && t.family === g.t.family), rnd), other = krShuffle(pool.filter((t) => !t.family || t.family !== g.t.family), rnd);
+  const pick = same.slice(0, 2).concat(other).slice(0, 3);
+  return krShuffle([g.t].concat(pick), rnd).map((t) => (t.id === g.t.id ? g.text : rxBase(t)));
+}
+function rxLueckeHelps(pack, x, n, seed) {
+  const out = [];
+  if (n >= 1) out.push({ label: 'Oberbegriffe', text: x.gaps.map((g) => `Lücke ${g.n}: ${rxOberText(g.t)}`).join(' · ') });
+  if (n >= 2) out.push({ label: 'Auswahl', choices: x.gaps.map((g) => ({ g, opts: rxChoices(pack, g, seed) })) });
+  if (n >= 3) out.push({ label: 'Anfangsbuchstaben', text: x.gaps.map((g) => `Lücke ${g.n}: ${g.text[0].toUpperCase()}… (${krCmp(g.text).length} Buchstaben)`).join(' · ') });
+  return out;
+}
+function rxSentHTML(m, x, pack) {
+  const S = rxSentSt(x.num), lv = kreuz.level, done = rxSentDone(x);
+  let html = '', pos = 0;
+  x.gaps.forEach((g) => {
+    html += esc(x.s.slice(pos, g.start));
+    const st = kreuz.st[g.gid] || {}, gd = st.res === 'ok' || st.shown, s = rxGapStatus(g);
+    const ph = !gd && (lv === 'mittel' || S.helps >= 3) ? g.text[0].toUpperCase() + '…' : '';
+    const w = Math.max(5, g.text.length + 2);
+    html += `<span class="rx-gw s-${s || 'none'}"><input class="rx-gap" data-rx-gap="${g.gid}" type="text" value="${esc(gd ? g.text : kreuz.ent[g.gid] || '')}" size="${w}" style="width:${Math.min(18, w * 0.62 + 1.4)}em"${gd ? ' disabled' : ''} placeholder="${esc(ph)}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Lücke ${g.n} in Satz ${x.num}"><i class="rx-gn" aria-hidden="true">${g.n}</i></span>${esc(g.suf)}`;
+    pos = g.start + g.len + g.suf.length;
+  });
+  html += esc(x.s.slice(pos));
+  const helps = rxLueckeHelps(pack, x, S.helps, m.seed);
+  const helpHTML = helps.length ? `<ul class="kr-helps">${helps.map((h) => h.choices
+    ? `<li><b>${esc(h.label)}</b>${h.choices.map((c) => `<span class="rx-chs"><span>Lücke ${c.g.n}</span>${c.opts.map((o) => `<button type="button" class="kr-chip sm" data-act="rx-gapchoice" data-g="${c.g.gid}" data-v="${esc(o)}"${(kreuz.st[c.g.gid] || {}).res === 'ok' ? ' disabled' : ''}>${esc(o)}</button>`).join('')}</span>`).join('')}</li>`
+    : `<li><b>${esc(h.label)}</b> ${esc(h.text)}</li>`).join('')}</ul>` : '';
+  const ok = x.gaps.filter((g) => (kreuz.st[g.gid] || {}).res === 'ok').length;
+  let fb = '';
+  if (S.shown) fb = '<div class="kr-fb shown">So heißen die beiden Lücken.</div>';
+  else if (done) fb = `<div class="kr-fb ok"><b>Richtig.</b> Beide Lücken stimmen.${x.gaps.some((g) => kreuz.album && kreuz.album[g.t.id] && S.tries === 1 && !S.helps) ? ' Neu im Album.' : ''}</div>`;
+  else if (S.msg === 'near') fb = '<div class="kr-fb near">Fast. Prüf die Schreibweise.</div>';
+  else if (S.msg === 'no') fb = `<div class="kr-fb no">${ok ? 'Eine Lücke stimmt, die andere noch nicht.' : 'Das passt noch nicht.'} ${S.tries >= 2 ? 'Du kannst dir die Lösung zeigen lassen.' : 'Nimm eine Hilfe.'}</div>`;
+  const canShow = !done && (S.tries >= 2 || S.helps >= 3);
+  const ref = done ? `<details class="kr-ref"><summary>Was die Wörter bedeuten</summary>${x.gaps.map((g) => `<p><b>${esc(rxBase(g.t))}</b> ${esc(krFirst(g.t))}</p>`).join('')}</details>` : '';
+  return `<li class="rx-sent${done ? ' done' : ''}" id="rx-s${x.num}">
+      <div class="rx-sh"><span class="kr-num">${x.num}</span>${done ? `<span class="kr-tag ${S.shown ? 'shown' : 'ok'}">${S.shown ? 'aufgedeckt' : S.helps ? 'mit Hilfe richtig' : 'richtig'}</span>` : ''}</div>
+      <p class="rx-st">${html}</p>
+      ${helpHTML}${fb}
+      ${done ? ref : `<div class="kr-act-a"><button type="button" class="btn primary sm" data-act="rx-gapcheck" data-n="${x.num}">Prüfen</button><button type="button" class="btn sm" data-act="rx-gaphelp" data-n="${x.num}"${S.helps >= 3 ? ' disabled' : ''}>${S.helps >= 3 ? 'Alle Hilfen genutzt' : `Hilfe ${S.helps + 1} von 3`}</button>${canShow ? `<button type="button" class="btn sm ghost" data-act="rx-gapshow" data-n="${x.num}">Lösung zeigen</button>` : ''}</div>`}
+    </li>`;
+}
+function rxLueckeBank(m) {
+  if (kreuz.level !== 'leicht') return '';
+  const list = []; m.sents.forEach((x) => x.gaps.forEach((g) => { const st = kreuz.st[g.gid] || {}; list.push({ w: g.text, done: st.res === 'ok' || st.shown }); }));
+  list.sort((a, b) => a.w.localeCompare(b.w, 'de'));
+  return `<div class="kr-bank"><span class="kr-bank-h">Wortspeicher</span>${list.map((x) => `<span class="kr-bw${x.done ? ' done' : ''}">${esc(x.w)}</span>`).join('')}</div>`;
+}
+function rxLueckeHTML(m, pack) {
+  const all = m.sents.every(rxSentDone);
+  return `<p class="kr-lead"><b>Schritt 1.</b> In jedem Satz fehlen zwei Begriffe. Schreib sie in die Lücken und prüf jeden Satz. ${all ? 'Alle Sätze sind fertig.' : ''}</p>
+    ${rxLueckeBank(m)}
+    <ol class="rx-sents">${m.sents.map((x) => rxSentHTML(m, x, pack)).join('')}</ol>
+    <div class="ln-actions"><button type="button" class="btn" data-act="rx-checkall">Alle prüfen</button><button type="button" class="btn primary big" data-act="kr-phase" data-v="weiter" data-primary>Weiterdenken${iconNext()}</button></div>`;
+}
+function rxGapCheck(num, quiet) {
+  const m = krM(); if (!m || !m.sents) return 0;
+  const x = m.sents.find((y) => y.num === num); if (!x || rxSentDone(x)) return 0;
+  const typed = x.gaps.map((g) => String(kreuz.ent[g.gid] || '').trim());
+  if (x.gaps.every((g, i) => !typed[i] && (kreuz.st[g.gid] || {}).res !== 'ok')) { if (!quiet) toast('Erst die Lücken füllen.'); return 0; }
+  const S = rxSentSt(num); S.tries++;
+  let near = false;
+  x.gaps.forEach((g, i) => {
+    const st = krSt(g.gid); if (st.res === 'ok') return;
+    st.tries = S.tries; st.helps = S.helps;
+    if (!typed[i]) { st.res = ''; return; }
+    if (rxGapRight(g, typed[i])) { st.res = 'ok'; krAlbumWord(g.t.id, S.tries === 1 && !S.helps); }
+    else { st.res = rxGapNear(g, typed[i]) ? 'near' : 'no'; if (st.res === 'near') near = true; }
+  });
+  S.msg = rxSentDone(x) ? '' : near ? 'near' : 'no';
+  return rxSentDone(x) ? 1 : -1;
+}
+
+/* ---------- Suchsel ---------- */
+function rxSuchLayout(words, seed, nd) {
+  const dirs = RX_DIRSETS[nd] || RX_DIRSETS[4];
+  const total = words.reduce((a, w) => a + w.L.length, 0), maxL = Math.max(...words.map((w) => w.L.length));
+  const freq = 'EEEEEEENNNNNIIIIRRRRSSSSTTTTAAAADDDHHHUUULLLGGOOCCMMBBFWKKZPV';
+  let S = Math.max(maxL, 7, Math.ceil(Math.sqrt(total * (nd === 2 ? 1.9 : 1.55))));
+  for (let grow = 0; grow < 8 && S <= 20; grow++, S++) {
+    for (let att = 0; att < 24; att++) {
+      const rnd = krRng(((seed * 31 + att * 977 + grow * 7919) >>> 0) || 1);
+      const g = Array.from({ length: S }, () => Array(S).fill(''));
+      const order = krShuffle(words, rnd).sort((a, b) => b.L.length - a.L.length);
+      const placed = []; let fail = false;
+      for (const w of order) {
+        let best = null, bestScore = -1;
+        const n = w.L.length;
+        dirs.forEach(([dr, dc]) => {
+          for (let r = 0; r < S; r++) for (let c = 0; c < S; c++) {
+            const er = r + dr * (n - 1), ec = c + dc * (n - 1);
+            if (er < 0 || er >= S || ec < 0 || ec >= S) continue;
+            let ov = 0, ok = true;
+            for (let i = 0; i < n; i++) { const ch = g[r + dr * i][c + dc * i]; if (ch) { if (ch !== w.L[i]) { ok = false; break; } ov++; } }
+            if (!ok || ov >= n - 1) continue;
+            const score = ov * 0.9 + rnd();
+            if (score > bestScore) { bestScore = score; best = { r, c, dr, dc }; }
+          }
+        });
+        if (!best) { fail = true; break; }
+        for (let i = 0; i < n; i++) g[best.r + best.dr * i][best.c + best.dc * i] = w.L[i];
+        placed.push(Object.assign({ id: w.id, L: w.L }, best));
+      }
+      if (fail) continue;
+      const rf = krRng(((seed ^ 0xBEEF) + att * 131 + grow) >>> 0 || 1);
+      const grid = g.map((row) => row.map((ch) => ch || freq[Math.floor(rf() * freq.length)]));
+      if (!rxSuchUnique(grid, placed)) continue;
+      return { S, W: S, H: S, grid, words: placed };
+    }
+  }
+  return null;
+}
+function rxWordCellsS(p) { const out = []; for (let i = 0; i < p.L.length; i++) out.push((p.r + p.dr * i) + ',' + (p.c + p.dc * i)); return out; }
+/* Jedes Wort genau einmal im Gitter, in allen acht Richtungen gezählt. Ein Vorkommen innerhalb eines anderen Wortes zählt nicht. */
+function rxSuchUnique(grid, placed) {
+  const S = grid.length, cellsOf = placed.map((p) => new Set(rxWordCellsS(p)));
+  for (const p of placed) {
+    const own = rxWordCellsS(p).join('|'), ownR = rxWordCellsS(p).reverse().join('|');
+    for (const [dr, dc] of RX_DIRSETS[8]) for (let r = 0; r < S; r++) for (let c = 0; c < S; c++) {
+      const n = p.L.length, er = r + dr * (n - 1), ec = c + dc * (n - 1);
+      if (er < 0 || er >= S || ec < 0 || ec >= S) continue;
+      let ok = true; const cells = [];
+      for (let i = 0; i < n; i++) { if (grid[r + dr * i][c + dc * i] !== p.L[i]) { ok = false; break; } cells.push((r + dr * i) + ',' + (c + dc * i)); }
+      if (!ok) continue;
+      const k = cells.join('|'); if (k === own || k === ownR) continue;
+      if (cellsOf.some((set, j) => placed[j] !== p && cells.every((x) => set.has(x)))) continue;
+      return false;
+    }
+  }
+  return true;
+}
+/* Lösungswort: zu einzelnen Hinweisen steht ein Feld und der wievielte Buchstabe des gefundenen Wortes dorthin gehört */
+function rxSuchAssign(letters, items, seed) {
+  const rnd = krRng(seed), used = new Set(), out = [];
+  const cand = letters.map((L) => krShuffle(items.filter((it) => it.a.letters.includes(L)), rnd));
+  const go = (k) => {
+    if (k === letters.length) return true;
+    for (const it of cand[k]) {
+      if (used.has(it.id)) continue;
+      const idxs = it.a.letters.map((x, i) => (x === letters[k] ? i : -1)).filter((i) => i >= 0);
+      const idx = idxs.find((i) => i > 0) !== undefined ? idxs.find((i) => i > 0) : idxs[0];
+      used.add(it.id); out[k] = { id: it.id, idx };
+      if (go(k + 1)) return true;
+      used.delete(it.id);
+    }
+    return false;
+  };
+  return go(0) ? out : null;
+}
+function rxModelSuch(pack, cfg) {
+  const el = krEligible(pack), byId = {}; el.forEach((x) => { byId[x.t.id] = x; });
+  const chosen = new Set(cfg.ids), sel = krShuffle(el.filter((x) => chosen.has(x.t.id)), krRng((cfg.seed ^ 0x5EED) >>> 0));
+  const items = sel.map((x, i) => ({ id: x.t.id, num: i + 1, t: x.t, a: x.a, L: x.a.letters }));
+  const lk = items.map((it) => it.id + ':' + it.L.join('')).join('|') + '#' + cfg.seed + '#' + (cfg.dirs || 4);
+  if (!(lk in rxLayCache)) { const ks = Object.keys(rxLayCache); if (ks.length > 24) delete rxLayCache[ks[0]]; rxLayCache[lk] = items.length >= 3 ? rxSuchLayout(items.map((it) => ({ id: it.id, L: it.L })), cfg.seed, cfg.dirs || 4) : null; }
+  const lay = rxLayCache[lk];
+  let sol = null;
+  if (lay && cfg.sol !== '') {
+    const list = cfg.sol && cfg.sol !== 'auto' ? [byId[cfg.sol]].filter(Boolean) : krSolCandidates(el, sel, cfg.seed).filter((x) => x.a.letters.length <= items.length);
+    for (const x of list.slice(0, 80)) {
+      if (cfg.ids.includes(x.t.id) || x.a.letters.length > items.length) continue;
+      const picks = rxSuchAssign(x.a.letters, items, (cfg.seed ^ krHash(x.t.id)) >>> 0);
+      if (picks) { sol = { id: x.t.id, t: x.t, a: x.a, picks }; break; }
+    }
+  }
+  if (sol) sol.picks.forEach((p, k) => { const it = items.find((y) => y.id === p.id); it.solK = k + 1; it.solIdx = p.idx; });
+  const pos = {}; if (lay) lay.words.forEach((p) => { pos[p.id] = p; });
+  items.forEach((it) => { it.p = pos[it.id] || null; });
+  return { lay, items, sol, missing: [], seed: cfg.seed, dirs: cfg.dirs || 4, solNote: 'Neben manchen Hinweisen steht ein Feld. Dorthin kommt der angegebene Buchstabe des gefundenen Wortes.', solRetry: 'Prüf die Buchstaben aus den gefundenen Wörtern.' };
+}
+function rxSuchSolOptions(pack, cfg) {
+  const m = rxModel(pack, 'such', Object.assign({}, cfg, { sol: '' })); if (!m.lay) return [];
+  const el = krEligible(pack), sel = el.filter((x) => cfg.ids.includes(x.t.id));
+  return krSolCandidates(el, sel, cfg.seed).filter((x) => x.a.letters.length <= m.items.length && rxSuchAssign(x.a.letters, m.items, (cfg.seed ^ krHash(x.t.id)) >>> 0)).slice(0, 30);
+}
+function rxFound(id) { const st = kreuz.st[id]; return !!(st && (st.res === 'ok' || st.shown)); }
+function rxSolFromGrid(m) {
+  if (!m.sol || !m.sol.picks) return [];
+  return m.sol.picks.map((p) => { const it = m.items.find((y) => y.id === p.id); return it && rxFound(it.id) ? it.a.letters[p.idx] : ''; });
+}
+function rxSuchGridHTML(m, opt) {
+  opt = opt || {};
+  const lay = m.lay; if (!lay) return '';
+  const col = {}, hint = {}, sel = !opt.preview && kreuz && kreuz.rx.sel ? kreuz.rx.sel.join(',') : '';
+  m.items.forEach((it, i) => {
+    if (!it.p) return;
+    const on = opt.solution || (!opt.preview && rxFound(it.id));
+    if (on) rxWordCellsS(it.p).forEach((k) => { col[k] = (col[k] ? col[k] + ' ' : '') + 'w' + (i % 6); });
+    const st = !opt.preview && kreuz ? kreuz.st[it.id] || {} : {};
+    if (!opt.preview && st.helps >= 3 && !rxFound(it.id)) hint[it.p.r + ',' + it.p.c] = true;
+  });
+  const act = !opt.preview && kreuz ? m.items.find((it) => it.id === kreuz.act) : null;
+  const actCells = act && act.p && rxFound(act.id) ? new Set(rxWordCellsS(act.p)) : new Set();
+  let html = '';
+  for (let r = 0; r < lay.S; r++) for (let c = 0; c < lay.S; c++) {
+    const k = r + ',' + c, ch = lay.grid[r][c];
+    const cls = (col[k] ? ' f ' + col[k].split(' ').pop() : '') + (col[k] && col[k].includes(' ') ? ' x2' : '') + (sel === k ? ' sel' : '') + (hint[k] ? ' hint' : '') + (actCells.has(k) ? ' act' : '');
+    html += opt.preview ? `<span class="rx-sc${cls}">${esc(ch)}</span>`
+      : `<button type="button" class="rx-sc${cls}" data-act="rx-cell" data-r="${r}" data-c="${c}" aria-label="Zeile ${r + 1}, Spalte ${c + 1}, ${esc(ch)}">${esc(ch)}</button>`;
+  }
+  return `<div class="rx-sg${opt.preview ? ' prev' : ''}" style="--rx-s:${lay.S}">${html}</div>`;
+}
+function rxSuchClueText(it) { const c = krClue(it.t, it.a, kreuz ? kreuz.level : krLevelNow()); return c.media === 'hoeren' ? 'Hörbeispiel' : c.media === 'bild' ? 'Notenbild' : c.text; }
+function rxSolTag(it) { return it.solK ? `<span class="rx-solk" title="Buchstabe ${it.solIdx + 1} kommt ins Lösungswort, Feld ${it.solK}">Feld ${it.solK} · ${it.solIdx + 1}. Buchstabe</span>` : ''; }
+function rxSuchKopfHTML(m) {
+  return `<section class="kr-kopf">
+    <p class="kr-lead"><b>Schritt 1.</b> Schreib zu jedem Hinweis das Wort, das dir einfällt. Danach suchst du die Wörter im Gitter. Was du dort findest, ist richtig geschrieben.</p>
+    ${krBankHTML(m)}
+    <ol class="kr-qlist">${m.items.map((it) => `<li class="kr-q"><div class="kr-qh"><span class="kr-num">${it.num}</span><span class="kr-len">${esc(krLenText(it.a))}</span>${rxSolTag(it)}</div>${krClueHTML(it)}<input class="ln-input kr-in" data-kr-in="${esc(it.id)}" type="text" value="${esc(kreuz.ent[it.id] || '')}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Dein Wort" aria-label="Wort zu Hinweis ${it.num}"></li>`).join('')}</ol>
+    <div class="ln-actions"><button type="button" class="btn primary big" data-act="kr-phase" data-v="gitter" data-primary>Im Gitter suchen${iconNext()}</button></div>
+  </section>`;
+}
+function rxSuchActHTML(m, it) {
+  const st = krSt(it.id), helps = krHelps(it.t, it.a, kreuz.level), done = rxFound(it.id);
+  const typed = String(kreuz.ent[it.id] || '').trim();
+  let fb = '';
+  const cl = krClue(it.t, it.a, kreuz.level), first = krFirst(it.t), rest = cl.src === 'expl' && String(it.t.expl).startsWith(first) ? String(it.t.expl).slice(first.length).trim() : it.t.expl;
+  if (st.res === 'ok') fb = `<div class="kr-fb ok"><b>Gefunden: ${esc(it.a.shown)}.</b> ${esc(rest)}${kreuz.kopf ? (kreuz.kopfOk && kreuz.kopfOk[it.id] ? ' Du wusstest es schon aus dem Kopf.' : typed ? ' In Schritt 1 stand bei dir noch etwas anderes.' : '') : ''}</div>`;
+  else if (st.shown) fb = `<div class="kr-fb shown"><b>${esc(it.a.shown)}.</b> ${esc(it.t.expl)} Das Wort ist jetzt im Gitter markiert.</div>`;
+  const shown = helps.slice(0, st.helps).map((h, i) => (i === 2 ? Object.assign({}, h, { text: h.text + ' Im Gitter ist das Anfangsfeld markiert.' }) : h));
+  const card = kreuz.album && kreuz.album[it.id] ? '<span class="kr-tag kr-card">Karte fürs Album</span>' : '';
+  return `<div class="kr-act" id="kr-act">
+    <div class="kr-act-h"><span class="kr-num">${it.num}</span><span class="kr-len">${esc(krLenText(it.a))}</span>${rxSolTag(it)}${done ? `<span class="kr-tag ${st.shown ? 'shown' : 'ok'}">${st.shown ? 'aufgedeckt' : st.helps ? 'mit Hilfe gefunden' : 'gefunden'}</span>` : ''}${card}</div>
+    ${krClueHTML(it)}
+    ${kreuz.kopf && typed && !done ? `<p class="kr-note">Deine Antwort aus Schritt 1: <b>${esc(typed)}</b></p>` : ''}
+    ${shown.length ? `<ul class="kr-helps">${shown.map((h) => `<li><b>${esc(h.label)}</b> ${esc(h.text)}</li>`).join('')}</ul>` : ''}
+    ${fb}
+    <div class="kr-act-a">${done ? '' : `<button type="button" class="btn sm" data-act="rx-shelp"${st.helps >= 3 ? ' disabled' : ''}>${st.helps >= 3 ? 'Alle Hilfen genutzt' : `Hilfe ${st.helps + 1} von 3`}</button>${st.helps >= 2 ? '<button type="button" class="btn sm ghost" data-act="rx-sshow">Lösung zeigen</button>' : ''}`}<button type="button" class="btn sm ghost" data-act="rx-snext">Nächster Hinweis${iconNext()}</button></div>
+  </div>`;
+}
+function rxSuchListHTML(m) {
+  return `<div class="rx-clues"><h3>Hinweise</h3>${m.items.map((it) => `<button type="button" class="kr-li s-${krStatus(it) || 'none'}${kreuz.act === it.id ? ' on' : ''}" data-act="rx-clue" data-id="${esc(it.id)}"><span class="kr-num">${it.num}</span><span class="kr-li-t">${esc(rxSuchClueText(it))}</span>${it.solK ? `<span class="rx-solk sm">F${it.solK}</span>` : ''}<span class="kr-dot" aria-hidden="true"></span></button>`).join('')}</div>`;
+}
+function rxSuchGitterHTML(m) {
+  const it = m.items.find((x) => x.id === kreuz.act) || m.items[0];
+  const n = m.items.filter((x) => rxFound(x.id)).length;
+  const dirs = { 2: 'Die Wörter laufen von links nach rechts oder von oben nach unten.', 4: 'Die Wörter laufen nach rechts, nach unten oder schräg.', 8: 'Die Wörter laufen in alle Richtungen, auch rückwärts.' }[m.dirs] || '';
+  return `<p class="kr-lead"><b>Schritt ${kreuz.kopf ? 2 : 1}.</b> Tipp den ersten und den letzten Buchstaben eines Wortes an. ${esc(dirs)}</p>
+    <section class="kr-play rx-splay">
+      ${rxSuchActHTML(m, it)}
+      <div class="kr-board rx-board" id="rx-board">${rxSuchGridHTML(m)}<p class="rx-count">${n} von ${m.items.length} gefunden</p></div>
+      <div class="kr-side">${krBankHTML(m)}${rxSuchListHTML(m)}</div>
+    </section>
+    <div class="ln-actions"><button type="button" class="btn primary big" data-act="kr-phase" data-v="weiter" data-primary>Weiterdenken${iconNext()}</button></div>`;
+}
+function rxSuchMark(r, c) {
+  const m = krM(); if (!m || !m.lay) return;
+  const sel = kreuz.rx.sel;
+  if (!sel) { kreuz.rx.sel = [r, c]; krRender(); return; }
+  if (sel[0] === r && sel[1] === c) { kreuz.rx.sel = null; krRender(); return; }
+  const dr = r - sel[0], dc = c - sel[1];
+  if (!(dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc))) { kreuz.rx.sel = [r, c]; toast('Anfang und Ende liegen in einer Zeile, einer Spalte oder schräg.'); krRender(); return; }
+  const len = Math.max(Math.abs(dr), Math.abs(dc)) + 1;
+  const hit = m.items.find((it) => {
+    const p = it.p; if (!p || p.L.length !== len) return false;
+    const er = p.r + p.dr * (len - 1), ec = p.c + p.dc * (len - 1);
+    return (p.r === sel[0] && p.c === sel[1] && er === r && ec === c) || (er === sel[0] && ec === sel[1] && p.r === r && p.c === c);
+  });
+  kreuz.rx.sel = null;
+  if (!hit) { Sound.no(); toast('Das ist keines der gesuchten Wörter.'); krRender(); return; }
+  kreuz.act = hit.id;
+  if (rxFound(hit.id)) { toast('Dieses Wort hast du schon gefunden.'); krRender(); return; }
+  const st = krSt(hit.id); st.res = 'ok'; st.tries = (st.tries || 0) + 1;
+  krAlbumWord(hit.id, !st.helps);
+  Sound.tick();
+  if (m.items.every((it) => rxFound(it.id))) toast(m.sol ? 'Alle Wörter gefunden. Weiter geht es mit dem Lösungswort.' : 'Alle Wörter gefunden.');
+  krSaveNow(); krRender();
+}
+
+/* ---------- Kuckucksei ---------- */
+function rxFamilies(pack) {
+  const fams = {};
+  rxTerms(pack).forEach((t) => { if (t.family) (fams[t.family] = fams[t.family] || []).push(t); });
+  return fams;
+}
+function rxFamSig(pack) { const f = rxFamilies(pack); return krHash(Object.keys(f).sort().map((k) => k + ':' + f[k].map((t) => t.id).sort().join(',')).join('|')) & 1023; }
+function rxModelKuckuck(pack, cfg) {
+  const fams = rxFamilies(pack), keys = Object.keys(fams).filter((k) => fams[k].length >= 3).sort();
+  const rnd = krRng(cfg.seed), order = krShuffle(keys, rnd), used = new Set(), rounds = [];
+  if (keys.length >= 2) {
+    for (let i = 0; i < cfg.n; i++) {
+      const X = order[i % order.length];
+      const fresh = (list) => list.filter((t) => !used.has(t.id));
+      let three = fresh(krShuffle(fams[X], rnd)).slice(0, 3);
+      if (three.length < 3) three = three.concat(krShuffle(fams[X], rnd).filter((t) => !three.includes(t))).slice(0, 3);
+      const others = krShuffle(Object.keys(fams).filter((k) => k !== X), rnd);
+      let odd = null;
+      for (const Y of others) { odd = fresh(krShuffle(fams[Y], rnd))[0]; if (odd) break; }
+      if (!odd) odd = krShuffle(fams[others[0]], rnd)[0];
+      three.concat([odd]).forEach((t) => used.add(t.id));
+      rounds.push({ id: 'e' + (i + 1), num: i + 1, fam: X, famOdd: odd.family, odd: odd.id, terms: krShuffle(three.concat([odd]), rnd).map((t) => t.id) });
+    }
+  }
+  const byId = {}; rxTerms(pack).forEach((t) => { byId[t.id] = t; });
+  const items = [], seen = new Set();
+  rounds.forEach((r) => r.terms.forEach((id) => { if (!seen.has(id)) { seen.add(id); items.push(rxItemOf(byId[id], items.length + 1)); } }));
+  return { rounds, items, byId, sol: null, missing: [], families: keys, seed: cfg.seed };
+}
+function rxKuSt(rid) { kreuz.rx.ku = kreuz.rx.ku || {}; if (!kreuz.rx.ku[rid]) kreuz.rx.ku[rid] = { pick: '', why: '', res: '', judge: null, helps: 0, tries: 0 }; return kreuz.rx.ku[rid]; }
+function rxKuStatus(r) {
+  const s = kreuz.rx.ku && kreuz.rx.ku[r.id];
+  if (!s || !s.res) return s && (s.pick || s.why) ? 'e' : '';
+  if (s.res === 'ok') return s.helps ? 'h' : 'o';
+  return s.judge === 'auch' ? 'a' : s.judge === 'anders' ? 'x' : 'p';
+}
+function rxKuRepeat(m) {
+  const ids = new Set();
+  m.rounds.forEach((r) => { const s = rxKuStatus(r); if (s === 'o') return; ids.add(r.odd); const k = kreuz.rx.ku && kreuz.rx.ku[r.id]; if (k && k.pick && k.pick !== r.odd && s === 'x') ids.add(k.pick); });
+  return Array.from(ids);
+}
+function rxKuStart(pack, name) {
+  const L = krLang(pack);
+  return L === 'easy' ? `„${name}“ passt nicht, weil die anderen drei …` : L === 'hard' ? `„${name}“ fällt heraus, denn die übrigen drei …` : `„${name}“ passt nicht, weil die anderen drei …`;
+}
+/* Oberbegriff als erste Hilfe: verrät das Wort nicht und bleibt lesbar, sonst ein Merkmal oder der Anfang der Erklärung */
+function rxOberText(t) {
+  const a = rxItemOf(t).a, h = t.hints || {};
+  const cands = [h.ober, (t.feats || [])[0], (t.feats || [])[1], krFirst(t)].filter(Boolean);
+  for (const c of cands) {
+    let m = krMask(krCap(String(c).trim()), t, a);
+    const words = m.split(/\s+/);
+    if (words.length > 14) m = words.slice(0, 14).join(' ').replace(/[,;:.]$/, '') + ' …';
+    if (!krPoor(m)) return m.replace(/[.]$/, '');
+  }
+  return 'Ein Begriff aus diesem Paket';
+}
+function rxKuOber(t) { return rxOberText(t); }
+function rxKuNeed(level) { return level === 'schwer' ? 6 : 3; }
+function rxKuHTML(m, pack) {
+  const i = Math.max(0, Math.min(m.rounds.length - 1, kreuz.rx.cur || 0)), r = m.rounds[i], s = rxKuSt(r.id), byId = m.byId;
+  const name = (id) => rxBase(byId[id]);
+  const out = s.helps >= 3 ? r.terms.find((id) => id !== r.odd) : '';
+  const checked = !!s.res;
+  const cards = r.terms.map((id) => {
+    const on = s.pick === id, cls = checked ? (id === r.odd ? ' odd' : on ? ' wrong' : '') : '';
+    return `<button type="button" class="rx-egg${on ? ' on' : ''}${cls}${out === id ? ' in' : ''}" data-act="rx-kpick" data-id="${esc(id)}" aria-pressed="${on}"${checked || out === id ? ' disabled' : ''}><b>${esc(name(id))}</b>${out === id ? '<small>gehört dazu</small>' : ''}</button>`;
+  }).join('');
+  const helps = [];
+  if (s.helps >= 1) helps.push(`<li><b>Oberbegriffe</b>${r.terms.map((id) => `<span class="rx-kb"><i>${esc(name(id))}</i> ${esc(rxKuOber(byId[id]))}</span>`).join('')}</li>`);
+  if (s.helps >= 2) helps.push(`<li><b>Gruppe</b> Drei Begriffe gehören zur Gruppe „${esc(r.fam)}“.</li>`);
+  if (s.helps >= 3) helps.push(`<li><b>Einer fällt weg</b> „${esc(name(out))}“ gehört zur Gruppe.</li>`);
+  const groups = kreuz.level === 'leicht' ? `<p class="rx-groups"><b>Gruppen in diesem Paket</b> ${m.families.map((f) => esc(f)).join(' · ')}</p>` : '';
+  let fb = '';
+  if (s.res === 'ok') fb = `<div class="kr-fb ok"><b>Gedacht war auch „${esc(name(r.odd))}“.</b> Die anderen drei gehören zur Gruppe „${esc(r.fam)}“, „${esc(name(r.odd))}“ gehört zu „${esc(r.famOdd)}“.${kreuz.album && kreuz.album[r.odd] ? ' Neu im Album.' : ''}</div><p class="kr-note">Steht in deiner Begründung, was die anderen drei verbindet? Dann ist sie vollständig.</p>`;
+  else if (s.res === 'other') {
+    fb = `<div class="kr-fb near"><b>Gedacht war „${esc(name(r.odd))}“.</b> Die anderen drei gehören zur Gruppe „${esc(r.fam)}“, „${esc(name(r.odd))}“ gehört zu „${esc(r.famOdd)}“. Kann deine Lösung auch stimmen? Dann zählt deine Begründung.</div>
+      <div class="kr-act-a kr-judge"><span>Was meinst du?</span><button type="button" class="btn sm${s.judge === 'auch' ? ' primary' : ''}" data-act="rx-kjudge" data-v="auch" aria-pressed="${s.judge === 'auch'}">Meine Begründung stimmt auch</button><button type="button" class="btn sm${s.judge === 'anders' ? ' on' : ''}" data-act="rx-kjudge" data-v="anders" aria-pressed="${s.judge === 'anders'}">Ich sehe es jetzt anders</button></div>`;
+  }
+  const ref = checked ? `<details class="kr-ref"><summary>Zum Nachlesen</summary>${r.terms.map((id) => `<p><b>${esc(name(id))}</b> ${esc(byId[id].expl)}</p>`).join('')}</details>` : '';
+  const dots = m.rounds.map((x, j) => `<button type="button" class="rx-dot s-${rxKuStatus(x) || 'none'}${j === i ? ' on' : ''}" data-act="rx-kgo" data-i="${j}" aria-label="Kuckucksei ${j + 1}"${j === i ? ' aria-current="true"' : ''}>${j + 1}</button>`).join('');
+  return `<p class="kr-lead"><b>Schritt 1.</b> Drei Begriffe gehören zusammen, einer ist das Kuckucksei. Tipp es an und begründe, warum es nicht passt.</p>
+    <nav class="rx-dots" aria-label="Kuckuckseier">${dots}</nav>
+    <section class="kr-box rx-round">
+      <h3>Kuckucksei ${r.num} von ${m.rounds.length}</h3>
+      ${groups}
+      <div class="rx-eggs" role="group" aria-label="Vier Begriffe">${cards}</div>
+      ${helps.length ? `<ul class="kr-helps">${helps.join('')}</ul>` : ''}
+      <label class="rx-whyl" for="rx-why">${kreuz.level === 'schwer' ? 'Begründung: Was verbindet die anderen drei, und warum gehört das Kuckucksei nicht dazu?' : 'Warum passt es nicht?'}</label>
+      <textarea id="rx-why" class="field" rows="3" maxlength="400" placeholder="${esc(s.pick ? rxKuStart(pack, name(s.pick)) : 'Erst ein Kuckucksei antippen')}"${checked ? ' readonly' : ''}>${esc(s.why || '')}</textarea>
+      <div class="kr-act-a">${checked ? '' : `${s.pick ? '<button type="button" class="btn sm ghost" data-act="rx-kstarter">Satzanfang einfügen</button>' : ''}<button type="button" class="btn sm" data-act="rx-khelp"${s.helps >= 3 ? ' disabled' : ''}>${s.helps >= 3 ? 'Alle Hilfen genutzt' : `Hilfe ${s.helps + 1} von 3`}</button><button type="button" class="btn primary" data-act="rx-kcheck">Prüfen</button>`}</div>
+      ${fb}${ref}
+    </section>
+    <div class="ln-actions">${i > 0 ? `<button type="button" class="btn ghost" data-act="rx-kgo" data-i="${i - 1}">${iconArrow(-1)}Voriges Ei</button>` : ''}${i < m.rounds.length - 1 ? `<button type="button" class="btn${checked ? ' primary big' : ''}" data-act="rx-kgo" data-i="${i + 1}"${checked ? ' data-primary' : ''}>Nächstes Ei${iconNext()}</button>` : `<button type="button" class="btn primary big" data-act="kr-phase" data-v="weiter" data-primary>Zur Bilanz${iconNext()}</button>`}</div>`;
+}
+function rxKuBilanzHTML(m) {
+  const c = { o: 0, a: 0, x: 0, n: 0 };
+  m.rounds.forEach((r) => { const s = rxKuStatus(r); if (s === 'o' || s === 'h') c.o++; else if (s === 'a') c.a++; else if (s === 'x' || s === 'p') c.x++; else c.n++; });
+  const rep = rxKuRepeat(m);
+  const lbl = { o: 'wie gedacht', a: 'anders, begründet', x: 'daneben', n: 'noch offen' };
+  const explList = kreuz.showAll ? `<ul class="kr-expl">${m.items.map((it) => `<li><b>${esc(it.a.shown)}</b> ${esc(it.t.expl)}</li>`).join('')}</ul>` : '';
+  return `<p class="kr-lead"><b>Schritt 2.</b> Bilanz. Welche Kuckuckseier hast du gefunden, und welche Begriffe übst du noch?</p>
+    <section class="kr-box kr-bil"><h3>Deine Bilanz</h3>
+      <div class="kr-sumrow">${['o', 'a', 'x', 'n'].map((k) => `<div class="kr-sn s-${{ o: 'o', a: 'h', x: 'x', n: 'r' }[k]}"><b>${c[k]}</b><span>${lbl[k]}</span></div>`).join('')}</div>
+      ${rep.length ? `<p class="kr-note">Die Kuckuckseier, die nicht wie gedacht gefunden wurden, kommen in „Karten üben“ in Fach 1.</p><div class="kr-act-a"><button type="button" class="btn" data-act="kr-kartei"${kreuz.saved ? ' disabled' : ''}>${kreuz.saved ? 'Liegt in „Karten üben“' : (rep.length === 1 ? 'Ein Wort' : rep.length + ' Wörter') + ' in „Karten üben“ legen'}</button>${kreuz.saved ? '<button type="button" class="btn ghost" data-act="kr-learn">Karten üben öffnen</button>' : ''}</div>` : '<p class="kr-note">Alle Kuckuckseier wie gedacht gefunden.</p>'}
+      ${krAlbumLine()}
+      <p class="kr-note">Zu zweit weiter: Baut selbst ein Kuckucksei aus dem Paket und lasst es euch gegenseitig begründen.</p>
+      <div class="kr-act-a"><button type="button" class="btn sm ghost" data-act="kr-explall" aria-expanded="${!!kreuz.showAll}">${kreuz.showAll ? 'Erklärungen ausblenden' : 'Alle Erklärungen ansehen'}</button></div>${explList}
+    </section>
+    <div class="ln-actions"><button type="button" class="btn ghost" data-act="kr-phase" data-v="eier">${iconArrow(-1)}Zurück zu den Eiern</button><button type="button" class="btn" data-act="kr-again">Noch einmal</button><button type="button" class="btn primary" data-act="kr-back">${kreuz.from === 'setup' ? 'Zur Einrichtung' : 'Fertig'}</button></div>`;
+}
+
+/* ---------- Darstellung je Schritt ---------- */
+function rxBody(m) {
+  const pack = krPack(), art = kreuz.art;
+  if (art === 'luecke') return kreuz.phase === 'weiter' ? krWeiterHTML(m) : rxLueckeHTML(m, pack);
+  if (art === 'kuckuck') return kreuz.phase === 'weiter' ? rxKuBilanzHTML(m) : rxKuHTML(m, pack);
+  if (kreuz.phase === 'kopf') return rxSuchKopfHTML(m);
+  return kreuz.phase === 'weiter' ? krWeiterHTML(m) : rxSuchGitterHTML(m);
+}
+function rxRunKey(pack, art, cfg, level, kopf) { return ['rx', art, pack.id, (cfg.ids || []).join(','), cfg.n || '', cfg.seed, cfg.sol || '', cfg.dirs || '', level, kopf ? 1 : 0].join('|'); }
+function rxBegin(pack, art, cfg, level, kopf, from) {
+  const m = rxModel(pack, art, cfg);
+  if (!rxReady(m)) { toast('Für diese Rätselart reicht das Paket nicht. Wähle eine andere Rätselart.'); return false; }
+  const k = art === 'such' && !!kopf;
+  const key = rxRunKey(pack, art, cfg, level, k);
+  kreuz = Object.assign({ art, packId: pack.id, cfg: JSON.parse(JSON.stringify(cfg)), level, kopf: k, from, key, phase: '', act: m.items[0] ? m.items[0].id : '' }, KR_FRESH());
+  kreuz.phase = rxSteps(art)[0][0];
+  krRunRestore();
+  if (!rxSteps(art).some((x) => x[0] === kreuz.phase)) kreuz.phase = rxSteps(art)[0][0];
+  if (!m.items.some((it) => it.id === kreuz.act) && m.items[0]) kreuz.act = m.items[0].id;
+  kreuz.rx.sel = null;
+  closeModal(); show('cross'); requestWakeLock();
+  return true;
+}
+
+/* ---------- Code für Direktlink und QR (Fassung 2) ---------- */
+function rxCodeMake(pack, art, cfg, level, kopf) {
+  const ai = ['such', 'luecke', 'kuckuck'].indexOf(art); if (ai < 0) return '';
+  const lv = Math.max(0, ['leicht', 'mittel', 'schwer'].indexOf(level));
+  let bits = '';
+  const put = (v, n) => { bits += (v >>> 0).toString(2).padStart(n, '0').slice(-n); };
+  put(2, 2); put(ai, 2); put(lv, 2); put(kopf && art === 'such' ? 1 : 0, 1); put(cfg.seed, 16);
+  if (art === 'such') {
+    const el = krEligible(pack); if (el.length > 255) return '';
+    const m = rxModel(pack, art, cfg), set = new Set(cfg.ids);
+    const si = m.sol ? el.findIndex((x) => x.t.id === m.sol.id) + 1 : 0;
+    put([2, 4, 8].indexOf(cfg.dirs || 4), 2); put(si, 8);
+    put(krHash(el.filter((x) => set.has(x.t.id)).map((x) => x.a.letters.join('')).join('|')) & 1023, 10); put(el.length, 8);
+    el.forEach((x) => { bits += set.has(x.t.id) ? '1' : '0'; });
+  } else if (art === 'luecke') {
+    const L = rxLinks(pack); if (L.length > 255) return '';
+    const set = new Set(cfg.ids);
+    put(krHash(L.filter((x) => set.has(x.key)).map((x) => x.s).join('|')) & 1023, 10); put(L.length, 8);
+    L.forEach((x) => { bits += set.has(x.key) ? '1' : '0'; });
+  } else { put(rxFamSig(pack), 10); put(cfg.n, 8); }
+  const body = lnBitsToB32(bits);
+  return body + LN_B32[lnSum(Array.from(body).map((ch) => LN_B32.indexOf(ch)))];
+}
+function rxCodeDecode(pack, bits, p0) {
+  let p = p0; const get = (n) => { const v = parseInt(bits.slice(p, p + n), 2); p += n; return v; };
+  const ai = get(2), lv = get(2), kopf = get(1) === 1, seed = get(16) || 1;
+  const art = ['such', 'luecke', 'kuckuck'][ai], level = ['leicht', 'mittel', 'schwer'][lv] || 'mittel';
+  const bad = { err: 'Das Rätsel passt nicht zur Fassung des Pakets auf diesem Gerät.' };
+  if (!art) return { err: 'Dieser Rätselcode stammt aus einer anderen Fassung.' };
+  if (art === 'such') {
+    const dirs = [2, 4, 8][get(2)] || 4, si = get(8), sig = get(10), n = get(8), el = krEligible(pack);
+    if (n !== el.length || bits.length < p + n) return bad;
+    const ids = el.filter((x, i) => bits[p + i] === '1').map((x) => x.t.id), set = new Set(ids);
+    if ((krHash(el.filter((x) => set.has(x.t.id)).map((x) => x.a.letters.join('')).join('|')) & 1023) !== sig) return bad;
+    return { art, cfg: { ids, seed, sol: si && el[si - 1] ? el[si - 1].t.id : '', dirs }, level, kopf };
+  }
+  if (art === 'luecke') {
+    const sig = get(10), n = get(8), L = rxLinks(pack);
+    if (n !== L.length || bits.length < p + n) return bad;
+    const ids = L.filter((x, i) => bits[p + i] === '1').map((x) => x.key), set = new Set(ids);
+    if ((krHash(L.filter((x) => set.has(x.key)).map((x) => x.s).join('|')) & 1023) !== sig) return bad;
+    return { art, cfg: { ids, seed }, level, kopf: false };
+  }
+  const sig = get(10), n = get(8);
+  if (sig !== rxFamSig(pack) || !n) return bad;
+  return { art, cfg: { n, seed }, level, kopf: false };
+}
+
+/* ---------- Einrichtung ---------- */
+function rxArtHTML(art) {
+  return `<div class="rx-arts" role="radiogroup" aria-label="Rätselart">${RX_ARTS.map((a) => `<button type="button" class="rx-art${a[0] === art ? ' on' : ''}" role="radio" aria-checked="${a[0] === art}" data-act="rx-art" data-v="${a[0]}"><span class="rx-art-i">${RX_ICON[a[0]]}</span><span class="rx-art-t"><b>${a[1]}</b><small>${a[2]}</small></span></button>`).join('')}</div>`;
+}
+function rxSeg(act, opts, cur, dis) { return `<div class="seg">${opts.map((o) => `<button type="button" class="seg-btn${String(cur) === String(o[0]) ? ' on' : ''}" data-act="${act}" data-v="${o[0]}" aria-pressed="${String(cur) === String(o[0])}"${dis && dis(o[0]) ? ' disabled' : ''}>${o[1]}</button>`).join('')}</div>`; }
+function rxPreviewLuecke(m, sol) {
+  return `<ol class="rx-prevs">${m.sents.map((x) => {
+    let h = '', pos = 0;
+    x.gaps.forEach((g) => { h += esc(x.s.slice(pos, g.start)) + (sol ? `<b class="rx-pg on">${esc(g.text)}</b>` : `<span class="rx-pg">${'_'.repeat(Math.max(4, Math.min(12, g.text.length)))}</span>`) + esc(g.suf); pos = g.start + g.len + g.suf.length; });
+    return `<li><span class="rx-ptx">${h}${esc(x.s.slice(pos))}</span><button type="button" class="btn sm ghost" data-act="rx-swap" data-k="${esc(x.key)}" aria-label="Satz ${x.num} austauschen">Tauschen</button></li>`;
+  }).join('')}</ol>`;
+}
+function rxPreviewKuckuck(m, sol) {
+  return `<ol class="rx-prevk">${m.rounds.map((r) => `<li>${r.terms.map((id) => `<span class="rx-pk${sol && id === r.odd ? ' on' : ''}">${esc(rxBase(m.byId[id]))}</span>`).join('')}${sol ? `<small>Gruppe „${esc(r.fam)}“</small>` : ''}</li>`).join('')}</ol>`;
+}
+function rxSetupHTML(pack, art) {
+  const back = `<button type="button" class="btn ghost" data-act="st-step" data-v="2">${iconArrow(-1)}Zurück</button>`;
+  const cfg = rxCfg(pack, art), m = rxModel(pack, art, cfg), lv = krLevelNow(), name = RX_ARTS.find((a) => a[0] === art)[1];
+  const hero = `<div class="st3-hero"><h1>Rätsel einrichten</h1><p>Rätselart und Auswahl festlegen, Hinweise einstellen. Dann hier lösen, als Link an die Klasse geben oder ausdrucken.</p></div>${rxArtHTML(art)}`;
+  if (!rxReady(m)) {
+    const why = art === 'luecke' ? 'In diesem Paket gibt es zu wenige Mustersätze, in denen beide Begriffe wörtlich vorkommen.' : art === 'such' ? 'In diesem Paket passen zu wenige Begriffe in ein Suchsel.' : 'Dieses Paket hat zu wenige Gruppen mit mindestens drei Begriffen.';
+    return `${hero}<p class="kr-warn">${why} Wähle eine andere Rätselart.</p><div class="st3-cta">${back}</div>`;
+  }
+  const cv = packCover(pack), col = COVER[cv.color] || COVER.indigo, sol = !!krSetupView.sol;
+  let pick = '', opts = '', prev = '', sumTxt = '';
+  if (art === 'luecke') {
+    const total = rxLinks(pack).length, n = cfg.ids.length;
+    sumTxt = `${m.sents.length} Sätze · ${m.items.length} Begriffe · Hinweise ${lv}`;
+    pick = `<section class="kr-box"><h3>Sätze</h3>
+        <div class="kr-row"><span class="kr-l">Anzahl</span>${rxSeg('rx-count', RX_COUNTS.luecke, n, (v) => total < v)}</div>
+        <p class="kr-note">${total} Mustersätze aus dem Paket eignen sich, in ihnen kommen beide Begriffe wörtlich vor. „Tauschen“ ersetzt einen Satz.</p>
+        <div class="kr-row"><button type="button" class="btn sm" data-act="rx-mix">Neu mischen</button></div></section>`;
+    prev = rxPreviewLuecke(m, sol);
+  } else if (art === 'such') {
+    const el = krEligible(pack), chosen = new Set(cfg.ids), n = cfg.ids.length;
+    sumTxt = `${m.items.length} Wörter · ${m.lay.S} × ${m.lay.S} Felder · Hinweise ${lv}${m.sol ? ' · Lösungswort' : ''}`;
+    const chips = el.map((x) => `<button type="button" class="kr-chip${chosen.has(x.t.id) ? ' on' : ''}" data-act="rx-tog" data-id="${esc(x.t.id)}" aria-pressed="${chosen.has(x.t.id)}">${esc(x.a.shown)}${krMediaChip(x.t)}</button>`).join('');
+    pick = `<section class="kr-box"><h3>Wörter</h3>
+        <div class="kr-row"><span class="kr-l">Anzahl</span>${rxSeg('rx-count', RX_COUNTS.such, n, (v) => el.length < v)}</div>
+        <div class="kr-chips" role="group" aria-label="Wörter im Suchsel">${chips}</div>
+        <p class="kr-note">${n} gewählt. Antippen nimmt ein Wort dazu oder heraus.</p>
+        <div class="kr-row"><button type="button" class="btn sm" data-act="rx-mix">Neu mischen</button><button type="button" class="btn sm" data-act="rx-arrange">Neu anordnen</button></div></section>`;
+    const so = rxSuchSolOptions(pack, cfg), cur = cfg.sol === '' ? '' : cfg.sol && cfg.sol !== 'auto' ? cfg.sol : 'auto';
+    opts = `<div class="kr-row"><span class="kr-l">Richtungen</span>${rxSeg('rx-dirs', RX_DIRS, cfg.dirs || 4)}</div>
+        <p class="kr-note">Die Richtungen gelten für alle Hinweisstufen. So haben alle dasselbe Gitter und dieselbe Lösung.</p>
+        ${sw('krKopf', 'Erst aus dem Kopf', 'Schritt 1 ohne Gitter: zu jedem Hinweis das Wort notieren, dann im Gitter suchen. Gefunden heißt richtig geschrieben.')}
+        <div class="kr-row"><span class="kr-l">Lösungswort</span><select class="fl-sel kr-solsel" data-rx-sol aria-label="Lösungswort">
+          <option value="auto"${cur === 'auto' ? ' selected' : ''}>automatisch${cur === 'auto' && m.sol ? ': ' + esc(m.sol.a.shown) : ''}</option>
+          <option value=""${cur === '' ? ' selected' : ''}>ohne Lösungswort</option>
+          ${so.map((x) => `<option value="${esc(x.t.id)}"${cur === x.t.id ? ' selected' : ''}>${esc(x.a.shown)}</option>`).join('')}</select></div>
+        <p class="kr-note">Ein weiterer Begriff aus dem Paket. Zu einzelnen Hinweisen steht, welcher Buchstabe des gefundenen Wortes ins Lösungswort kommt.</p>`;
+    prev = `<div class="kr-board prev">${rxSuchGridHTML(m, { preview: true, solution: sol })}</div>${sol && m.sol ? `<p class="kr-note">Lösungswort: <b>${esc(m.sol.a.shown)}</b></p>` : ''}`;
+  } else {
+    sumTxt = `${m.rounds.length} Kuckuckseier · ${m.families.length} Gruppen · Hinweise ${lv}`;
+    pick = `<section class="kr-box"><h3>Kuckuckseier</h3>
+        <div class="kr-row"><span class="kr-l">Anzahl</span>${rxSeg('rx-count', RX_COUNTS.kuckuck, cfg.n)}</div>
+        <p class="kr-note">Je vier Begriffe, drei aus einer Gruppe des Pakets, einer aus einer anderen. Die Gruppen: ${m.families.map((f) => esc(f)).join(', ')}.</p>
+        <div class="kr-row"><button type="button" class="btn sm" data-act="rx-mix">Neue Eier legen</button></div></section>`;
+    prev = rxPreviewKuckuck(m, sol);
+  }
+  const levelText = (RX_LEVEL_TEXT[art] || KR_LEVEL_TEXT)[lv];
+  return `${hero}
+    <div class="sum kr-sum0">
+      <div class="sum-pack"><span class="sum-cover" style="background:linear-gradient(160deg, ${col[0]}, ${col[1]})">${coverIcon(cv.icon, cv.color)}</span><span class="sum-t"><b>${esc(pack.title)}</b><small>${esc(gradeLabel(pack))}</small></span></div>
+      <div class="sum-mode"><span class="sum-mi">${MODE_ICON.raetsel}</span><span class="sum-t"><b>${esc(name)}</b><small>${esc(sumTxt)}</small></span></div>
+    </div>
+    <div class="kr-setup">
+      <div class="kr-col">
+        ${pick}
+        <section class="kr-box">
+          <h3>Hinweise und Ablauf</h3>
+          <div class="kr-row"><span class="kr-l">Hinweise</span>${rxSeg('kr-level', KR_LEVELS, lv)}</div>
+          <p class="kr-note">${esc(levelText)}${art === 'such' ? ' Zu jedem Wort gibt es drei Hilfen, die dritte markiert das Anfangsfeld.' : ' Zu jeder Aufgabe gibt es drei gestufte Hilfen.'}</p>
+          ${opts}
+        </section>
+      </div>
+      <div class="kr-col">
+        <section class="kr-box kr-prev">
+          <div class="kr-prev-h"><h3>Vorschau</h3><button type="button" class="btn sm ghost" data-act="kr-prevsol" aria-pressed="${sol}">${sol ? 'Lösung ausblenden' : 'Lösung zeigen'}</button></div>
+          ${prev}
+        </section>
+      </div>
+    </div>
+    <div class="st3-cta kr-cta">${back}<button type="button" class="btn ghost cta-adapt" data-act="kr-link">${lgIcon('link')}<span>Link und QR</span></button><button type="button" class="btn ghost cta-adapt" data-act="kr-print">Als PDF</button><button type="button" class="btn cta go" data-act="kr-start" data-primary>Hier lösen${iconNext()}</button></div>`;
+}
+function rxSetupChange(fn) {
+  const pack = krSetupPack(), art = rxArt(), cfg = rxCfg(pack, art);
+  if (fn(cfg, pack, art) === false) return;
+  rxCfgSave(pack, art, cfg); renderStart();
+}
+
+/* ---------- Hilfe ---------- */
+function rxInfoHTML(art) {
+  const L = {
+    luecke: ['So gehen die Lückensätze', [
+      ['Lesen.', 'Jeder Satz verbindet zwei Begriffe aus dem Paket. Beide fehlen.'],
+      ['Eintragen.', 'Schreib die Begriffe in die Lücken. Ä, Ö und Ü gehen auch als ae, oe und ue. Steht hinter der Lücke schon eine Endung, gehört sie zum Wort.'],
+      ['Hilfen.', 'Erst die Oberbegriffe, dann eine Auswahl aus vier Wörtern, zuletzt die Anfangsbuchstaben.'],
+      ['Weiterdenken.', 'Erkläre ein Wort und verbinde es mit einem Wort, mit dem es noch in keinem Satz stand.']]],
+    such: ['So geht das Suchsel', [
+      ['Aus dem Kopf.', 'Schreib zu jedem Hinweis das Wort auf, das dir einfällt, noch ohne Gitter.'],
+      ['Suchen.', 'Tipp den ersten und den letzten Buchstaben eines Wortes an. Gefunden heißt richtig geschrieben.'],
+      ['Hilfen.', 'Erst der Oberbegriff, dann ein Beispiel, zuletzt der Anfangsbuchstabe. Dann ist auch das Anfangsfeld markiert.'],
+      ['Lösungswort.', 'Bei manchen Hinweisen steht ein Feld. Dorthin kommt der angegebene Buchstabe des gefundenen Wortes.'],
+      ['Weiterdenken.', 'Erkläre das Lösungswort und verbinde es mit einem Wort aus dem Suchsel.']]],
+    kuckuck: ['So geht das Kuckucksei', [
+      ['Finden.', 'Drei Begriffe gehören zu einer Gruppe. Der vierte ist das Kuckucksei.'],
+      ['Begründen.', 'Schreib auf, warum er nicht passt. Am besten sagst du auch, was die anderen drei verbindet.'],
+      ['Vergleichen.', 'Die App zeigt, welches Ei gedacht war. Hast du ein anderes gewählt und kannst es begründen, kann auch das stimmen.'],
+      ['Hilfen.', 'Erst die Oberbegriffe, dann die Gruppe, zuletzt fällt ein Begriff weg.']]]
+  }[art];
+  return `<h2>${L[0]}</h2><ol class="rules-list">${L[1].map((x) => `<li><b>${x[0]}</b> ${x[1]}</li>`).join('')}</ol>
+    <p class="ms-note">${krAlbumOn() ? ({ luecke: 'Begriffe, die du im ersten Versuch ohne Hilfe einsetzt, kommen als Karte ins Album. Ein Wort, das du erklärst und verbindest, wird zur Goldkarte. ', such: (settings.krKopf !== false ? 'Wörter, die du schon aus dem Kopf wusstest, kommen als Karte ins Album. ' : 'Wörter, die du im ersten Versuch ohne Hilfe findest, kommen als Karte ins Album. ') + 'Ein Wort, das du erklärst und verbindest, wird zur Goldkarte. ', kuckuck: 'Kuckuckseier, die du im ersten Versuch ohne Hilfe findest, kommen als Karte ins Album. ' }[art] || '') : ''}Was noch schwerfällt, legst du am Ende in „Karten üben“.</p>
+    <div class="modal-actions"><button type="button" class="btn primary" data-act="modal-close">Verstanden</button></div>`;
+}
+
+/* ---------- Bedienung ---------- */
+Object.assign(KR_ACTIONS, {
+  'rx-art': (el) => { settings.krArt = RX_ARTS.some((a) => a[0] === el.dataset.v) ? el.dataset.v : 'kreuz'; saveSettings(); krSetupView.sol = false; renderStart(); },
+  'rx-count': (el) => rxSetupChange((cfg, pack, art) => {
+    const n = Number(el.dataset.v) || RX_DEF_N[art];
+    if (art === 'luecke') { cfg.ids = n > cfg.ids.length ? rxLueckePick(pack, n, krNewSeed(), cfg.ids) : cfg.ids.slice(0, n); }
+    else if (art === 'such') { cfg.ids = n > cfg.ids.length ? krPick(pack, n, krNewSeed(), cfg.ids).map((x) => x.t.id) : cfg.ids.slice(0, n); }
+    else cfg.n = n;
+  }),
+  'rx-mix': () => rxSetupChange((cfg, pack, art) => {
+    cfg.seed = krNewSeed();
+    if (art === 'luecke') cfg.ids = rxLueckePick(pack, cfg.ids.length || RX_DEF_N.luecke, krNewSeed());
+    else if (art === 'such') { cfg.ids = krPick(pack, cfg.ids.length || RX_DEF_N.such, krNewSeed()).map((x) => x.t.id); if (cfg.sol !== '') cfg.sol = 'auto'; }
+  }),
+  'rx-arrange': () => rxSetupChange((cfg) => { cfg.seed = krNewSeed(); }),
+  'rx-dirs': (el) => rxSetupChange((cfg) => { cfg.dirs = [2, 4, 8].includes(Number(el.dataset.v)) ? Number(el.dataset.v) : 4; }),
+  'rx-tog': (el) => rxSetupChange((cfg) => {
+    const id = el.dataset.id, i = cfg.ids.indexOf(id);
+    if (i >= 0) { if (cfg.ids.length <= 3) { toast('Ein Suchsel braucht mindestens drei Wörter.'); return false; } cfg.ids.splice(i, 1); }
+    else { if (cfg.ids.length >= 12) { toast('Mehr als 12 Wörter machen das Suchsel unübersichtlich.'); return false; } cfg.ids.push(id); }
+    if (cfg.sol === id) cfg.sol = 'auto';
+  }),
+  'rx-swap': (el) => rxSetupChange((cfg, pack) => {
+    const key = el.dataset.k, i = cfg.ids.indexOf(key); if (i < 0) return false;
+    const used = new Set(cfg.ids), cand = krShuffle(rxLinks(pack).filter((x) => !used.has(x.key)), krRng(krNewSeed()));
+    if (!cand.length) { toast('Es gibt keinen weiteren passenden Satz.'); return false; }
+    const terms = new Set(); rxLinks(pack).filter((x) => used.has(x.key) && x.key !== key).forEach((x) => x.gaps.forEach((g) => terms.add(g.t.id)));
+    const best = cand.find((x) => x.gaps.every((g) => !terms.has(g.t.id))) || cand[0];
+    cfg.ids[i] = best.key;
+  }),
+  /* Lückensätze */
+  'rx-gapcheck': (el) => { const r = rxGapCheck(Number(el.dataset.n)); if (r > 0) Sound.tick(); else if (r < 0) Sound.no(); krSaveNow(); krRender(); },
+  'rx-gaphelp': (el) => { const S = rxSentSt(Number(el.dataset.n)); if (S.helps >= 3) return; S.helps++; Sound.tick(); krSaveNow(); krRender(); },
+  'rx-gapshow': (el) => {
+    const m = krM(), x = m && m.sents.find((y) => y.num === Number(el.dataset.n)); if (!x) return;
+    const S = rxSentSt(x.num); S.shown = true; S.msg = '';
+    x.gaps.forEach((g) => { const st = krSt(g.gid); if (st.res !== 'ok') { st.shown = true; st.res = ''; kreuz.ent[g.gid] = g.text; } });
+    kreuz.saved = false; krSaveNow(); krRender();
+  },
+  'rx-gapchoice': (el) => { if (!kreuz) return; kreuz.ent[el.dataset.g] = el.dataset.v; const st = kreuz.st[el.dataset.g]; if (st && st.res !== 'ok') st.res = ''; krSaveNow(); krRender(); },
+  'rx-checkall': () => {
+    const m = krM(); if (!m || !m.sents) return;
+    let n = 0, ok = 0;
+    m.sents.forEach((x) => { const r = rxGapCheck(x.num, true); if (r) { n++; if (r > 0) ok++; } });
+    if (!n) { toast('Es gibt nichts Neues zu prüfen.'); return; }
+    if (ok) Sound.tick(); else Sound.no();
+    toast(`${ok} von ${n} ${n === 1 ? 'Satz' : 'Sätzen'} ganz richtig.`);
+    krSaveNow(); krRender();
+  },
+  /* Suchsel */
+  'rx-cell': (el) => rxSuchMark(Number(el.dataset.r), Number(el.dataset.c)),
+  'rx-clue': (el) => { if (!kreuz) return; kreuz.act = el.dataset.id; krSaveSoon(); krRender(); const a = $('#kr-act'); if (a && a.getBoundingClientRect().top < 0) a.scrollIntoView({ block: 'start', behavior: reduced() ? 'auto' : 'smooth' }); },
+  'rx-shelp': () => { if (!kreuz) return; const st = krSt(kreuz.act); if (st.helps >= 3 || rxFound(kreuz.act)) return; st.helps++; Sound.tick(); krSaveNow(); krRender(); },
+  'rx-sshow': () => { if (!kreuz) return; const st = krSt(kreuz.act); st.shown = true; st.res = ''; kreuz.saved = false; krSaveNow(); krRender(); },
+  'rx-snext': () => {
+    const m = krM(); if (!m) return;
+    const i = m.items.findIndex((x) => x.id === kreuz.act);
+    for (let k = 1; k <= m.items.length; k++) { const it = m.items[(i + k) % m.items.length]; if (!rxFound(it.id)) { kreuz.act = it.id; krSaveSoon(); krRender(); return; } }
+    toast('Alle Wörter sind gefunden. Weiter geht es mit dem Weiterdenken.'); krSetPhase('weiter');
+  },
+  /* Kuckucksei */
+  'rx-kpick': (el) => { const m = krM(); if (!m) return; const r = m.rounds[kreuz.rx.cur || 0], s = rxKuSt(r.id); if (s.res) return; s.pick = s.pick === el.dataset.id ? '' : el.dataset.id; krSaveNow(); krRender(); setTimeout(() => { const t = $('#rx-why'); if (t && s.pick) t.focus({ preventScroll: true }); }, 20); },
+  'rx-kstarter': () => {
+    const m = krM(), pack = krPack(); if (!m) return; const r = m.rounds[kreuz.rx.cur || 0], s = rxKuSt(r.id); if (!s.pick) return;
+    const t = $('#rx-why'), cur = String((t && t.value) || s.why || '').trim();
+    s.why = cur ? cur + ' ' + rxKuStart(pack, rxBase(m.byId[s.pick])) : rxKuStart(pack, rxBase(m.byId[s.pick]));
+    krSaveNow(); krRender(); setTimeout(() => { const t2 = $('#rx-why'); if (t2) { t2.focus(); t2.setSelectionRange(t2.value.length, t2.value.length); } }, 20);
+  },
+  'rx-khelp': () => { const m = krM(); if (!m) return; const s = rxKuSt(m.rounds[kreuz.rx.cur || 0].id); if (s.helps >= 3 || s.res) return; s.helps++; if (s.helps >= 3) { const r = m.rounds[kreuz.rx.cur || 0], out = r.terms.find((id) => id !== r.odd); if (s.pick === out) s.pick = ''; } Sound.tick(); krSaveNow(); krRender(); },
+  'rx-kcheck': () => {
+    const m = krM(); if (!m) return; const r = m.rounds[kreuz.rx.cur || 0], s = rxKuSt(r.id);
+    const t = $('#rx-why'); if (t) s.why = t.value;
+    if (!s.pick) { toast('Tipp zuerst das Kuckucksei an.'); return; }
+    const words = String(s.why || '').trim().split(/\s+/).filter((w) => /\p{L}/u.test(w)).length;
+    if (words < rxKuNeed(kreuz.level)) { toast(kreuz.level === 'schwer' ? 'Begründe ausführlicher: Was verbindet die anderen drei?' : 'Begründe kurz, warum es nicht passt.'); if (t) t.focus(); return; }
+    s.tries++; s.res = s.pick === r.odd ? 'ok' : 'other';
+    if (s.res === 'ok') { krAlbumWord(r.odd, s.tries === 1 && !s.helps); Sound.tick(); } else Sound.no();
+    kreuz.saved = false; krSaveNow(); krRender();
+  },
+  'rx-kjudge': (el) => { const m = krM(); if (!m) return; const s = rxKuSt(m.rounds[kreuz.rx.cur || 0].id); if (s.res !== 'other') return; s.judge = el.dataset.v === 'auch' ? 'auch' : 'anders'; kreuz.saved = false; krSaveNow(); krRender(); },
+  'rx-kgo': (el) => { const m = krM(); if (!m) return; kreuz.rx.cur = Math.max(0, Math.min(m.rounds.length - 1, Number(el.dataset.i) || 0)); krSaveNow(); krRender(); const v = $('#v-cross'); if (v) v.scrollTop = 0; }
+});
+document.addEventListener('input', (e) => {
+  const el = e.target; if (!kreuz || view !== 'cross' || !el) return;
+  if (el.dataset && el.dataset.rxGap) { kreuz.ent[el.dataset.rxGap] = el.value; const st = kreuz.st[el.dataset.rxGap]; if (st && st.res !== 'ok') st.res = ''; krSaveSoon(); return; }
+  if (el.id === 'rx-why' && kreuz.art === 'kuckuck') { const m = krM(); if (m) { rxKuSt(m.rounds[kreuz.rx.cur || 0].id).why = el.value; krSaveSoon(); } }
+});
+document.addEventListener('change', (e) => {
+  const el = e.target; if (!el || !el.dataset || el.dataset.rxSol === undefined || view !== 'start') return;
+  rxSetupChange((cfg) => { cfg.sol = el.value; });
+});
+document.addEventListener('keydown', (e) => {
+  if (view !== 'cross' || !kreuz || kreuz.art !== 'luecke' || e.key !== 'Enter' || e.isComposing) return;
+  const el = e.target; if (!el || !el.dataset || !el.dataset.rxGap) return;
+  e.preventDefault();
+  const gid = el.dataset.rxGap, num = parseInt(gid, 10), other = $(`#v-cross [data-rx-gap="${num}b"]`);
+  if (gid.endsWith('a') && other && !other.disabled && !other.value.trim()) { other.focus(); return; }
+  KR_ACTIONS['rx-gapcheck']({ dataset: { n: String(num) } });
+  setTimeout(() => { const nx = $$('#v-cross .rx-gap:not([disabled])').find((x) => !x.value.trim()); if (nx) nx.focus({ preventScroll: false }); }, 30);
+});
+
+/* Vierklang · Teil 19: Druck der weiteren Rätselarten
+   Lückensätze, Suchsel und Kuckucksei als Rätselblatt je Hinweisstufe, dazu Hilfekarten, Lösung und Lehrkraftblatt.
+   Nutzt den Druckbaukasten aus Teil 7 und die Bausteine aus Teil 17, auf Wunsch mit Formularfeldern. */
+
+const RX_BOTTOM = 284, RX_BR = ' \u2028 ';
+function rxPrPage(ctx, title, lv) { ctx.K.page('portrait'); return prHeader(ctx, title, null, { chip: lv ? 'Hinweise ' + lv : 'für die Lehrkraft' }); }
+function rxPrNameRow(ctx, y) {
+  const K = ctx.K, doc = K.doc; let x = 12; const fy = y + 4.4;
+  [['Name', 88], ['Klasse', 40], ['Datum', 46]].forEach((f) => {
+    const lw = K.text(f[0], x, fy, 'n9', 8, PR_C.muted);
+    K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); doc.line(x + lw + 2, fy + 0.9, x + f[1], fy + 0.9);
+    krField(ctx, f[0], x + lw + 2, fy - 4, f[1] - lw - 2, 4.8, { fs: 10, tu: f[0] });
+    x += f[1] + 6;
+  });
+  return fy + 5.6;
+}
+function rxPrSteps(ctx, y, steps) {
+  const K = ctx.K, sw = (186 - 8 - (steps.length - 1) * 3) / steps.length;
+  const R = steps.map((s) => K.rich([[s[0] + ' ', 'n9', PR_C.ink], [s[1], 'n6', PR_C.ink]], 8, sw - 7.4, { lh: 1.26 }));
+  const ph = Math.max(...R.map((r) => r.h)) + 6;
+  prPanel(ctx, 12, y, 186, ph, 'gold');
+  steps.forEach((s, i) => { const sx = 16 + i * (sw + 3); prNumBadge(ctx, sx, y + 3, 5, i + 1, PR_C.goldDark); R[i].draw(sx + 7, y + 3); });
+  return y + ph + 4;
+}
+function rxPrBox(ctx, x, y, w, label, text) {
+  const K = ctx.K, r = K.rich([[label + '   ', 'n9', PR_C.muted], [text, 'n8', PR_C.ink]], 8.8, w - 8, { lh: 1.4 });
+  const h = r.h + 6;
+  return { h, draw: () => { K.fillC('#FFFFFF'); K.drawC(PR_C.cut); K.lw(0.35); K.dash([1.4, 1.1]); K.rr(x, y, w, h, 2.6, 'FD'); K.dash(null); r.draw(x + 4, y + 3); } };
+}
+
+/* ---------- Lückensätze ---------- */
+/* Satz mit Lücken setzen: Wörter, Lücken mit Platz für das Wort, Endungen hängen ohne Abstand an */
+function rxPrSentLayout(K, x, size, w) {
+  const toks = [];
+  const words = (str) => { str.split(/(\s+)/).forEach((q) => { if (!q) return; if (/^\s+$/.test(q)) toks.push({ sp: true }); else toks.push({ t: q }); }); };
+  let pos = 0;
+  x.gaps.forEach((g) => { words(x.s.slice(pos, g.start)); toks.push({ gap: g }); if (g.suf) toks.push({ t: g.suf, glue: true }); pos = g.start + g.len + g.suf.length; });
+  words(x.s.slice(pos));
+  const sp = K.tw(' ', 'n6', size), lh = size * PR_PT * 1.95, lines = [[]]; let cw = 0, pend = false;
+  toks.forEach((tk) => {
+    if (tk.sp) { pend = true; return; }
+    const gw = tk.gap ? Math.max(20, Math.min(52, krCmp(tk.gap.text).length * size * PR_PT * 0.66 + 8)) : 0;
+    const ww = tk.gap ? gw : K.tw(tk.t, 'n6', size);
+    const add = lines[lines.length - 1].length && pend && !tk.glue ? sp : 0;
+    if (lines[lines.length - 1].length && cw + add + ww > w && !tk.glue) { lines.push([]); cw = 0; } else cw += add;
+    const gx = tk.glue ? 0.5 : 0; lines[lines.length - 1].push(Object.assign({ x: cw + gx, w: ww }, tk)); cw += ww + gx; pend = false;
+  });
+  return { lines, lh, size, h: lines.length * lh };
+}
+function rxPrSentDraw(ctx, x, L, x0, y0, lv, solution) {
+  const K = ctx.K;
+  L.lines.forEach((ln, li) => {
+    const ly = y0 + li * L.lh, base = ly + L.lh * 0.62;
+    ln.forEach((tk) => {
+      const tx = x0 + tk.x;
+      if (!tk.gap) { K.text(tk.t, tx, base, 'n6', L.size, PR_C.ink); return; }
+      const g = tk.gap;
+      if (!solution && !ctx.spar) { K.fillC(PR_C.accentLight); K.rr(tx, ly + 0.6, tk.w, L.lh - 1.4, 1.2, 'F'); }
+      K.drawC(solution ? PR_C.A : PR_C.accent); K.lw(0.4); K.dash(null); K.doc.line(tx, base + 1.2, tx + tk.w, base + 1.2);
+      K.text(String(g.n), tx + tk.w - 0.4, ly + 2.4, 'n9', 5.6, PR_C.accentDark, { align: 'right' });
+      if (solution) K.text(g.text, tx + 1.2, base, 'n9', L.size, PR_C.Adark);
+      else if (lv === 'mittel') K.text(g.text[0].toUpperCase(), tx + 1.2, base, 'n8', L.size, PR_C.muted);
+      if (!solution) krField(ctx, `Satz${x.num}_Luecke${g.n}`, tx + (lv === 'mittel' ? 4 : 0.6), ly + 0.8, tk.w - (lv === 'mittel' ? 4.6 : 1.2), L.lh - 1.6, { fs: 10, tu: `Satz ${x.num}, Lücke ${g.n}` });
+    });
+  });
+}
+function rxPrSentBlocks(ctx, lv, solution) {
+  const K = ctx.K, m = ctx.m;
+  return m.sents.map((x) => {
+    const L = rxPrSentLayout(K, x, 10, 186 - 9);
+    return { h: L.h + 3.2, draw: (y) => { prNumBadge(ctx, 12, y + (L.lh - 5.2) / 2, 5.2, x.num, ctx.spar ? PR_C.ink : PR_C.accent); rxPrSentDraw(ctx, x, L, 21, y, lv, solution); } };
+  });
+}
+function rxPageLuecke(ctx, lv) {
+  const K = ctx.K, m = ctx.m; ctx.fp = lv + '_';
+  ctx.wtText = { ex: 'Wähle ein Wort aus den Sätzen, das dir schwerfiel, und erkläre es mit eigenen Worten.', vb: 'Verbinde zwei Wörter aus den Sätzen, die noch in keinem Satz zusammen standen. Zeig mit „weil“, einem Beispiel oder einem Unterschied, wie sie zusammenhängen.' };
+  let y = rxPrPage(ctx, 'Lückensätze', lv);
+  y = rxPrNameRow(ctx, y);
+  y = rxPrSteps(ctx, y, [['Einsetzen.', 'In jedem Satz fehlen zwei Begriffe. Schreib sie in die Lücken. Eine Endung steht schon da.'], ['Weiterdenken.', 'Erkläre ein Wort und verbinde es mit einem Wort, mit dem es in keinem Satz stand.']]);
+  if (lv === 'leicht') {
+    const words = []; m.sents.forEach((x) => x.gaps.forEach((g) => words.push(g.text)));
+    const b = rxPrBox(ctx, 12, y, 186, 'Wortspeicher', words.sort((a, c) => a.localeCompare(c, 'de')).join('   ·   ')); b.draw(); y += b.h + 4;
+  }
+  rxPrSentBlocks(ctx, lv, false).forEach((bl) => {
+    if (y + bl.h > RX_BOTTOM) { y = rxPrPage(ctx, 'Lückensätze, weiter', lv) + 2; }
+    bl.draw(y); y += bl.h;
+  });
+  const base = krWeiterBlock(ctx, 186, lv);
+  if (y + 4 + base.h > RX_BOTTOM) y = rxPrPage(ctx, 'Lückensätze, Weiterdenken', lv) + 2;
+  const wb = krWeiterFit(ctx, lv, base, y + 4, RX_BOTTOM); wb.draw(12, y + 4);
+  ctx.wtText = null;
+}
+
+/* ---------- Suchsel ---------- */
+const RX_PR_LINE = ['#B9E3E8', '#F6C9B8', '#D9CCF4', '#C6E8CF', '#F4C9DE', '#FFE1A3'];
+function rxPrSuchGrid(ctx, x0, y0, cs, solution) {
+  const K = ctx.K, doc = K.doc, lay = ctx.m.lay, S = lay.S;
+  K.fillC('#FFFFFF'); K.drawC(PR_C.ink); K.lw(0.4); K.dash(null); K.rr(x0 - 1.2, y0 - 1.2, S * cs + 2.4, S * cs + 2.4, 2, 'FD');
+  if (solution) {
+    doc.setLineCap('round');
+    lay.words.forEach((p, i) => {
+      const n = p.L.length - 1, x1 = x0 + p.c * cs + cs / 2, y1 = y0 + p.r * cs + cs / 2, x2 = x0 + (p.c + p.dc * n) * cs + cs / 2, y2 = y0 + (p.r + p.dr * n) * cs + cs / 2;
+      K.drawC(ctx.spar ? '#D5D7E6' : RX_PR_LINE[i % RX_PR_LINE.length]); K.lw(cs * 0.74); doc.line(x1, y1, x2, y2);
+    });
+  } else if (!ctx.spar) {
+    K.drawC(PR_C.line); K.lw(0.15);
+    for (let i = 1; i < S; i++) { doc.line(x0 + i * cs, y0, x0 + i * cs, y0 + S * cs); doc.line(x0, y0 + i * cs, x0 + S * cs, y0 + i * cs); }
+  }
+  const fs = Math.min(15, cs * 1.6);
+  for (let r = 0; r < S; r++) for (let c = 0; c < S; c++) K.text(lay.grid[r][c], x0 + c * cs + cs / 2, y0 + r * cs + cs / 2 + K.cap(fs) / 2, 'n9', fs, PR_C.ink, { align: 'center' });
+}
+function rxPrSuchClue(ctx, it, lv, fs, colW) {
+  const K = ctx.K, c = krClue(it.t, it.a, lv), bd = 5.2, tw = colW - bd - 2.4;
+  const main = c.media === 'hoeren' ? 'Hörbeispiel. Die Lehrkraft spielt es vor.' : c.text;
+  const segs = [[main, 'n6', PR_C.ink], [' · ' + krLenText(it.a), 'n8', PR_C.muted]];
+  if (it.solK) segs.push([` · Feld ${it.solK}: ${it.solIdx + 1}. Buchstabe`, 'n9', PR_C.goldDark]);
+  const r = K.rich(segs, fs, tw, { lh: 1.24 });
+  const im = c.media === 'bild' ? ctx.img[it.id] : null, imH = im ? 11 : 0, lineH = ctx.kopf ? 6.4 : 0;
+  const h = Math.max(bd, r.h) + (imH ? imH + 1.2 : 0) + lineH + 2.6;
+  return { h, draw: (x, y) => {
+    prNumBadge(ctx, x, y + Math.max(0, (r.lh - bd) / 2), bd, it.num, ctx.spar ? PR_C.ink : PR_C.accent);
+    r.draw(x + bd + 2.4, y);
+    let yy = y + Math.max(bd, r.h);
+    if (im) { const w = Math.min(tw, imH * im.ratio); K.doc.addImage(im.data, im.fmt, x + bd + 2.4, yy + 1.2, w, imH, 'vk-rx-' + it.id, 'FAST'); yy += imH + 1.2; }
+    if (lineH) {
+      K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); K.doc.line(x + bd + 2.4, yy + 5, x + colW - 2, yy + 5);
+      krField(ctx, `Antwort_${it.num}`, x + bd + 2.4, yy + 0.4, colW - bd - 4.4, 4.7, { fs: 10, tu: `Hinweis ${it.num}, aus dem Kopf` });
+    }
+  } };
+}
+function rxPrSuchFlow(ctx, lv, fs, colW) {
+  const bl = ctx.m.items.map((it) => rxPrSuchClue(ctx, it, lv, fs, colW));
+  const pre = [0]; bl.forEach((b, i) => pre.push(pre[i] + b.h));
+  let best = { k: bl.length, h: pre[bl.length] };
+  for (let k = 1; k < bl.length; k++) { const h = Math.max(pre[k], pre[bl.length] - pre[k]); if (h < best.h) best = { k, h }; }
+  return { c1: bl.slice(0, best.k), c2: bl.slice(best.k), h: best.h + 7 };
+}
+function rxPageSuch(ctx, lv) {
+  const K = ctx.K, m = ctx.m, S = m.lay.S, colW = 89, X2 = 12 + colW + 8; ctx.fp = lv + '_';
+  const dirs = { 2: 'Die Wörter laufen nach rechts oder nach unten.', 4: 'Die Wörter laufen nach rechts, nach unten oder schräg.', 8: 'Die Wörter laufen in alle Richtungen, auch rückwärts.' }[m.dirs] || '';
+  const steps = (ctx.kopf ? [['Aus dem Kopf.', 'Schreib zu jedem Hinweis das Wort auf die Linie.']] : [])
+    .concat([['Suchen.', 'Kreise die Wörter im Gitter ein. ' + dirs], ['Weiterdenken.', m.sol ? 'Trag die angegebenen Buchstaben ins Lösungswort ein. Erkläre es und verbinde es.' : 'Erkläre ein Wort und verbinde es mit einem zweiten.']]);
+  const bank = lv === 'leicht' ? m.items.map((it) => it.a.shown).sort((a, c) => a.localeCompare(c, 'de')).join('   ·   ') : '';
+  const base = krWeiterBlock(ctx, 186, lv), solH = m.sol ? 11.2 : 0;
+  let y = rxPrPage(ctx, 'Suchsel', lv);
+  y = rxPrNameRow(ctx, y);
+  y = rxPrSteps(ctx, y, steps);
+  /* eine Seite, wenn alles mit lesbaren Feldern passt */
+  let plan = null;
+  for (const cs of [9, 8.2, 7.4, 6.8]) {
+    const c = Math.min(cs, 186 / S);
+    for (const fs of [9, 8.4]) {
+      const fl = rxPrSuchFlow(ctx, lv, fs, colW), bk = bank ? rxPrBox(ctx, 12, 0, 186, 'Wortliste', bank).h + 4 : 0;
+      if (y + S * c + 4 + solH + fl.h + bk + base.h <= RX_BOTTOM) { plan = { c, fl }; break; }
+    }
+    if (plan) break;
+  }
+  const drawClues = (fl, yy) => { K.text('Hinweise', 12, yy + K.cap(10.4), 't', 10.4, PR_C.ink); let y1 = yy + 7, y2 = yy + 7; fl.c1.forEach((b) => { b.draw(12, y1); y1 += b.h; }); fl.c2.forEach((b) => { b.draw(X2, y2); y2 += b.h; }); return yy + fl.h; };
+  const drawBank = () => { if (bank) { const b = rxPrBox(ctx, 12, y, 186, 'Wortliste', bank); b.draw(); y += b.h + 4; } };
+  const fitClues = (y0, extra) => { let fl = null; for (const fs of [9, 8.4, 7.8, 7.2]) { fl = rxPrSuchFlow(ctx, lv, fs, colW); if (y0 + fl.h + extra <= RX_BOTTOM) break; } return fl; };
+  const bankH = bank ? rxPrBox(ctx, 12, 0, 186, 'Wortliste', bank).h + 4 : 0;
+  const grid = (cs) => { rxPrSuchGrid(ctx, 12 + (186 - S * cs) / 2, y + 1.2, cs, false); y += S * cs + 5; if (m.sol) y += krSolRow(ctx, y); };
+  if (plan) {
+    grid(plan.c);
+    y = drawClues(plan.fl, y); drawBank();
+    const wb = krWeiterFit(ctx, lv, base, y, RX_BOTTOM); wb.draw(12, Math.max(y, RX_BOTTOM - wb.h));
+    return;
+  }
+  if (ctx.kopf) {
+    /* zwei Seiten: erst die Hinweise aus dem Kopf, dann das Gitter */
+    const fl = fitClues(y, bankH); y = drawClues(fl, y); drawBank();
+    if (y > RX_BOTTOM + 0.5) K.warn.push('Suchsel zu voll: ' + ctx.pack.title);
+    y = rxPrPage(ctx, 'Suchsel, Gitter', lv) + 2;
+    grid(Math.max(5.5, Math.min(10, 186 / S, (RX_BOTTOM - y - solH - 6 - base.h - 4) / S)));
+    const wb = krWeiterFit(ctx, lv, base, y + 2, RX_BOTTOM); wb.draw(12, y + 2);
+    if (y + 2 + wb.h > RX_BOTTOM + 0.5) K.warn.push('Suchsel zu voll: ' + ctx.pack.title);
+    return;
+  }
+  const room = RX_BOTTOM - y - solH - 4;
+  grid(Math.max(5.5, Math.min(10, 186 / S, (room - (room - base.h - 4 > S * 6.5 ? base.h + 4 : 0)) / S)));
+  const weiterHere = y + base.h + 2 <= RX_BOTTOM;
+  if (weiterHere) { const wb = krWeiterFit(ctx, lv, base, y + 2, RX_BOTTOM); wb.draw(12, y + 2); }
+  y = rxPrPage(ctx, 'Hinweise zum Suchsel', lv) + 2;
+  const fl = fitClues(y, (weiterHere ? 0 : base.h + 4) + bankH);
+  y = drawClues(fl, y); drawBank();
+  if (!weiterHere) { const wb = krWeiterFit(ctx, lv, base, y + 2, RX_BOTTOM); wb.draw(12, y + 2); y += wb.h + 2; }
+  if (y > RX_BOTTOM + 0.5) K.warn.push('Suchsel zu voll: ' + ctx.pack.title);
+}
+
+/* ---------- Kuckucksei ---------- */
+function rxPrEggBlock(ctx, r, lv, solution, tight) {
+  const K = ctx.K, m = ctx.m, name = (id) => rxBase(m.byId[id]), pw = (186 - 9 - 3 * 3) / 4, ph = tight ? 8 : 9, LS = tight ? 6.1 : 6.6, g1 = tight ? 2.4 : 3;
+  const lines = solution ? 0 : lv === 'schwer' ? 3 : 2;
+  const others = r.terms.filter((id) => id !== r.odd).map((id) => '„' + name(id) + '“');
+  const sol = solution ? K.rich([['Kuckucksei „' + name(r.odd) + '“', 'n9', PR_C.goldDark], [` gehört zu „${r.famOdd}“. Die anderen drei gehören zur Gruppe „${r.fam}“. `, 'n6', PR_C.ink], [`Eine Begründung trägt, wenn sie sagt, was ${prList(others)} verbindet.`, 'n6', PR_C.muted]], 8.4, 186 - 9, { lh: 1.3 }) : null;
+  const h = ph + g1 + (solution ? sol.h + 3 : 7 + lines * LS + 1.5) + (tight ? 2.2 : 3);
+  return { h, draw: (y) => {
+    prNumBadge(ctx, 12, y + (ph - 5.2) / 2, 5.2, r.num, ctx.spar ? PR_C.ink : PR_C.accent);
+    r.terms.forEach((id, i) => {
+      const x = 21 + i * (pw + 3), odd = solution && id === r.odd;
+      K.fillC(odd ? PR_C.goldLight : '#FFFDF6'); K.drawC(odd ? PR_C.goldDark : PR_C.cut); K.lw(odd ? 0.5 : 0.35); K.rr(x, y, pw, ph, ph / 2, 'FD');
+      const t = K.ellipsize(name(id), 'n9', 8.6, pw - 4);
+      K.text(t, x + pw / 2, y + ph / 2 + K.cap(8.6) / 2, 'n9', 8.6, odd ? PR_C.goldDark : PR_C.ink, { align: 'center' });
+    });
+    let yy = y + ph + g1;
+    if (solution) { sol.draw(21, yy); return; }
+    const lw = K.text('Kuckucksei', 21, yy + 4.4, 'n9', 8, PR_C.muted);
+    K.drawC(PR_C.faint); K.lw(0.3); K.dash(null); K.doc.line(21 + lw + 2, yy + 5.3, 110, yy + 5.3);
+    krField(ctx, `Ei${r.num}_Kuckucksei`, 21 + lw + 2, yy + 0.6, 110 - 21 - lw - 2, 4.8, { fs: 10, tu: `Kuckucksei ${r.num}` });
+    yy += 7;
+    K.text(lv === 'schwer' ? 'Begründung' : 'weil', 21, yy + 4.4, 'n9', 8, PR_C.muted);
+    for (let i = 1; i <= lines; i++) K.doc.line(38, yy + i * LS - 1.3, 198, yy + i * LS - 1.3);
+    krField(ctx, `Ei${r.num}_Begruendung`, 38, yy + 0.2, 160, lines * LS - 1, { fs: 10, multi: true, tu: `Begründung zu Kuckucksei ${r.num}` });
+  } };
+}
+function rxPageKuckuck(ctx, lv) {
+  const K = ctx.K, m = ctx.m; ctx.fp = lv + '_';
+  let y = rxPrPage(ctx, 'Kuckucksei', lv);
+  y = rxPrNameRow(ctx, y);
+  y = rxPrSteps(ctx, y, [['Finden.', 'Drei Begriffe gehören zu einer Gruppe. Einer ist das Kuckucksei. Schreib es auf die Linie.'], ['Begründen.', lv === 'schwer' ? 'Schreib, was die anderen drei verbindet und warum das Ei nicht dazugehört.' : 'Schreib, warum es nicht passt.']]);
+  if (lv === 'leicht') { const b = rxPrBox(ctx, 12, y, 186, 'Gruppen in diesem Paket', m.families.join('   ·   ')); b.draw(); y += b.h + 4; }
+  /* enger setzen, wenn dann alles auf eine Seite passt */
+  const sum = (tight) => m.rounds.reduce((a, r) => a + rxPrEggBlock(ctx, r, lv, false, tight).h, 0);
+  const tight = y + sum(false) > RX_BOTTOM && y + sum(true) <= RX_BOTTOM;
+  m.rounds.forEach((r) => {
+    const bl = rxPrEggBlock(ctx, r, lv, false, tight);
+    if (y + bl.h > RX_BOTTOM) y = rxPrPage(ctx, 'Kuckucksei, weiter', lv) + 2;
+    bl.draw(y); y += bl.h;
+    K.drawC(PR_C.line); K.lw(0.2); K.dash([1, 1]); K.doc.line(12, y - 1.4, 198, y - 1.4); K.dash(null);
+  });
+}
+
+/* ---------- Lösung ---------- */
+function rxLueckeExpect(ctx, w) {
+  const K = ctx.K, m = ctx.m, ids = new Set(m.items.map((it) => it.id)), tw = w - 8;
+  const pairs = new Set(); m.sents.forEach((x) => { const a = x.gaps[0].t.id, b = x.gaps[1].t.id; pairs.add(a + '~' + b); pairs.add(b + '~' + a); });
+  const words = (x) => String(x[2]).split(/\s+/).length;
+  const ex = krLinks(m).filter((l) => ids.has(l[0]) && ids.has(l[1]) && !pairs.has(l[0] + '~' + l[1])).sort((a, b) => Math.abs(words(a) - 14) - Math.abs(words(b) - 14)).slice(0, 2).map((l) => '„' + l[2] + '“');
+  const it = m.items.find((x) => (x.t.feats || []).length >= 2) || m.items[0];
+  const parts = [K.rich([['Erklären  ', 'n9', PR_C.ink], ['Die Erklärung nennt mindestens zwei Kernmerkmale, bei „' + it.a.shown + '“ zum Beispiel: ', 'n6', PR_C.ink], [(it.t.feats || []).slice(0, 3).join('  ·  ') + '.', 'n6', PR_C.muted]], 8.6, tw, { lh: 1.3 })];
+  parts.push(ex.length ? K.rich([['Verbinden, zum Beispiel  ', 'n9', PR_C.ink], [ex.join('  '), 'n6', PR_C.ink]], 8.6, tw, { lh: 1.3 })
+    : K.rich([['Verbinden  ', 'n9', PR_C.ink], ['Der Satz nennt zwei Wörter, die in keinem Lückensatz zusammen standen, und zeigt, wie sie zusammenhängen.', 'n6', PR_C.ink]], 8.6, tw, { lh: 1.3 }));
+  const h = 3.6 + 6.6 + parts.reduce((a, r) => a + r.h + 1.6, 0) + 1.4;
+  return { h, draw: (x, y) => { prPanel(ctx, x, y, w, h, 'indigo'); K.text('Weiterdenken, mögliche Antworten', x + 4, y + 3.6 + K.cap(10.4), 't', 10.4, PR_C.accentDark); let yy = y + 3.6 + 6.6; parts.forEach((r) => { r.draw(x + 4, yy); yy += r.h + 1.6; }); } };
+}
+function rxPageLoesung(ctx) {
+  const K = ctx.K, m = ctx.m;
+  if (ctx.art === 'luecke') {
+    let y = rxPrPage(ctx, 'Lösung zu den Lückensätzen', '');
+    rxPrSentBlocks(ctx, 'mittel', true).forEach((bl) => { if (y + bl.h > RX_BOTTOM) y = rxPrPage(ctx, 'Lösung, weiter', '') + 2; bl.draw(y); y += bl.h; });
+    const e = rxLueckeExpect(ctx, 186); if (y + 4 + e.h > RX_BOTTOM) y = rxPrPage(ctx, 'Lösung, weiter', '') + 2; e.draw(12, y + 4);
+    return;
+  }
+  if (ctx.art === 'kuckuck') {
+    let y = rxPrPage(ctx, 'Lösung zum Kuckucksei', '');
+    m.rounds.forEach((r) => { const bl = rxPrEggBlock(ctx, r, '', true); if (y + bl.h > RX_BOTTOM) y = rxPrPage(ctx, 'Lösung, weiter', '') + 2; bl.draw(y); y += bl.h; });
+    const n = K.rich([['Eine andere Wahl kann stimmen, wenn die Begründung trägt. Die Gruppen des Pakets sind Ordnungshilfen und nicht immer trennscharf.', 'n6', PR_C.muted]], 8.4, 186, { lh: 1.3 });
+    if (y + n.h + 3 <= RX_BOTTOM) n.draw(12, y + 2);
+    return;
+  }
+  const S = m.lay.S;
+  let y = rxPrPage(ctx, 'Lösung zum Suchsel', '');
+  const list = m.items.map((it) => K.rich([[it.num + '   ', 'n9', PR_C.accent], [it.a.shown, 'n9', PR_C.ink], [it.solK ? `   Feld ${it.solK}: ${it.a.letters[it.solIdx]}` : '', 'n8', PR_C.goldDark]], 9, 88, { lh: 1.3 }));
+  const half = Math.ceil(list.length / 2), colH = (a) => a.reduce((s, r) => s + r.h + 1.2, 0);
+  const listH = 7 + Math.max(colH(list.slice(0, half)), colH(list.slice(half))), wb = krWeiterLoesung(ctx, 186), solH = m.sol ? 8 : 0;
+  const cs = Math.max(5, Math.min(10, 186 / S, (RX_BOTTOM - y - 8 - solH - listH - wb.h - 4) / S));
+  rxPrSuchGrid(ctx, 12 + (186 - S * cs) / 2, y + 1.2, cs, true);
+  y += S * cs + 6;
+  if (m.sol) { K.text('Lösungswort', 12, y + K.cap(10.4), 't', 10.4, PR_C.ink); K.text(m.sol.a.shown, 12 + K.tw('Lösungswort', 't', 10.4) + 4, y + K.cap(10.4), 'n9', 10.4, PR_C.goldDark); y += 8; }
+  K.text('Wörter', 12, y + K.cap(10.4), 't', 10.4, PR_C.ink);
+  let y1 = y + 7, y2 = y + 7;
+  list.forEach((r, i) => { if (i < half) { r.draw(12, y1); y1 += r.h + 1.2; } else { r.draw(109, y2); y2 += r.h + 1.2; } });
+  y = Math.max(y1, y2) + 3;
+  wb.draw(12, y);
+  if (y + wb.h > RX_BOTTOM + 0.5) K.warn.push('Lösung zu voll: ' + ctx.pack.title);
+}
+
+/* ---------- Hilfekarten ---------- */
+function rxHelpRows(ctx, lv) {
+  const m = ctx.m, pack = ctx.pack;
+  if (ctx.art === 'luecke') return { sortBy: 'Sätzen', noWt: true, rows: m.sents.map((x) => ({ head: `Satz ${x.num}`, hs: [
+    { label: 'Oberbegriffe', text: x.gaps.map((g) => `Lücke ${g.n}: ${rxOberText(g.t)}`).join(RX_BR) },
+    { label: 'Auswahl', text: x.gaps.map((g) => `Lücke ${g.n}: ${rxChoices(pack, g, m.seed).join(' · ')}`).join(RX_BR) },
+    { label: 'Anfangsbuchstaben', text: x.gaps.map((g) => `Lücke ${g.n}: ${g.text[0].toUpperCase()}… (${krCmp(g.text).length} Buchstaben)`).join(RX_BR) }] })) };
+  if (ctx.art === 'kuckuck') return { sortBy: 'Eiern', noWt: true, rows: m.rounds.map((r) => {
+    const name = (id) => rxBase(m.byId[id]), out = r.terms.find((id) => id !== r.odd);
+    return { head: `Ei ${r.num}`, hs: [
+      { label: 'Oberbegriffe', text: r.terms.map((id) => `${name(id)}: ${rxKuOber(m.byId[id])}`).join(RX_BR) },
+      { label: 'Gruppe', text: `Drei Begriffe gehören zur Gruppe „${r.fam}“.` },
+      { label: 'Einer fällt weg', text: `„${name(out)}“ gehört zur Gruppe. Das Kuckucksei ist einer der anderen drei.` }] };
+  }) };
+  return { sortBy: 'Hinweisen', rows: m.items.map((it) => {
+    const hs = krHelps(it.t, it.a, lv).map((h, i) => (i === 2 && it.p ? Object.assign({}, h, { text: `${h.text} Es beginnt in Zeile ${it.p.r + 1}, Spalte ${it.p.c + 1}.` }) : h));
+    return { head: `Hinweis ${it.num}`, hs };
+  }) };
+}
+
+/* ---------- Lehrkraftblatt ---------- */
+function rxTeacherTexts(ctx, o) {
+  const m = ctx.m, pack = ctx.pack, art = ctx.art, musik = !pack.subject || /musik/i.test(pack.subject);
+  const L = { chipTop: krArtName(art), boardTitle: art === 'luecke' ? 'Diese Sätze' : art === 'such' ? 'Dieses Suchsel' : 'Diese Kuckuckseier' };
+  L.qrText = 'QR-Code scannen oder den Link aufrufen, ohne Konto. ' + (art === 'luecke' ? 'Lücken füllen, prüfen, Hilfen, Weiterdenken.' : art === 'such' ? 'Wörter finden, Hilfen, Lösungswort.' : 'Ei finden, begründen, Hilfen.');
+  const n = art === 'luecke' ? m.sents.length : art === 'such' ? m.items.length : m.rounds.length;
+  const unit = art === 'luecke' ? 'Sätze' : art === 'such' ? 'Wörter' : 'Kuckuckseier';
+  L.chips = [pack.grade, `${n} ${unit}`, o.stufen === 'alle' ? 'drei Hinweisstufen' : 'Hinweise ' + o.level, art === 'such' && ctx.kopf ? 'erst aus dem Kopf' : '', m.sol ? 'mit Lösungswort' : '', o.fill && o.parts.blatt ? 'ausfüllbar' : ''].filter(Boolean);
+  L.module = pack.module || '';
+  const hilfe = o.parts.hilfe;
+  const ki = !pack.checked ? [['KI-Entwurf', 'Lies die Aufgaben vor dem Einsatz. Fehler prägen sich beim Abrufen ein.']] : [];
+  const sicherung = ['Was Hilfe brauchte, ist der Einstieg in die nächste Stunde.', 'Am Gerät legt ein Klick die schwierigen Begriffe in „Karten üben“. Was ohne Hilfe gelang, kommt als Karte ins Album.', o.parts.loesung ? 'Die Lösung liegt bei.' : ''].filter(Boolean);
+  if (art === 'luecke') {
+    const sufG = [].concat(...m.sents.map((x) => x.gaps)).find((g) => g.suf);
+    L.einordnung = (musik ? 'Abruf im Zusammenhang für die Zeit nach der musikalischen Erarbeitung.' : 'Abruf im Zusammenhang für die Zeit nach der Erarbeitung.') + ' Die Sätze stammen aus den Mustersätzen des Pakets und verbinden je zwei Begriffe. Wer die Lücken füllt, ruft die Begriffe ab und liest zugleich, wie sie zusammenhängen. Im Weiterdenken verbinden die Lernenden zwei Begriffe selbst.';
+    L.ablauf = (n > 5 ? [[3, 'Einführen', 'Einen Satz gemeinsam lösen. ' + (sufG ? `Klären, dass eine Endung schon dasteht, etwa das „${sufG.suf}“ bei „${sufG.text}${sufG.suf}“.` : 'Klären, dass jede Lücke genau einen Begriff braucht.')]] : [])
+      .concat([[Math.max(4, Math.round(n * 1.2)), 'Einsetzen', `Allein die Lücken füllen. ${hilfe ? 'Wer feststeckt, holt sich eine Hilfekarte.' : 'Wer feststeckt, fragt nach dem Oberbegriff.'}`], [8, 'Weiterdenken', 'Ein Wort erklären und mit einem Wort verbinden, mit dem es in keinem Satz stand. Danach zu zweit vergleichen.']])
+      .concat(n > 5 ? [[4, 'Auswerten', 'Zwei eigene Sätze vorlesen lassen. Welche Lücken brauchten Hilfe?']] : []);
+    L.diff = ['Leicht heißt Wortspeicher mit allen fehlenden Begriffen, mittel Anfangsbuchstabe in jeder Lücke, schwer leere Lücken.', 'Alle Stufen haben dieselben Sätze in derselben Reihenfolge. So lässt sich gemeinsam vergleichen.', hilfe ? 'Die Hilfekarten bieten je Satz drei Stufen: Oberbegriffe, Auswahl aus vier Wörtern, Anfangsbuchstaben.' : ''].filter(Boolean);
+    L.board = [['Begriffe', prList(m.items.map((it) => it.a.shown)) + '.']];
+    L.fallen = ki.concat([['Wiedererkennen', 'Wer einen Satz aus dem Paket kennt, erinnert sich an den Wortlaut. Das ist erwünscht. Neu gedacht wird beim eigenen Satz im Weiterdenken.'], ['Grammatik', 'Artikel und Endungen verraten manchmal das Wort. Bei schwer die Wahl begründen lassen.'], ['Schreibweise', 'Am Gerät gelten ae, oe und ue für Ä, Ö und Ü. Kleine Tippfehler meldet die App als „fast“.']]).slice(0, 5);
+  } else if (art === 'such') {
+    const dirs = { 2: 'nur nach rechts und nach unten', 4: 'nach rechts, nach unten und schräg', 8: 'in alle Richtungen, auch rückwärts' }[m.dirs];
+    const hear = m.items.filter((it) => it.t.kind === 'hoeren' && isMedia(it.t));
+    L.einordnung = 'Einstieg oder Wiederholung mit niedriger Schwelle. Die Hinweise verlangen, dass die Lernenden das Wort aus dem Gedächtnis abrufen. Das Gitter zeigt danach, ob die Schreibweise stimmt. Mit Wortliste wäre es eine reine Suchaufgabe, deshalb gibt es die Liste nur bei leicht.';
+    L.ablauf = (ctx.kopf ? [[Math.max(3, Math.round(n * 0.6)), 'Aus dem Kopf', 'Zu jedem Hinweis das Wort notieren, noch ohne Gitter.']] : [])
+      .concat([[Math.max(5, Math.round(n * 0.8)), 'Suchen', `Wörter im Gitter einkreisen${m.sol ? ' und die angegebenen Buchstaben ins Lösungswort übertragen' : ''}.`], [7, 'Weiterdenken', m.sol ? 'Lösungswort erklären und mit einem Wort aus dem Suchsel verbinden. Danach zu zweit vergleichen.' : 'Ein Wort erklären und mit einem zweiten verbinden.']])
+      .concat(n > 5 ? [[4, 'Auswerten', 'Welche Hinweise waren schwer? Zwei Sätze vorlesen lassen.']] : []);
+    L.diff = ['Leicht heißt Erklärung und Wortliste, mittel nur die Erklärung, schwer nur typische Merkmale.', `Die Wörter laufen ${dirs}. Das gilt für alle Stufen, alle haben dasselbe Gitter.`, hilfe ? 'Die Hilfekarten bieten je Wort drei Stufen. Die dritte nennt das Anfangsfeld im Gitter.' : ''].filter(Boolean);
+    L.board = [['Wörter', prList(m.items.map((it) => it.a.shown)) + '.'], ['Gitter', `${m.lay.S} × ${m.lay.S} Felder.`]];
+    if (m.sol) L.board.push(['Lösungswort', m.sol.a.shown + '.']);
+    if (hear.length) L.board.push(['Hörbeispiele', `Hinweis ${hear.map((it) => it.num).join(', ')}. Vorspielen in Vierklang: Spielform Rätsel, Suchsel starten, beim Hinweis auf „Anhören“ tippen.`]);
+    L.fallen = ki.concat([['Nur suchen', 'Wer die Hinweise überspringt und nach Buchstaben sucht, übt wenig. Deshalb zuerst aus dem Kopf schreiben lassen.'], ['Schreibweise', 'Ä, Ö und Ü stehen in einem Feld, Wörter aus mehreren Teilen ohne Leerzeichen.']]).concat(hear.length ? [['Hörbeispiele', 'Auf Papier fehlt der Klang. Die Beispiele zweimal vorspielen.']] : []).slice(0, 5);
+  } else {
+    L.einordnung = 'Übung zum Abgrenzen und Ordnen. Je vier Begriffe, drei aus einer Gruppe des Pakets, einer aus einer anderen. Der Kern ist die Begründung: Wer sagt, was die drei verbindet, zeigt Begriffswissen.';
+    L.ablauf = [[3, 'Einführen', 'Ein Kuckucksei gemeinsam lösen und laut begründen.'], [Math.max(6, n * 2), 'Finden und begründen', 'Allein oder zu zweit, mit kurzer schriftlicher Begründung.'], [6, 'Vergleichen', 'Abweichende Lösungen vorstellen lassen. Eine andere, begründete Wahl zählt.'], [5, 'Eigene Eier', 'Paare bauen ein Kuckucksei für ein anderes Paar.']];
+    L.diff = ['Leicht heißt Liste der Gruppen dabei, mittel ohne Liste, schwer mit ausführlicher Begründung.', hilfe ? 'Die Hilfekarten bieten je Ei drei Stufen: Oberbegriffe, Gruppe, ein Begriff fällt weg.' : ''].filter(Boolean);
+    L.board = [['Gruppen', prList(m.families) + '.']];
+    L.fallen = ki.concat([['Mehrdeutig', 'Die Gruppen sind Ordnungshilfen und nicht immer trennscharf. Eine andere Wahl kann stimmen.'], ['Raten', 'Ohne Begründung ist ein Treffer Zufall. Erst der Satz mit „weil“ zeigt das Verstehen.']]).slice(0, 5);
+  }
+  L.total = L.ablauf.reduce((a, x) => a + x[0], 0);
+  if (o.fill && o.parts.blatt) L.board.push(['Ausfüllbar', 'Das Rätselblatt lässt sich am Gerät ausfüllen, etwa im Acrobat Reader. Ausgedruckt bleibt es ein normales Arbeitsblatt.']);
+  L.sicherung = sicherung;
+  const code = !pack.own ? rxCodeMake(pack, art, o.cfg, o.level, o.kopf) : '';
+  L.qr = code ? { url: krURL(pack, code), note: pack.edited ? 'Der Link passt nur zu einer Fassung mit deinen Anpassungen.' : '' } : null;
+  L.own = String(pack.lk || '').trim();
+  return L;
+}
+
+/* ---------- PDF ---------- */
+async function buildRxPdf(JsPDF, o) {
+  const pack = findPack(o.packId); if (!pack) throw new Error('pack');
+  const m = rxModel(pack, o.art, o.cfg); if (!rxReady(m)) throw new Error('lay');
+  const level = langFor(pack);
+  const ctx = { pack: Object.assign({}, pack), cover: prPackCover(pack), spar: o.color === 'spar', group: '', multi: false, famColor: {}, o: { parts: {} }, level, easy: level === 'easy', hard: level === 'hard', m, art: o.art, kopf: o.art === 'such' && !!o.kopf, fill: false, fp: '', fields: {} };
+  ctx.K = prKit(JsPDF, ctx.spar);
+  ctx.img = o.art === 'such' ? await krPrImages(m) : {};
+  if (o.parts.lehrkraft) krPageLehrkraft(ctx, o, rxTeacherTexts(ctx, o));
+  ctx.fill = !!o.fill && !!o.parts.blatt;
+  const page = o.art === 'luecke' ? rxPageLuecke : o.art === 'such' ? rxPageSuch : rxPageKuckuck;
+  if (o.parts.blatt) (o.stufen === 'alle' ? ['leicht', 'mittel', 'schwer'] : [o.level]).forEach((lv) => page(ctx, lv));
+  ctx.fill = false;
+  if (o.parts.hilfe) krPagesHilfe(ctx, o.level, rxHelpRows(ctx, o.level));
+  if (o.parts.loesung) rxPageLoesung(ctx);
+  prFooters(ctx);
+  let buf = prFixPdf(ctx.K.doc.output('arraybuffer'));
+  const nf = Object.keys(ctx.fields).length;
+  if (nf) buf = krAcroFix(buf, ctx.fields);
+  return { buf, pages: ctx.K.pages(), warnings: ctx.K.warn.slice(), fields: nf };
+}
 
 /* Vierklang · Teil 6: Bedienung und Start */
 
@@ -26946,7 +28401,7 @@ function boot(data) {
 }
 /* Testzugang nur bei lokal geöffneter Datei */
 try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__mitVoice = (e, t, spb, sc) => mitVoice(e, t, spb, sc); } catch (e) { /* ohne */ }
-try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i), noteInfo: (c, t) => noteInfo(c, t), noteSame: (a, b) => noteSame(a, b), protoNumbers: (s) => protoNumbers(s), buildProtokollPdf: (J, id, v) => buildProtokollPdf(J, id, v), ensureJsPDF: () => ensureJsPDF(), kr: { get state() { return kreuz; }, eligible: (id) => krEligible(findPack(id)), answer: (t) => krAnswer(t), clue: (t, a, l) => krClue(t, a, l), helps: (t, a, l) => krHelps(t, a, l), pick: (id, n, s) => krPick(findPack(id), n, s).map((x) => x.t.id), model: (id, cfg) => { const m = krModel(findPack(id), cfg); return m && m.lay ? { W: m.lay.W, H: m.lay.H, cells: m.lay.cells.map((r) => r.map((c) => (c ? c.ch : ''))), items: m.items.map((it) => ({ id: it.id, num: it.num, dir: it.dir, r: it.r, c: it.c, L: it.L.join('') })), missing: m.missing, sol: m.sol ? { id: m.sol.id, cells: m.sol.cells } : null } : null; }, code: (id, cfg, sol, lv, kopf) => krCodeMake(findPack(id), cfg, sol, lv, kopf), read: (id, code) => krCodeRead(findPack(id), code), cfg: (id) => krCfg(findPack(id)), build: (J, o) => (typeof buildKrPdf === 'function' ? buildKrPdf(J, o) : null) } }; } catch (e) { /* ohne Testzugang */ }
+try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i), noteInfo: (c, t) => noteInfo(c, t), noteSame: (a, b) => noteSame(a, b), protoNumbers: (s) => protoNumbers(s), buildProtokollPdf: (J, id, v) => buildProtokollPdf(J, id, v), ensureJsPDF: () => ensureJsPDF(), kr: { get state() { return kreuz; }, eligible: (id) => krEligible(findPack(id)), answer: (t) => krAnswer(t), clue: (t, a, l) => krClue(t, a, l), helps: (t, a, l) => krHelps(t, a, l), pick: (id, n, s) => krPick(findPack(id), n, s).map((x) => x.t.id), model: (id, cfg) => { const m = krModel(findPack(id), cfg); return m && m.lay ? { W: m.lay.W, H: m.lay.H, cells: m.lay.cells.map((r) => r.map((c) => (c ? c.ch : ''))), items: m.items.map((it) => ({ id: it.id, num: it.num, dir: it.dir, r: it.r, c: it.c, L: it.L.join('') })), missing: m.missing, sol: m.sol ? { id: m.sol.id, cells: m.sol.cells } : null } : null; }, code: (id, cfg, sol, lv, kopf) => krCodeMake(findPack(id), cfg, sol, lv, kopf), read: (id, code) => krCodeRead(findPack(id), code), cfg: (id) => krCfg(findPack(id)), build: (J, o) => (typeof buildKrPdf === 'function' ? buildKrPdf(J, o) : null) }, rx: { links: (id) => rxLinks(findPack(id)).map((x) => ({ key: x.key, s: x.s, gaps: x.gaps.map((g) => ({ t: g.t.id, text: g.text, suf: g.suf, start: g.start })) })), cfg: (id, art) => rxCfg(findPack(id), art), model: (id, art, cfg) => { const m = rxModel(findPack(id), art, cfg); return m.art === 'such' ? { lay: m.lay ? { S: m.lay.S, grid: m.lay.grid.map((r) => r.join('')), words: m.lay.words.map((p) => ({ id: p.id, L: p.L.join(''), r: p.r, c: p.c, dr: p.dr, dc: p.dc })) } : null, items: m.items.map((it) => ({ id: it.id, num: it.num, L: it.a.letters.join(''), shown: it.a.shown, solK: it.solK || 0, solIdx: it.solIdx })), sol: m.sol ? { id: m.sol.id, shown: m.sol.a.shown, L: m.sol.a.letters.join('') } : null } : m.art === 'luecke' ? { sents: m.sents.map((x) => ({ num: x.num, s: x.s, gaps: x.gaps.map((g) => ({ gid: g.gid, t: g.t.id, text: g.text, suf: g.suf, forms: g.forms })) })), items: m.items.map((it) => it.id) } : { rounds: m.rounds.map((r) => ({ id: r.id, fam: r.fam, famOdd: r.famOdd, odd: r.odd, terms: r.terms })), families: m.families, items: m.items.map((it) => it.id) }; }, code: (id, art, cfg, lv, kopf) => rxCodeMake(findPack(id), art, cfg, lv, kopf), read: (id, code) => krCodeRead(findPack(id), code), ready: (id, art, cfg) => rxReady(rxModel(findPack(id), art, cfg)), ober: (id) => findPack(id).terms.map((t) => [t.term, rxOberText(t)]), pick: (id, art, n, sd) => (art === 'luecke' ? rxLueckePick(findPack(id), n, sd) : krPick(findPack(id), n, sd).map((x) => x.t.id)) } }; } catch (e) { /* ohne Testzugang */ }
 (function () {
   const hot = window.claude && window.claude.hot;
   try { if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ game, view, settings, ws: { packId: ws.packId } })); } catch (e) { /* ohne Übernahme */ }
