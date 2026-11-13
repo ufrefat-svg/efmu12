@@ -19,6 +19,12 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 - `lib/`: JSZip (MIT) und pdf.js (Apache-2.0) zum Lesen von DOCX, ODT und PDF, jsPDF 2.5.1 (MIT) für die Druckversion von Vierklang, lokal eingebunden, mit Lizenztexten
 - `fonts/`: lokale Schriften, keine Verbindung zu Google (Lizenztexte der OFL-Schriften liegen bei)
 
+## Gesamtseminar: Kernkarten
+
+Werkzeuge zum Vorschlag „Beraten und beurteilen in einer Sprache“ (14 fachneutrale Kernkarten für alle Lehrämter), Staatliches Studienseminar für Lehrerausbildung Thüringen. Entwurf zur Diskussion.
+
+- `gesamtseminar/hospitationsbogen.html`: Hospitationsbogen zu den 14 Kernkarten, geführt in drei Schritten (Schwerpunkte, Angaben zur Stunde, Bogen), mit Hinweisen und Grundlagen, Druck und Speichern als HTML oder Word. Ohne KI und ohne Netzverkehr, Schriften eingebettet; Eingaben bleiben im Browser.
+
 Die Apps laufen im Browser ohne Anmeldung und senden keine Eingaben an einen Server.
 
 Die KI-Funktionen von Anno Musica, Kompetenz Fußball, Suno Studio, Entwurfsspiegel und Vierklang gibt es nur in den Fassungen als Claude-Artefakt (Claude-Konto nötig). In den Web-Fassungen hier zeigt jeweils ein Hinweis mit Link auf das Artefakt:
