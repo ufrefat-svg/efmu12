@@ -7,9 +7,9 @@
 <meta name="description" content="Rückmeldung zum schriftlichen Unterrichtsentwurf, geordnet nach den 14 Kernkarten. Die Auswertung läuft im Browser ohne KI, nichts wird gespeichert.">
 <meta name="color-scheme" content="light">
 <style>
-@font-face{font-family:'Poppins';src:url('../../fonts/Poppins-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
-@font-face{font-family:'Poppins';src:url('../../fonts/Poppins-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
-@font-face{font-family:'Poppins';src:url('../../fonts/Poppins-Bold.ttf') format('truetype');font-weight:600 700;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Medium.ttf') format('truetype');font-weight:500;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Bold.ttf') format('truetype');font-weight:600 700;font-display:swap}
 body{margin:0}
 :root { color-scheme: light; }
 * { box-sizing: border-box; }
@@ -2172,9 +2172,9 @@ var ES = (typeof window !== 'undefined') ? (window.ES = window.ES || {}) : (glob
   var U = ES.util;
 
   var LIBS = {
-    jszip: { url: '../../lib/jszip.min.js', test: function () { return window.JSZip; } },
-    pdf: { url: '../../lib/pdf.min.js', test: function () { return window.pdfjsLib; } },
-    pdfworker: { url: '../../lib/pdf.worker.min.js', test: function () { return window.pdfjsWorker; } }
+    jszip: { url: '../lib/jszip.min.js', test: function () { return window.JSZip; } },
+    pdf: { url: '../lib/pdf.min.js', test: function () { return window.pdfjsLib; } },
+    pdfworker: { url: '../lib/pdf.worker.min.js', test: function () { return window.pdfjsWorker; } }
   };
   var loading = {};
   function loadScript(name) {

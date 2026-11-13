@@ -87,6 +87,12 @@ section{min-width:0}
 .status{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;margin:.3rem 0 0}
 .status p{margin:0 !important;font-weight:500 !important;color:#232B35 !important}
 .status .warn{color:#A8421F !important}
+.uebernahme{border:1px solid #C9CDD4;border-radius:10px;background:#FFFFFF !important;margin:.2rem 0 .8rem}
+.uebernahme>summary{cursor:pointer;font-weight:600 !important;padding:.55rem .9rem;color:#1F6E78 !important}
+.uebernahme .uz{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding:.2rem .9rem .7rem}
+.uebernahme input{font:inherit;padding:.45rem .6rem;border:2px solid #C9CDD4 !important;border-radius:6px;min-width:12rem;background:#FFFFFF !important;color:#232B35 !important}
+.uebernahme .um{margin:0;padding:0 .9rem .7rem;font-size:.9rem;color:#232B35 !important}
+.uebernahme .um:empty{display:none}
 .vorschau{border:1px solid #C9CDD4;border-radius:10px;margin-top:1rem;overflow:hidden}
 .vorschau .vkopf{background:#232B35 !important;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.6rem 1rem}
 .vorschau .vkopf h3{color:#FFFFFF !important;margin:0 !important}
@@ -282,6 +288,10 @@ footer p{font-size:.8rem !important;color:#5F6673 !important;margin:0 0 .3rem !i
     <p class="lead" id="einstieg"></p>
     <div class="anlass" id="anlass" role="group" aria-label="Anlass"></div>
     <p id="wahltext"></p>
+    <details class="uebernahme" id="uebernahme"><summary>Schwerpunkte aus dem Entwurfsspiegel übernehmen</summary>
+      <div class="uz"><label for="code-es">Code</label><input id="code-es" type="text" autocomplete="off" spellcheck="false" placeholder="zum Beispiel I.3 + II.2"><button type="button" data-act="code-uebernehmen">Übernehmen</button></div>
+      <p class="um" id="uebernahme-meldung" aria-live="polite"></p>
+    </details>
     <div id="kartenwahl"></div>
     <div class="status" id="status" aria-live="polite"></div>
     <div id="vorschau"></div>
@@ -611,6 +621,24 @@ function zeichneLeeren() {
     ? `<span>Alle Eingaben in diesem Browser löschen?</span><button type="button" class="ja" data-act="leeren-ja">Ja, alles leeren</button><button type="button" data-act="leeren-nein">Abbrechen</button>`
     : `<button type="button" data-act="leeren">Alle Eingaben leeren</button>`;
 }
+// ---------------------------------------------------------------- Übernahme aus dem Entwurfsspiegel (Link #schwerpunkte=… oder Code)
+function schwerpunkteAus(text) {
+  const out = [];
+  (String(text || '').toUpperCase().match(/\b(?:III|II|IV|V|I)\.\d\b/g) || []).forEach(c => { if (byCode[c] && !out.includes(c)) out.push(c); });
+  return out;
+}
+function aufzaehlen(a) { return a.length < 2 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' und ' + a[a.length - 1]; }
+function uebernehme(codes, ausLink) {
+  const m = $('uebernahme-meldung'), d = $('uebernahme');
+  if (!codes.length) { if (m) m.textContent = 'Kein gültiger Code. Beispiel: I.3 + II.2'; if (d) d.open = true; return false; }
+  S.anlass = 'besuch';
+  S.sel = codes.slice(0, DATA.max_karten).sort((a, b) => KARTEN.findIndex(k => k.code === a) - KARTEN.findIndex(k => k.code === b));
+  ['sk', 'ek'].forEach(p => { if (S.sel.includes(S.ganz[p])) S.ganz[p] = ''; });
+  S.beispiel = false; warnung = ''; sichern(); alles();
+  if (m) m.textContent = (ausLink ? 'Aus dem Entwurfsspiegel übernommen: ' : 'Übernommen: ') + aufzaehlen(S.sel.map(c => c + ' ' + byCode[c].titel)) + '. Anlass: ' + anlass().titel + '.';
+  if (d) d.open = true;
+  return true;
+}
 function alles() { zeichneWahl(); zeichneFelder(); zeichneBogen(); zeichneLeeren(); zeichneWeiter2(); }
 
 // ---------------------------------------------------------------- Ereignisse
@@ -638,6 +666,7 @@ document.addEventListener('click', ev => {
     const b = document.querySelector('.mehr[data-code="' + c + '"]');
     if (b) b.scrollIntoView({behavior: 'smooth', block: 'center'});
   }
+  else if (act === 'code-uebernehmen') uebernehme(schwerpunkteAus($('code-es').value), false);
   else if (act === 'auswahl-leeren') { S.sel = []; S.beispiel = false; warnung = ''; sichern(); zeichneWahl(); zeichneBogen(); }
   else if (act === 'kreuz') {
     const pfad = el.dataset.pfad, k = +el.dataset.k, neu = lies(pfad) === k ? -1 : k;
@@ -820,8 +849,19 @@ function exportDOCX() {
   speichern(makeZip(files), dateiname('docx'));
 }
 
+document.addEventListener('keydown', ev => {
+  if (ev.key === 'Enter' && ev.target && ev.target.id === 'code-es') { ev.preventDefault(); uebernehme(schwerpunkteAus(ev.target.value), false); }
+});
+
 // ---------------------------------------------------------------- Start
 zeichneFest(); alles(); zeichneExport();
+(function ausLink() {                      // Web-Fassung: hospitationsbogen.html#schwerpunkte=I.3,II.2
+  const m = /(?:^#|&)schwerpunkte=([^&]*)/.exec(location.hash || '');
+  if (!m) return;
+  let roh = m[1]; try { roh = decodeURIComponent(m[1]); } catch (e) { /* roh behalten */ }
+  uebernehme(schwerpunkteAus(roh.replace(/,/g, ' ')), true);
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* egal */ }
+})();
 </script>
 </body>
 </html>

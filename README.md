@@ -23,7 +23,8 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 
 Werkzeuge zum Vorschlag „Beraten und beurteilen in einer Sprache“ (14 fachneutrale Kernkarten für alle Lehrämter), Staatliches Studienseminar für Lehrerausbildung Thüringen. Entwurf zur Diskussion.
 
-- `gesamtseminar/hospitationsbogen.html`: Hospitationsbogen zu den 14 Kernkarten, geführt in drei Schritten (Schwerpunkte, Angaben zur Stunde, Bogen), mit Hinweisen und Grundlagen, Druck und Speichern als HTML oder Word. Ohne KI und ohne Netzverkehr, Schriften eingebettet; Eingaben bleiben im Browser.
+- `gesamtseminar/entwurfsspiegel.html`: Entwurfsspiegel für das Gesamtseminar. Rückmeldung zum schriftlichen Unterrichtsentwurf (PDF, DOCX, ODT, TXT oder eingefügter Text) nach den Vorgaben des Allgemeinen Seminars, für alle Fächer gefasst, wahlweise nach Kapiteln oder nach den 14 Kernkarten geordnet. Am Ende wählt die STN zwei Karten als Schwerpunkte für den Unterrichtsbesuch und öffnet damit den Hospitationsbogen. Ohne KI, Auswertung nur im Browser, nichts wird gespeichert. Grundlage der Kriterien: Skript „Der schriftliche Unterrichtsentwurf“ (Fachseminar Musik).
+- `gesamtseminar/hospitationsbogen.html`: Hospitationsbogen zu den 14 Kernkarten, geführt in drei Schritten (Schwerpunkte, Angaben zur Stunde, Bogen), mit Hinweisen und Grundlagen, Druck und Speichern als HTML oder Word. Übernimmt die Schwerpunkte aus dem Entwurfsspiegel per Link (`#schwerpunkte=I.3,II.2`) oder per Code. Ohne KI und ohne Netzverkehr, Schriften eingebettet; Eingaben bleiben im Browser.
 
 Die Apps laufen im Browser ohne Anmeldung und senden keine Eingaben an einen Server.
 
