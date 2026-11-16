@@ -173,6 +173,15 @@ select.field { appearance: auto; }
 .hd-drop:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 1px; }
 .board.fall .cell.dim { opacity: 0.58; }
 .board.fall .cell.dim.own-A, .board.fall .cell.dim.own-B { opacity: 1; }
+/* Eintippen (ab Version 4.12) */
+.cm-tip { color: #4A2580 !important; }
+.tip-q { font-family: 'Vierklang Display', 'Lilita One', 'Trebuchet MS', system-ui, sans-serif; font-weight: 400; font-size: 1.7em; line-height: 1; color: #6A3BB5 !important; }
+.tip-clue { margin: 4px 0 10px; padding: 12px 16px; border-radius: 14px; background: #EEE6FA !important; color: #23264F !important; font-size: 1.12rem; line-height: 1.45; }
+.tip-clue small { display: block; margin-top: 6px; color: #4A2580 !important; font-size: 0.86rem; font-weight: 700; }
+.tip-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+.tip-input { flex: 1 1 260px; min-width: 0; min-height: 52px; padding: 10px 14px; border-radius: 12px; border: 2px solid #6A3BB5 !important; background: #FFFFFF !important; color: #23264F !important; font-size: 1.25rem; font-weight: 700; }
+.tip-input:focus { outline: 3px solid #FFB020 !important; outline-offset: 1px; }
+.tip-input:disabled { border-color: #D3D6EA !important; background: #F4F6FB !important; }
 .cell { position: relative; display: block; min-width: 0; margin: 0; padding: 0; border: 0 !important; border-radius: 10px; background: #FFFFFF !important; color: #23264F !important; font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif; font-weight: 700; overflow: hidden; cursor: default; transition: background-color 0.25s, color 0.25s, opacity 0.2s, transform 0.15s; }
 .cell-term { position: absolute; left: 7%; right: 7%; top: 15%; bottom: 15%; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.12; overflow: hidden; hyphens: manual; -webkit-hyphens: manual; overflow-wrap: normal; word-break: normal; }
 .cell-term.hy { hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
@@ -15913,7 +15922,7 @@ function showCopyFallback(text) {
 const BETA_SHORT = 'Beta · mit KI erstellt, noch nicht durchgehend geprüft';
 const BETA_LONG = 'Vierklang ist in der Betaphase. Begriffe, Erklärungen und Aufgaben sind mit KI erstellt und noch nicht durchgehend geprüft.';
 const DEFAULTS = {
-  packId: 'mittelalter', mode: 'tafel', select: 'wuerfel', size: 6, layout: 'familien', mix: 'ausgewogen',
+  packId: 'mittelalter', mode: 'tafel', select: 'wuerfel', answer: 'erklaeren', size: 6, layout: 'familien', mix: 'ausgewogen',
   levelA: 2, levelB: 2, explainTime: 60, consultTime: 30, readTime: 20, timeV: 2, gameTime: 0,
   connect: true, diagonals: true, hints: true, konter: true, media: true, sound: true,
   nameA: 'Team Quadrat', nameB: 'Team Raute', duoA: 'Quadrat', duoB: 'Raute', playersA: 12, playersB: 12,
@@ -17311,6 +17320,7 @@ function createGame(carry) {
   const sizes = sizesFor(pack);
   if (!sizes.length) { toast('Dieses Paket hat zu wenige Begriffe. Für das kleinste Brett braucht es 16.'); return false; }
   const blitz = !!s.blitz && s.mode !== 'papier';
+  const tip = s.answer === 'tippen' && s.mode !== 'papier';
   const n = blitz ? 4 : (sizes.includes(s.size) ? s.size : sizes[sizes.length - 1]);
   const solo = s.mode === 'solo';
   const duo = s.mode === 'duell' || solo;
@@ -17318,14 +17328,14 @@ function createGame(carry) {
   const pool = playable(pack).map((t) => JSON.parse(JSON.stringify(t)));
   pool.forEach((t) => {
     if ((t.kind === 'hoeren' || t.kind === 'bild') && !(s.media && isMedia(t))) t.kind = 'begriff';
-    if (!s.zeig) t.zeig = null;
+    if (!s.zeig || tip) t.zeig = null;
     /* Mitspielfelder: nur mit Zeigeauftrag; im Solo nur, wenn daraus eine Höraufgabe wird */
     if (!t.zeig || s.mitspiel === false || isMedia(t) || (s.mode === 'solo' && !(typeof mitHearable === 'function' && mitHearable(t)))) t.mit = null;
   });
   /* Abgrenzungsfelder nehmen einige Felder ein, wenn das Paket Paare hat */
   const focus = typeof lgFocusFor === 'function' ? lgFocusFor(pack.id) : null, fset = new Set(focus || []);
   let pairTerms = [];
-  if (s.pairs && pack.pairs && pack.pairs.length && pool.length >= n * n) {
+  if (s.pairs && !tip && pack.pairs && pack.pairs.length && pool.length >= n * n) {
     const pf = (q) => (fset.has('paar:' + q[0] + '|' + q[1]) ? 0 : 1);
     pairTerms = shuffle(pack.pairs).sort((x, y) => pf(x) - pf(y)).map((q) => pairTerm(pack, q)).filter(Boolean).slice(0, pairCount(n));
   }
@@ -17339,15 +17349,15 @@ function createGame(carry) {
   const ids = new Set(placed.map((t) => t.id));
   const nameA = solo ? (String(s.soloName).trim() || 'Du') : String(duo ? s.duoA : s.nameA).trim() || (duo ? 'Quadrat' : 'Team Quadrat');
   const nameB = solo ? 'Klangbot' : String(duo ? s.duoB : s.nameB).trim() || (duo ? 'Raute' : 'Team Raute');
-  const ops = opsActive(s, lang, s.mode) ? assignOps(placed, pack, pool, lang) : null;
+  const ops = !tip && opsActive(s, lang, s.mode) ? assignOps(placed, pack, pool, lang) : null;
   game = {
     v: 2, packId: pack.id, packTitle: pack.title, n, mode: s.mode,
     cfg: {
       select: s.select, explainTime: blitz ? 45 : s.explainTime, consultTime: duo ? 0 : (blitz ? 10 : s.consultTime), readTime: blitz ? Math.min(10, s.readTime || 0) : (s.readTime || 0), gameTime: blitz ? 0 : s.gameTime,
-      connect: s.connect, diagonals: s.diagonals, hints: s.hints, konter: !duo && s.konter,
+      connect: s.connect, diagonals: s.diagonals, hints: s.hints, konter: !duo && !tip && s.konter,
       level: solo ? { A: clamp(parseInt(s.levelSolo, 10) || 2, 1, 3), B: 2 } : { A: s.levelA, B: s.levelB },
-      lang, zeig: !!s.zeig, pairs: pairTerms.length > 0, ops: !!ops, pasch: s.pasch === 'ereignis' ? 'ereignis' : 'wahl', geheim: !!s.geheim, album: s.album !== false, blitz,
-      notiz: s.mode === 'duell' && s.notiz !== false, protokoll: s.mode === 'tafel' && !!s.protokoll
+      lang, zeig: !!s.zeig && !tip, answer: tip ? 'tippen' : 'erklaeren', pairs: pairTerms.length > 0, ops: !!ops, pasch: s.pasch === 'ereignis' ? 'ereignis' : 'wahl', geheim: !!s.geheim, album: s.album !== false, blitz,
+      notiz: s.mode === 'duell' && s.notiz !== false && !tip, protokoll: s.mode === 'tafel' && !!s.protokoll && !tip
     },
     bot: solo ? { level: s.botLevel, p: ({ entspannt: 0.45, mittel: 0.62, stark: 0.8 })[s.botLevel] || 0.62 } : null,
     terms,
@@ -17406,6 +17416,141 @@ function fallOptions() {
   g.cells.forEach((x, i) => { if (x.owner && !x.solid) o.push(i); });
   return o;
 }
+/* ---------- Antwort „Eintippen“ (ab Version 4.12) ----------
+   Die Felder zeigen nur das Thema. Die Karte umschreibt den Begriff (Hinweise wie im Kreuzworträtsel, ohne das gesuchte Wort),
+   das Team tippt den Begriff ein, die App prüft mit der Toleranz von „Karten üben“. Hilfen ergeben einen Wackelstein.
+   Angriff und Festigen laufen über die gewohnte Erklärung, weil der Begriff dann offen liegt. */
+const TIP_TX = {
+  easy: {
+    rule: ['Eintippen', 'Auf den Feldern steht nur das Thema. Die Karte beschreibt einen Begriff. Ihr findet ihn und tippt ihn ein. Die App prüft, kleine Tippfehler sind erlaubt. Hilfen gibt es auch, zum Beispiel einen Oberbegriff oder den ersten Buchstaben. Mit Hilfe gibt es nur einen Wackelstein. An der Tafel sprecht ihr euch kurz ab, dann tippt die Person mit der Nummer. Wollt ihr einen Wackelstein angreifen oder fest machen, erklärt ihr den Begriff wie sonst.'],
+    title: 'Welcher Begriff ist gemeint?',
+    consult: (name) => `${name} spricht sich ab. Welcher Begriff ist gemeint?`,
+    verb: 'tippt den Begriff ein',
+    turn: (name, du) => (du ? 'Welcher Begriff ist gemeint? Tippe ihn ein.' : `${name} tippt den Begriff ein.`),
+    coachTitle: 'Begriff finden',
+    coach: (du) => (du ? 'Die Karte beschreibt einen Begriff. Finde ihn und tippe ihn ein. Die App prüft, kleine Tippfehler sind erlaubt.' : 'Die Karte beschreibt einen Begriff. Euer Team findet ihn, dann tippt eine Person ihn ein. Die App prüft, kleine Tippfehler sind erlaubt.'),
+    coachTip: 'Mit Hilfe gibt es nur einen Wackelstein.',
+    checkTitle: 'Die App prüft',
+    check: 'Stimmt der Begriff, gibt es einen Stein. Hat sich die App geirrt, entscheidet die Spielleitung mit „Anders entscheiden“.',
+    bot: 'Nach dir kommt der Klangbot. Er liest die Beschreibung und nennt einen Begriff, aber nicht immer den richtigen. Du prüfst ihn.'
+  },
+  mid: {
+    rule: ['Eintippen', 'Die Felder zeigen nur das Thema. Die Karte umschreibt den gesuchten Begriff, das Team tippt ihn ein, und die App prüft. Kleine Abweichungen in der Schreibweise zählen als richtig. Hilfen wie Oberbegriff, Beispiel oder Anfangsbuchstabe ergeben nur einen Wackelstein. An der Tafel berät das Team, dann tippt die aufgerufene Nummer. Wer einen Wackelstein angreift oder festigt, erklärt den Begriff wie gewohnt.'],
+    title: 'Gesuchter Begriff',
+    consult: (name) => `${name} berät sich. Welcher Begriff ist gemeint?`,
+    verb: 'tippt den Begriff ein',
+    turn: (name, du) => (du ? 'Welcher Begriff ist gemeint? Tippe ihn ein.' : `${name} tippt den Begriff ein.`),
+    coachTitle: 'Begriff eintippen',
+    coach: (du) => (du ? 'Die Karte umschreibt einen Begriff. Tippe ihn ein, die App prüft und lässt kleine Schreibfehler gelten.' : 'Die Karte umschreibt einen Begriff. Das Team berät, dann tippt eine Person ihn ein. Die App prüft und lässt kleine Schreibfehler gelten.'),
+    coachTip: 'Hilfen ergeben nur einen Wackelstein.',
+    checkTitle: 'Die App prüft',
+    check: 'Stimmt der Begriff, gibt es den Stein. Erkennt die App ein gleichwertiges Wort nicht, korrigiert die Spielleitung mit „Anders entscheiden“.',
+    bot: 'Nach dir ist der Klangbot dran. Er liest die Beschreibung und nennt einen Begriff, nicht immer den richtigen. Du prüfst ihn.'
+  },
+  hard: {
+    rule: ['Eintippen', 'Die Felder nennen nur das Thema. Die Karte umschreibt den Begriff, eingegeben wird der Fachbegriff, und die App prüft mit Toleranz für kleine Schreibfehler. Hilfen wie Oberbegriff, Beispiel oder Anfangsbuchstabe führen zum Wackelstein. An der Tafel gibt nach der Beratung die aufgerufene Nummer den Begriff ein. Angriff und Festigen verlangen weiterhin eine Erklärung.'],
+    title: 'Gesuchter Fachbegriff',
+    consult: (name) => `${name} berät. Welcher Fachbegriff ist gemeint?`,
+    verb: 'gibt den Fachbegriff ein',
+    turn: (name, du) => (du ? 'Welcher Fachbegriff ist gemeint? Eingeben und prüfen.' : `${name} gibt den Fachbegriff ein.`),
+    coachTitle: 'Fachbegriff eingeben',
+    coach: (du) => (du ? 'Die Karte umschreibt einen Fachbegriff. Eingeben, die App prüft mit Toleranz für kleine Schreibfehler.' : 'Die Karte umschreibt einen Fachbegriff. Nach der Beratung gibt eine Person ihn ein, die App prüft mit Toleranz für kleine Schreibfehler.'),
+    coachTip: 'Hilfen führen zum Wackelstein.',
+    checkTitle: 'Die App prüft',
+    check: 'Ein korrekter Fachbegriff bringt den Stein. Gleichwertige Begriffe, die die App nicht kennt, wertet die Spielleitung über „Anders entscheiden“.',
+    bot: 'Danach nennt der Klangbot zu einer Umschreibung einen Begriff, nicht immer den richtigen. Du prüfst ihn.'
+  }
+};
+function tipAnswerOf(t) { try { return typeof krAnswer === 'function' ? krAnswer(t) : null; } catch (e) { return null; } }
+/* Fallback ohne Rätselantwort: Wörter des Begriffs in der Erklärung durch Auslassungspunkte ersetzen */
+function tipMask(text, t) {
+  let s = String(text || ''); const L = 'A-Za-zÄÖÜäöüß';
+  String(t.term || '').split(/[^A-Za-zÄÖÜäöüß]+/).filter((w) => w.length >= 3).forEach((w) => {
+    const stem = w.length >= 6 ? w.slice(0, w.length - 2) : w;
+    s = s.replace(new RegExp(`[${L}]*${krReEsc(stem)}[${L}]*`, 'gi'), '…');
+  });
+  return s;
+}
+/* Steckt der Begriff im Text, auch als Wortteil wie „Chor“ in „Schulchor“? */
+function tipHas(text, t) { const b = String(t.term || '').replace(/\s*\([^)]*\)/g, '').trim().toLowerCase(); return b.length >= 3 && String(text || '').toLowerCase().includes(b); }
+/* Umschreibung je Stufe: Auswählen und Erklären mit dem ersten Satz der Erklärung, Mit Beispiel nur mit Merkmalen */
+function tipClue(t, level) {
+  if (isMedia(t)) return { text: t.kind === 'hoeren' ? 'Hör genau hin. Wie heißt der Begriff?' : (t.prompt || 'Sieh genau hin. Wie heißt der Begriff?'), len: '' };
+  const a = tipAnswerOf(t);
+  let text = '';
+  if (a && typeof krClue === 'function') { try { text = krClue(t, a, level === 3 ? 'schwer' : 'mittel').text; } catch (e) { text = ''; } }
+  if (!text) { const e = String(t.expl || ''); text = leaks(e, t.term) ? tipMask(e, t) : e; }
+  if (tipHas(text, t)) text = tipMask(text, t);
+  return { text, len: a && typeof krLenText === 'function' ? krLenText(a) : '' };
+}
+function tipHelps(t, level) {
+  const a = tipAnswerOf(t); let list = [];
+  if (a && typeof krHelps === 'function') { try { list = krHelps(t, a, level === 3 ? 'schwer' : 'mittel'); } catch (e) { list = []; } }
+  if (!list.length) {
+    if (t.hints && t.hints.ober && !leaks(t.hints.ober, t.term)) list.push({ label: 'Oberbegriff', text: t.hints.ober });
+    list.push({ label: 'Anfangsbuchstabe', text: `Der Begriff beginnt mit ${String(t.term).trim().charAt(0).toUpperCase()}.` });
+  }
+  return list.filter((h) => !tipHas(h.text, t)).map((h, i) => ({ key: 'tip' + i, label: h.label, text: h.text }));
+}
+function tipHintsHTML(t, c) {
+  const g = game;
+  if (!g.cfg.hints || c.noHints || !c.tipHelps || !c.tipHelps.length) return '';
+  const joker = selFree(g.cfg.select) && g.teams[c.side].jokers > 0;
+  const cost = joker ? 'Joker vorhanden: Der Stein bleibt trotzdem fest.' : t.diff === 3 ? 'Schwerer Begriff: Der Stein steht auch mit Hilfe fest.' : 'Mit Hilfe gibt es nur einen Wackelstein.';
+  const shown = c.tipHelps.filter((h) => c.hints.includes(h.key)), next = c.tipHelps.find((h) => !c.hints.includes(h.key));
+  return `<div class="hints">${shown.map((h, i) => `<div class="hint-card"><span class="hint-k">Hilfe ${i + 1} · ${esc(h.label)}</span><span class="hint-v">${esc(h.text)}</span></div>`).join('')}${next ? `<div class="hint-next"><button type="button" class="btn hint" data-act="hint" data-k="${esc(next.key)}">Hilfe ${shown.length + 1}: ${esc(next.label)}</button>${shown.length ? '' : `<span class="hint-cost">${cost}</span>`}</div>` : ''}</div>`;
+}
+function tipCard() {
+  const g = game, c = g.cur, t = g.terms[c.tid], T = c.side, tm = g.teams[T], P = TIP_TX[gameLang()] || TIP_TX.mid;
+  const du = g.mode === 'solo' && isYou(T);
+  const r = Math.floor(c.idx / g.n) + 1, col = c.idx % g.n + 1;
+  const showNum = g.mode === 'tafel' && c.num && c.step !== 'consult';
+  const head = `<div class="card-head">
+      <div class="who who-${T}">${shapeSVG(T, false, 'who-shape')}<span>${esc(tm.name)}</span>${showNum ? `<b class="who-num">Nummer ${c.num}</b>` : ''}</div>
+      <div class="where" title="Zeile ${r}, Spalte ${col}">${diceSVG(r, 'xs dz')}<span>·</span>${diceSVG(col, 'xs ds')}</div>
+      ${timerHTML()}
+    </div>`;
+  const kind = `<div class="kind kind-violet">${esc(t.family ? 'Thema: ' + t.family : 'Gesuchter Begriff')}<span class="kind-diff">${DIFF_LABEL[t.diff]}</span></div>`;
+  const done = c.step === 'check' && c.tipRes;
+  const title = c.media ? `<h2 class="term term-media">${t.kind === 'hoeren' ? 'Hörfeld' : esc(t.label || 'Bildfeld')}</h2>`
+    : done ? `<h2 class="term">${esc(t.term)}</h2>` : `<h2 class="term term-media">${esc(P.title)}</h2>`;
+  const media = c.media ? mediaHTML(t) : '';
+  const clue = `<div class="tip-clue">${esc(c.clue ? c.clue.text : '')}${c.level === 1 && c.clue && c.clue.len ? `<small>${esc(c.clue.len)}</small>` : ''}</div>`;
+  let body = '', actions = '';
+  if (c.step === 'consult') {
+    body = `<p class="step-text">${esc(P.consult(tm.name))}</p>${clue}${tipHintsHTML(t, c)}`;
+    actions = '<button type="button" class="btn primary big" data-act="announce" data-primary>Nummer ansagen</button>';
+  } else if (c.step === 'explain') {
+    const nb = g.mode === 'tafel' ? numBanner(T, c.num, P.verb) : `<p class="step-text">${esc(P.turn(tm.name, du))}</p>`;
+    body = nb + clue + tipHintsHTML(t, c) + `<div class="tip-row"><input id="tip-input" class="tip-input" type="text" value="${esc(c.typed || '')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Begriff eintippen" aria-label="Begriff eintippen"></div>`;
+    actions = '<button type="button" class="btn primary big" data-act="tip-check" data-primary>Prüfen</button>';
+  } else {
+    const rs = c.tipRes || { ok: false, typed: '' };
+    const verdict = rs.ok ? (rs.exact ? 'Richtig.' : 'Richtig, mit einer kleinen Abweichung in der Schreibweise.') : `Gesucht war „${t.term}“.`;
+    body = `<div class="reveal ${rs.ok ? 'good' : 'bad'}">${esc(verdict)}</div>
+      <p class="step-sub">Eingetippt: „${esc(rs.typed)}“${!rs.ok && rs.other ? `. Das passt eher zu „${esc(rs.other)}“, einem anderen Begriff aus dem Paket.` : ''}</p>
+      <p class="pk-expl"><b>${esc(t.term)}</b> ${esc(t.expl)}</p>`;
+    actions = (g.mode !== 'solo' ? `<button type="button" class="btn ghost" data-act="override" aria-expanded="${!!c.override}">${c.override ? 'Auswahl schließen' : 'Anders entscheiden'}</button>` : '')
+      + `<button type="button" class="btn primary big" data-act="finish" data-v="${rs.ok ? T : ''}" data-primary>${rs.ok ? stoneLabel(c) : 'Kein Stein, weiter'}</button>`;
+    if (c.override && g.mode !== 'solo') actions += `<div class="override"><span>${g.mode === 'tafel' ? 'Die Spielleitung entscheidet:' : 'Ihr entscheidet gemeinsam:'}</span><button type="button" class="btn sm" data-act="finish" data-v="${T}">Stein für ${esc(shortName(T))}</button><button type="button" class="btn sm" data-act="finish" data-v="">Kein Stein</button></div>`;
+  }
+  return `<div class="card card-${T}" role="dialog" aria-modal="true" aria-label="Spielkarte">${head}${kind}${title}${eventBanner(c)}${media}<div class="card-body">${body}</div><div class="card-actions">${actions}</div></div>`;
+}
+function tipCheck() {
+  const g = game, c = g && g.cur; if (!c || !c.tip || c.step !== 'explain' || g.phase !== 'term') return;
+  const inp = document.getElementById('tip-input');
+  const typed = String(inp ? inp.value : c.typed || '').trim();
+  if (!typed) { toast('Erst den Begriff eintippen.'); if (inp) inp.focus(); return; }
+  const t = g.terms[c.tid], d = lnMatch(typed, t);
+  let near = null;
+  if (d < 0) { const hit = (g.pool || []).find((x) => x.id !== t.id && lnMatch(typed, x) >= 0); if (hit) near = hit.term; }
+  c.typed = typed; c.tipRes = { ok: d >= 0, exact: d === 0, typed, other: near };
+  Timer.clear();
+  if (c.tipRes.ok) Sound.tick(); else Sound.no();
+  go('check');
+}
+document.addEventListener('input', (e) => { const el = e.target; if (el && el.id === 'tip-input' && game && game.cur && game.cur.tip) game.cur.typed = el.value; });
+document.addEventListener('keydown', (e) => { const el = e.target; if (e.key === 'Enter' && el && el.id === 'tip-input') { e.preventDefault(); tipCheck(); } });
 function pickColumn(c) { const g = game; if (!g || g.cfg.select !== 'fall' || !(c >= 0 && c < g.n)) return; const i = fallCell(c); if (i >= 0) pickCell(i); }
 function nextNumber(side) {
   const tm = game.teams[side];
@@ -17610,11 +17755,13 @@ function beginTerm(idx) {
   if (zeig && level === 1) level = 2;
   const ev = g.choose && g.choose.reason === 'event' ? g.choose.event : null;
   const op = !media && !zeig && t.kind !== 'paar' && level >= 2 && g.mode !== 'solo' && cell.op ? cell.op.k : null;
+  const tip = g.cfg.answer === 'tippen' && type === 'normal';
   g.phase = 'term'; g.choose = null; g.note = ''; g.lastIdx = idx;
   g.cur = {
     idx, tid: t.id, type, side: T, level, media, zeig, mit, op, with: op === 'vergleichen' ? cell.op.with : null,
     asp: op === 'vergleichen' ? cell.op.asp || '' : '', cka: op === 'vergleichen' ? cell.op.ka || '' : '', ckb: op === 'vergleichen' ? cell.op.kb || '' : '', hints: [], removed: [], pick: -1,
-    options: level === 1 || g.mode === 'solo' ? buildOptions(t, media) : null, quizOk: null,
+    options: !tip && (level === 1 || g.mode === 'solo') ? buildOptions(t, media) : null, quizOk: null,
+    tip, typed: '', tipRes: null, clue: tip ? tipClue(t, level) : null, tipHelps: tip ? tipHelps(t, level) : null,
     step: g.mode === 'tafel' ? 'consult' : 'explain', num: 0, counter: null, estimate: null,
     checks: { A: [], B: [] }, extra: { A: false, B: false }, override: false,
     event: ev, noHints: zeig || t.kind === 'paar' || ev === 'ohnehilfe', timeOverride: ev === 'blitz' ? 30 : 0
@@ -17624,7 +17771,7 @@ function beginTerm(idx) {
     if (nb) { g.cur.neighbor = nb.term; g.cur.nbs = cell.op.nbs || ''; } else g.cur.neighbor = neighborTerm(t);
   }
   const cr = checkRows(t, g.cur); g.cur.rows = cr.rows; g.cur.need = cr.need;
-  if (g.mode === 'solo') { g.cur.qs = buildSoloQs(t, media, level, g.cur); g.cur.qi = 0; if (g.cur.qs[0] && g.cur.qs[0].kind === 'hear') g.cur.step = 'quiz'; }
+  if (g.mode === 'solo' && !tip) { g.cur.qs = buildSoloQs(t, media, level, g.cur); g.cur.qi = 0; if (g.cur.qs[0] && g.cur.qs[0].kind === 'hear') g.cur.step = 'quiz'; }
   go(g.cur.step, true);
 }
 /* Schritt wechseln: Zeitmesser setzen, dann neu zeichnen */
@@ -17943,9 +18090,10 @@ function botAttempt(idx) {
   const type = !cell.owner ? 'normal' : (cell.owner === 'B' ? 'firm' : 'attack');
   g.phase = 'botthink'; g.lastIdx = idx; g.botCur = { idx, tid: t.id, type };
   const hearB = !isMedia(t) && !!(g.cfg.zeig && t.zeig && t.mit) && !cell.owner;
+  const tipB = g.cfg.answer === 'tippen' && !cell.owner && !isMedia(t);
   const shown = isMedia(t) && !cell.owner ? (t.kind === 'hoeren' ? 'das Hörfeld' : 'das Notenbild') : hearB ? 'die Höraufgabe' : `„${t.term}“`;
   g.msg = type === 'attack' ? `Der Klangbot greift deinen Wackelstein an und erklärt ${shown} …`
-    : type === 'firm' ? `Der Klangbot festigt seinen Wackelstein und erklärt ${shown} …` : `Der Klangbot erklärt ${shown} …`;
+    : type === 'firm' ? `Der Klangbot festigt seinen Wackelstein und erklärt ${shown} …` : tipB ? 'Der Klangbot liest die Beschreibung und sucht den Begriff …' : `Der Klangbot erklärt ${shown} …`;
   persist(); renderGame();
   setTimeout(() => { if (game === g) botAsk(); }, reduced() ? 200 : 1100);
 }
@@ -17970,7 +18118,7 @@ function botWrongSay(t, media) {
 function botAsk() {
   const g = game; if (!g || g.phase !== 'botthink' || !g.botCur) return;
   const { tid, type } = g.botCur, t = g.terms[tid];
-  const media = (isMedia(t) || !!(g.cfg.zeig && t.zeig && t.mit)) && type === 'normal';
+  const media = (isMedia(t) || !!(g.cfg.zeig && t.zeig && t.mit) || g.cfg.answer === 'tippen') && type === 'normal';
   const p = clamp(g.bot.p - (t.diff - 2) * 0.08 - (type !== 'normal' ? 0.08 : 0), 0.15, 0.92);
   let ok = Math.random() < p;
   let text = ok ? (media ? t.term : t.expl) : botWrongSay(t, media);
@@ -18194,7 +18342,7 @@ function observeBoard() {
 }
 function renderTop() {
   const g = game;
-  const p = $('#tb-pack'); if (p) p.textContent = `${g.packTitle} · ${g.mode === 'tafel' ? 'Tafel' : g.mode === 'solo' ? 'Solo' : 'Duell'} · ${g.cfg.select === 'wuerfel' ? 'Würfeln' : g.cfg.select === 'mix' ? 'Würfeln mit Wahl' : g.cfg.select === 'fall' ? 'Vier gewinnt' : 'Taktik'}`;
+  const p = $('#tb-pack'); if (p) p.textContent = `${g.packTitle} · ${g.mode === 'tafel' ? 'Tafel' : g.mode === 'solo' ? 'Solo' : 'Duell'} · ${g.cfg.select === 'wuerfel' ? 'Würfeln' : g.cfg.select === 'mix' ? 'Würfeln mit Wahl' : g.cfg.select === 'fall' ? 'Vier gewinnt' : 'Taktik'}${g.cfg.answer === 'tippen' ? ' · Eintippen' : ''}`;
   const s = $('#tb-sound'); if (s) { s.textContent = settings.sound ? 'Klang an' : 'Klang aus'; s.setAttribute('aria-pressed', String(!!settings.sound)); }
   const fs = $('#tb-fs'); if (fs) fs.hidden = !document.fullscreenEnabled;
   tickClock();
@@ -18264,10 +18412,12 @@ function cellHTML(i, opts, rolled) {
   const pair = t.kind === 'paar';
   if (zeig) cls.push('zeig'); if (mit) cls.push('mit'); if (pair) cls.push('pair');
   const hearHide = mit && g.mode === 'solo' && !cell.owner;
-  const name = media ? (t.kind === 'hoeren' ? 'Hörfeld' : (t.label || 'Bildfeld')) : hearHide ? 'Höraufgabe' : t.term;
+  const tipHide = g.cfg.answer === 'tippen' && !cell.owner && !media;
+  const name = media ? (t.kind === 'hoeren' ? 'Hörfeld' : (t.label || 'Bildfeld')) : hearHide ? 'Höraufgabe' : tipHide ? 'Gesuchter Begriff' + (t.family ? ', Thema ' + t.family : '') : t.term;
   const aria = `Zeile ${r + 1}, Spalte ${c + 1}: ${pair ? 'Abgrenzung ' : ''}${name}${hearHide ? '' : mit ? (g.mode === 'solo' ? ', Höraufgabe' : ', Mitspielfeld') : zeig ? ', Zeigefeld' : ''}${cell.owner ? ', ' + tn(cell.owner) + (cell.solid ? '' : ', Wackelstein') : ''}`;
   const inner = media ? mediaLabel(t)
     : hearHide ? `<span class="cm">${noteSVG()}<span class="cm-l">Höraufgabe</span></span>`
+    : tipHide ? `<span class="cm cm-tip"><span class="tip-q" aria-hidden="true">?</span><span class="cm-l">${esc(t.family || 'Begriff')}</span></span>`
     : pair ? `<span class="ct ct-pair"><span>${esc(softHy(cellTermBase(t.pair.an)))}</span><i>oder</i><span>${esc(softHy(cellTermBase(t.pair.bn)))}</span></span>`
       : `<span class="ct">${cellTermHTML(t.term)}</span>`;
   return `<button type="button" class="${cls.join(' ')}" data-act="cell" data-i="${i}" aria-label="${esc(aria)}">${cell.owner ? shapeSVG(cell.owner, !cell.solid, 'cell-shape') : ''}<span class="cell-term">${inner}</span>${mit ? (hearHide ? '' : `<span class="cz cz-mit" title="${g.mode === 'solo' ? 'Höraufgabe' : 'Mitspielfeld'}">${noteSVG()}</span>`) : zeig ? `<span class="cz" title="Zeigefeld">${handSVG()}</span>` : ''}${diffMark(t.diff)}</button>`;
@@ -18566,6 +18716,7 @@ function pruefkarte(t, c) {
 }
 function termCard() {
   const g = game, c = g.cur, t = g.terms[c.tid], T = c.side, O = other(T), tm = g.teams[T];
+  if (c.tip) return tipCard();
   if (g.mode === 'solo' && !c.qs && (c.step === 'quiz' || c.step === 'selfcheck')) { c.qs = buildSoloQs(t, c.media, c.level); c.qi = 0; c.step = 'quiz'; c.pick = -1; }
   const r = Math.floor(c.idx / g.n) + 1, col = c.idx % g.n + 1;
   const showNum = g.mode === 'tafel' && c.num && c.step !== 'consult';
@@ -18641,8 +18792,9 @@ function botCard() {
   const head = `<div class="card-head"><div class="who who-B">${shapeSVG('B', false, 'who-shape')}<span>Klangbot</span></div><div class="where" title="Zeile ${r}, Spalte ${col}">${diceSVG(r, 'xs dz')}<span>·</span>${diceSVG(col, 'xs ds')}</div></div>`;
   const kind = `<div class="kind">${c.type === 'attack' ? 'Angriff auf deinen Wackelstein' : c.type === 'firm' ? 'Der Klangbot festigt' : 'Der Klangbot ist am Zug'}<span class="kind-diff">${DIFF_LABEL[t.diff]}</span></div>`;
   const hear = say.media && !isMedia(t) && t.mit;
-  const title = say.media ? `<h2 class="term term-media">${hear ? 'Höraufgabe' : t.kind === 'hoeren' ? 'Hörfeld' : esc(t.label || 'Bildfeld')}</h2>` : `<h2 class="term">${esc(t.term)}</h2>`;
-  const media = hear ? mitPlayerHTML(t, c, 'hear') : say.media ? mediaHTML(t) : '';
+  const tipB = say.media && !isMedia(t) && !hear;
+  const title = say.media ? `<h2 class="term term-media">${hear ? 'Höraufgabe' : tipB ? (E ? 'Welcher Begriff ist gemeint?' : 'Gesuchter Begriff') : t.kind === 'hoeren' ? 'Hörfeld' : esc(t.label || 'Bildfeld')}</h2>` : `<h2 class="term">${esc(t.term)}</h2>`;
+  const media = hear ? mitPlayerHTML(t, c, 'hear') : tipB ? `<div class="tip-clue">${esc(tipClue(t, 2).text)}</div>` : say.media ? mediaHTML(t) : '';
   const bubble = `<div class="bot-say"><span class="bot-say-k">${say.media ? 'Der Klangbot sagt' : 'Der Klangbot erklärt'}</span><span class="bot-say-v">${esc(say.text)}</span></div>`;
   let body, actions;
   if (g.phase === 'botjudge') {
@@ -18753,7 +18905,7 @@ function renderOverlay() {
   const card = ov.querySelector('.card'); if (card) card.scrollTop = keep;
   Timer.paint();
   if (nf) { const el = ov.querySelector(`[data-note="${nf.i}"]`); if (el) { try { el.focus({ preventScroll: true }); el.setSelectionRange(nf.s, nf.s); } catch (e) { el.focus(); } } }
-  if (stepChanged) { const p = ov.querySelector('[data-primary]:not([disabled])') || ov.querySelector('button:not([disabled])'); if (p) { try { p.focus({ preventScroll: true }); } catch (e) { p.focus(); } } }
+  if (stepChanged) { const p = ov.querySelector('#tip-input:not([disabled])') || ov.querySelector('[data-primary]:not([disabled])') || ov.querySelector('button:not([disabled])'); if (p) { try { p.focus({ preventScroll: true }); } catch (e) { p.focus(); } } }
 }
 
 /* ---------- Fenster und Meldungen ---------- */
@@ -19053,6 +19205,7 @@ function renderStart() {
     const acc = (k, title, sub, inner) => `<section class="acc${accOpen[k] ? ' open' : ''}"><button type="button" class="acc-h" data-act="acc" data-k="${k}" aria-expanded="${!!accOpen[k]}"><span><b>${title}</b><small>${sub}</small></span><svg viewBox="0 0 24 24" class="ti acc-chev" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>${accOpen[k] ? `<div class="acc-b">${inner}</div>` : ''}</section>`;
     const brett = [
       rule('Feld bestimmen', seg('select', [['wuerfel', 'Würfeln'], ['mix', 'Würfeln mit Wahl'], ['taktik', 'Frei wählen'], ['fall', 'Vier gewinnt']], s.select), s.select === 'wuerfel' ? 'Der blaue Würfel links zeigt die Zeile, der gelbe Würfel oben die Spalte.' : s.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile, das Feld darin wird gewählt. Zufall und Taktik zugleich.' : s.select === 'fall' ? 'Jede Seite wählt eine Spalte, der Stein kommt auf das unterste freie Feld. Wackelsteine bleiben angreifbar.' : 'Taktik: Jede Seite wählt ihr Feld selbst.'),
+      rule('Antwort', seg('answer', [['erklaeren', 'Erklären'], ['tippen', 'Eintippen']], s.answer), s.answer === 'tippen' ? 'Die Felder zeigen nur das Thema. Die Karte umschreibt den Begriff, das Team tippt ihn ein, die App prüft. Angriff und Festigen verlangen weiter eine Erklärung.' : 'Begriffe in eigenen Worten erklären, geprüft wird mit der Prüfkarte.'),
       rule('Brett', sizes.length ? seg('size', sizes.map((n) => [n, n + ' × ' + n]), s.size) : '<span class="warn">Dieses Paket braucht mindestens 16 Begriffe.</span>', sizes.length ? `${nTerms} Begriffe im Paket` : ''),
       nTerms > s.size * s.size ? rule('Begriffsauswahl', seg('mix', [['ausgewogen', 'gemischt'], ['leichter', 'eher leicht'], ['schwerer', 'eher schwer']], s.mix), `${s.size * s.size} von ${nTerms} Begriffen kommen aufs Brett.`) : '',
       rule('Anordnung', seg('layout', [['familien', 'nach Themen'], ['gemischt', 'gemischt'], ['paket', 'wie im Paket']], s.layout), s.layout === 'familien' ? 'Verwandte Begriffe liegen nebeneinander.' : '')
@@ -19078,6 +19231,7 @@ function renderStart() {
     const nMit = playable(pack).filter((t) => t.zeig && t.mit).length, nHear = playable(pack).filter((t) => typeof mitHearable === 'function' && mitHearable(t)).length;
     const L0 = langFor(pack);
     const aufgaben = [
+      s.answer === 'tippen' ? '<p class="ms-note">Bei der Antwort „Eintippen“ ruhen Zeigefelder, Mitspielfelder, Abgrenzungsfelder und Operatoren. Hör- und Notenfelder bleiben.</p>' : '',
       nZeig ? sw('zeig', 'Zeigefelder', `${nZeig} Begriffe dieses Pakets werden vorgemacht statt erklärt: klatschen, singen, dirigieren, skizzieren. Das andere Team beobachtet.`) : '<p class="ms-note">Dieses Paket hat noch keine Zeigefelder. In der Werkstatt lassen sich Zeigeaufträge ergänzen.</p>',
       nZeig && s.zeig && nMit ? sw('mitspiel', 'Mitspielfelder', s.mode === 'solo' ? (nHear ? `${nHear === 1 ? 'Ein Feld wird' : nHear + ' Felder werden'} im Solo zur Höraufgabe. Über einer Begleitung erklingt ein Muster, du erkennst den passenden Begriff. Die übrigen bleiben Zeigefelder.` : 'Im Solo bleiben sie Zeigefelder, weil dieses Paket dafür keine Höraufgaben hat.') : `${nMit === 1 ? 'Ein Zeigefeld hat' : nMit + ' Zeigefelder haben'} eine Begleitung aus der App. Sie zählt ein und spielt Grundschlag oder Groove${s.mode === 'duell' ? ', im Duell in kürzeren Durchgängen' : ', das Team spielt mit'}. Das Muster zum Vergleich gibt es beim Aufdecken.`) : '',
       nPairs ? sw('pairs', 'Abgrenzungsfelder', `${nPairs} Begriffspaare, die man leicht verwechselt. Den Stein gibt es nur für den Unterschied.`) : '<p class="ms-note">Dieses Paket hat noch keine Abgrenzungspaare. In der Werkstatt lassen sie sich anlegen.</p>',
@@ -19095,9 +19249,9 @@ function renderStart() {
       <div class="sum">
         <div class="sum-pack"><span class="sum-cover" style="background:linear-gradient(160deg, ${col[0]}, ${col[1]})">${coverIcon(cv.icon, cv.color)}</span><span class="sum-t"><b>${esc(pack.title)}</b><small>${esc(gradeLabel(pack))}${gradeLabel(pack) ? ' · ' : ''}${nTerms} Begriffe</small></span></div>
         <div class="sum-mode"><span class="sum-mi">${MODE_ICON[s.mode] || MODE_ICON.tafel}</span><span class="sum-t"><b>${esc((MODE_TEXT[s.mode] || MODE_TEXT.tafel)[0])}</b><small>${s.mode === 'tafel' ? `${esc(s.nameA)} gegen ${esc(s.nameB)}` : s.mode === 'duell' ? `${esc(s.duoA)} gegen ${esc(s.duoB)}` : `Stufe ${esc(LEVELS[s.levelSolo])} · Klangbot ${esc(s.botLevel)}`}</small></span></div>
-        <div class="sum-size"><span class="sum-t"><b>${s.blitz ? 'Blitzrunde 4 × 4' : sizes.length ? s.size + ' × ' + s.size : 'zu wenige Begriffe'}</b><small>${s.select === 'wuerfel' ? 'Würfeln' : s.select === 'mix' ? 'Würfeln mit Wahl' : s.select === 'fall' ? 'Vier gewinnt' : 'Frei wählen'}${s.connect ? ' · Vernetzung an' : ''}${s.geheim ? ' · Geheimauftrag' : ''}</small></span></div>
+        <div class="sum-size"><span class="sum-t"><b>${s.blitz ? 'Blitzrunde 4 × 4' : sizes.length ? s.size + ' × ' + s.size : 'zu wenige Begriffe'}</b><small>${s.select === 'wuerfel' ? 'Würfeln' : s.select === 'mix' ? 'Würfeln mit Wahl' : s.select === 'fall' ? 'Vier gewinnt' : 'Frei wählen'}${s.answer === 'tippen' ? ' · Eintippen' : ''}${s.connect ? ' · Vernetzung an' : ''}${s.geheim ? ' · Geheimauftrag' : ''}</small></span></div>
       </div>
-      <div class="accs">${acc('brett', 'Brett und Begriffe', 'Feld bestimmen, Größe, Auswahl, Anordnung', brett)}${acc('zeit', 'Zeit', timeSummary(s, duo), zeit)}${acc('extra', 'Sonderregeln', s.mode === 'tafel' ? `Vernetzung, Hilfen, Konter, Hörfelder${s.protokoll ? ', Hörprotokoll' : ''}` : s.mode === 'duell' ? `Vernetzung, Hilfen, Hörfelder${s.notiz !== false ? ', Mitschreiben' : ''}` : 'Vernetzung, Hilfen, Hörfelder', extra)}${acc('aufgaben', 'Aufgabenarten', `Zeigefelder${nZeig && s.zeig ? (nMit && s.mitspiel !== false ? ' und Mitspielfelder an' : ' an') : ' aus'}, Abgrenzung${nPairs && s.pairs ? ' an' : ' aus'}, Operatoren ${s.mode === 'solo' ? 'ohne' : s.ops}`, aufgaben)}${acc('spiel', 'Spielwürze', `Pasch ${s.pasch === 'ereignis' && s.select === 'wuerfel' ? 'mit Ereignis' : 'freie Wahl'}${s.geheim ? ', Geheimauftrag' : ''}${s.blitz ? ', Blitzrunde' : ''}${s.album ? ', Album' : ''}`, spiel)}${acc('lang', 'Sprache der Anleitung', `${LANG_LABEL[langFor(pack)]}${s.lang === 'auto' ? ', passend zur Klassenstufe' : ', von dir gewählt'}`, rule('Regeln, Kurzanleitung und Spielkarten', seg('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], s.lang), `${LANG_SUB[langFor(pack)]}. ${s.lang === 'auto' ? 'Die Stufe folgt der Klassenstufe des Pakets.' : 'Automatisch hieße hier: ' + LANG_LABEL[langFromGrades(pack.grades)] + '.'}`))}</div>
+      <div class="accs">${acc('brett', 'Brett und Begriffe', 'Feld bestimmen, Antwort, Größe, Auswahl, Anordnung', brett)}${acc('zeit', 'Zeit', timeSummary(s, duo), zeit)}${acc('extra', 'Sonderregeln', s.mode === 'tafel' ? `Vernetzung, Hilfen, Konter, Hörfelder${s.protokoll ? ', Hörprotokoll' : ''}` : s.mode === 'duell' ? `Vernetzung, Hilfen, Hörfelder${s.notiz !== false ? ', Mitschreiben' : ''}` : 'Vernetzung, Hilfen, Hörfelder', extra)}${acc('aufgaben', 'Aufgabenarten', `Zeigefelder${nZeig && s.zeig ? (nMit && s.mitspiel !== false ? ' und Mitspielfelder an' : ' an') : ' aus'}, Abgrenzung${nPairs && s.pairs ? ' an' : ' aus'}, Operatoren ${s.mode === 'solo' ? 'ohne' : s.ops}`, aufgaben)}${acc('spiel', 'Spielwürze', `Pasch ${s.pasch === 'ereignis' && s.select === 'wuerfel' ? 'mit Ereignis' : 'freie Wahl'}${s.geheim ? ', Geheimauftrag' : ''}${s.blitz ? ', Blitzrunde' : ''}${s.album ? ', Album' : ''}`, spiel)}${acc('lang', 'Sprache der Anleitung', `${LANG_LABEL[langFor(pack)]}${s.lang === 'auto' ? ', passend zur Klassenstufe' : ', von dir gewählt'}`, rule('Regeln, Kurzanleitung und Spielkarten', seg('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], s.lang), `${LANG_SUB[langFor(pack)]}. ${s.lang === 'auto' ? 'Die Stufe folgt der Klassenstufe des Pakets.' : 'Automatisch hieße hier: ' + LANG_LABEL[langFromGrades(pack.grades)] + '.'}`))}</div>
       <div class="st3-cta"><button type="button" class="btn ghost" data-act="st-step" data-v="2">${iconArrow(-1)}Zurück</button><button type="button" class="btn cta go" data-act="start" data-primary${sizes.length ? '' : ' disabled'}>Los geht’s!${iconNext()}</button></div>`;
   }
   const foot = IS_WEB ? `<footer class="st3-foot"><span><b>Vierklang</b> Beta · Uli Frefat · <a href="https://ulifrefat.de" target="_blank" rel="noopener">ulifrefat.de</a> · gebaut mit Claude (Anthropic), Inhalte noch nicht durchgehend geprüft</span><span>KI-Assistent für neue Pakete und Handys koppeln: <a href="${ARTIFACT_URL}" target="_blank" rel="noopener">Fassung auf claude.ai</a> (Claude-Konto nötig). Alles andere läuft hier, ohne Konto; Einstellungen, eigene Pakete, Lerngruppen und das Album bleiben in diesem Browser.</span></footer>` : '';
@@ -19143,6 +19297,8 @@ function helpHTML() {
     geheim: cfg ? !!cfg.geheim : !!settings.geheim, series: cfg ? !!cfg.blitz : !!settings.blitz, mit: hasMit,
     notiz: cfg ? !!cfg.notiz : mode === 'duell' && settings.notiz !== false, protokoll: cfg ? !!cfg.protokoll : mode === 'tafel' && !!settings.protokoll
   });
+  const tipOn = cfg ? cfg.answer === 'tippen' : settings.answer === 'tippen' && mode !== 'papier';
+  if (tipOn) { const keep = /Vierklang|Vernetzung|Geheim|Blitz|Pasch|Spielende|Stein setzen/; const first = items[0]; const rest = items.slice(1).filter((x) => keep.test(x[0])); items.length = 0; items.push(first, (TIP_TX[L] || TIP_TX.mid).rule); rest.forEach((x) => items.push(x)); }
   const lv = ['easy', 'mid', 'hard'].map((k) => `<button type="button" class="seg-btn${L === k ? ' on' : ''}" data-act="help-lang" data-v="${k}" aria-pressed="${L === k}">${LANG_LABEL[k]}</button>`).join('');
   return `<h2>So geht Vierklang</h2>
   <div class="help-lang"><span>Sprache</span><div class="seg">${lv}</div></div>
@@ -19193,6 +19349,12 @@ function coachSteps() {
   if (hasMit) sx.push({ sel: '#board .cell.mit', title: du ? 'Höraufgaben' : 'Mitspielfelder', text: C.mit });
   if (hasZeig && g.cells.some((c) => g.terms[c.tid] && g.terms[c.tid].zeig && !g.terms[c.tid].mit)) sx.push({ sel: '#board .cell.zeig:not(.mit)', title: 'Zeigefelder', text: C.zeig });
   if (hasPair) sx.push({ sel: '#board .cell.pair', title: 'Zwei Begriffe auf einem Feld', text: C.pair });
+  if (g.cfg.answer === 'tippen') {
+    const P = TIP_TX[gameLang()] || TIP_TX.mid;
+    const st2 = { sel: '#status', title: P.coachTitle, text: P.coach(du), tip: P.coachTip };
+    if (du) return [s1, st2].concat(sx, [{ sel: '#team-B', title: 'Der Klangbot', text: P.bot }, s4]);
+    return [s1, st2, { sel: '#team-A', title: P.checkTitle, text: P.check }].concat(sx, [s4]);
+  }
   if (g.mode === 'solo') {
     const lvl = g.cfg.level.A;
     return [s1,
@@ -23238,10 +23400,10 @@ function couplePrompt() {
   if (g.phase === 'over') return { kind: 'end', winner: g.result && g.result.winner ? g.teams[g.result.winner].name : '', msg: g.result && g.result.winner ? `${g.teams[g.result.winner].name} hat gewonnen.` : 'Unentschieden.' };
   if (g.phase === 'term' && g.cur) {
     const c = g.cur, t = g.terms[c.tid], qid = `e${g.turnNo}-${c.idx}`;
-    const term = c.media ? (t.kind === 'hoeren' ? 'Hörfeld' : 'Notenbild') : t.term;
+    const term = c.media ? (t.kind === 'hoeren' ? 'Hörfeld' : 'Notenbild') : c.tip && c.step !== 'check' ? 'Gesuchter Begriff' : t.term;
     const base = { qid, term, side: c.side, team: g.teams[c.side].name, level: c.level, media: !!c.media };
     if (['consult', 'explain', 'counterAsk', 'counter', 'estimate', 'quiz'].includes(c.step)) return Object.assign(base, { kind: 'estimate', q: c.level === 1 ? (E ? 'Ist die Antwort richtig?' : 'Ist die Auswahl richtig?') : (E ? 'Reicht die Erklärung für einen Stein?' : 'Reicht die Erklärung für den Stein?') });
-    if (c.step === 'check' || c.step === 'selfcheck') { const w = decided(); return Object.assign(base, { kind: 'reveal', answer: w === c.side }); }
+    if (c.step === 'check' || c.step === 'selfcheck') { const w = c.tip ? (c.tipRes && c.tipRes.ok ? c.side : null) : decided(); return Object.assign(base, { kind: 'reveal', answer: w === c.side }); }
   }
   if (g.phase === 'connect' && g.conn) {
     const k = g.conn, terms = k.line.map((i) => g.terms[g.cells[i].tid].term), qid = `c${g.turnNo}-${k.line.join('.')}`;
@@ -24132,6 +24294,7 @@ const TEACHER_TEXT = {
       <li><b>Vertretungsstunde</b>: Druckversion oder Duell am Tablet mit einem Paket, das die Klasse kennt.</li>
       <li><b>Mehrfach und mit Abstand.</b> Dasselbe Paket nach einigen Tagen und nach einigen Wochen noch einmal spielen, dazwischen „Karten üben“. Verteiltes Wiederholen sichert Begriffswissen besser als eine einzige lange Runde (Cepeda u. a. 2006; Yang u. a. 2021).</li>
       <li><b>Feldwahl „Vier gewinnt“.</b> In Schritt 3 unter „Brett und Begriffe“ wählbar. Jede Seite wählt eine Spalte, der Stein kommt auf das unterste freie Feld. Ohne Würfel planen die Teams ihre Reihen und blockieren gezielt. Wackelsteine lassen sich weiter angreifen und festigen. Die oberen Zeilen kommen seltener an die Reihe. Begriffe aus dem Klassenbild („Damit spielen“) legt die App deshalb nach unten, und bei der Anordnung nach Themen wechselt von Spiel zu Spiel, welche Bretthälfte unten liegt. Bei „Revanche“ beginnt die andere Seite.</li>
+      <li><b>Antwort „Eintippen“.</b> In Schritt 3 unter „Brett und Begriffe“ wählbar. Die Felder zeigen nur das Thema, die Karte umschreibt den Begriff, das Team tippt ihn ein, und die App prüft mit Toleranz für kleine Schreibfehler. Damit wird aus dem Erklären ein Benennen und Abrufen. Das passt zum schnellen Wiederholen, ersetzt aber nicht das Erklären in eigenen Worten. Zeigefelder, Abgrenzung, Operatoren und Konter ruhen. Angriff und Festigen eines Wackelsteins verlangen weiter eine Erklärung, weil der Begriff dann offen liegt. Die App erkennt Synonyme nicht immer, „Anders entscheiden“ lässt die Spielleitung korrigieren.</li>
       <li><b>Lerngruppen und Schnellstart.</b> Lege für jede Klasse eine Lerngruppe an, mit der Bezeichnung als einzigem Eintrag, zum Beispiel 7b. Sie merkt sich das letzte Spiel mit seinen Einstellungen, und „Wie letztes Mal“ auf der Startseite startet es mit einem Klick.</li>
       <li><b>Klassenbild als Einstieg.</b> Nach jedem Spiel zeigt das Klassenbild, welche Begriffe der Lerngruppe sitzen und welche noch wackeln. „An die Tafel“ zeigt die wackelnden Begriffe groß für den Einstieg der nächsten Stunde, „Damit spielen“ legt sie sicher aufs nächste Brett.</li>
       <li><b>Direktlink und QR-Code.</b> „Link“ unter den Paketen erzeugt einen Link mit QR-Code: für die Stunde, für „Karten üben“ zu Hause oder für Solo. Er passt auf eine Folie, ins Padlet oder aufs Arbeitsblatt. Eigene Pakete und Anpassungen liegen nur im eigenen Browser, andere Geräte öffnen die mitgelieferte Fassung.</li>
@@ -24337,7 +24500,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 const WEB_URL = 'https://ufrefat-svg.github.io/efmu12/vierklang.html';
 const HOME_URL = 'https://ulifrefat.de/apps/vierklang/';
 /* Einstellungen, die eine Lerngruppe für „Wie letztes Mal“ übernimmt; Namen bleiben bewusst draußen */
-const LG_KEYS = ['mode', 'size', 'select', 'mix', 'layout', 'readTime', 'explainTime', 'consultTime', 'gameTime', 'connect', 'hints', 'konter', 'media', 'diagonals',
+const LG_KEYS = ['mode', 'size', 'select', 'answer', 'mix', 'layout', 'readTime', 'explainTime', 'consultTime', 'gameTime', 'connect', 'hints', 'konter', 'media', 'diagonals',
   'zeig', 'pairs', 'ops', 'pasch', 'geheim', 'blitz', 'album', 'lang', 'playersA', 'playersB', 'levelA', 'levelB', 'levelSolo', 'botLevel', 'mitspiel', 'notiz', 'protokoll'];
 const LG_MON = ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'];
 const LG_RES = { o: 'ohne Hilfe geschafft', h: 'mit Hilfe geschafft', n: 'nicht geschafft' };
@@ -28408,6 +28571,7 @@ const ACTIONS = {
   'retry-connect': () => tryConnect(),
   'cell': (el) => pickCell(parseInt(el.dataset.i, 10)),
   'drop': (el) => pickColumn(parseInt(el.dataset.c, 10)),
+  'tip-check': () => tipCheck(),
   'announce': () => announce(),
   'play': () => { const c = game && game.cur; const t = c && game.terms[c.tid]; if (!t || !t.media) return; if (t.media.type === 'synth') Sound.play(t.media.id); else if (t.media.type === 'audio') Sound.playSrc(t.media.src); },
   'hint': (el) => takeHint(el.dataset.k),
@@ -28612,7 +28776,7 @@ function boot(data) {
 }
 /* Testzugang nur bei lokal geöffneter Datei */
 try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__mitVoice = (e, t, spb, sc) => mitVoice(e, t, spb, sc); } catch (e) { /* ohne */ }
-try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i), noteInfo: (c, t) => noteInfo(c, t), noteSame: (a, b) => noteSame(a, b), protoNumbers: (s) => protoNumbers(s), buildProtokollPdf: (J, id, v) => buildProtokollPdf(J, id, v), ensureJsPDF: () => ensureJsPDF(), kr: { get state() { return kreuz; }, eligible: (id) => krEligible(findPack(id)), answer: (t) => krAnswer(t), clue: (t, a, l) => krClue(t, a, l), helps: (t, a, l) => krHelps(t, a, l), pick: (id, n, s) => krPick(findPack(id), n, s).map((x) => x.t.id), model: (id, cfg) => { const m = krModel(findPack(id), cfg); return m && m.lay ? { W: m.lay.W, H: m.lay.H, cells: m.lay.cells.map((r) => r.map((c) => (c ? c.ch : ''))), items: m.items.map((it) => ({ id: it.id, num: it.num, dir: it.dir, r: it.r, c: it.c, L: it.L.join('') })), missing: m.missing, sol: m.sol ? { id: m.sol.id, cells: m.sol.cells } : null } : null; }, code: (id, cfg, sol, lv, kopf) => krCodeMake(findPack(id), cfg, sol, lv, kopf), read: (id, code) => krCodeRead(findPack(id), code), cfg: (id) => krCfg(findPack(id)), build: (J, o) => (typeof buildKrPdf === 'function' ? buildKrPdf(J, o) : null) }, rx: { links: (id) => rxLinks(findPack(id)).map((x) => ({ key: x.key, s: x.s, gaps: x.gaps.map((g) => ({ t: g.t.id, text: g.text, suf: g.suf, start: g.start })) })), cfg: (id, art) => rxCfg(findPack(id), art), model: (id, art, cfg) => { const m = rxModel(findPack(id), art, cfg); return m.art === 'such' ? { lay: m.lay ? { S: m.lay.S, grid: m.lay.grid.map((r) => r.join('')), words: m.lay.words.map((p) => ({ id: p.id, L: p.L.join(''), r: p.r, c: p.c, dr: p.dr, dc: p.dc })) } : null, items: m.items.map((it) => ({ id: it.id, num: it.num, L: it.a.letters.join(''), shown: it.a.shown, solK: it.solK || 0, solIdx: it.solIdx })), sol: m.sol ? { id: m.sol.id, shown: m.sol.a.shown, L: m.sol.a.letters.join('') } : null } : m.art === 'luecke' ? { sents: m.sents.map((x) => ({ num: x.num, s: x.s, gaps: x.gaps.map((g) => ({ gid: g.gid, t: g.t.id, text: g.text, suf: g.suf, forms: g.forms })) })), items: m.items.map((it) => it.id) } : { rounds: m.rounds.map((r) => ({ id: r.id, fam: r.fam, famOdd: r.famOdd, odd: r.odd, terms: r.terms })), families: m.families, items: m.items.map((it) => it.id) }; }, code: (id, art, cfg, lv, kopf) => rxCodeMake(findPack(id), art, cfg, lv, kopf), read: (id, code) => krCodeRead(findPack(id), code), ready: (id, art, cfg) => rxReady(rxModel(findPack(id), art, cfg)), ober: (id) => findPack(id).terms.map((t) => [t.term, rxOberText(t)]), pick: (id, art, n, sd) => (art === 'luecke' ? rxLueckePick(findPack(id), n, sd) : krPick(findPack(id), n, sd).map((x) => x.t.id)) } }; } catch (e) { /* ohne Testzugang */ }
+try { if (location.protocol === 'file:' || location.hostname === 'localhost') window.__vk = { get game() { return game; }, set game(v) { game = v; }, tipClue: (t, l) => tipClue(t, l), tipHelps: (t, l) => tipHelps(t, l), lnMatch: (a, t) => lnMatch(a, t), playable: (p) => playable(p), startConnect, renderGame, finish, settings: () => settings, BUILTIN: () => BUILTIN, albumRecord: (a, b, c) => albumRecord(a, b, c), printAlbum: (id) => printAlbum(id), openAlbum: () => openAlbum(), openLearn: (id) => openLearn(id), createGame: () => createGame(), pickBoard: (a, b, c, d) => pickBoard(a, b, c, d), albumStore: () => albumStore(), lgPackBild: (id) => lgPackBild(id, lgGroupObj(albumStore())), deepLinkParse: (h) => deepLinkParse(h), endGame: (w, r) => endGame(w, r), qrSVG: (t) => qrSVG(t), mitState: () => (mitP ? { key: mitP.key, what: mitP.what, n: mitP.plan.evs.length, i: mitP.i, takte: mitP.takte, bpm: Math.round(60 / mitP.spb) } : null), mitEvents: (m, w, n, mu) => mitEvents(m, w, n, mu), MIT_MUSTER: () => MIT_MUSTER, Sound: () => Sound, MIT_GROOVES: () => MIT_GROOVES, beginTerm: (i) => beginTerm(i), botAttempt: (i) => botAttempt(i), noteInfo: (c, t) => noteInfo(c, t), noteSame: (a, b) => noteSame(a, b), protoNumbers: (s) => protoNumbers(s), buildProtokollPdf: (J, id, v) => buildProtokollPdf(J, id, v), ensureJsPDF: () => ensureJsPDF(), kr: { get state() { return kreuz; }, eligible: (id) => krEligible(findPack(id)), answer: (t) => krAnswer(t), clue: (t, a, l) => krClue(t, a, l), helps: (t, a, l) => krHelps(t, a, l), pick: (id, n, s) => krPick(findPack(id), n, s).map((x) => x.t.id), model: (id, cfg) => { const m = krModel(findPack(id), cfg); return m && m.lay ? { W: m.lay.W, H: m.lay.H, cells: m.lay.cells.map((r) => r.map((c) => (c ? c.ch : ''))), items: m.items.map((it) => ({ id: it.id, num: it.num, dir: it.dir, r: it.r, c: it.c, L: it.L.join('') })), missing: m.missing, sol: m.sol ? { id: m.sol.id, cells: m.sol.cells } : null } : null; }, code: (id, cfg, sol, lv, kopf) => krCodeMake(findPack(id), cfg, sol, lv, kopf), read: (id, code) => krCodeRead(findPack(id), code), cfg: (id) => krCfg(findPack(id)), build: (J, o) => (typeof buildKrPdf === 'function' ? buildKrPdf(J, o) : null) }, rx: { links: (id) => rxLinks(findPack(id)).map((x) => ({ key: x.key, s: x.s, gaps: x.gaps.map((g) => ({ t: g.t.id, text: g.text, suf: g.suf, start: g.start })) })), cfg: (id, art) => rxCfg(findPack(id), art), model: (id, art, cfg) => { const m = rxModel(findPack(id), art, cfg); return m.art === 'such' ? { lay: m.lay ? { S: m.lay.S, grid: m.lay.grid.map((r) => r.join('')), words: m.lay.words.map((p) => ({ id: p.id, L: p.L.join(''), r: p.r, c: p.c, dr: p.dr, dc: p.dc })) } : null, items: m.items.map((it) => ({ id: it.id, num: it.num, L: it.a.letters.join(''), shown: it.a.shown, solK: it.solK || 0, solIdx: it.solIdx })), sol: m.sol ? { id: m.sol.id, shown: m.sol.a.shown, L: m.sol.a.letters.join('') } : null } : m.art === 'luecke' ? { sents: m.sents.map((x) => ({ num: x.num, s: x.s, gaps: x.gaps.map((g) => ({ gid: g.gid, t: g.t.id, text: g.text, suf: g.suf, forms: g.forms })) })), items: m.items.map((it) => it.id) } : { rounds: m.rounds.map((r) => ({ id: r.id, fam: r.fam, famOdd: r.famOdd, odd: r.odd, terms: r.terms })), families: m.families, items: m.items.map((it) => it.id) }; }, code: (id, art, cfg, lv, kopf) => rxCodeMake(findPack(id), art, cfg, lv, kopf), read: (id, code) => krCodeRead(findPack(id), code), ready: (id, art, cfg) => rxReady(rxModel(findPack(id), art, cfg)), ober: (id) => findPack(id).terms.map((t) => [t.term, rxOberText(t)]), pick: (id, art, n, sd) => (art === 'luecke' ? rxLueckePick(findPack(id), n, sd) : krPick(findPack(id), n, sd).map((x) => x.t.id)) } }; } catch (e) { /* ohne Testzugang */ }
 (function () {
   const hot = window.claude && window.claude.hot;
   try { if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ game, view, settings, ws: { packId: ws.packId } })); } catch (e) { /* ohne Übernahme */ }
