@@ -111,6 +111,10 @@ select.field { appearance: auto; }
 .game { height: 100%; display: flex; flex-direction: column; }
 .topbar { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 7px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: #2B2E8C !important; color: #FFFFFF !important; }
 .tb-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+/* Logo als Knopf zur Startseite (ab Version 4.11) */
+.tb-home { appearance: none; -webkit-appearance: none; flex: none; display: flex; align-items: center; gap: 10px; margin: -3px -6px; padding: 3px 6px; border: 0 !important; border-radius: 10px; background: transparent !important; color: #FFFFFF !important; cursor: pointer; }
+.tb-home:hover { background: #3A3DA8 !important; }
+.tb-home:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 1px; }
 .logo-sm { width: 36px; height: 27px; }
 .topbar .lg-ink { fill: #FFFFFF !important; }
 .topbar .lg-a { fill: #8FD0D8 !important; }
@@ -158,6 +162,17 @@ select.field { appearance: auto; }
 .hd .die { width: 74%; height: 74%; max-width: 60px; max-height: 60px; transition: transform 0.2s; }
 .hd.hit .die-face { stroke: #FFFFFF !important; stroke-width: 9; }
 .hd.hit .die { transform: scale(1.08); }
+/* Vier gewinnt (ab Version 4.11): Pfeile über den Spalten statt der Würfelköpfe, die Zeilenköpfe entfallen */
+.hd-drop { appearance: none; -webkit-appearance: none; margin: 0; padding: 0; border: 0 !important; border-radius: 10px; background: transparent !important; cursor: default; }
+.hd-drop .drop { width: 74%; height: 74%; max-width: 60px; max-height: 60px; opacity: 0.35; transition: transform 0.15s, opacity 0.2s; }
+.hd-drop .drop-face { fill: #FFB020 !important; stroke: #FFD47A !important; stroke-width: 4; }
+.hd-drop .drop-arrow { fill: none !important; stroke: #23264F !important; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
+.hd-drop.on { cursor: pointer; }
+.hd-drop.on .drop { opacity: 1; }
+.hd-drop.on:hover .drop { transform: translateY(2px) scale(1.06); }
+.hd-drop:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 1px; }
+.board.fall .cell.dim { opacity: 0.58; }
+.board.fall .cell.dim.own-A, .board.fall .cell.dim.own-B { opacity: 1; }
 .cell { position: relative; display: block; min-width: 0; margin: 0; padding: 0; border: 0 !important; border-radius: 10px; background: #FFFFFF !important; color: #23264F !important; font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif; font-weight: 700; overflow: hidden; cursor: default; transition: background-color 0.25s, color 0.25s, opacity 0.2s, transform 0.15s; }
 .cell-term { position: absolute; left: 7%; right: 7%; top: 15%; bottom: 15%; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.12; overflow: hidden; hyphens: manual; -webkit-hyphens: manual; overflow-wrap: normal; word-break: normal; }
 .cell-term.hy { hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
@@ -501,7 +516,7 @@ select.field { appearance: auto; }
 @media (prefers-reduced-motion: reduce) {
   .cell.pick::after, .cell.flash, .dice-pair.rolling .die, .beam-anim { animation: none; }
   .cell.pick::after { opacity: 1; }
-  .btn, .cell, .sw-track, .sw-track::after, .toast, .tm-ring { transition: none; }
+  .btn, .cell, .sw-track, .sw-track::after, .toast, .tm-ring, .hd-drop .drop { transition: none; }
 }
 
 /* Vierklang · Druckwerkstatt (Dialog)
@@ -1427,6 +1442,8 @@ select.field { appearance: auto; }
 .task-mit .task-k { color: #3A3DA8 !important; }
 
 .mit { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding: 10px 12px; border-radius: 14px; background: #FFFFFF !important; border: 1.5px solid #C9CAF5 !important; }
+/* Mitspielfelder auf dem Brett behalten die Maße der übrigen Felder; die Regel darüber gilt dem Abspielkasten auf der Karte */
+.cell.mit { display: block; margin: 0; padding: 0; gap: 0; border: 0 !important; border-radius: 12px; }
 .mit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .mit-btn { min-height: 44px; padding: 0.45em 0.95em; border-radius: 12px; border: 1.5px solid #3A3DA8 !important; background: #ECEDFD !important; color: #23264F !important; font-weight: 800; box-shadow: none !important; }
 .mit-btn:hover { background: #DFE0FB !important; border-color: #3A3DA8 !important; }
@@ -16355,6 +16372,10 @@ const PIPS = { 1: [[50, 50]], 2: [[28, 28], [72, 72]], 3: [[28, 28], [50, 50], [
 function diceSVG(v, cls) {
   return `<svg class="die ${cls || ''}" viewBox="0 0 100 100" aria-hidden="true"><rect x="6" y="6" width="88" height="88" rx="18" class="die-face"/>${(PIPS[v] || []).map((p) => `<circle cx="${p[0]}" cy="${p[1]}" r="9.5" class="die-pip"/>`).join('')}</svg>`;
 }
+/* Vier gewinnt: Pfeil über der Spalte */
+function dropSVG() {
+  return '<svg class="drop" viewBox="0 0 100 100" aria-hidden="true"><rect x="6" y="6" width="88" height="88" rx="18" class="drop-face"/><path d="M50 27v44M30 53l20 20 20-20" class="drop-arrow"/></svg>';
+}
 function shapeSVG(side, hollow, cls) {
   const c = 'sh sh-' + side + (hollow ? ' sh-hollow' : ' sh-solid');
   return side === 'A'
@@ -16459,7 +16480,7 @@ TX.easy = {
   quizHear: 'Hör genau hin. Was spielt die App zur Begleitung dazu?',
   quizShowSub: (normal) => (normal ? 'Zwei von drei Punkten reichen für den Stein.' : 'Hier müssen alle Punkte klappen.'),
   rules: (o) => [
-    ['Feld finden', `${o.select === 'taktik' ? 'Ihr sucht euch euer Feld selbst aus.' : o.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile. In dieser Zeile sucht ihr euch ein Feld aus.' : 'Ihr würfelt mit zwei Würfeln. Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Zwei gleiche Zahlen heißen Pasch. Dann dürft ihr das Feld selbst aussuchen.'} Ist das Feld schon besetzt? Dann nehmt ihr ein freies Feld in der gleichen Zeile oder Spalte.`],
+    o.select === 'fall' ? ['Feld finden', 'Ihr spielt wie bei Vier gewinnt. Sucht euch eine Spalte aus. Euer Feld ist dort das unterste freie Feld. Die App zeigt diese Felder mit einem gelben Rand. Ihr könnt auch einen Wackelstein nehmen.'] : ['Feld finden', `${o.select === 'taktik' ? 'Ihr sucht euch euer Feld selbst aus.' : o.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile. In dieser Zeile sucht ihr euch ein Feld aus.' : 'Ihr würfelt mit zwei Würfeln. Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Zwei gleiche Zahlen heißen Pasch. Dann dürft ihr das Feld selbst aussuchen.'} Ist das Feld schon besetzt? Dann nehmt ihr ein freies Feld in der gleichen Zeile oder Spalte.`],
     ['Erklären', 'Erklärt den Begriff mit euren eigenen Worten. Sagt, was es ist und woran man es erkennt. Bei einem Hörfeld oder Notenbild sagt ihr, wie der Begriff heißt.'],
     ['Prüfen', 'Auf der Prüfkarte stehen drei Punkte. Zwei davon müssen in eurer Erklärung drin sein. Die Wörter dürfen anders sein.'],
     ['Stein setzen', 'Geschafft? Dann bekommt ihr einen Stein. Ihr wollt vier Steine in eine Reihe bringen.'],
@@ -16480,7 +16501,7 @@ TX.easy = {
     ['Spielende', 'Wer den Vierklang schafft, hat gewonnen. Ist die Zeit um oder das Brett voll? Dann gewinnt, wer mehr Steine hat. Bei gleich vielen Steinen gewinnt, wer mehr schwere Begriffe geschafft hat.']
   ].filter(Boolean),
   coach: (o) => ({
-    field: o.wuerfel ? `Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Bei zwei gleichen Zahlen ${o.du ? 'suchst du dir' : 'sucht ihr euch'} das Feld aus.` : o.mix ? `Der blaue Würfel zeigt die Zeile. In dieser Zeile ${o.du ? 'suchst du dir' : 'sucht ihr euch'} ein Feld aus.` : (o.du ? 'Du suchst dir dein Feld selbst aus. Baue Reihen und stelle dich dem Klangbot in den Weg.' : 'Jedes Team sucht sich sein Feld selbst aus. Baut Reihen und stellt euch dem anderen Team in den Weg.'),
+    field: o.fall ? (o.du ? 'Du spielst wie bei Vier gewinnt. Such dir eine Spalte aus. Dein Feld ist dort das unterste freie Feld, es hat einen gelben Rand. Tippe das Feld an oder den Pfeil über der Spalte.' : 'Ihr spielt wie bei Vier gewinnt. Sucht euch eine Spalte aus. Euer Feld ist dort das unterste freie Feld, es hat einen gelben Rand. Tippt das Feld an oder den Pfeil über der Spalte.') : o.wuerfel ? `Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Bei zwei gleichen Zahlen ${o.du ? 'suchst du dir' : 'sucht ihr euch'} das Feld aus.` : o.mix ? `Der blaue Würfel zeigt die Zeile. In dieser Zeile ${o.du ? 'suchst du dir' : 'sucht ihr euch'} ein Feld aus.` : (o.du ? 'Du suchst dir dein Feld selbst aus. Baue Reihen und stelle dich dem Klangbot in den Weg.' : 'Jedes Team sucht sich sein Feld selbst aus. Baut Reihen und stellt euch dem anderen Team in den Weg.'),
     explainTafel: 'Euer Team bespricht sich kurz. Dann sagt die App eine Nummer. Wer die Nummer hat, erklärt den Begriff mit eigenen Worten.',
     checkTafel: 'Auf der Prüfkarte stehen drei Punkte. Zwei davon müssen drin sein. Dann gibt es den Stein. Mit Hilfe gibt es nur einen Wackelstein.',
     explainDuell: 'Eine Person erklärt, die andere hört zu. Vor dem Aufdecken rät sie: Reicht das? Wer richtig rät, bekommt einen Joker.',
@@ -16550,7 +16571,7 @@ TX.mid = {
   quizHear: 'Hör zu. Welcher Begriff passt zu dem, was über der Begleitung erklingt?',
   quizShowSub: (normal) => (normal ? 'Mindestens zwei von drei Merkmalen reichen für den Stein.' : 'Hier müssen alle Merkmale stimmen.'),
   rules: (o) => [
-    ['Feld bestimmen', `${o.select === 'taktik' ? 'Jede Seite wählt ihr Feld selbst.' : o.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile, das Feld darin wird selbst gewählt.' : 'Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Ein Pasch erlaubt freie Wahl.'} Ist das Feld besetzt, kommt ein freies Feld in derselben Zeile oder Spalte infrage.`],
+    o.select === 'fall' ? ['Feld bestimmen', 'Wie bei Vier gewinnt wählt jede Seite eine Spalte. Dort gilt das unterste freie Feld, die App markiert es. Wackelsteine lassen sich in jedem Zug angreifen oder festigen.'] : ['Feld bestimmen', `${o.select === 'taktik' ? 'Jede Seite wählt ihr Feld selbst.' : o.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile, das Feld darin wird selbst gewählt.' : 'Der blaue Würfel zeigt die Zeile, der gelbe Würfel die Spalte. Ein Pasch erlaubt freie Wahl.'} Ist das Feld besetzt, kommt ein freies Feld in derselben Zeile oder Spalte infrage.`],
     ['Erklären', 'Den Begriff in eigenen Worten erklären. Bei Personen, Orten und Werken geht es darum, wer oder was das ist und was daran wichtig ist. Bei Hör- und Notenfeldern ist der passende Begriff gesucht.'],
     ['Prüfen', 'Die Prüfkarte erscheint erst nach der Erklärung. Wer mindestens zwei der drei Kernmerkmale nennt, bekommt den Stein. Es kommt auf den Kern an, der genaue Wortlaut ist egal.'],
     ['Hilfen', 'Oberbegriff, Beispiel und Satzanfang kommen nacheinander. Auf der Stufe Auswählen streicht die Hilfe zwei falsche Antworten. Mit Hilfe gibt es nur einen Wackelstein. Die andere Seite kann ihn erobern, wenn sie den Begriff ohne Hilfe erklärt, und die eigene Seite kann ihn so festigen. Bei schweren Begriffen bleibt der Stein auch mit Hilfe fest.'],
@@ -16570,7 +16591,7 @@ TX.mid = {
     ['Spielende', 'Ein Vierklang gewinnt sofort. Ist die Spielzeit um oder das Brett voll, gewinnt die Seite mit mehr Steinen. Bei Gleichstand zählen schwere Begriffe, danach feste Steine.']
   ].filter(Boolean),
   coach: (o) => ({
-    field: o.wuerfel ? `Der blaue Würfel links zeigt die Zeile, der gelbe Würfel oben die Spalte. Bei einem Pasch ${o.du ? 'wählst du' : 'wählt ihr'} frei.` : o.mix ? `Der blaue Würfel zeigt die Zeile, das Feld darin ${o.du ? 'wählst du' : 'wählt ihr'} selbst. Wer klug wählt, baut Reihen und blockiert.` : (o.du ? 'Du wählst dein Feld selbst. Wer klug wählt, baut Reihen und blockiert den Klangbot.' : 'Jede Seite wählt ihr Feld selbst. Wer klug wählt, baut Reihen und blockiert die andere Seite.'),
+    field: o.fall ? (o.du ? 'Wie bei Vier gewinnt wählst du eine Spalte, es gilt das unterste freie Feld. Wer klug wählt, baut Reihen und blockiert den Klangbot.' : 'Wie bei Vier gewinnt wählt jede Seite eine Spalte, es gilt das unterste freie Feld. Wer klug wählt, baut Reihen und blockiert die andere Seite.') : o.wuerfel ? `Der blaue Würfel links zeigt die Zeile, der gelbe Würfel oben die Spalte. Bei einem Pasch ${o.du ? 'wählst du' : 'wählt ihr'} frei.` : o.mix ? `Der blaue Würfel zeigt die Zeile, das Feld darin ${o.du ? 'wählst du' : 'wählt ihr'} selbst. Wer klug wählt, baut Reihen und blockiert.` : (o.du ? 'Du wählst dein Feld selbst. Wer klug wählt, baut Reihen und blockiert den Klangbot.' : 'Jede Seite wählt ihr Feld selbst. Wer klug wählt, baut Reihen und blockiert die andere Seite.'),
     explainTafel: 'Das Team berät kurz, dann nennt die App eine Nummer. Diese Person erklärt den Begriff in eigenen Worten.',
     checkTafel: 'Die Prüfkarte zeigt drei Kernmerkmale. Zwei davon genannt, schon steht der Stein. Wer eine Hilfe nimmt, bekommt nur einen Wackelstein.',
     explainDuell: 'Eine Person erklärt, die andere hört zu. Vor dem Aufdecken schätzt sie, ob es reicht. Richtig geschätzt gibt einen Joker.',
@@ -16640,7 +16661,7 @@ TX.hard = {
   quizHear: 'Welcher Begriff beschreibt das Muster über der Begleitung?',
   quizShowSub: (normal) => (normal ? 'Mindestens zwei von drei Merkmalen ergeben den Stein.' : 'Hier müssen alle Merkmale erfüllt sein.'),
   rules: (o) => [
-    ['Feld bestimmen', `${o.select === 'taktik' ? 'Jede Seite wählt ihr Feld selbst.' : o.select === 'mix' ? 'Der blaue Würfel bestimmt die Zeile, das Feld darin wird gewählt.' : 'Blauer Würfel Zeile, gelber Würfel Spalte, Pasch erlaubt freie Wahl.'} Besetzte Felder: ein freies Feld derselben Zeile oder Spalte.`],
+    o.select === 'fall' ? ['Feld bestimmen', 'Wie bei Vier gewinnt wird eine Spalte gewählt, es gilt das unterste freie Feld. Wackelsteine bleiben in jedem Zug angreifbar und lassen sich festigen.'] : ['Feld bestimmen', `${o.select === 'taktik' ? 'Jede Seite wählt ihr Feld selbst.' : o.select === 'mix' ? 'Der blaue Würfel bestimmt die Zeile, das Feld darin wird gewählt.' : 'Blauer Würfel Zeile, gelber Würfel Spalte, Pasch erlaubt freie Wahl.'} Besetzte Felder: ein freies Feld derselben Zeile oder Spalte.`],
     ['Erläutern', 'Den Begriff fachsprachlich erläutern: Oberbegriff, Kernmerkmale, Abgrenzung zu Nachbarbegriffen. Bei Personen, Werken und Orten: Einordnung und Bedeutung. Bei Hör- und Notenfeldern: den Begriff benennen.'],
     ['Prüfen', 'Die Prüfkarte nennt drei Kernmerkmale. Mindestens zwei davon, sinngemäß und fachlich korrekt, ergeben den Stein.'],
     ['Hilfen', 'Oberbegriff, Beispiel und Satzanfang sind gestuft abrufbar. Jede Hilfe reduziert den Ertrag auf einen Wackelstein, der durch eine hilfefreie Erläuterung erobert oder gefestigt werden kann. Schwere Begriffe ergeben auch mit Hilfe einen festen Stein.'],
@@ -16660,7 +16681,7 @@ TX.hard = {
     ['Spielende', 'Ein Vierklang entscheidet sofort. Nach Ablauf der Spielzeit oder bei vollem Brett zählt die Zahl der Steine, bei Gleichstand zuerst die schweren Begriffe, dann die festen Steine.']
   ].filter(Boolean),
   coach: (o) => ({
-    field: o.wuerfel ? `Blauer Würfel Zeile, gelber Würfel Spalte. Pasch erlaubt freie Wahl.` : o.mix ? 'Der blaue Würfel bestimmt die Zeile, das Feld darin wird taktisch gewählt.' : (o.du ? 'Du wählst das Feld selbst. Reihen aufbauen und den Klangbot blockieren.' : 'Jede Seite wählt ihr Feld selbst. Reihen aufbauen und die andere Seite blockieren.'),
+    field: o.fall ? (o.du ? 'Wie bei Vier gewinnt wählst du eine Spalte, es gilt das unterste freie Feld. Reihen aufbauen und den Klangbot blockieren.' : 'Wie bei Vier gewinnt wählt jede Seite eine Spalte, es gilt das unterste freie Feld. Reihen aufbauen und die andere Seite blockieren.') : o.wuerfel ? `Blauer Würfel Zeile, gelber Würfel Spalte. Pasch erlaubt freie Wahl.` : o.mix ? 'Der blaue Würfel bestimmt die Zeile, das Feld darin wird taktisch gewählt.' : (o.du ? 'Du wählst das Feld selbst. Reihen aufbauen und den Klangbot blockieren.' : 'Jede Seite wählt ihr Feld selbst. Reihen aufbauen und die andere Seite blockieren.'),
     explainTafel: 'Kurze Beratung, dann bestimmt die App per Nummer, wer erläutert: Oberbegriff, Kernmerkmale, Abgrenzung.',
     checkTafel: 'Die Prüfkarte nennt drei Kernmerkmale. Zwei davon ergeben den Stein. Mit Hilfe gibt es nur einen Wackelstein.',
     explainDuell: 'Eine Person erläutert, die andere prüft. Vor dem Aufdecken schätzt sie, ob die Erläuterung genügt. Eine zutreffende Einschätzung bringt einen Joker.',
@@ -17270,6 +17291,20 @@ function checkGoals() {
   });
   return msg;
 }
+/* Vier gewinnt: Begriffe aus dem Klassenbild („Damit spielen“) rücken in die unteren Zeilen, die oberen kommen selten an die Reihe */
+function fallFocusDown(placed, n, fset) {
+  const isF = (t) => !!t && fset.has(t.id);
+  const count = placed.filter(isF).length; if (!count) return;
+  const start = n * n - Math.min(n, Math.ceil(count / n)) * n;
+  const up = [], low = [];
+  for (let i = 0; i < start; i++) if (isF(placed[i])) up.push(i);
+  for (let i = n * n - 1; i >= start; i--) if (!isF(placed[i])) low.push(i);
+  up.forEach((i, k) => { const j = low[k]; if (j === undefined) return; const t = placed[i]; placed[i] = placed[j]; placed[j] = t; });
+}
+/* Vier gewinnt: Bei der Anordnung nach Themen liegen die großen Themen sonst immer oben und kämen kaum an die Reihe. Deshalb wechselt, welche Bretthälfte unten liegt. */
+function fallFlipRows(placed, n) {
+  for (let r = 0; r < Math.floor(n / 2); r++) for (let c = 0; c < n; c++) { const a = r * n + c, b = (n - 1 - r) * n + c, t = placed[a]; placed[a] = placed[b]; placed[b] = t; }
+}
 function createGame(carry) {
   const s = settings;
   const pack = findPack(s.packId) || BUILTIN[0];
@@ -17297,6 +17332,8 @@ function createGame(carry) {
   const k = n * n - pairTerms.length;
   const fx = shuffle(pool.filter((t) => fset.has(t.id))).slice(0, k);
   const placed = arrange(fx.concat(pickBoard(pool.filter((t) => !fx.includes(t)), k - fx.length, s.mix, n * n)).concat(pairTerms), n, s.layout);
+  if (s.select === 'fall' && s.layout === 'familien' && Math.random() < 0.5) fallFlipRows(placed, n);
+  if (s.select === 'fall' && fset.size) fallFocusDown(placed, n, fset);
   if (focus && typeof lgFocusClear === 'function') lgFocusClear();
   const terms = {}; placed.forEach((t) => { terms[t.id] = t; });
   const ids = new Set(placed.map((t) => t.id));
@@ -17333,7 +17370,11 @@ function createGame(carry) {
   };
   if (solo && game.goals) game.goals.B = null;
   if (game.series && carry && carry.series && carry.series.loser) game.turn = carry.series.loser;
-  game.note = solo ? `Du spielst gegen den Klangbot (${s.botLevel}). Du beginnst.` : `${game.teams[game.turn].name} beginnt (${game.series && game.series.i > 1 ? 'Verlierer der letzten Runde' : 'ausgelost'}).`;
+  /* Vier gewinnt: Bei der Revanche beginnt die andere Seite */
+  const swap = s.select === 'fall' && !solo && !game.series && !!carry && (carry.starter === 'A' || carry.starter === 'B');
+  if (swap) game.turn = other(carry.starter);
+  game.starter = game.turn;
+  game.note = solo ? `Du spielst gegen den Klangbot (${s.botLevel}). Du beginnst.` : swap ? `${game.teams[game.turn].name} beginnt. Bei der Revanche wechselt der Anfang.` : `${game.teams[game.turn].name} beginnt (${game.series && game.series.i > 1 ? 'Verlierer der letzten Runde' : 'ausgelost'}).`;
   if (game.series) game.note = `Blitzrunde ${game.series.i} von ${game.series.n}. ` + game.note;
   return true;
 }
@@ -17355,6 +17396,17 @@ function validatePending() {
 function timeUp() { return !!(game.endsAt && Date.now() >= game.endsAt); }
 function boardFull() { return !game.cells.some((c) => !c.owner); }
 function optionsAll() { const o = []; game.cells.forEach((c, i) => { if (!c.owner || !c.solid) o.push(i); }); return o; }
+/* Vier gewinnt (ab Version 4.11): Jede Seite wählt eine Spalte. Es gilt das unterste freie Feld, dazu jeder Wackelstein.
+   Der Joker wirkt wie bei der freien Wahl: eine Hilfe ohne Wackelstein. */
+const selFree = (sel) => sel === 'taktik' || sel === 'fall';
+function fallCell(c) { const g = game, n = g.n; for (let r = n - 1; r >= 0; r--) { if (!g.cells[r * n + c].owner) return r * n + c; } return -1; }
+function fallOptions() {
+  const g = game, o = [];
+  for (let c = 0; c < g.n; c++) { const i = fallCell(c); if (i >= 0) o.push(i); }
+  g.cells.forEach((x, i) => { if (x.owner && !x.solid) o.push(i); });
+  return o;
+}
+function pickColumn(c) { const g = game; if (!g || g.cfg.select !== 'fall' || !(c >= 0 && c < g.n)) return; const i = fallCell(c); if (i >= 0) pickCell(i); }
 function nextNumber(side) {
   const tm = game.teams[side];
   if (!tm.bag || !tm.bag.length) {
@@ -17377,7 +17429,12 @@ function startTurn() {
     g.phase = 'bot'; g.dice = null; g.msg = 'Der Klangbot ist am Zug.';
     persist(); renderGame(); botTurnSoon(); return;
   }
-  if (g.cfg.select === 'taktik') {
+  if (g.cfg.select === 'fall') {
+    const wack = g.cells.some((x) => x.owner && !x.solid);
+    g.phase = 'choose';
+    g.choose = { reason: 'fall', options: fallOptions(), rolled: -1 };
+    g.msg = (isYou(g.turn) ? 'Du bist dran und wählst eine Spalte' : `${tn(g.turn)} ist dran und wählt eine Spalte`) + (wack ? ' oder einen Wackelstein.' : '.');
+  } else if (g.cfg.select === 'taktik') {
     g.phase = 'choose';
     g.choose = { reason: 'taktik', options: optionsAll(), rolled: -1 };
     g.msg = isYou(g.turn) ? 'Du bist dran und wählst ein Feld.' : `${tn(g.turn)} ist dran und wählt ein Feld.`;
@@ -17658,7 +17715,7 @@ function finish(winner) {
   if (winner === T) {
     let hollow = helped && g.cfg.hints;
     if (hollow && t.diff === 3 && c.type === 'normal') { hollow = false; extra = ' Schwerer Begriff, der Stein steht trotz Hilfe fest.'; }
-    if (hollow && g.cfg.select === 'taktik' && g.teams[T].jokers > 0) { g.teams[T].jokers--; hollow = false; extra = ' Joker eingesetzt, der Stein steht fest.'; }
+    if (hollow && selFree(g.cfg.select) && g.teams[T].jokers > 0) { g.teams[T].jokers--; hollow = false; extra = ' Joker eingesetzt, der Stein steht fest.'; }
     if (c.type === 'firm') { cell.solid = true; note = 'Gefestigt! Der Stein steht jetzt fest.'; }
     else if (c.type === 'attack') { cell.owner = T; cell.solid = true; note = isYou(T) ? 'Erobert! Der Stein gehört jetzt dir.' : `Erobert! Der Stein gehört jetzt ${tn(T)}.`; }
     else { cell.owner = T; cell.solid = !hollow; note = hollow ? `Wackelstein für ${tnFuer(T)}. ${gameLang() === 'easy' ? 'Ihr habt eine Hilfe genommen.' : 'Eine Hilfe wurde genutzt.'}` : `Stein für ${tnFuer(T)}.`; }
@@ -17846,6 +17903,8 @@ function botPick(options) {
     let s = (botLineScore(i, 'B') * 2 + botLineScore(i, 'A') * 1.7) * smart + Math.random() * 1.2;
     if (cell.owner === 'A' && !cell.solid) s += 1.2 * smart;
     if (cell.owner === 'B' && !cell.solid) s += 0.5;
+    /* Vier gewinnt: kein Feld freigeben, auf dem die Person ihre Reihe schließt */
+    if (g.cfg.select === 'fall' && !cell.owner && i >= g.n && !g.cells[i - g.n].owner && botLineScore(i - g.n, 'A') >= 3) s -= 3 * smart;
     if (s > bestScore) { bestScore = s; pick = i; }
   });
   return pick;
@@ -17866,7 +17925,7 @@ function botTurn() {
       if (game !== g || g.phase !== 'botroll') return;
       if (mix) { const o = rowOptions(r - 1); botAttempt(botPick(o.length ? o : optionsAll())); } else botResolve(r - 1, c - 1);
     }, ms);
-  } else botAttempt(botPick(optionsAll()));
+  } else botAttempt(botPick(g.cfg.select === 'fall' ? fallOptions() : optionsAll()));
 }
 function botResolve(r, c) {
   const g = game, n = g.n, idx = r * n + c, cell = g.cells[idx];
@@ -17935,7 +17994,7 @@ function botJudge(saysOk) {
   if (say.ok) judgeNote = right ? 'Richtig geprüft: Die Erklärung stimmte.' : 'Die Erklärung stimmte. Du hast sie zu Unrecht abgelehnt.';
   else judgeNote = right ? 'Fehler erkannt! Der Klangbot geht leer aus.' : 'Die Erklärung war falsch, und du hast sie durchgewinkt.';
   let bonus = '';
-  if (right && !say.ok && g.cfg.select === 'taktik' && g.teams.A.jokers < 2) { g.teams.A.jokers++; bonus = ' Dafür bekommst du einen Joker.'; }
+  if (right && !say.ok && selFree(g.cfg.select) && g.teams.A.jokers < 2) { g.teams.A.jokers++; bonus = ' Dafür bekommst du einen Joker.'; }
   g.log.push({ tid, side: 'B', type, level: 2, helped: false, ok, bot: true, judge: right, botWrong: !say.ok });
   g.botCur.reveal = { right, ok, note, judgeNote: judgeNote + bonus };
   g.phase = 'botreveal'; g.note = note; g.msg = ''; g.lastPlaced = ok ? 'B' : null; g.flash = ok ? idx : -1;
@@ -18098,7 +18157,7 @@ function soloAllOk(c) { return !!(c && c.qs && c.qs.length && c.qs.every((q) => 
 function gameSkeleton() {
   return `<div class="game">
     <header class="topbar">
-      <div class="tb-brand">${logoSVG('logo-sm')}<span class="tb-name">Vierklang</span><span class="tb-pack" id="tb-pack"></span></div>
+      <div class="tb-brand"><button type="button" class="tb-home" data-act="home" aria-label="Zur Startseite" title="Zur Startseite, das Spiel bleibt erhalten">${logoSVG('logo-sm')}<span class="tb-name">Vierklang</span></button><span class="tb-pack" id="tb-pack"></span></div>
       <div class="tb-tools">
         <span class="tb-clock" id="tb-clock" hidden></span>
         <button type="button" class="tb-btn" data-act="help">Regeln</button>
@@ -18135,7 +18194,7 @@ function observeBoard() {
 }
 function renderTop() {
   const g = game;
-  const p = $('#tb-pack'); if (p) p.textContent = `${g.packTitle} · ${g.mode === 'tafel' ? 'Tafel' : g.mode === 'solo' ? 'Solo' : 'Duell'} · ${g.cfg.select === 'wuerfel' ? 'Würfeln' : g.cfg.select === 'mix' ? 'Würfeln mit Wahl' : 'Taktik'}`;
+  const p = $('#tb-pack'); if (p) p.textContent = `${g.packTitle} · ${g.mode === 'tafel' ? 'Tafel' : g.mode === 'solo' ? 'Solo' : 'Duell'} · ${g.cfg.select === 'wuerfel' ? 'Würfeln' : g.cfg.select === 'mix' ? 'Würfeln mit Wahl' : g.cfg.select === 'fall' ? 'Vier gewinnt' : 'Taktik'}`;
   const s = $('#tb-sound'); if (s) { s.textContent = settings.sound ? 'Klang an' : 'Klang aus'; s.setAttribute('aria-pressed', String(!!settings.sound)); }
   const fs = $('#tb-fs'); if (fs) fs.hidden = !document.fullscreenEnabled;
   tickClock();
@@ -18218,15 +18277,20 @@ function renderBoard() {
   const g = game, n = g.n, b = $('#board'); if (!b) return;
   const opts = g.phase === 'choose' && g.choose ? new Set(g.choose.options) : null;
   const rolled = (g.cfg.select === 'wuerfel' || g.cfg.select === 'mix') && g.dice && ['choose', 'term', 'botthink', 'botjudge', 'botreveal'].includes(g.phase) ? { r: g.dice.r - 1, c: g.dice.c - 1 } : null;
-  let html = '<div class="corner" aria-hidden="true"></div>';
-  for (let c = 0; c < n; c++) html += `<div class="hd hd-col${rolled && rolled.c === c ? ' hit' : ''}">${diceSVG(c + 1)}</div>`;
+  /* Vier gewinnt: über jeder Spalte ein Pfeil zum Antippen, keine Zeilenköpfe */
+  const fall = g.cfg.select === 'fall';
+  let html = fall ? '' : '<div class="corner" aria-hidden="true"></div>';
+  for (let c = 0; c < n; c++) {
+    if (fall) { const i = fallCell(c), on = !!opts && i >= 0 && opts.has(i); html += `<button type="button" class="hd hd-col hd-drop${on ? ' on' : ''}" data-act="drop" data-c="${c}" aria-label="Spalte ${c + 1} wählen"${on ? '' : ' disabled'}>${dropSVG()}</button>`; }
+    else html += `<div class="hd hd-col${rolled && rolled.c === c ? ' hit' : ''}">${diceSVG(c + 1)}</div>`;
+  }
   for (let r = 0; r < n; r++) {
-    html += `<div class="hd hd-row${rolled && rolled.r === r ? ' hit' : ''}">${diceSVG(r + 1)}</div>`;
+    if (!fall) html += `<div class="hd hd-row${rolled && rolled.r === r ? ' hit' : ''}">${diceSVG(r + 1)}</div>`;
     for (let c = 0; c < n; c++) html += cellHTML(r * n + c, opts, rolled);
   }
   b.innerHTML = html;
-  const allFree = opts && g.cells.every((x, i) => x.owner || opts.has(i));
-  b.className = 'board n' + n + (opts ? ' choosing' : '') + (allFree ? ' choosing-all' : '');
+  const allFree = !fall && opts && g.cells.every((x, i) => x.owner || opts.has(i));
+  b.className = 'board n' + n + (fall ? ' fall' : '') + (opts ? ' choosing' : '') + (allFree ? ' choosing-all' : '');
   layoutBoard();
 }
 function layoutBoard() {
@@ -18234,13 +18298,14 @@ function layoutBoard() {
   const n = game.n, W = wrap.clientWidth, H = wrap.clientHeight;
   if (W < 50 || H < 50) return;
   const gap = Math.min(W, H) > 700 ? 6 : 4, pad = Math.min(W, H) > 700 ? 10 : 6;
+  const fall = !!game.cfg && game.cfg.select === 'fall';
   let head = clamp(Math.min(W, H) * 0.08, 24, 72);
-  let cw = (W - 2 * pad - head - gap * n) / n;
+  let cw = fall ? (W - 2 * pad - gap * (n - 1)) / n : (W - 2 * pad - head - gap * n) / n;
   let ch = (H - 2 * pad - head - gap * n) / n;
   cw = Math.min(cw, ch * 2.3);
   ch = Math.min(ch, cw * 1.05);
   head = Math.max(22, Math.min(head, ch * 0.75, cw * 0.75));
-  board.style.gridTemplateColumns = `${head}px repeat(${n}, ${cw}px)`;
+  board.style.gridTemplateColumns = fall ? `repeat(${n}, ${cw}px)` : `${head}px repeat(${n}, ${cw}px)`;
   board.style.gridTemplateRows = `${head}px repeat(${n}, ${ch}px)`;
   board.style.gap = gap + 'px'; board.style.padding = pad + 'px';
   const fs = clamp(Math.min(cw * 0.15, ch * 0.24), 9, 30);
@@ -18317,7 +18382,7 @@ function renderStatus() {
   } else if (g.phase === 'botjudge' || g.phase === 'botreveal') {
     side = 'B'; main = g.phase === 'botjudge' ? (g.msg || 'Prüfe den Klangbot.') : (g.note || '');
   } else if (g.phase === 'choose') {
-    main = g.msg; if (g.choose && g.choose.reason === 'taktik') actions = retry;
+    main = g.msg; if (g.choose && (g.choose.reason === 'taktik' || g.choose.reason === 'fall')) actions = retry;
   } else if (g.phase === 'term' && g.cur) {
     side = g.cur.side; main = `${tnIst(g.cur.side)} am Zug.`;
   } else if (g.phase === 'connect' && g.conn) {
@@ -18439,7 +18504,7 @@ function soloCardHTML(t, c) {
 function hintsHTML(t, c) {
   const g = game;
   if (!g.cfg.hints || c.type !== 'normal' || c.noHints) return '';
-  const joker = g.cfg.select === 'taktik' && g.teams[c.side].jokers > 0;
+  const joker = selFree(g.cfg.select) && g.teams[c.side].jokers > 0;
   const cost = joker ? 'Joker vorhanden: Der Stein bleibt trotzdem fest.' : t.diff === 3 && c.type === 'normal' ? 'Schwerer Begriff: Der Stein steht auch mit Hilfe fest.' : 'Mit Hilfe gibt es nur einen Wackelstein.';
   if (c.level === 1) {
     return `<div class="hints">${c.removed.length ? `<div class="hint-card"><span class="hint-k">Hilfe</span><span class="hint-v">Zwei falsche Antworten sind gestrichen.</span></div>` : `<div class="hint-next"><button type="button" class="btn hint" data-act="hint5050">Hilfe: zwei falsche streichen</button><span class="hint-cost">${cost}</span></div>`}</div>`;
@@ -18543,7 +18608,7 @@ function termCard() {
     actions = '<button type="button" class="btn primary big" data-act="counter-done" data-primary>Konter fertig, aufdecken</button>';
   } else if (c.step === 'estimate') {
     const q = c.zeig ? tx('estimateZeig') : tx('estimateQ', c.level);
-    body = `${c.level === 1 ? optionsHTML(c, false, false) : ''}${typeof noteFieldsHTML === 'function' ? noteFieldsHTML(c) : ''}<p class="step-text"><b>${esc(tn(O))}</b> schätzt vor dem Aufdecken: ${q}</p><p class="step-sub">${tx('estimateSub', g.cfg.select === 'wuerfel' ? 'freie Feldwahl' : 'eine Hilfe ohne Wackelstein')}</p>`;
+    body = `${c.level === 1 ? optionsHTML(c, false, false) : ''}${typeof noteFieldsHTML === 'function' ? noteFieldsHTML(c) : ''}<p class="step-text"><b>${esc(tn(O))}</b> schätzt vor dem Aufdecken: ${q}</p><p class="step-sub">${tx('estimateSub', selFree(g.cfg.select) ? 'eine Hilfe ohne Wackelstein' : 'freie Feldwahl')}</p>`;
     actions = `<button type="button" class="btn big" data-act="estimate" data-v="0">${c.level === 1 ? 'Falsch' : 'Reicht nicht'}</button><button type="button" class="btn primary big" data-act="estimate" data-v="1">${c.level === 1 ? 'Richtig' : 'Reicht'}</button>`;
   } else if (c.step === 'quiz' && c.qs) {
     const q = soloQ(c), prev = c.qi > 0 ? c.qs[c.qi - 1] : null;
@@ -18582,7 +18647,7 @@ function botCard() {
   let body, actions;
   if (g.phase === 'botjudge') {
     body = bubble + `<p class="step-text">${say.media ? (E ? 'Ist das der richtige Begriff?' : 'Ist das der gesuchte Begriff?') : (E ? 'Stimmt die Erklärung? Prüfe genau, auch kleine Fehler zählen.' : 'Stimmt die Erklärung? Prüfe sie wie mit einer Prüfkarte, auch Details zählen.')}</p>
-      <p class="pk-tip">${E ? 'Sagst du „stimmt“, bekommt der Klangbot den Stein, auch wenn die Erklärung falsch war. Du bist die Prüfung!' : 'Du entscheidest wie eine Spielleitung. Winkst du eine falsche Erklärung durch, bekommt der Klangbot den Stein trotzdem.'}${g.cfg.select === 'taktik' ? ' Erkannte Fehler bringen einen Joker.' : ''}</p>`;
+      <p class="pk-tip">${E ? 'Sagst du „stimmt“, bekommt der Klangbot den Stein, auch wenn die Erklärung falsch war. Du bist die Prüfung!' : 'Du entscheidest wie eine Spielleitung. Winkst du eine falsche Erklärung durch, bekommt der Klangbot den Stein trotzdem.'}${selFree(g.cfg.select) ? ' Erkannte Fehler bringen einen Joker.' : ''}</p>`;
     actions = `<button type="button" class="btn big" data-act="bot-judge" data-v="0">Stimmt nicht</button><button type="button" class="btn primary big" data-act="bot-judge" data-v="1" data-primary>Stimmt</button>`;
   } else {
     const rv = c.reveal || {};
@@ -18944,7 +19009,7 @@ function renderStart() {
   if (pack.id !== s.packId) s.packId = pack.id;
   const sizes = sizesFor(pack);
   if (sizes.length && !sizes.includes(s.size)) s.size = sizes[sizes.length - 1];
-  const saved = store.get(KEY_GAME, null);
+  const saved = runningGame();
   const canResume = saved && (saved.v === 1 || saved.v === 2) && saved.phase && saved.phase !== 'over' && saved.teams;
   const car = $('#carousel'); const keepScroll = car ? car.scrollLeft : 0;
   let main = '';
@@ -18987,7 +19052,7 @@ function renderStart() {
     const nTerms = playable(pack).length;
     const acc = (k, title, sub, inner) => `<section class="acc${accOpen[k] ? ' open' : ''}"><button type="button" class="acc-h" data-act="acc" data-k="${k}" aria-expanded="${!!accOpen[k]}"><span><b>${title}</b><small>${sub}</small></span><svg viewBox="0 0 24 24" class="ti acc-chev" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>${accOpen[k] ? `<div class="acc-b">${inner}</div>` : ''}</section>`;
     const brett = [
-      rule('Feld bestimmen', seg('select', [['wuerfel', 'Würfeln'], ['mix', 'Würfeln mit Wahl'], ['taktik', 'Frei wählen']], s.select), s.select === 'wuerfel' ? 'Der blaue Würfel links zeigt die Zeile, der gelbe Würfel oben die Spalte.' : s.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile, das Feld darin wird gewählt. Zufall und Taktik zugleich.' : 'Taktik: Jede Seite wählt ihr Feld selbst.'),
+      rule('Feld bestimmen', seg('select', [['wuerfel', 'Würfeln'], ['mix', 'Würfeln mit Wahl'], ['taktik', 'Frei wählen'], ['fall', 'Vier gewinnt']], s.select), s.select === 'wuerfel' ? 'Der blaue Würfel links zeigt die Zeile, der gelbe Würfel oben die Spalte.' : s.select === 'mix' ? 'Der blaue Würfel zeigt die Zeile, das Feld darin wird gewählt. Zufall und Taktik zugleich.' : s.select === 'fall' ? 'Jede Seite wählt eine Spalte, der Stein kommt auf das unterste freie Feld. Wackelsteine bleiben angreifbar.' : 'Taktik: Jede Seite wählt ihr Feld selbst.'),
       rule('Brett', sizes.length ? seg('size', sizes.map((n) => [n, n + ' × ' + n]), s.size) : '<span class="warn">Dieses Paket braucht mindestens 16 Begriffe.</span>', sizes.length ? `${nTerms} Begriffe im Paket` : ''),
       nTerms > s.size * s.size ? rule('Begriffsauswahl', seg('mix', [['ausgewogen', 'gemischt'], ['leichter', 'eher leicht'], ['schwerer', 'eher schwer']], s.mix), `${s.size * s.size} von ${nTerms} Begriffen kommen aufs Brett.`) : '',
       rule('Anordnung', seg('layout', [['familien', 'nach Themen'], ['gemischt', 'gemischt'], ['paket', 'wie im Paket']], s.layout), s.layout === 'familien' ? 'Verwandte Begriffe liegen nebeneinander.' : '')
@@ -19030,7 +19095,7 @@ function renderStart() {
       <div class="sum">
         <div class="sum-pack"><span class="sum-cover" style="background:linear-gradient(160deg, ${col[0]}, ${col[1]})">${coverIcon(cv.icon, cv.color)}</span><span class="sum-t"><b>${esc(pack.title)}</b><small>${esc(gradeLabel(pack))}${gradeLabel(pack) ? ' · ' : ''}${nTerms} Begriffe</small></span></div>
         <div class="sum-mode"><span class="sum-mi">${MODE_ICON[s.mode] || MODE_ICON.tafel}</span><span class="sum-t"><b>${esc((MODE_TEXT[s.mode] || MODE_TEXT.tafel)[0])}</b><small>${s.mode === 'tafel' ? `${esc(s.nameA)} gegen ${esc(s.nameB)}` : s.mode === 'duell' ? `${esc(s.duoA)} gegen ${esc(s.duoB)}` : `Stufe ${esc(LEVELS[s.levelSolo])} · Klangbot ${esc(s.botLevel)}`}</small></span></div>
-        <div class="sum-size"><span class="sum-t"><b>${s.blitz ? 'Blitzrunde 4 × 4' : sizes.length ? s.size + ' × ' + s.size : 'zu wenige Begriffe'}</b><small>${s.select === 'wuerfel' ? 'Würfeln' : s.select === 'mix' ? 'Würfeln mit Wahl' : 'Frei wählen'}${s.connect ? ' · Vernetzung an' : ''}${s.geheim ? ' · Geheimauftrag' : ''}</small></span></div>
+        <div class="sum-size"><span class="sum-t"><b>${s.blitz ? 'Blitzrunde 4 × 4' : sizes.length ? s.size + ' × ' + s.size : 'zu wenige Begriffe'}</b><small>${s.select === 'wuerfel' ? 'Würfeln' : s.select === 'mix' ? 'Würfeln mit Wahl' : s.select === 'fall' ? 'Vier gewinnt' : 'Frei wählen'}${s.connect ? ' · Vernetzung an' : ''}${s.geheim ? ' · Geheimauftrag' : ''}</small></span></div>
       </div>
       <div class="accs">${acc('brett', 'Brett und Begriffe', 'Feld bestimmen, Größe, Auswahl, Anordnung', brett)}${acc('zeit', 'Zeit', timeSummary(s, duo), zeit)}${acc('extra', 'Sonderregeln', s.mode === 'tafel' ? `Vernetzung, Hilfen, Konter, Hörfelder${s.protokoll ? ', Hörprotokoll' : ''}` : s.mode === 'duell' ? `Vernetzung, Hilfen, Hörfelder${s.notiz !== false ? ', Mitschreiben' : ''}` : 'Vernetzung, Hilfen, Hörfelder', extra)}${acc('aufgaben', 'Aufgabenarten', `Zeigefelder${nZeig && s.zeig ? (nMit && s.mitspiel !== false ? ' und Mitspielfelder an' : ' an') : ' aus'}, Abgrenzung${nPairs && s.pairs ? ' an' : ' aus'}, Operatoren ${s.mode === 'solo' ? 'ohne' : s.ops}`, aufgaben)}${acc('spiel', 'Spielwürze', `Pasch ${s.pasch === 'ereignis' && s.select === 'wuerfel' ? 'mit Ereignis' : 'freie Wahl'}${s.geheim ? ', Geheimauftrag' : ''}${s.blitz ? ', Blitzrunde' : ''}${s.album ? ', Album' : ''}`, spiel)}${acc('lang', 'Sprache der Anleitung', `${LANG_LABEL[langFor(pack)]}${s.lang === 'auto' ? ', passend zur Klassenstufe' : ', von dir gewählt'}`, rule('Regeln, Kurzanleitung und Spielkarten', seg('lang', [['auto', 'automatisch'], ['easy', 'einfach'], ['mid', 'mittel'], ['hard', 'Oberstufe']], s.lang), `${LANG_SUB[langFor(pack)]}. ${s.lang === 'auto' ? 'Die Stufe folgt der Klassenstufe des Pakets.' : 'Automatisch hieße hier: ' + LANG_LABEL[langFromGrades(pack.grades)] + '.'}`))}</div>
       <div class="st3-cta"><button type="button" class="btn ghost" data-act="st-step" data-v="2">${iconArrow(-1)}Zurück</button><button type="button" class="btn cta go" data-act="start" data-primary${sizes.length ? '' : ' disabled'}>Los geht’s!${iconNext()}</button></div>`;
@@ -19118,8 +19183,9 @@ let coach = null;
 function coachSteps() {
   const g = game, wuerfel = g.cfg.select === 'wuerfel';
   const du = g.mode === 'solo';
-  const C = (TX[gameLang()] || TX.mid).coach({ wuerfel, du, mix: g.cfg.select === 'mix' });
-  const s1 = { sel: '#board', title: wuerfel ? 'Feld würfeln' : 'Feld wählen', text: C.field };
+  const fall = g.cfg.select === 'fall';
+  const C = (TX[gameLang()] || TX.mid).coach({ wuerfel, du, mix: g.cfg.select === 'mix', fall });
+  const s1 = { sel: '#board', title: wuerfel ? 'Feld würfeln' : fall ? 'Spalte wählen' : 'Feld wählen', text: C.field };
   const s4 = { sel: '#board', title: 'Der Vierklang', text: C.goal(!!g.cfg.connect, !!g.cfg.diagonals, du) };
   const hasZeig = g.cfg.zeig && g.cells.some((c) => g.terms[c.tid] && g.terms[c.tid].zeig), hasPair = g.cells.some((c) => g.terms[c.tid] && g.terms[c.tid].kind === 'paar');
   const sx = [];
@@ -19206,6 +19272,8 @@ function show(v) {
   else if (v === 'cross') { const el = $('#v-cross'); if (el) el.scrollTop = 0; if (typeof krRender === 'function') krRender(); }
   else if (v === 'game') renderGame();
 }
+/* Laufendes Spiel für „Fortsetzen“: zuerst das Spiel im Arbeitsspeicher, sonst der gespeicherte Stand */
+function runningGame() { return game && game.phase && game.phase !== 'over' && game.teams ? game : store.get(KEY_GAME, null); }
 let coachPending = false;
 function startNewGame(again, carry) {
   if (settings.mode === 'papier') { openPrintFromStart(); return; }
@@ -24063,6 +24131,7 @@ const TEACHER_TEXT = {
       <li><b>Vor einer Klassenarbeit oder Klausur</b>: Duell zu zweit mit Operatoren oder Solo gegen den Klangbot auf der Stufe „Mit Beispiel“. In der Oberstufe mit dem Paket „Abiturwerkzeug“ die Operatoren selbst zum Thema machen.</li>
       <li><b>Vertretungsstunde</b>: Druckversion oder Duell am Tablet mit einem Paket, das die Klasse kennt.</li>
       <li><b>Mehrfach und mit Abstand.</b> Dasselbe Paket nach einigen Tagen und nach einigen Wochen noch einmal spielen, dazwischen „Karten üben“. Verteiltes Wiederholen sichert Begriffswissen besser als eine einzige lange Runde (Cepeda u. a. 2006; Yang u. a. 2021).</li>
+      <li><b>Feldwahl „Vier gewinnt“.</b> In Schritt 3 unter „Brett und Begriffe“ wählbar. Jede Seite wählt eine Spalte, der Stein kommt auf das unterste freie Feld. Ohne Würfel planen die Teams ihre Reihen und blockieren gezielt. Wackelsteine lassen sich weiter angreifen und festigen. Die oberen Zeilen kommen seltener an die Reihe. Begriffe aus dem Klassenbild („Damit spielen“) legt die App deshalb nach unten, und bei der Anordnung nach Themen wechselt von Spiel zu Spiel, welche Bretthälfte unten liegt. Bei „Revanche“ beginnt die andere Seite.</li>
       <li><b>Lerngruppen und Schnellstart.</b> Lege für jede Klasse eine Lerngruppe an, mit der Bezeichnung als einzigem Eintrag, zum Beispiel 7b. Sie merkt sich das letzte Spiel mit seinen Einstellungen, und „Wie letztes Mal“ auf der Startseite startet es mit einem Klick.</li>
       <li><b>Klassenbild als Einstieg.</b> Nach jedem Spiel zeigt das Klassenbild, welche Begriffe der Lerngruppe sitzen und welche noch wackeln. „An die Tafel“ zeigt die wackelnden Begriffe groß für den Einstieg der nächsten Stunde, „Damit spielen“ legt sie sicher aufs nächste Brett.</li>
       <li><b>Direktlink und QR-Code.</b> „Link“ unter den Paketen erzeugt einen Link mit QR-Code: für die Stunde, für „Karten üben“ zu Hause oder für Solo. Er passt auf eine Folie, ins Padlet oder aufs Arbeitsblatt. Eigene Pakete und Anpassungen liegen nur im eigenen Browser, andere Geräte öffnen die mitgelieferte Fassung.</li>
@@ -28328,7 +28397,7 @@ const ACTIONS = {
   'set': (el) => { const k = el.dataset.k; settings[k] = castSetting(k, el.dataset.v); saveSettings(); renderStart(); },
   'tog': (el) => { const k = el.dataset.k; settings[k] = !settings[k]; saveSettings(); if (k === 'sound' && !settings.sound) Sound.stop(); renderStart(); },
   'start': () => startNewGame(false),
-  'resume': () => { const saved = store.get(KEY_GAME, null); if (!saved) { renderStart(); return; } game = saved; resumeGame(); },
+  'resume': () => { const saved = runningGame(); if (!saved) { renderStart(); return; } game = saved; resumeGame(); },
   'discard': () => confirmBox('Laufendes Spiel verwerfen?', 'Verwerfen', () => { store.del(KEY_GAME); game = null; closeModal(); renderStart(); }),
   'ws-open': () => { if (!ws.packId && ownPacks.length) ws.packId = ownPacks[0].id; show('ws'); },
   'home': () => { closeModal(); if (game) store.set(KEY_GAME, game); startStep = 1; carouselFocus = true; show('start'); },
@@ -28338,6 +28407,7 @@ const ACTIONS = {
   'joker': () => useJoker(),
   'retry-connect': () => tryConnect(),
   'cell': (el) => pickCell(parseInt(el.dataset.i, 10)),
+  'drop': (el) => pickColumn(parseInt(el.dataset.c, 10)),
   'announce': () => announce(),
   'play': () => { const c = game && game.cur; const t = c && game.terms[c.tid]; if (!t || !t.media) return; if (t.media.type === 'synth') Sound.play(t.media.id); else if (t.media.type === 'audio') Sound.playSrc(t.media.src); },
   'hint': (el) => takeHint(el.dataset.k),
@@ -28379,7 +28449,7 @@ const ACTIONS = {
   'conn-judge': (el) => connJudge(el.dataset.v === '1'),
   'show-end': () => { game.endOpen = true; renderGame(); },
   'view-board': () => { game.endOpen = false; renderGame(); toast('Ein Feld antippen, um die Erklärung zu lesen.'); },
-  'rematch': () => startNewGame(true),
+  'rematch': () => startNewGame(true, game && game.starter ? { starter: game.starter } : undefined),
   'next-round': () => nextRound(),
   'goal': (el) => openGoalReveal(el.dataset.side),
   'goal-next': (el) => openGoalReveal(el.dataset.side),
