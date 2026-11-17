@@ -685,6 +685,20 @@ select.field { appearance: auto; }
 .fl-sub label { display: inline-flex; align-items: center; gap: 8px; color: #5A5F86 !important; font-weight: 800; font-size: 0.9rem; }
 .fl-sel { min-height: 40px; max-width: min(320px, 70vw); padding: 6px 12px; border: 0 !important; border-radius: 999px; background: #FFFFFF !important; color: #23264F !important; font-weight: 800; font-size: max(16px, 0.95rem); box-shadow: 0 3px 0 #DCDFF0 !important; cursor: pointer; }
 .fl-sel:focus-visible { outline: 3px solid #FFB020 !important; outline-offset: 2px; }
+.pk-find { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 12px; margin: 8px 0 0; }
+.pk-find .fl-sub { margin: 0; }
+.pk-search { position: relative; display: flex; align-items: center; width: min(380px, 100%); }
+.st3-main:has(.pk-hits:not([hidden])) .sk-stars { display: none; }
+.pk-search svg { position: absolute; left: 14px; width: 20px; height: 20px; fill: none; stroke: #5A5F86 !important; stroke-width: 2.2; stroke-linecap: round; pointer-events: none; }
+.pk-q { width: 100%; min-height: 42px; margin: 0; padding: 8px 46px 8px 44px; border: 0 !important; border-radius: 999px; background: #FFFFFF !important; color: #23264F !important; font: inherit; font-weight: 700; font-size: max(16px, 0.98rem); box-shadow: 0 3px 0 #DCDFF0 !important; -webkit-appearance: none; appearance: none; }
+.pk-q::placeholder { color: #8A8FB5 !important; font-weight: 600; opacity: 1; }
+.pk-q::-webkit-search-cancel-button { display: none; }
+.pk-q:focus { outline: 3px solid #6C63FF !important; outline-offset: 1px; }
+.pk-x { position: absolute; right: 5px; width: 36px; height: 36px; border: 0 !important; border-radius: 999px; background: #EEF0FA !important; color: #3A3F7A !important; font-size: 20px; font-weight: 800; line-height: 1; cursor: pointer; }
+.pk-hits { margin: 6px auto 0; text-align: center; color: #5A5F86 !important; font-weight: 800; font-size: 0.9rem; }
+.sk-hit { padding: 6px 8px; border-radius: 10px; background: #FFF7D6 !important; color: #3A3F7A !important; font-size: 0.78rem; line-height: 1.3; font-weight: 700; text-align: left; }
+.sk-hit b { color: #23264F !important; font-weight: 900; }
+.sk-hit mark, .pk-hits mark { background: #FFD84D !important; color: #23264F !important; border-radius: 3px; padding: 0 1px; }
 .car-wrap { display: flex; align-items: center; gap: 10px; margin-block: auto; }
 .carousel > :first-child { margin-left: auto; }
 .carousel > :last-child { margin-right: auto; }
@@ -19001,7 +19015,7 @@ function skCard(p) {
     </span>
     <span class="sk-body">
       <span class="sk-title">${esc(p.title)}</span>
-      ${p.blurb ? `<span class="sk-blurb">${esc(p.blurb)}</span>` : ''}
+      ${p.blurb ? `<span class="sk-blurb">${esc(p.blurb)}</span>` : ''}${pkHitLine(p)}
       <span class="sk-stars">${starRow(nivStars(p))}<small>Niveau</small></span>
       ${skTopic(p)}<span class="sk-chips"><span>${n} Begriffe</span>${nz ? `<span>${plural(nz, 'Zeigefeld', 'Zeigefelder')}</span>` : ''}${nh ? `<span>${plural(nh, 'Hörfeld', 'Hörfelder')}</span>` : ''}${nb ? `<span>${plural(nb, 'Notenbild', 'Notenbilder')}</span>` : ''}${p.subject && p.subject !== 'Musik' ? `<span>${esc(p.subject)}</span>` : ''}${p.own ? '<span>eigenes Paket</span>' : p.checked ? '<span class="ok">geprüft</span>' : ''}</span>
     </span>
@@ -19155,6 +19169,88 @@ let fitTopTimer = 0;
 window.addEventListener('resize', () => { clearTimeout(fitTopTimer); fitTopTimer = setTimeout(() => { if (view === 'start') fitStartTop(); }, 80); });
 try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (view === 'start') fitStartTop(); }); } catch (e) { /* ohne Schriftereignis */ }
 
+/* ---------- Freitextsuche über alle Pakete (ab Version 4.13) ---------- */
+/* Ein Wort mit Umlaut oder ß sucht genau („händel“), ohne Umlaut auch die Umlautform („handel“ findet Händel) */
+let packQuery = '';
+let pkInfo = new Map();
+function pkNorm(s) { let t = String(s == null ? '' : s).toLowerCase(); try { t = t.normalize('NFD').replace(/[̀-ͯ]/g, ''); } catch (e) { /* ohne Normalisierung */ } return t.replace(/ß/g, 'ss'); }
+function pkWords(q) { return String(q || '').toLowerCase().split(/\s+/).filter(Boolean).map((r) => { const f = pkNorm(r); return { r, f, exact: r !== f, num: /^\d+$/.test(r) }; }); }
+function pkPrep(t) { t = String(t == null ? '' : t); return { l: t.toLowerCase(), f: pkNorm(t) }; }
+function pkHas(t, w) { if (w.num) return new RegExp('(^|\\D)' + w.r + '(?!\\d)').test(t.l); return (w.exact ? t.l.indexOf(w.r) : t.f.indexOf(w.f)) >= 0; }
+function pkHl(text, words) {
+  text = String(text == null ? '' : text);
+  let norm = '', out = '', open = false;
+  const map = [], on = [], low = text.toLowerCase();
+  for (let i = 0; i < text.length; i++) { const n = pkNorm(text.charAt(i)); for (let k = 0; k < n.length; k++) { norm += n.charAt(k); map.push(i); } on.push(false); }
+  words.forEach((w) => {
+    const hay = w.exact ? low : norm, nd = w.exact ? w.r : w.f;
+    let p = nd ? hay.indexOf(nd) : -1;
+    while (p >= 0) { const isDig = (c) => c >= '0' && c <= '9'; if (w.num && (isDig(hay.charAt(p - 1)) || isDig(hay.charAt(p + nd.length)))) { p = hay.indexOf(nd, p + 1); continue; } for (let k = p; k < p + nd.length; k++) { const ix = w.exact ? k : map[k]; if (ix < on.length) on[ix] = true; } p = hay.indexOf(nd, p + nd.length); }
+  });
+  for (let j = 0; j < text.length; j++) {
+    if (on[j] && !open) { out += '<mark>'; open = true; } else if (!on[j] && open) { out += '</mark>'; open = false; }
+    out += esc(text.charAt(j));
+  }
+  return out + (open ? '</mark>' : '');
+}
+function pkHits(q) {
+  const words = pkWords(q); pkInfo = new Map();
+  if (!words.length) return [];
+  const out = [];
+  packOrder(allPacks()).forEach((p, n) => {
+    const head = pkPrep(p.title), meta = pkPrep([p.blurb, gradeLabel(p), topicLabel(packTopic(p)), p.subject || '', p.own ? 'eigenes Paket' : ''].join(' '));
+    const terms = playable(p).map((t) => ({ t, main: pkPrep(t.term), body: pkPrep([t.expl, (t.feats || []).join(' '), t.hints.ober, t.hints.beispiel, t.hints.satz].join(' ')) }));
+    let score = 0;
+    const bodyWords = [];
+    for (const w of words) {
+      if (pkHas(head, w)) { score += 6; continue; }
+      if (terms.some((x) => pkHas(x.main, w))) { score += 4; continue; }
+      if (pkHas(meta, w)) { score += 3; continue; }
+      if (terms.some((x) => pkHas(x.body, w))) { score += 1; bodyWords.push(w); continue; }
+      return;
+    }
+    const named = terms.filter((x) => words.some((w) => !w.num && pkHas(x.main, w))).map((x) => x.t.term);
+    const inside = named.length || !bodyWords.length ? [] : terms.filter((x) => bodyWords.every((w) => pkHas(x.body, w))).map((x) => x.t.term);
+    pkInfo.set(p.id, { named, inside, words });
+    out.push({ p, score, n });
+  });
+  return out.sort((a, b) => b.score - a.score || a.n - b.n);
+}
+function pkHitLine(p) {
+  if (!packQuery.trim()) return '';
+  const h = pkInfo.get(p.id); if (!h) return '';
+  const show = (l) => l.slice(0, 4).map((t) => pkHl(t, h.words)).join(', ') + (l.length > 4 ? ` und ${l.length - 4} weitere` : '');
+  if (h.named.length) return `<span class="sk-hit"><b>${h.named.length === 1 ? 'Begriff' : 'Begriffe'}:</b> ${show(h.named)}</span>`;
+  if (h.inside.length) return `<span class="sk-hit"><b>In der Erklärung zu:</b> ${esc(h.inside.slice(0, 4).join(', '))}${h.inside.length > 4 ? ' …' : ''}</span>`;
+  return '';
+}
+function pkStatus(n) {
+  const q = packQuery.trim();
+  return n ? `${n === 1 ? '1 Paket' : n + ' Pakete'} zu „${esc(q)}“ aus allen Klassen und Themen` : `Kein Paket zu „${esc(q)}“ gefunden. Ein einzelnes Stichwort oder einen Begriff versuchen.`;
+}
+function pkSearchBox() {
+  return `<div class="pk-search" role="search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Zm4.7-1.8L20 20"/></svg><input type="search" id="pk-q" class="pk-q" value="${esc(packQuery)}" placeholder="Alle Pakete durchsuchen, z. B. Kadenz" aria-label="Alle Pakete aller Klassen und Themen durchsuchen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"><button type="button" class="pk-x" data-act="pk-clear" aria-label="Suche leeren"${packQuery ? '' : ' hidden'}>×</button></div>`;
+}
+function pkHitsLine() { const on = !!packQuery.trim(); return `<p class="pk-hits" role="status"${on ? '' : ' hidden'}>${on ? pkStatus(pkHits(packQuery).length) : ''}</p>`; }
+function skAddCard() { return '<button type="button" class="sk sk-add" data-act="ws-new-start"><span class="sk-plus">+</span><span class="sk-title">Eigenes Paket</span><span class="sk-blurb">Begriffe eintippen oder aus einer Tabelle einfügen</span></button>'; }
+/* Beim Tippen nur Liste und Trefferzeile erneuern, damit das Suchfeld den Fokus behält */
+function pkRefresh() {
+  const on = !!packQuery.trim();
+  const pack = findPack(settings.packId) || BUILTIN[0];
+  const list = on ? pkHits(packQuery).map((r) => r.p) : packsVisible(pack);
+  document.querySelectorAll('#v-start .pk-browse, #v-start .pk-sub').forEach((el) => { el.hidden = on; });
+  const x = document.querySelector('#v-start .pk-x'); if (x) x.hidden = !packQuery;
+  const st = document.querySelector('#v-start .pk-hits'); if (st) { st.hidden = !on; st.innerHTML = on ? pkStatus(list.length) : ''; }
+  const c = $('#carousel'); if (c) { c.innerHTML = list.map(skCard).join('') + skAddCard(); c.scrollLeft = 0; }
+}
+const pkRefreshSoon = debounce(pkRefresh, 120);
+document.addEventListener('input', (e) => { const el = e.target; if (el && el.id === 'pk-q') { packQuery = el.value; pkRefreshSoon(); } });
+document.addEventListener('keydown', (e) => {
+  const el = e.target; if (!el || el.id !== 'pk-q') return;
+  if (e.key === 'Escape' && el.value) { e.preventDefault(); e.stopPropagation(); el.value = ''; packQuery = ''; pkRefresh(); }
+  else if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
+});
+
 function renderStart() {
   const s = settings;
   const pack = findPack(s.packId) || BUILTIN[0];
@@ -19169,7 +19265,7 @@ function renderStart() {
     const f = currentFilter(pack);
     /* Das gewählte Paket bleibt sichtbar, notfalls ohne die Auswahlliste */
     if ((subGrade() || subTopic()) && !packsVisible(pack).some((p) => p.id === pack.id)) { settings.gradeSub = 'all'; settings.topicSub = 'all'; }
-    const list = packsVisible(pack);
+    const list = packQuery.trim() ? pkHits(packQuery).map((r) => r.p) : packsVisible(pack);
     const grades = range(5, 12).filter((g) => BUILTIN.some((p) => (p.grades || []).includes(g)));
     const chip = (v, l, aria) => `<button type="button" class="fl${f === v ? ' on' : ''}" data-act="filter" data-v="${v}" aria-pressed="${f === v}"${aria ? ` aria-label="${aria}"` : ''}>${l}</button>`;
     const thema = s.packView === 'thema', tf = s.topicFilter || 'all';
@@ -19182,10 +19278,10 @@ function renderStart() {
     main = `<div class="st3-hero"><h1>Welches Paket spielt ihr heute?</h1>${lgBar ? '' : '<p>Jedes Paket bündelt die Begriffe eines Themas. Ihr spielt sie am Brett, löst sie als Rätsel oder druckt sie aus. Was ihr sicher könnt, kommt als Karte ins Album.</p>'}</div>
       ${lgBar}
       ${canResume ? `<div class="resume"><div class="resume-t"><b>Laufendes Spiel</b><span>${esc(saved.packTitle)} · ${esc(saved.teams.A.name)} gegen ${esc(saved.teams.B.name)}</span></div><div class="resume-a"><button type="button" class="btn ghost" data-act="discard">Verwerfen</button><button type="button" class="btn primary" data-act="resume">Fortsetzen</button></div></div>` : ''}
-      ${filterRow}${subFilterHTML(pack)}
+      <div class="pk-browse"${packQuery.trim() ? ' hidden' : ''}>${filterRow}</div><div class="pk-find">${pkSearchBox()}<div class="pk-sub"${packQuery.trim() ? ' hidden' : ''}>${subFilterHTML(pack)}</div></div>${pkHitsLine()}
       <div class="car-wrap">
         <button type="button" class="car-arrow" data-act="car" data-d="-1" aria-label="zurück">${iconArrow(-1)}</button>
-        <div class="carousel" id="carousel">${list.map(skCard).join('')}<button type="button" class="sk sk-add" data-act="ws-new-start"><span class="sk-plus">+</span><span class="sk-title">Eigenes Paket</span><span class="sk-blurb">Begriffe eintippen oder aus einer Tabelle einfügen</span></button></div>
+        <div class="carousel" id="carousel">${list.map(skCard).join('')}${skAddCard()}</div>
         <button type="button" class="car-arrow" data-act="car" data-d="1" aria-label="weiter">${iconArrow(1)}</button>
       </div>
       <div class="st3-cta"><span class="cta-note">${esc(pack.title)} · ${playable(pack).length} Begriffe${pack.edited ? ' · von dir angepasst' : pack.checked ? '' : ' · mit KI erstellt, noch nicht durchgehend geprüft'}</span><button type="button" class="btn ghost cta-adapt" data-act="learn-open" data-id="${esc(pack.id)}">Karten üben${(() => { const nd = typeof learnDueCount === 'function' ? learnDueCount(pack) : 0; return nd ? `<span class="due-pill">${nd} fällig</span>` : ''; })()}</button><button type="button" class="btn ghost cta-adapt" data-act="${pack.own || pack.edited ? 'ws-play-edit' : 'ws-adapt-start'}" data-id="${esc(pack.id)}">${pack.own || pack.edited ? 'Bearbeiten' : 'Anpassen'}</button>${typeof openLinkModal === 'function' ? `<button type="button" class="btn ghost cta-adapt cta-link" data-act="dl-open" data-id="${esc(pack.id)}" aria-label="Link und QR-Code zu diesem Paket">${lgIcon('link')}<span>Link</span></button>` : ''}<button type="button" class="btn cta" data-act="st-step" data-v="2" data-primary>Weiter zur Spielform${iconNext()}</button></div>`;
@@ -28528,6 +28624,7 @@ const ACTIONS = {
   'beta-info': () => openModal(`<h2>Betaphase</h2><p>${esc(BETA_LONG)}</p><p>Lies ein Paket vor dem Einsatz durch. Was im Spiel oft abgerufen wird, prägt sich ein, ein Fehler also auch. In der Werkstatt lässt sich jedes Paket korrigieren.</p><div class="modal-actions"><button type="button" class="btn primary" data-act="modal-close">Verstanden</button></div>`),
   /* Startseite */
   'help': () => openModal(helpHTML(), 'wide'),
+  'pk-clear': () => { packQuery = ''; const i = $('#pk-q'); if (i) { i.value = ''; i.focus(); } pkRefresh(); },
   'pack': (el) => { settings.packId = el.dataset.id; const sz = sizesFor(findPack(settings.packId)); if (sz.length) settings.size = sz[sz.length - 1]; saveSettings(); Sound.tick(); renderStart(); },
   'filter': (el) => {
     settings.gradeFilter = el.dataset.v;

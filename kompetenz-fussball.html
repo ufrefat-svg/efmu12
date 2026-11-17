@@ -251,6 +251,9 @@ textarea:focus,input[type=text]:focus,select:focus{outline:2px solid var(--wf-fl
 .exr.active,.exr:disabled{cursor:default;opacity:1}
 .exr.active .exr-go{color:var(--wf-flood)}
 .exr.active .exr-go::before{background:none;box-shadow:inset 0 0 0 1px rgba(255,212,59,.6)}
+.exr-f{grid-column:1;margin-top:3px;font-size:13px;line-height:1.35;color:var(--wf-text);opacity:.92;overflow-wrap:anywhere}
+.exr-f i{font-style:normal;color:var(--wf-mute)}
+.exr mark{background:rgba(255,212,59,.3);color:inherit;border-radius:3px;padding:0 1px}
 .ex-hits{margin:0 0 6px;font-size:12.5px;color:var(--wf-mute)}
 .ex-none{margin:4px 2px;font-size:14px;color:var(--wf-mute)}
 @keyframes fanIn{from{opacity:0;transform:translateY(-10px) rotate(-2.4deg)}to{opacity:1;transform:none}}
@@ -924,7 +927,7 @@ body.calm .field::after{animation:none}
         <div class="pane" id="pane-sammlung" data-pane="sammlung" role="tabpanel" aria-labelledby="tab-sammlung" hidden>
           <section class="card samm" aria-labelledby="exH">
             <div class="card-h"><h2 id="exH">Fertige Sammlungen</h2><span class="kicker" id="exCount"></span></div>
-            <div class="ex-search"><span class="ex-sic" id="exSic"></span><input type="search" id="exSearch" placeholder="Suchen, etwa Blues oder Mozart" aria-label="Sammlungen durchsuchen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"><button type="button" class="mini" id="exClear" data-act="exclr" aria-label="Suche leeren" hidden></button></div>
+            <div class="ex-search"><span class="ex-sic" id="exSic"></span><input type="search" id="exSearch" placeholder="Alle Sammlungen und eigenen Sets durchsuchen, etwa Blues oder Mozart" aria-label="Alle Sammlungen und eigenen Sets durchsuchen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"><button type="button" class="mini" id="exClear" data-act="exclr" aria-label="Suche leeren" hidden></button></div>
             <div id="libEx" class="drawers"></div>
           </section>
           <div class="cols">
@@ -5150,6 +5153,59 @@ function exRow(s, i, withGroup){
   return '<li style="--i:' + i + '"><button type="button" class="exr' + (active ? ' active' : '') + '" data-act="libload" data-id="' + s.id + '" data-ex="1"' + (active ? ' disabled aria-current="true"' : '') + ' aria-label="' + esc(s.titel) + (active ? ', ist geladen' : ', laden') + '">' +
     '<span class="exr-t">' + esc(s.titel) + '</span><span class="exr-m">' + esc(exMeta(s, withGroup)) + '</span><span class="exr-go" aria-hidden="true">' + (active ? 'Geladen' : 'Laden') + '</span></button></li>';
 }
+/* Freitextsuche: ein Wort mit Umlaut oder ß sucht genau („händel“), ohne Umlaut auch die Umlautform („handel“ findet Händel) */
+function exWords(q){ return String(q || '').toLowerCase().split(/\s+/).filter(Boolean).map(function(r){ var f = exNorm(r); return {r:r, f:f, exact:r !== f, num:/^\d+$/.test(r)}; }); }
+function exPrep(t){ t = String(t == null ? '' : t); return {l:t.toLowerCase(), f:exNorm(t)}; }
+function exHas(t, w){ if (w.num) return new RegExp('(^|\\D)' + w.r + '(?!\\d)').test(t.l); return (w.exact ? t.l.indexOf(w.r) : t.f.indexOf(w.f)) >= 0; }
+function exHl(text, words){
+  text = String(text == null ? '' : text);
+  var norm = '', map = [], on = [], low = text.toLowerCase();
+  for (var i = 0; i < text.length; i++) { var n = exNorm(text.charAt(i)); for (var k = 0; k < n.length; k++) { norm += n.charAt(k); map.push(i); } on.push(false); }
+  words.forEach(function(w){
+    var hay = w.exact ? low : norm, nd = w.exact ? w.r : w.f, p = nd ? hay.indexOf(nd) : -1;
+    while (p >= 0) { if (w.num && (/\d/.test(hay.charAt(p - 1)) || /\d/.test(hay.charAt(p + nd.length)))) { p = hay.indexOf(nd, p + 1); continue; } for (var k = p; k < p + nd.length; k++) { var ix = w.exact ? k : map[k]; if (ix < on.length) on[ix] = true; } p = hay.indexOf(nd, p + nd.length); }
+  });
+  var out = '', open = false;
+  for (var j = 0; j < text.length; j++) {
+    if (on[j] && !open) { out += '<mark>'; open = true; } else if (!on[j] && open) { out += '</mark>'; open = false; }
+    out += esc(text.charAt(j));
+  }
+  return out + (open ? '</mark>' : '');
+}
+function exFind(q){
+  var words = exWords(q);
+  if (!words.length) return [];
+  var pool = EXAMPLES.map(function(s){ return {s:s, ex:true}; }).concat(Lib.sets.map(function(s){ return {s:s, ex:false}; }));
+  return pool.map(function(o, n){
+    var s = o.s, g = o.ex ? exGroup(s.gruppe) : null, head = exPrep(s.titel), meta = exPrep([s.thema, s.ordner || '', g ? g.label : '', o.ex ? '' : 'meine sets eigene'].join(' ')),
+      qs = (s.fragen || []).map(function(f){ return exPrep(f.q + ' ' + f.a); }), qx = (s.fragen || []).map(function(f){ return exPrep((f.d || []).join(' ') + ' ' + (f.x || '')); }), score = 0, hit = -1;
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      if (exHas(head, w)) { score += 6; continue; }
+      if (exHas(meta, w)) { score += 3; continue; }
+      var k = -1; for (var j = 0; j < qs.length; j++) if (exHas(qs[j], w)) { k = j; break; }
+      var side = k >= 0 ? 1 : 0.4;
+      if (k < 0) for (var jx = 0; jx < qx.length; jx++) if (exHas(qx[jx], w)) { k = jx; break; }
+      if (k < 0) return null;
+      score += side; if (hit < 0) hit = k;
+    }
+    var best = -1; for (var m = 0; m < qs.length && best < 0; m++) if (words.some(function(w){ return exHas(qs[m], w); })) best = m;
+    if (best >= 0) hit = best;
+    return {s:s, ex:o.ex, score:score, n:n, hit:hit, words:words};
+  }).filter(Boolean).sort(function(x, y){ return y.score - x.score || x.n - y.n; });
+}
+function exHitRow(r, i){
+  var s = r.s, active = CUR.id === s.id, f = r.hit >= 0 ? s.fragen[r.hit] : null;
+  var meta = r.ex ? exMeta(s, true) : 'Meine Sets · ' + s.fragen.length + ' Fragen';
+  var fund = '';
+  if (f) {
+    var inMain = r.words.some(function(w){ return exHas(exPrep(f.q + ' ' + f.a), w); });
+    var extra = inMain ? '' : (f.d && f.d.length && r.words.some(function(w){ return exHas(exPrep(f.d.join(' ')), w); }) ? ' <i>· zur Auswahl:</i> ' + exHl(f.d.join(', '), r.words) : f.x ? ' <i>· Zusatz:</i> ' + exHl(trunc(f.x, 90), r.words) : '');
+    fund = '<span class="exr-f"><i>Frage ' + (r.hit + 1) + ':</i> ' + exHl(trunc(f.q, 120), r.words) + ' <i>→</i> ' + exHl(trunc(f.a, 60), r.words) + extra + '</span>';
+  }
+  return '<li style="--i:' + i + '"><button type="button" class="exr' + (active ? ' active' : '') + '" data-act="libload" data-id="' + s.id + '" data-ex="' + (r.ex ? 1 : 0) + '"' + (active ? ' disabled aria-current="true"' : '') + ' aria-label="' + esc(s.titel) + (active ? ', ist geladen' : ', laden') + '">' +
+    '<span class="exr-t">' + exHl(s.titel, r.words) + '</span><span class="exr-m">' + esc(meta) + '</span>' + fund + '<span class="exr-go" aria-hidden="true">' + (active ? 'Geladen' : 'Laden') + '</span></button></li>';
+}
 function exSearchHits(q){
   var words = exNorm(q).split(/\s+/).filter(Boolean);
   if (!words.length) return [];
@@ -5169,10 +5225,11 @@ function renderExamples(){
   $('#exCount').textContent = EXAMPLES.length + ' Sammlungen · ' + EXAMPLES.reduce(function(n, s){ return n + s.fragen.length; }, 0) + ' Fragen';
   if (clr) clr.hidden = !q;
   if (q) {
-    var hits = exSearchHits(q);
+    var hits = exFind(q), nOwn = hits.filter(function(r){ return !r.ex; }).length, nEx = hits.length - nOwn;
+    var cnt = [nEx ? nEx + (nEx === 1 ? ' Sammlung' : ' Sammlungen') : '', nOwn ? nOwn + (nOwn === 1 ? ' eigenes Set' : ' eigene Sets') : ''].filter(Boolean).join(' und ');
     box.innerHTML = hits.length
-      ? '<p class="ex-hits" role="status">' + hits.length + (hits.length === 1 ? ' Sammlung gefunden' : ' Sammlungen gefunden') + '</p><ul class="exl">' + hits.map(function(s, i){ return exRow(s, i, true); }).join('') + '</ul>'
-      : '<p class="ex-none" role="status">Keine Sammlung zu „' + esc(q) + '“ gefunden.</p>';
+      ? '<p class="ex-hits" role="status">' + cnt + ' gefunden, über alle Fächer, Klassen und Themen</p><ul class="exl">' + hits.slice(0, 120).map(exHitRow).join('') + '</ul>'
+      : '<p class="ex-none" role="status">Nichts zu „' + esc(q) + '“ gefunden. Tipp: ein einzelnes Stichwort oder einen Namen versuchen.</p>';
     return;
   }
   var cg = isBuiltIn(CUR) ? CUR.gruppe : '', co = isBuiltIn(CUR) ? (CUR.ordner || '') : '';

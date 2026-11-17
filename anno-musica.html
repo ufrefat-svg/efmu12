@@ -162,6 +162,20 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--p2);outline-offs
 .tab[aria-selected="true"]{color:var(--text);background:var(--panel2);border-color:var(--line2)}
 .panes{min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:28px}
 .pane{display:grid;gap:14px;align-content:start}
+#planBody{display:grid;gap:14px;align-content:start;min-width:0}
+.psearch{position:relative;display:flex;align-items:center}
+.psearch > svg{position:absolute;left:14px;width:20px;height:20px;color:var(--mute);pointer-events:none}
+.psearch input[type=search]{min-height:48px;padding-left:44px;padding-right:52px;border-radius:14px;background:#120E28;-webkit-appearance:none;appearance:none}
+.psearch input::-webkit-search-cancel-button{display:none}
+.psearch .icon-btn{position:absolute;right:4px;width:40px;height:40px;border:0;background:transparent}
+.ps-hits{margin:0;font-size:14px;color:var(--mute)}
+.ps-none{margin:0;padding:14px;border-radius:14px;background:var(--panel);font-size:15px;color:var(--mute)}
+.play .where,.play .fund,.play .meta{grid-column:2}
+.play .where{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.play .where i{font-style:normal;padding:2px 8px;border-radius:99px;background:var(--panel2)}
+.play .fund{margin:2px 0 0;padding:6px 9px;border-radius:10px;background:rgba(34,228,255,.07);border:1px solid rgba(34,228,255,.22);font-size:13.5px;line-height:1.35;color:var(--text)}
+.play .fund b{color:var(--p2);font-weight:700}
+.play mark{background:rgba(255,197,61,.32);color:inherit;border-radius:3px;padding:0 1px}
 .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
 .crumbs button{color:var(--mute);min-height:36px}
 .crumbs .cur{color:var(--text)}
@@ -584,6 +598,7 @@ input[type=search]{-webkit-appearance:none;appearance:none}
     <symbol id="i-wand" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m4 20 11-11m2-5v3m3 1h-3m1.5-3.5-2 2M14 4v2m6 6h-2"/></symbol>
     <symbol id="i-window" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M4 3h16v18H4zM12 3v18M4 12h16"/></symbol>
     <symbol id="i-door" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M6 21V3h12v18M3 21h18"/><circle cx="15" cy="12.5" r="1.4" fill="currentColor"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Zm4.7-1.8L20 20"/></symbol>
     <symbol id="i-folder" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 6h6l2 2h10v11H3z"/></symbol>
   </defs>
 </svg>
@@ -629,7 +644,7 @@ input[type=search]{-webkit-appearance:none;appearance:none}
       <button class="tab" role="tab" data-tab="opt" aria-selected="false"><svg><use href="#i-gear"/></svg>Einstellungen</button>
     </div>
     <div class="panes">
-      <div class="pane" data-pane="plan" id="planPane"></div>
+      <div class="pane" data-pane="plan" id="planPane"><div class="psearch" role="search"><svg aria-hidden="true"><use href="#i-search"/></svg><input type="search" id="planQ" placeholder="Alle Themen durchsuchen, etwa Mozart, Fuge oder Oktave" aria-label="Alle Themen aller Jahrgänge durchsuchen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"><button type="button" class="icon-btn" id="planQx" aria-label="Suche leeren" hidden><svg><use href="#i-x"/></svg></button></div><div id="planBody"></div></div>
 
       <div class="pane" data-pane="werk" hidden>
         <div class="box" id="adaptBox" style="margin-bottom:14px">
@@ -1069,8 +1084,87 @@ function renderAdapt(){
     }
   });
 })();
+/* Freitextsuche über alle Jahrgänge und Bereiche: Titel, Kurztext, Jahrgang, Bereich und alle Karten */
+var PQ = '';
+function normQ(s){ s = String(s == null ? '' : s).toLowerCase(); try { s = s.normalize('NFD').replace(/[̀-ͯ]/g, ''); } catch(e){} return s.replace(/ß/g, 'ss'); }
+/* Ein Wort mit Umlaut oder ß sucht genau („händel“), ohne Umlaut auch die Umlautform („handel“ findet Händel) */
+function qWords(q){ return String(q || '').toLowerCase().split(/\s+/).filter(Boolean).map(function(r){ var f = normQ(r); return {r:r, f:f, exact:r !== f, num:/^\d+$/.test(r)}; }); }
+function qPrep(text){ text = String(text == null ? '' : text); return {l:text.toLowerCase(), f:normQ(text)}; }
+function qHas(t, w){ if (w.num) return new RegExp('(^|\\D)' + w.r + '(?!\\d)').test(t.l); return (w.exact ? t.l.indexOf(w.r) : t.f.indexOf(w.f)) >= 0; }
+function hlText(text, words){
+  text = String(text == null ? '' : text);
+  if (!words.length) return esc(text);
+  var norm = '', map = [], on = [], low = text.toLowerCase();
+  for (var i = 0; i < text.length; i++) { var n = normQ(text.charAt(i)); for (var k = 0; k < n.length; k++) { norm += n.charAt(k); map.push(i); } on.push(false); }
+  words.forEach(function(w){
+    var hay = w.exact ? low : norm, nd = w.exact ? w.r : w.f, p = nd ? hay.indexOf(nd) : -1;
+    while (p >= 0) { if (w.num && (/\d/.test(hay.charAt(p - 1)) || /\d/.test(hay.charAt(p + nd.length)))) { p = hay.indexOf(nd, p + 1); continue; } for (var k = p; k < p + nd.length; k++) { var ix = w.exact ? k : map[k]; if (ix < on.length) on[ix] = true; } p = hay.indexOf(nd, p + nd.length); }
+  });
+  var out = '', open = false;
+  for (var j = 0; j < text.length; j++) {
+    if (on[j] && !open) { out += '<mark>'; open = true; } else if (!on[j] && open) { out += '</mark>'; open = false; }
+    out += esc(text.charAt(j));
+  }
+  return out + (open ? '</mark>' : '');
+}
+function snip(text, words, len){
+  text = String(text || ''); if (text.length <= len) return text;
+  var nt = normQ(text), lt = text.toLowerCase(), p = -1;
+  words.forEach(function(w){ var i = w.exact ? lt.indexOf(w.r) : nt.indexOf(w.f); if (i >= 0 && (p < 0 || i < p)) p = i; });
+  if (p < 0 || p < len - 30) return text.slice(0, len - 2).replace(/\s+\S*$/, '') + ' …';
+  var a = Math.max(0, p - 40), b = Math.min(text.length, a + len - 4);
+  a = text.lastIndexOf(' ', a) + 1 || a;
+  return '… ' + text.slice(a, b).replace(/\s+\S*$/, '') + (b < text.length ? ' …' : '');
+}
+function cardText(s, c){ return [c.h, c.t, c.anz, s.art === 'zeit' && !c.anz ? String(c.j) : ''].join(' '); }
+function planHits(q){
+  var words = qWords(q); if (!words.length) return [];
+  var list = BUILTIN.map(function(s){ return adaptOf(s.id) || s; }).concat(MINE.filter(function(m){ return !m.basis; }));
+  return list.map(function(s, n){
+    var head = qPrep(s.titel), meta = qPrep([s.kurz, grp(s.gruppe).label, kind(s.art).label].join(' ')),
+      cards = s.karten.map(function(c){ return qPrep(cardText(s, c)); }), score = 0, hit = -1;
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      if (qHas(head, w)) { score += 6; continue; }
+      if (qHas(meta, w)) { score += 3; continue; }
+      var k = -1; for (var j = 0; j < cards.length; j++) if (qHas(cards[j], w)) { k = j; break; }
+      if (k < 0) return null;
+      score += 1; if (hit < 0) hit = k;
+    }
+    if (hit < 0) for (var m = 0; m < cards.length; m++) if (words.some(function(w){ return qHas(cards[m], w); })) { hit = m; break; }
+    return {s:s, score:score, n:n, hit:hit, words:words};
+  }).filter(Boolean).sort(function(x, y){
+    return y.score - x.score || GROUPS.findIndex(function(G){ return G.id === x.s.gruppe; }) - GROUPS.findIndex(function(G){ return G.id === y.s.gruppe; }) || x.s.titel.localeCompare(y.s.titel, 'de');
+  });
+}
+function hitTile(r){
+  var s = r.s, k = kind(s.art), w = r.words, c = r.hit >= 0 ? s.karten[r.hit] : null;
+  var fund = '';
+  if (c) {
+    var bits = [];
+    if (c.h) bits.push(hlText(c.h, w));
+    if (c.t) bits.push(hlText(snip(c.t, w, 110), w));
+    if (c.anz && (!bits.length || w.some(function(x){ return qHas(qPrep(c.anz), x); }))) bits.push(hlText(c.anz, w));
+    if (c.n && !c.h && !c.t) bits.unshift('Notenbild');
+    fund = '<p class="fund"><b>Karte:</b> ' + bits.join(' · ') + '</p>';
+  }
+  return '<button type="button" class="play" data-id="' + esc(s.id) + '"><span class="kic" style="background:' + k.c + '"><svg><use href="#' + k.icon + '"/></svg></span>' +
+    '<span class="where"><i>' + esc(s.eigen && !s.basis ? 'Eigenes Szenario' : grp(s.gruppe).label) + '</i><i>' + esc(k.label) + '</i>' + (s.basis ? '<i>angepasst</i>' : '') + '</span>' +
+    '<h4>' + hlText(s.titel, w) + '</h4>' + (s.kurz ? '<p>' + hlText(s.kurz, w) + '</p>' : '') + fund +
+    '<span class="meta">' + s.karten.length + ' Karten · ' + esc(s.achse[0]) + ' → ' + esc(s.achse[1]) + ' ' + starsHtml(PROG.stars[s.id]) + '</span></button>';
+}
+function renderSearch(){
+  var body = $('#planBody'), q = PQ.trim(), hits = planHits(q);
+  if (!hits.length) { body.innerHTML = '<p class="ps-none" role="status">Kein Thema zu „' + esc(q) + '“ gefunden. Tipp: ein einzelnes Stichwort, einen Namen oder eine Jahreszahl versuchen.</p>'; return; }
+  var groups = {}; hits.forEach(function(r){ groups[r.s.gruppe] = 1; });
+  body.innerHTML = '<p class="ps-hits" role="status">' + hits.length + (hits.length === 1 ? ' Thema' : ' Themen') + ' in ' + Object.keys(groups).length + (Object.keys(groups).length === 1 ? ' Jahrgang' : ' Jahrgängen') + ' gefunden</p>' +
+    '<div class="grid">' + hits.slice(0, 80).map(hitTile).join('') + '</div>' + (hits.length > 80 ? '<p class="ps-hits">Die ersten 80 Treffer. Ein weiteres Stichwort grenzt die Suche ein.</p>' : '');
+}
 function renderPlan(){
-  var pane = $('#planPane'), h = '';
+  var pane = $('#planBody'), h = '';
+  $('#planQx').hidden = !PQ;
+  if ($('#planQ').value !== PQ) $('#planQ').value = PQ;
+  if (PQ.trim()) { renderSearch(); return; }
   if (!UI.level) {
     h += '<div class="crumbs"><span class="cur">Wähle euren Jahrgang</span></div><div class="levels">';
     GROUPS.concat(MINE.length ? [{id:'eigen', label:'Eigene Szenarien', short:'', bg:'linear-gradient(135deg,#3A3360,#1E1840)'}] : []).forEach(function(g){
@@ -1095,6 +1189,12 @@ function renderPlan(){
   });
   pane.innerHTML = h;
 }
+(function(){
+  var qi = $('#planQ'), t = 0;
+  qi.addEventListener('input', function(){ PQ = qi.value; clearTimeout(t); t = setTimeout(function(){ renderPlan(); $('.panes').scrollTop = 0; }, 120); });
+  qi.addEventListener('keydown', function(e){ if (e.key === 'Escape' && qi.value) { e.preventDefault(); qi.value = ''; PQ = ''; renderPlan(); } if (e.key === 'Enter') qi.blur(); });
+  $('#planQx').addEventListener('click', function(){ qi.value = ''; PQ = ''; renderPlan(); qi.focus(); });
+})();
 $('#planPane').addEventListener('click', function(e){
   var lv = e.target.closest('.level'); if (lv) { UI.level = lv.dataset.level; UI.folder = 'alle'; saveUI(); renderPlan(); $('.panes').scrollTop = 0; return; }
   if (e.target.closest('#crumbBack')) { UI.level = null; saveUI(); renderPlan(); return; }
