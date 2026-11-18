@@ -999,7 +999,7 @@ body.calm .field::after{animation:none}
             <div class="rule"><div><b>Antwortzeit</b><span class="rd">Die Uhr läuft sichtbar mit, entscheiden tust du.</span></div>
               <div class="seg" data-pref="timer"><button type="button" data-val="0">Aus</button><button type="button" data-val="10">10 s</button><button type="button" data-val="20">20 s</button><button type="button" data-val="30">30 s</button><button type="button" data-val="45">45 s</button></div></div>
             <label class="rule"><div><b>Antwortauswahl</b><span class="rd">Zu jeder Frage erscheinen vier Möglichkeiten A bis D. Die falschen stammen aus anderen Antworten des Sets oder, wenn die Frage eigene mitbringt, aus ihren Alternativen. Antippen der genannten Möglichkeit wertet. Hilft zur Entlastung und bei Hörbeispielen, bei Vokabeln eher nicht.</span></div><span class="swl"><input type="checkbox" data-pref="auswahl" id="swAuswahl"><span class="track"></span></span></label>
-            <label class="rule"><div><b>Sets entscheiden mit</b><span class="rd">Fertige Sammlungen bringen eine Empfehlung mit. Beim Laden eines Sets stellt sich die Antwortauswahl danach ein, du kannst sie danach jederzeit umschalten.</span></div><span class="swl"><input type="checkbox" data-pref="mcAuto" id="swMcAuto"><span class="track"></span></span></label>
+            <label class="rule"><div><b>Sets entscheiden mit</b><span class="rd">Fertige Sammlungen bringen eine Empfehlung mit. Beim Laden eines Sets stellt sich die Antwortauswahl danach ein, bei einzelnen Sets auch Spielmodus und Regeln. Du kannst alles danach jederzeit umschalten.</span></div><span class="swl"><input type="checkbox" data-pref="mcAuto" id="swMcAuto"><span class="track"></span></span></label>
             <div class="rule"><div><b>Spielende</b><span class="rd">Bei Zeit und Toren werden Fragen bei Bedarf wiederholt.</span></div>
               <div class="seg" data-pref="endType"><button type="button" data-val="fragen">Fragen durch</button><button type="button" data-val="zeit">Nach Zeit</button><button type="button" data-val="tore">Nach Toren</button></div></div>
             <div class="rule" id="ruleMin"><div><b>Spielzeit</b><span class="rd">Halbzeit nach der Hälfte</span></div>
@@ -4065,6 +4065,18 @@ var EXAMPLES = [
     {q:"Auf welcher Zählzeit setzt der dritte Satz von Beethovens 5. Sinfonie im 3/4-Takt mit einem Auftakt ein?", a:"Auf der Drei", d:["Auf der Eins","Auf der Zwei","Auf dem „und“ nach der Eins"], x:"Im Dirigier-Workshop werden daran Einsätze geübt: erst tiefe Streicher, dann alle Streicher, dann Holzbläser, jeweils auf Zählzeit 3 (Böhm)."},
     {q:"Welche litauische Dirigentin wurde mit 29 Jahren Chefdirigentin des City of Birmingham Symphony Orchestra?", a:"Mirga Gražinytė-Tyla", d:["Simone Young","Marin Alsop","Joana Mallwitz"], x:"2020 wurde sie mit dem Opus Klassik als „Dirigentin des Jahres“ ausgezeichnet (Böhm, Arbeitsblatt Die Arbeit einer Dirigentin)."}
   ]},
+  {id:"mrg-einstudieren", titel:"Einstudieren im Fachunterricht", thema:"MRG Musik im Fachunterricht", gruppe:"fs", ordner:"Musikdidaktik und Methoden", quelle:"Sammlung", mc:false, regeln:{mode:"besitz", konter:true, rueckpass:false, nachspiel:false, steps:3, endType:"fragen", timer:30}, fragen:[
+    {q:"Ihre Klasse soll ein neues Lied lernen. Was machen Sie mit dem Text, bevor gesungen wird?", a:"Im Rhythmus sprechen", x:"Erst den Text gut und knackig sprechen, dann singen (Beiderwieden 2008, S. 33). So sitzt der Rhythmus, bevor die Melodie dazukommt."},
+    {q:"Zeigen Sie: Bringen Sie Ihrer Mannschaft „Nomen, Nomen, schreibt man groß“ im Puls bei, ohne etwas zu erklären.", a:"Vormachen, nachmachen lassen, wiederholen", x:"Kurze Teile vormachen, die Gruppe antwortet als Echo. Benannt wird erst, wenn es sitzt.", offen:true},
+    {q:"Das Lied ist zu lang für einen Durchgang. Wie gehen Sie vor?", a:"In kurze Teile zerlegen, dann zusammensetzen", x:"Kurze Abschnitte vor- und nachsingen, dann bis zum ganzen Lied zusammenfügen (Gumsch/Hein 2020, S. 18). Ein wiederkehrender Refrain eignet sich als Start."},
+    {q:"Zeigen Sie: Geben Sie Ihrer Mannschaft den Anfangston für „Bruder Jakob“ und zählen Sie ein.", a:"Alle beginnen zusammen auf einem Ton", x:"Ton mit App oder Glockenspiel geben, kurz ansummen lassen, im Tempo einzählen, Einsatz mit Atem und Geste.", offen:true},
+    {q:"Einige Kinder brummen tief und finden den Ton nicht. Was hilft?", a:"Anfangston sichern, ein Kind vorsingen lassen", x:"Wo sitzt der Anfangston? Von einer Kinderstimme nehmen Kinder den Ton leichter ab, Männer singen ihn im Falsett vor (Beiderwieden 2008, S. 34)."},
+    {q:"Die Klasse traut sich nicht zu singen. Was nehmen Sie dazu?", a:"Bewegung", x:"Bewegung lenkt die Aufmerksamkeit von der eigenen Stimme weg, das Singen läuft mit. So war es heute bei „Bonnie“."},
+    {q:"Zeigen Sie: Ihre Mannschaft spricht „Nomen, Nomen, schreibt man groß“. Führen Sie laut und leise, dann den Schluss.", a:"Alle folgen der Geste und hören zusammen auf", x:"Wie beim Mischpult: Die Geste kommt kurz vor dem Klang. Den Schluss mit einer Ausholbewegung ankündigen.", offen:true},
+    {q:"Eine Stelle klappt bei der ganzen Klasse nicht. Was tun Sie?", a:"Weitermachen, danach die Stelle gezielt üben", x:"Den Durchgang im Puls beenden. Dann die Stelle so vormachen, wie sie klang, dann richtig, und wiederholen (Beiderwieden 2008, S. 33)."},
+    {q:"Sie sind unsicher, ob Sie das Tempo halten. Was hilft Ihnen?", a:"Den Puls auslagern: App, Musik oder Jojo", x:"Wie am Anfang der Rhythmus-Trainer: Er hält den Puls und zählt ein. Sie haben Blick und Hände frei für die Klasse."},
+    {q:"Wie sorgen Sie dafür, dass ein Merksatz auch nächste Woche noch sitzt?", a:"Zum Stundenbeginn wieder singen", x:"Kurz und regelmäßig wiederholen, als Ritual. Ein Kind darf dirigieren, so übt die Klasse auch das Anleiten."}
+  ]},
   {id:"sam-crossover-pop", titel:"Crossover im Pop", thema:"Musik, Klasse 7 bis 10", gruppe:"m710", ordner:"Pop und Jazz", quelle:"Sammlung", mc:true, fragen:[
     {q:"Wie nannte man ursprünglich Songs, die gleichzeitig in mehreren Hitparaden standen?", a:"Crossover", d:["Mainstream","Cover","Remix"], x:"Etwa in Pop- und R'n'B-Charts; später meinte Crossover die bewusste Kreuzung zweier Stile (Ehrich, mip-journal 51)."},
     {q:"Welches US-Magazin veröffentlicht seit 1936 wöchentlich Ranglisten der erfolgreichsten Songs?", a:"Billboard", d:["Rolling Stone","Cashbox","Variety"], x:"Lange gab es dort eigene Charts für Rhythm and Blues, die Musik afroamerikanischer Künstler:innen (Ehrich, mip-journal 51)."},
@@ -5029,6 +5041,25 @@ function showTab(name){
   $$('.tab').forEach(function(b){ b.setAttribute('aria-selected', String(b.dataset.tab === name)); b.tabIndex = b.dataset.tab === name ? 0 : -1; });
   $$('.pane').forEach(function(p){ p.hidden = p.dataset.pane !== name; });
   $('#panes').scrollTop = 0;
+}
+/* Fertige Sammlungen bringen Empfehlungen mit: mc (Antwortauswahl) und bei einzelnen Sets regeln (Spielmodus und Regeln).
+   Sie gelten beim Laden, wenn „Sets entscheiden mit“ an ist. Nur bekannte Regeln mit gültigen Werten werden übernommen. */
+var SET_RULES = {mode:['besitz','wechsel','duell'], steps:[3,4,5], timer:[0,10,20,30,45], endType:['fragen','zeit','tore'], endMinutes:[5,10,15,20,30], endGoals:[3,5,7], konter:'b', rueckpass:'b', nachspiel:'b'};
+function applySetPrefs(set){
+  if (!P.mcAuto || !set) return '';
+  var msg = [], changed = false;
+  if (typeof set.mc === 'boolean' && !!P.auswahl !== set.mc) { P.auswahl = set.mc; changed = true; msg.push('Antwortauswahl ' + (set.mc ? 'an' : 'aus')); }
+  var r = set.regeln, rc = false;
+  if (r && typeof r === 'object') Object.keys(SET_RULES).forEach(function(k){
+    if (!(k in r)) return;
+    var ok = SET_RULES[k], v = r[k];
+    if (ok === 'b') v = !!v; else if (ok.indexOf(v) < 0) return;
+    if (k === 'mode' && v === 'duell' && cpuPrefs()) return;
+    if (P[k] !== v) { P[k] = v; rc = true; }
+  });
+  if (rc) { changed = true; msg.push('Regeln aus dem Set'); }
+  if (changed) { savePrefs(); syncSegs(); renderRules(); }
+  return msg.length ? ' · ' + msg.join(' · ') : '';
 }
 function syncSegs(){
   $$('[data-pref]').forEach(function(el){
@@ -7050,8 +7081,7 @@ function bindEvents(){
     else if (act === 'libload') {
       var src = b.dataset.ex === '1' ? EXAMPLES.filter(function(s){ return s.id === b.dataset.id; })[0] : Lib.sets.filter(function(s){ return s.id === b.dataset.id; })[0];
       if (!src) return; CUR = clone(src); delete CUR.cloud; EDIT = -1; saveCur();
-      var mcMsg = '';
-      if (P.mcAuto && typeof CUR.mc === 'boolean' && !!P.auswahl !== CUR.mc) { P.auswahl = CUR.mc; savePrefs(); syncSegs(); renderRules(); mcMsg = ' · Antwortauswahl ' + (CUR.mc ? 'an' : 'aus'); }
+      var mcMsg = applySetPrefs(CUR);
       renderCur(); renderHero(); renderLibrary(); showTab('fragen'); toast('„' + (CUR.titel || 'Set') + '“ geladen' + mcMsg);
     }
     else if (act === 'libdel') { DEL = b.dataset.id; renderLibrary(); }
@@ -7170,6 +7200,20 @@ function commitEdit(){
   return true;
 }
 
+/* Direktlink: kompetenz-fussball.html#set=<id> lädt eine fertige Sammlung samt ihren Empfehlungen (etwa für einen QR-Code) */
+function openFromHash(){
+  var m = /(?:^#|[&#])set=([\w-]+)/.exec(location.hash || ''); if (!m) return false;
+  var src = EXAMPLES.filter(function(s){ return s.id === m[1]; })[0];
+  try { history.replaceState(null, '', location.pathname + location.search); } catch(e){}
+  if (!src) { toast('Die Sammlung aus dem Link gibt es hier nicht.'); return false; }
+  if (EDIT >= 0) { EDIT = -1; }
+  CUR = clone(src); delete CUR.cloud; saveCur();
+  var msg = applySetPrefs(CUR);
+  renderCur(); renderHero(); renderLibrary(); showTab('fragen');
+  toast('„' + (CUR.titel || 'Set') + '“ geladen' + msg);
+  return true;
+}
+
 /* ================= Start ================= */
 function start(data){
   data = data || {};
@@ -7180,6 +7224,8 @@ function start(data){
   Lib.connect();
   if (data.st && data.st.v === 2 && data.st.cfg && data.st.teams) { G.st = data.st; G.hist = []; enterGame(); reopenPhase(); }
   else if (data.inGame === false && data.tab) showTab(data.tab);
+  if ($('#game').hidden) openFromHash();
+  try { window.addEventListener('hashchange', function(){ if ($('#game').hidden) openFromHash(); }); } catch(e){}
   rcInit();
 }
 var booted = false;
