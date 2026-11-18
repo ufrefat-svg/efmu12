@@ -7,7 +7,7 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 - `maestro-rush.html`: Maestro Rush (Anpfiff der Sitzung)
 - `musikomat.html`: Musik’o’mat (Tisch 4)
 - `rhythmus-tresor.html`: Rhythmus-Tresor (Tisch 5)
-- `kompetenz-fussball.html`: Kompetenz Fußball (Abpfiff), Freitextsuche über alle Sammlungen und eigenen Sets
+- `kompetenz-fussball.html`: Kompetenz Fußball (Abpfiff), Freitextsuche über alle Sammlungen und eigenen Sets. Ein Direktlink lädt eine Sammlung samt ihren Regeln, etwa `kompetenz-fussball.html#set=mrg-einstudieren` (Einstudieren im Fachunterricht, MRG „Musik im Fachunterricht“)
 - `suno-studio.html`: Suno Klanganweisung Studio, Version 9 als Web-Fassung ohne die beiden KI-Funktionen (Credits: Franz Pregler)
 - `rhythmus-trainer.html`: Rhythmus-Trainer (Drumset Coach), Raster 4 × 8 mit Lauflicht, Klick, Einzählen, Tippen und Auto-Sync über das Mikrofon
 - `melodie-trainer.html`: Melodie-Trainer, Raster mit den Tönen e, cis, h, a, fis, Lauflicht, Klick, Einzählen und Tippen
