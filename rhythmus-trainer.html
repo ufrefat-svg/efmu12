@@ -30,6 +30,8 @@ button:focus-visible{outline:3px solid #ff9800 !important;outline-offset:2px}
 button.small{min-width:48px;padding:10px 14px;font-size:20px;line-height:1}
 button.ghost{padding:10px 13px;background:#ffffff !important;color:#5b3fa6 !important;border:2px solid #d6ccf2 !important;box-shadow:none}
 button.on{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%) !important;color:#ffffff !important;box-shadow:0 4px 15px rgba(245,87,108,.4)}
+#autoSync.on.beat{background:linear-gradient(135deg,#ffb74d 0%,#ff9800 100%) !important;box-shadow:0 0 18px rgba(255,152,0,.7)}
+button:disabled{opacity:.6;cursor:wait}
 #playStop{min-width:130px;font-size:19px}
 .toggle[aria-pressed=true]{background:#5b3fa6 !important;color:#ffffff !important;border-color:#5b3fa6 !important}
 .toggle::before{content:'○ ';font-weight:700}
@@ -142,16 +144,16 @@ footer{text-align:center;color:#ece6ff !important;font-size:13px;margin-top:16px
   <details class="panel more">
     <summary>So geht’s und Einstellungen</summary>
     <div class="inner">
-      <div class="box"><b>So geht’s</b><ul><li>Tippe auf ein Kästchen. Ein Punkt heißt: Hier wird gespielt.</li><li>Drücke Start. Das orange Licht läuft von links nach rechts.</li><li>Steht das Licht auf einem Punkt, spielt die Gruppe dieser Zeile.</li><li>Mit „Tippen“ stellst du das Tempo ein: mehrmals im Takt tippen.</li><li>Auto-Sync hört über das Mikrofon mit und passt das Tempo an Musik im Raum an.</li><li>Idee: Rhythmus-Mitspielmatrix von Jörg Breitweg in Georg Biegholdt (Hrsg.): Aktives Musikhören, Helbling 2019.</li></ul></div>
+      <div class="box"><b>So geht’s</b><ul><li>Tippe auf ein Kästchen. Ein Punkt heißt: Hier wird gespielt.</li><li>Drücke Start. Das orange Licht läuft von links nach rechts.</li><li>Steht das Licht auf einem Punkt, spielt die Gruppe dieser Zeile.</li><li>Mit „Tippen“ stellst du das Tempo ein: mehrmals im Takt tippen.</li><li>Auto-Sync hört über das Mikrofon die Musik im Raum. Ist das Tempo erkannt, blinkt der Knopf im Beat. Dann Start auf der Eins drücken.</li><li>Idee: Rhythmus-Mitspielmatrix von Jörg Breitweg in Georg Biegholdt (Hrsg.): Aktives Musikhören, Helbling 2019.</li></ul></div>
       <div class="box"><b>Lautstärke</b>
         <div class="range"><input type="range" id="vol" min="0" max="100" value="80" aria-label="Lautstärke"><span class="val" id="volVal">80 %</span></div>
         <p style="margin-top:8px">Auf dem iPad kommt der Ton auch im Lautlos-Modus, wenn der Browser das unterstützt. Sonst den Lautlos-Schalter ausschalten.</p>
       </div>
       <div class="box"><b>Bild und Ton abstimmen</b>
         <div class="range"><input type="range" id="offset" min="-200" max="300" step="10" value="0" aria-label="Bildkorrektur in Millisekunden"><span class="val" id="offVal">0 ms</span></div>
-        <p style="margin-top:8px">Bei Bluetooth-Lautsprechern kommt der Ton später. Schiebe den Regler nach rechts, bis Licht und Klick zusammenpassen.</p>
+        <p style="margin-top:8px">Bei Bluetooth-Lautsprechern kommt der Ton später. Schiebe den Regler nach rechts, bis Licht und Klick zusammenpassen. Mit Auto-Sync gleichst du hier aus, wenn das Licht der Musik etwas vorausläuft oder hinterherkommt.</p>
       </div>
-      <div class="box"><b>Auto-Sync</b>Hört über das Mikrofon die Bassschläge von Musik im Raum, erkennt das Tempo und passt das Lauflicht behutsam an. Das klappt am besten mit deutlichem Beat zwischen 70 und 170 BPM.<p class="sync" id="syncInfo">Noch nicht aktiv.</p></div>
+      <div class="box"><b>Auto-Sync</b>Hört über das Mikrofon die Musik im Raum, erkennt nach etwa fünf Sekunden Tempo und Beat und hält das Lauflicht im Takt. Drückst du Start auf der Eins, rastet das Licht dort ein. Während Auto-Sync bleibt der Trainer stumm, die Musik gibt den Ton an. Am besten klappt es mit deutlichem Schlagzeug zwischen 60 und 180 BPM. Läuft das Licht doppelt oder halb so schnell, tippe ein paar Schläge mit „Tippen“ mit.<p class="sync" id="syncInfo">Noch nicht aktiv.</p></div>
       <div class="box"><b>Tastatur</b>Leertaste startet und stoppt. Mit T tippst du das Tempo. Die Kästchen lassen sich mit Tab und Enter bedienen.</div>
     </div>
   </details>
@@ -259,7 +261,7 @@ function click(t, accent, dest){
 }
 
 /* ---------- Ablauf ---------- */
-const stepDur = () => 60 / bpm / 2;
+const stepDur = () => 60 / (syncTempo || bpm) / 2;
 function latency(){
   let l = 0;
   if (ctx){ l = (typeof ctx.outputLatency === 'number' && ctx.outputLatency > 0) ? ctx.outputLatency : (ctx.baseLatency || 0); }
@@ -268,8 +270,10 @@ function latency(){
 function scheduler(){
   while (nextTime < ctx.currentTime + 0.12){
     const st = nextStep, pos = st < 0 ? st + N : st;
-    if (pos % 2 === 0 && (clickOn || st < 0)) click(nextTime, pos === 2 || pos === 6, runGain);
-    if (st >= 0) for (let r = 0; r < ROWS.length; r++) if (grid[r][st]) voice(r, nextTime, runGain);
+    if (!mic){
+      if (pos % 2 === 0 && (clickOn || st < 0)) click(nextTime, pos === 2 || pos === 6, runGain);
+      if (st >= 0) for (let r = 0; r < ROWS.length; r++) if (grid[r][st]) voice(r, nextTime, runGain);
+    }
     queue.push({step: st, time: nextTime, dur: stepDur()});
     log.push([st, nextTime]); if (log.length > 40) log.shift();
     nextTime += stepDur();
@@ -306,12 +310,16 @@ function start(){
   ensureAudio();
   runGain = ctx.createGain(); runGain.gain.value = 1; runGain.connect(master);
   playing = true; queue = []; shown = undefined;
-  nextStep = countInOn ? -N : 0;
-  nextTime = ctx.currentTime + 0.15;
+  const snapped = syncSnap();
+  if (!snapped){
+    nextStep = countInOn ? -N : 0;
+    nextTime = ctx.currentTime + 0.15;
+  }
   scheduler(); timer = setInterval(scheduler, 25);
   raf = requestAnimationFrame(draw);
   $('playStop').textContent = '■ Stopp'; $('playStop').classList.add('on');
-  say(countInOn ? 'Einzählen, dann geht es los.' : 'Läuft mit ' + bpm + ' BPM.');
+  if (snapped){ syncMsg = ''; syncSay('Auto-Sync: Das Licht läuft mit der Musik (' + bpm + ' BPM).'); }
+  else say(mic ? (countInOn ? 'Einzählen ohne Klang, Auto-Sync hört weiter zu.' : 'Läuft, Auto-Sync hört weiter zu.') : (countInOn ? 'Einzählen, dann geht es los.' : 'Läuft mit ' + bpm + ' BPM.'));
   try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(w => { wake = w; }).catch(() => {}); } catch (e) {}
 }
 function stop(){
@@ -340,12 +348,15 @@ function tap(){
     const iv = []; for (let i = 1; i < taps.length; i++) iv.push(taps[i] - taps[i - 1]);
     iv.sort((a, b) => a - b);
     const med = iv[Math.floor(iv.length / 2)];
-    setBpm(60 / med, true); say('Getippt: ' + bpm + ' BPM.');
+    setBpm(60 / med, true); syncHint(60 / med); say('Getippt: ' + bpm + ' BPM.');
   } else say('Weiter tippen …');
 }
 
 /* ---------- Auto-Sync (nur Rhythmus) ---------- */
-let mic = null, an = null, syncTimer = null, onsets = [], hist = [], lastOnset = 0, detected = 0;
+/* Ablauf: Mikrofon freigeben → eigener Hör-Kontext → Beat-Erkennung (beatTracker) → Tempo und Beat-Phase.
+   Läuft das Licht, rastet es auf dem Beat ein. Während Auto-Sync bleibt der Trainer stumm, damit er sich
+   nicht selbst hört; die Musik im Raum gibt den Ton an. */
+let mic = null, syncTempo = 0, syncLocked = false, syncMsg = '', manualTempo = 0;
 /* Safari (iPad, iPhone, Mac): Für die Aufnahme braucht die Audio-Sitzung den Typ „play-and-record“.
    Die Wiedergabe setzt sonst „playback“, damit der Klang auch bei Stummschalter hörbar bleibt. */
 function syncSession(aufnahme){ try { if (navigator.audioSession) navigator.audioSession.type = aufnahme ? 'play-and-record' : 'playback'; } catch (e) {} }
@@ -359,10 +370,190 @@ function syncFehler(e){
   if (/NotReadable|TrackStart|Abort/.test(n)) return 'Das Mikrofon ist gerade belegt, etwa durch eine andere App oder einen Anruf.' + syncTipp();
   return 'Mikrofon nicht verfügbar (' + n + ').' + syncTipp();
 }
+/* Beat-Erkennung für Auto-Sync (ohne Bibliotheken, läuft im Browser und in Node).
+   Ablauf: Fenster 1024 Samples, Schritt 512 → Spektrum in 28 Bändern → spektraler Fluss (Zuwachs der
+   logarithmischen Bandenergie) → Tempo über Autokorrelation mit Kammfilter und Tempo-Vorliebe →
+   Beat-Phase über Kammfilter auf den letzten Sekunden. Zeiten in Sekunden seit dem ersten Sample. */
+function beatTracker(sr, opt){
+  opt = opt || {};
+  const N = 1024, H = 512, fr = sr / H;
+  const BIAS = opt.bias != null ? opt.bias : 0.014;    // Versatz des Flusses gegenüber dem Schlag, an Testsignalen bestimmt
+  const MAXF = Math.ceil(fr * 9);                      // Puffer für 9 s Onset-Kurve
+  /* FFT */
+  const rev = new Uint32Array(N), cosT = new Float32Array(N / 2), sinT = new Float32Array(N / 2);
+  for (let i = 0, bits = Math.log2(N); i < N; i++){ let r = 0; for (let b = 0; b < bits; b++) r |= ((i >> b) & 1) << (bits - 1 - b); rev[i] = r; }
+  for (let i = 0; i < N / 2; i++){ cosT[i] = Math.cos(2 * Math.PI * i / N); sinT[i] = -Math.sin(2 * Math.PI * i / N); }
+  const hann = new Float32Array(N); for (let i = 0; i < N; i++) hann[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / N);
+  const re = new Float32Array(N), im = new Float32Array(N);
+  function fft(){
+    for (let i = 0; i < N; i++){ const j = rev[i]; if (j > i){ let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; } }
+    for (let size = 2; size <= N; size <<= 1){
+      const half = size >> 1, step = N / size;
+      for (let s = 0; s < N; s += size) for (let k = 0; k < half; k++){
+        const c = cosT[k * step], sn = sinT[k * step], a = s + k, b = a + half;
+        const tr = re[b] * c - im[b] * sn, ti = re[b] * sn + im[b] * c;
+        re[b] = re[a] - tr; im[b] = im[a] - ti; re[a] += tr; im[a] += ti;
+      }
+    }
+  }
+  /* Bänder: logarithmisch 60 Hz … 11 kHz */
+  const NB = 28, lo = 60, hi = Math.min(11000, sr * 0.45), bands = [];
+  for (let b = 0; b < NB; b++){
+    const f0 = lo * Math.pow(hi / lo, b / NB), f1 = lo * Math.pow(hi / lo, (b + 1) / NB);
+    let k0 = Math.round(f0 * N / sr), k1 = Math.round(f1 * N / sr);
+    if (k1 <= k0) k1 = k0 + 1;
+    if (bands.length && k0 < bands[bands.length - 1][1]) k0 = bands[bands.length - 1][1];
+    if (k1 > k0) bands.push([k0, k1]);
+  }
+  const CAP = opt.cap != null ? opt.cap : 2.5, CLIP = opt.clip != null ? opt.clip : 0;
+  const nb = bands.length, bandMean = new Float32Array(nb), prevL = new Float32Array(nb);
+  /* Zustand */
+  const ring = new Float32Array(N); let wi = 0, total = 0, frames = 0, warm = 0;
+  const odf = new Float32Array(MAXF);   // Ringpuffer der Onset-Kurve
+  let level = 0;                        // gleitender Effektivwert
+  const SIG = opt.sigma || 1.0, LN = opt.lockN || 4, LT = opt.lockTol || 0.02, MC = opt.minConf != null ? opt.minConf : 0.1, PT = opt.phaseTol != null ? opt.phaseTol : 0.1, MISS = opt.miss || 8, MP = opt.minPeak != null ? opt.minPeak : 12;
+  const st = {tempo: 0, period: 0, conf: 0, beat: 0, locked: false, hist: [], bh: [], prior: opt.prior || 120, lockP: 0, miss: 0, updates: 0};
+
+  function frame(){
+    for (let i = 0; i < N; i++){ re[i] = ring[(wi + i) % N] * hann[i]; im[i] = 0; }
+    fft();
+    let flux = 0;
+    const a = warm < fr * 3 ? 1 / (warm + 1) : 1 / (fr * 3);
+    for (let b = 0; b < nb; b++){
+      let e = 0; for (let k = bands[b][0]; k < bands[b][1]; k++) e += re[k] * re[k] + im[k] * im[k];
+      bandMean[b] += a * (e - bandMean[b]);
+      const L = Math.log(e + 1e-3 * bandMean[b] + 1e-12);
+      if (warm > 0){ const d = L - prevL[b]; if (d > 0) flux += d < CAP ? d : CAP; }   // Deckel: Einsatz aus Stille soll nicht alles überstrahlen
+      prevL[b] = L;
+    }
+    warm++;
+    odf[frames % MAXF] = flux;
+    frames++;
+  }
+  function push(x){
+    let s2 = 0;
+    for (let i = 0; i < x.length; i++){
+      const v = x[i]; s2 += v * v;
+      ring[wi] = v; wi = (wi + 1) % N; total++;
+      if (total >= N && (total - N) % H === 0) frame();   // Frame f endet bei Sample N + f·H
+    }
+    const r = Math.sqrt(s2 / Math.max(1, x.length));
+    level += (r - level) * 0.15;
+  }
+  /* Onset-Kurve der letzten W Frames, ältester Wert zuerst */
+  function recent(W){
+    const o = new Float32Array(W), start = frames - W;
+    for (let i = 0; i < W; i++) o[i] = odf[(start + i) % MAXF];
+    return o;
+  }
+  function prep(o){
+    // gleitenden Mittelwert (±0,16 s) abziehen, nur Spitzen behalten, normieren
+    const W = o.length, h = Math.round(fr * 0.16), p = new Float32Array(W);
+    let sum = 0, cnt = 0, lo2 = 0, hi2 = -1;
+    for (let i = 0; i < W; i++){
+      while (hi2 < Math.min(W - 1, i + h)){ hi2++; sum += o[hi2]; cnt++; }
+      while (lo2 < i - h){ sum -= o[lo2]; lo2++; cnt--; }
+      const v = o[i] - sum / cnt; p[i] = v > 0 ? v : 0;
+    }
+    // Ausreißer kappen (z. B. der Moment, in dem die Musik einsetzt)
+    if (CLIP){ const srt = Array.from(p).sort((a, b) => a - b), q = srt[Math.floor(W * 0.95)] * CLIP; if (q > 0) for (let i = 0; i < W; i++) if (p[i] > q) p[i] = q; }
+    let m = 0; for (let i = 0; i < W; i++) m += p[i]; m /= W;
+    let v2 = 0; for (let i = 0; i < W; i++){ p[i] -= m; v2 += p[i] * p[i]; }
+    const sd = Math.sqrt(v2 / W) || 1;
+    for (let i = 0; i < W; i++) p[i] /= sd;
+    return p;
+  }
+  const at = (arr, x) => { const i = Math.floor(x), f = x - i; if (i < 0 || i + 1 >= arr.length) return 0; return arr[i] * (1 - f) + arr[i + 1] * f; };
+  function update(){
+    st.updates++;
+    const have = Math.min(frames, MAXF);
+    if (have < fr * 3.5) return st;
+    const W = Math.min(have, Math.round(fr * 8));
+    const o = prep(recent(W));
+    const Lmin = Math.floor(fr * 60 / 180), Lmax = Math.ceil(fr * 60 / 55);
+    const Lr = Math.min(Math.floor(W * 0.6), Lmax * 4 + 2);
+    const r = new Float32Array(Lr + 2);
+    for (let L = 0; L <= Lr + 1; L++){ let s = 0; for (let n = L; n < W; n++) s += o[n] * o[n - L]; r[L] = s / (W - L); }
+    const r0 = r[0] || 1;
+    const wk = [1, 0.6, 0.45, 0.35];
+    let best = -1e9, bestL = 0;
+    const score = L => { let s = 0; for (let k = 1; k <= 4; k++){ const x = k * L; if (x > Lr) break; s += wk[k - 1] * at(r, x); } return s; };
+    let sSum = 0, sN = 0;
+    for (let L = Lmin; L <= Lmax; L += 0.25){
+      const bpm = 60 * fr / L;
+      let s = score(L) * Math.exp(-0.5 * Math.pow(Math.log2(bpm / st.prior) / SIG, 2));
+      if (st.locked && Math.abs(L / st.lockP - 1) < 0.03) s *= 1.25;
+      sSum += Math.max(0, s); sN++;
+      if (s > best){ best = s; bestL = L; }
+    }
+    const peak = best / (sSum / sN + 1e-9);
+    // Periode verfeinern: Maxima der Autokorrelation bei k·L
+    let num = 0, den = 0;
+    for (let k = 1; k <= 4; k++){
+      const c = k * bestL; if (c + 2 > Lr) break;
+      let m = Math.round(c);
+      for (let d = -2; d <= 2; d++) if (r[Math.round(c) + d] > r[m]) m = Math.round(c) + d;
+      if (m <= 0 || m >= Lr) continue;
+      const y0 = r[m - 1], y1 = r[m], y2 = r[m + 1], dd = y0 - 2 * y1 + y2;
+      const pk = m + (dd < 0 ? 0.5 * (y0 - y2) / dd : 0);
+      num += pk; den += k;
+    }
+    const P = den ? num / den : bestL;
+    const conf = Math.max(0, at(r, P) / r0);
+    // Phase: Kammfilter über die letzten 5 s (neuere Schläge zählen mehr)
+    const K = Math.max(2, Math.floor(fr * 5 / P));
+    let bphi = 0, bc = -1e9;
+    const comb = phi => { let c = 0, g = 1; for (let k = 0; k < K; k++){ c += g * at(o, W - 1 - phi - k * P); g *= 0.88; } return c; };
+    let cS = 0, cS2 = 0, cN = 0;
+    for (let phi = 0; phi < P; phi += 0.5){ const c = comb(phi); cS += c; cS2 += c * c; cN++; if (c > bc){ bc = c; bphi = phi; } }
+    const cM = cS / cN, cSd = Math.sqrt(Math.max(1e-12, cS2 / cN - cM * cM)), pc = (bc - cM) / cSd;
+    const c0 = comb(bphi - 0.5), c2 = comb(bphi + 0.5), d2 = c0 - 2 * bc + c2;
+    if (d2 < 0) bphi += 0.5 * 0.5 * (c0 - c2) / d2;
+    const lastFrame = frames - 1 - bphi;
+    const beat = (lastFrame * H + N) / sr - BIAS;
+    const bpmNow = 60 * fr / P;
+    // Einrasten: LN Schätzungen hintereinander innerhalb von LT, Beat-Phase passt zusammen
+    st.hist.push(bpmNow); if (st.hist.length > 12) st.hist.shift();
+    st.bh.push(beat); if (st.bh.length > 12) st.bh.shift();
+    st.qh = st.qh || []; st.qh.push([conf, peak]); if (st.qh.length > 12) st.qh.shift();
+    const qN = st.qh.slice(-LN), mConf = qN.reduce((a, q) => a + q[0], 0) / qN.length, mPeak = qN.reduce((a, q) => a + q[1], 0) / qN.length;
+    const hN = st.hist.slice(-LN);
+    let ok = hN.length === LN && Math.max(...hN) / Math.min(...hN) < 1 + LT && mConf > MC && mPeak > MP;
+    if (ok && PT){
+      const Pm = 60 / (hN.reduce((a, b) => a + b, 0) / LN), bN = st.bh.slice(-LN), bl = bN[LN - 1];
+      for (const b0 of bN){ const d = (bl - b0) / Pm; if (Math.abs(d - Math.round(d)) > PT) ok = false; }
+    }
+    if (st.locked){
+      if (Math.abs(bpmNow / st.tempo - 1) < 0.03){ st.tempo += 0.25 * (bpmNow - st.tempo); st.miss = 0; }
+      else if (++st.miss >= MISS){ st.locked = false; st.miss = 0; }
+    } else if (ok){ st.locked = true; st.tempo = hN.reduce((a, b) => a + b, 0) / LN; st.miss = 0; }
+    if (st.locked) st.lockP = 60 * fr / st.tempo;
+    st.period = 60 / (st.locked ? st.tempo : bpmNow);
+    st.raw = bpmNow; st.peak = peak; st.pc = pc; st.conf = conf; st.beat = beat; st.now = (N + (frames - 1) * H) / sr;
+    return st;
+  }
+  /* Hinweis von außen (Tippen oder Tempo-Eingabe): Vorliebe verschieben, Oktave sofort übernehmen */
+  function hint(bpm){
+    if (!(bpm > 0)) return;
+    st.prior = Math.max(60, Math.min(180, bpm));
+    if (st.locked){
+      const q = Math.log2(bpm / st.tempo), k = Math.round(q);
+      if (k !== 0 && Math.abs(q - k) < 0.09){ st.tempo *= Math.pow(2, k); st.lockP = 60 * fr / st.tempo; st.period = 60 / st.tempo; st.hist = []; }
+    }
+  }
+  return {push, update, hint, st, fr, get level(){ return level; }, get time(){ return total / sr; }};
+}
+function outLat(){ return ctx ? ((typeof ctx.outputLatency === 'number' && ctx.outputLatency > 0) ? ctx.outputLatency : (ctx.baseLatency || 0)) : 0; }
+function median(a){ const s = a.slice().sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : 0; }
+/* Hör-Zeit (Kontext des Mikrofons) → Zeit des Wiedergabe-Kontexts */
+function toCtx(tA){ return tA + mic.delta; }
+/* Planungszeit des nächsten Musik-Schlags k (Wiedergabe-Kontext), so dass Licht und Musik zusammenfallen */
+function beatPlan(){ return toCtx(mic.beatA) - mic.inLat - outLat(); }
 async function syncStart(){
-  ensureAudio();
   const md = navigator.mediaDevices;
   if (!md || !md.getUserMedia){ say('Dieser Browser erlaubt hier kein Mikrofon.' + syncTipp()); return; }
+  $('autoSync').disabled = true;
+  say('Mikrofon startet …');
   syncSession(true);
   let stream = null, err = null;
   try {
@@ -373,104 +564,154 @@ async function syncStart(){
       try { stream = await md.getUserMedia({audio: true}); err = null; } catch (e2) { err = e2; }
     }
   }
+  $('autoSync').disabled = false;
   if (!stream){ syncSession(false); say(syncFehler(err)); return; }
   try {
-    let src;
-    try { src = ctx.createMediaStreamSource(stream); }
+    const AC = window.AudioContext || window.webkitAudioContext;
+    // Eigener Hör-Kontext, erst nach der Freigabe erzeugt (das iPad liefert sonst mitunter nur Stille)
+    let actx = new AC(), src;
+    try { src = actx.createMediaStreamSource(stream); }
     catch (e) {
-      // Firefox: Mikrofon und Wiedergabe mit unterschiedlicher Abtastrate. Dann ein eigener Kontext nur zum Hören.
-      const AC = window.AudioContext || window.webkitAudioContext;
+      // Firefox: Mikrofon und Kontext mit unterschiedlicher Abtastrate
+      try { actx.close(); } catch (e2) {}
       const sr = (stream.getAudioTracks()[0].getSettings() || {}).sampleRate;
-      const hctx = sr ? new AC({sampleRate: sr}) : new AC();
-      src = hctx.createMediaStreamSource(stream);
-      if (hctx.state !== 'running') hctx.resume();
+      actx = sr ? new AC({sampleRate: sr}) : new AC();
+      src = actx.createMediaStreamSource(stream);
     }
-    mic = {stream, src};
-    an = src.context.createAnalyser(); an.fftSize = 1024; an.smoothingTimeConstant = 0;
-    src.connect(an);
-    onsets = []; hist = []; lastOnset = 0; detected = 0;
-    syncTimer = setInterval(syncTick, 10);
+    const proc = actx.createScriptProcessor(2048, 1, 1);
+    const sink = actx.createGain(); sink.gain.value = 0;
+    src.connect(proc); proc.connect(sink); sink.connect(actx.destination);
+    const set = (stream.getAudioTracks()[0] && stream.getAudioTracks()[0].getSettings) ? stream.getAudioTracks()[0].getSettings() : {};
+    const tr = beatTracker(actx.sampleRate, {prior: manualTempo || 120});
+    mic = {stream, actx, src, proc, sink, tr, n: 0, dmin: [], t0: 0, peak: 0, last: 0, beatA: 0, delta: 0, dh: [], err: 0, big: 0,
+           inLat: (typeof set.latency === 'number' && set.latency > 0 && set.latency < 0.5) ? set.latency : 0.03, quietSince: 0};
+    proc.onaudioprocess = ev => {
+      const m = mic; if (!m || m.proc !== proc) return;
+      const x = ev.inputBuffer.getChannelData(0);
+      m.n += x.length;
+      // Sample-Zähler → Kontextzeit: kleinste Differenz der letzten Sekunden
+      m.dmin.push(actx.currentTime - m.n / actx.sampleRate); if (m.dmin.length > 40) m.dmin.shift();
+      m.t0 = Math.min.apply(null, m.dmin);
+      for (let i = 0; i < x.length; i += 8){ const v = Math.abs(x[i]); if (v > m.peak) m.peak = v; }
+      m.tr.push(x);
+      if (m.tr.time - m.last >= 0.25){ m.last = m.tr.time; syncUpdate(); }
+    };
+    if (actx.state !== 'running') actx.resume().catch(() => {});
+    ensureAudio();            // Wiedergabe-Kontext jetzt bereitstellen, damit beide Uhren abgeglichen werden können
+    syncTempo = 0; syncLocked = false; syncMsg = '';
     $('autoSync').classList.add('on'); $('autoSync').textContent = 'Sync stoppen';
-    say('Auto-Sync hört zu. Musik im Raum laufen lassen.');
+    syncSay('Auto-Sync hört zu. Musik im Raum laufen lassen.');
+    $('syncInfo').textContent = 'Hört zu …';
+    setTimeout(() => syncCheck(proc), 2500);
+    requestAnimationFrame(() => syncFlash(mic));
   } catch (e) {
     stream.getTracks().forEach(t => t.stop());
     mic = null; syncSession(false); say(syncFehler(e));
   }
 }
+function syncCheck(proc){
+  const m = mic; if (!m || m.proc !== proc) return;
+  if (m.n === 0){
+    say('Das Mikrofon ist bereit, liefert aber noch nichts. Tippe einmal irgendwo auf die Seite.');
+    const wake = () => { if (mic === m){ m.actx.resume().catch(() => {}); if (ctx) ctx.resume().catch(() => {}); setTimeout(() => syncCheck(proc), 1500); } };
+    document.addEventListener('pointerdown', wake, {once: true});
+  } else if (m.peak === 0){
+    say('Das Mikrofon liefert nur Stille. Vielleicht nutzt eine andere App es gerade. Auto-Sync stoppen und neu starten.');
+  }
+}
 function syncStop(){
-  clearInterval(syncTimer); syncTimer = null;
-  if (mic){
-    mic.stream.getTracks().forEach(t => t.stop()); mic.src.disconnect();
-    if (mic.src.context !== ctx){ try { mic.src.context.close(); } catch (e) {} }
-    mic = null;
+  const m = mic; mic = null;
+  if (m){
+    try { m.proc.onaudioprocess = null; m.src.disconnect(); m.proc.disconnect(); m.sink.disconnect(); } catch (e) {}
+    m.stream.getTracks().forEach(t => t.stop());
+    try { m.actx.close(); } catch (e) {}
   }
+  const had = syncLocked;
+  syncTempo = 0; syncLocked = false; syncMsg = '';
   syncSession(false);
-  $('autoSync').classList.remove('on'); $('autoSync').textContent = 'Auto-Sync';
-  say(detected ? 'Sync beendet. Tempo bleibt bei ' + bpm + ' BPM.' : 'Sync beendet.');
+  $('autoSync').classList.remove('on', 'beat'); $('autoSync').textContent = 'Auto-Sync';
+  $('syncInfo').textContent = 'Noch nicht aktiv.';
+  say(had ? 'Sync beendet. Tempo bleibt bei ' + bpm + ' BPM.' : 'Sync beendet.');
 }
-const fbuf = new Uint8Array(512);
-function syncTick(){
-  an.getByteFrequencyData(fbuf);
-  const binHz = an.context.sampleRate / an.fftSize;
-  let e = 0, n = 0;
-  for (let i = 1; i * binHz < 180; i++){ e += fbuf[i] * fbuf[i]; n++; }
-  e = n ? e / n : 0;
-  hist.push(e); if (hist.length > 150) hist.shift();
-  const mean = hist.reduce((a, b) => a + b, 0) / hist.length;
-  const sd = Math.sqrt(hist.reduce((a, b) => a + (b - mean) * (b - mean), 0) / hist.length);
-  const t = ctx.currentTime;
-  if (hist.length > 30 && e > mean + 1.5 * sd && e > 400 && t - lastOnset > 0.28){
-    lastOnset = t; onsets.push(t); if (onsets.length > 24) onsets.shift();
-    estimate(); nudge(t);
+/* Statuszeile nur bei neuer Aussage überschreiben, damit andere Meldungen lesbar bleiben */
+function syncSay(t){ if (t !== syncMsg){ syncMsg = t; say(t); } }
+function syncUpdate(){
+  const m = mic, s = m.tr.update();
+  // Uhren abgleichen (Wiedergabe-Kontext gegen Hör-Kontext)
+  if (ctx && ctx.state === 'running' && ctx.currentTime > 0){ m.dh.push(ctx.currentTime - m.actx.currentTime); if (m.dh.length > 24) m.dh.shift(); m.delta = median(m.dh); }
+  const db = 20 * Math.log10(m.tr.level + 1e-9);
+  const pegel = db > -45 ? 'gut' : db > -60 ? 'leise' : 'sehr leise';
+  if (db <= -60){ if (!m.quietSince) m.quietSince = m.tr.time; } else m.quietSince = 0;
+  if (s.locked){
+    m.beatA = s.beat + m.t0;
+    syncTempo = s.tempo;
+    if (Math.round(s.tempo) !== bpm) setBpm(s.tempo, true);
+    syncLocked = true;
+    if (playing) phaseLock();
+    syncSay(playing ? 'Auto-Sync: Das Licht läuft mit der Musik (' + bpm + ' BPM).' : 'Tempo erkannt: ' + bpm + ' BPM. Drück Start auf der Eins, dann läuft das Licht im Takt.');
+  } else {
+    if (syncLocked){ syncLocked = false; syncTempo = 0; }
+    if (m.quietSince && m.tr.time - m.quietSince > 3) syncSay('Auto-Sync hört kaum etwas. Musik lauter stellen oder das Gerät näher an den Lautsprecher legen.');
+    else if (m.tr.time > 4) syncSay(playing ? 'Auto-Sync sucht den Beat. Das Licht läuft so lange im eingestellten Tempo.' : 'Auto-Sync sucht den Beat …');
   }
+  const sicher = s.conf > 0.3 ? 'hoch' : 'mittel';
+  $('syncInfo').textContent = 'Pegel ' + pegel + ' · ' + (syncLocked ? 'Erkannt: ' + bpm + ' BPM · Sicherheit ' + sicher + (playing ? ' · Versatz ' + Math.round(m.err * 1000) + ' ms' : '') : 'Tempo wird gesucht …');
 }
-function estimate(){
-  if (onsets.length < 6) return;
-  const iv = [];
-  for (let i = 1; i < onsets.length; i++){
-    let d = onsets[i] - onsets[i - 1];
-    while (60 / d < 70) d /= 2;
-    while (60 / d > 170) d *= 2;
-    iv.push(d);
+/* Licht auf den Musik-Schlag ziehen: nächsten Hauptschlag des Lichts mit dem nächsten Musik-Schlag vergleichen.
+   Behutsam (höchstens 6 % eines Schlags je Viertelsekunde), damit das Licht nicht springt. */
+function phaseLock(){
+  const m = mic; if (!m || !m.beatA || !playing || !ctx || m.dh.length < 3) return;
+  const P = 60 / syncTempo, T0 = beatPlan();
+  const even = ((nextStep % 2) + 2) % 2 === 0;
+  const Tn = even ? nextTime : nextTime + stepDur();
+  const k = Math.round((Tn - T0) / P), err = Tn - (T0 + k * P);
+  m.err = err;
+  // Einzelne Ausreißer der Schätzung übergehen; erst wenn eine große Abweichung bleibt, nachziehen
+  if (Math.abs(err) > 0.2 * P){ if (++m.big < 4) return; } else m.big = 0;
+  const corr = Math.max(-0.06 * P, Math.min(0.06 * P, 0.35 * err));
+  nextTime = Math.max(ctx.currentTime + 0.005, nextTime - corr);
+}
+/* Start mit erkanntem Beat: erster Schritt fällt auf den Musik-Schlag, der dem Tippen am nächsten liegt */
+function syncSnap(){
+  const m = mic; if (!m || !syncLocked || !m.beatA || m.dh.length < 3 || !ctx || ctx.state !== 'running') return false;
+  const P = 60 / syncTempo, T0 = beatPlan(), press = ctx.currentTime - outLat();
+  nextStep = 0; nextTime = T0 + Math.round((press - T0) / P) * P;
+  // liegt der Schlag schon zurück: Schritte stumm nachtragen, das Licht steht sofort richtig
+  while (nextTime < ctx.currentTime + 0.005){
+    queue.push({step: nextStep, time: nextTime, dur: stepDur()});
+    nextTime += stepDur(); nextStep = (nextStep + 1) % N;
   }
-  iv.sort((a, b) => a - b);
-  const med = iv[Math.floor(iv.length / 2)];
-  const good = iv.filter(d => Math.abs(d - med) / med < 0.08).length / iv.length;
-  const est = 60 / med;
-  if (good >= 0.5){
-    detected = detected ? detected * 0.7 + est * 0.3 : est;
-    if (Math.abs(Math.round(detected) - bpm) >= 1) setBpm(detected, true);
+  return true;
+}
+/* Auto-Sync-Knopf blinkt auf den erkannten Schlägen, so lässt sich die Erkennung mit dem Ohr prüfen */
+function syncFlash(m0){
+  const m = mic; if (!m || m !== m0) return;
+  let on = false;
+  if (syncLocked && m.beatA){
+    const P = 60 / syncTempo, ph = (m.actx.currentTime - (m.beatA - m.inLat)) / P;
+    on = ph - Math.floor(ph) < 0.18;
   }
-  $('syncInfo').textContent = 'Erkannt: ' + (detected ? Math.round(detected) + ' BPM' : '…') + ' · Sicherheit ' + Math.round(good * 100) + ' %';
+  $('autoSync').classList.toggle('beat', on);
+  requestAnimationFrame(() => syncFlash(m));
 }
-function nudge(t){
-  if (!playing || !detected) return;
-  const beat = 2 * stepDur();
-  let best = null;
-  for (const q of queue) if (q.step >= 0 && q.step % 2 === 0){ if (best === null || Math.abs(q.time - t) < Math.abs(best - t)) best = q.time; }
-  if (best === null) return;
-  let err = t - best;
-  if (Math.abs(err) > beat / 2) return;
-  const corr = Math.max(-0.1 * stepDur(), Math.min(0.1 * stepDur(), err * 0.25));
-  nextTime += corr;
-  $('syncInfo').textContent += ' · Versatz ' + Math.round(err * 1000) + ' ms';
-}
+/* Tippen oder Tempo-Eingabe während Auto-Sync: Hinweis für die Erkennung (z. B. doppelt statt halb) */
+function syncHint(v){ manualTempo = v; if (mic){ syncTempo = 0; mic.tr.hint(v); } }
 
 /* ---------- Bedienung ---------- */
 function say(t){ $('status').textContent = t; }
 function bind(){
   $('playStop').addEventListener('click', () => playing ? stop() : start());
   $('tap').addEventListener('click', tap);
-  $('bpm').addEventListener('change', e => setBpm(e.target.value));
-  $('bpmDown').addEventListener('click', () => setBpm(bpm - 1));
-  $('bpmUp').addEventListener('click', () => setBpm(bpm + 1));
+  $('bpm').addEventListener('change', e => { setBpm(e.target.value); syncHint(bpm); });
+  $('bpmDown').addEventListener('click', () => { setBpm(bpm - 1); syncHint(bpm); });
+  $('bpmUp').addEventListener('click', () => { setBpm(bpm + 1); syncHint(bpm); });
   $('clear').addEventListener('click', clearAll);
   const tg = (id, fn) => $(id).addEventListener('click', () => { const b = $(id); const v = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', String(v)); fn(v); });
   tg('countIn', v => { countInOn = v; say(v ? 'Einzählen an.' : 'Einzählen aus.'); });
   tg('clickBtn', v => { clickOn = v; say(v ? 'Klick an.' : 'Klick aus.'); });
   $('vol').addEventListener('input', e => { volume = e.target.value / 100; $('volVal').textContent = e.target.value + ' %'; if (master) master.gain.value = volume; });
   $('offset').addEventListener('input', e => { offsetMs = Number(e.target.value); $('offVal').textContent = offsetMs + ' ms'; });
-  if (CFG.autosync) $('autoSync').addEventListener('click', () => syncTimer ? syncStop() : syncStart());
+  if (CFG.autosync) $('autoSync').addEventListener('click', () => mic ? syncStop() : syncStart());
   const root = document.documentElement;
   const canFs = root.requestFullscreen || root.webkitRequestFullscreen;
   if (canFs){
@@ -502,7 +743,8 @@ buildGrid(); bind(); setBpm(100, true);
 fit(); window.addEventListener('resize', fit); window.addEventListener('orientationchange', () => setTimeout(fit, 300));
 document.addEventListener('fullscreenchange', () => setTimeout(fit, 200)); document.addEventListener('webkitfullscreenchange', () => setTimeout(fit, 200));
 say('Punkte setzen, dann Start drücken.');
-window.__trainer = {log, get queue(){ return queue; }, get ctx(){ return ctx; }, get bpm(){ return bpm; }, start, stop, setBpm, tap, voice: (ri, t, d) => voice(ri, t, d), get shown(){ return shown; }, latency};
+window.__trainer = {log, get queue(){ return queue; }, get ctx(){ return ctx; }, get bpm(){ return bpm; }, start, stop, setBpm, tap, voice: (ri, t, d) => voice(ri, t, d), get shown(){ return shown; }, latency,
+  get sync(){ return mic ? {locked: syncLocked, tempo: syncTempo, err: mic.err, delta: mic.delta, beatA: mic.beatA, inLat: mic.inLat, t0: mic.t0, n: mic.n, actxTime: mic.actx.currentTime, st: Object.assign({}, mic.tr.st, {hist: undefined, bh: undefined, qh: undefined}), level: mic.tr.level, plan: mic.beatA ? beatPlan() : 0} : null; }, get nextTime(){ return nextTime; }, get nextStep(){ return nextStep; }};
 })();
 
 </script>
