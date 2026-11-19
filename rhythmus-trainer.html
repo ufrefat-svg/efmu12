@@ -219,7 +219,7 @@ function ensureAudio(){
     noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.5), ctx.sampleRate);
     const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
   }
-  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+  try { if (navigator.audioSession && !mic) navigator.audioSession.type = 'playback'; } catch (e) {}
   if (ctx.state !== 'running') ctx.resume();
 }
 function env(g, t, peak, attack, decay){
@@ -346,32 +346,72 @@ function tap(){
 
 /* ---------- Auto-Sync (nur Rhythmus) ---------- */
 let mic = null, an = null, syncTimer = null, onsets = [], hist = [], lastOnset = 0, detected = 0;
+/* Safari (iPad, iPhone, Mac): Für die Aufnahme braucht die Audio-Sitzung den Typ „play-and-record“.
+   Die Wiedergabe setzt sonst „playback“, damit der Klang auch bei Stummschalter hörbar bleibt. */
+function syncSession(aufnahme){ try { if (navigator.audioSession) navigator.audioSession.type = aufnahme ? 'play-and-record' : 'playback'; } catch (e) {} }
+function syncTipp(){
+  return ' Das Tempo lässt sich auch mit „Tippen“ einstellen.' + (window.self !== window.top ? ' Am besten den Trainer direkt im Browser öffnen.' : '');
+}
+function syncFehler(e){
+  const n = (e && e.name) || 'Fehler';
+  if (/NotAllowed|Security/.test(n)) return 'Mikrofon nicht erlaubt. Bitte in den Einstellungen des Browsers oder Geräts freigeben.' + syncTipp();
+  if (/NotFound|DevicesNotFound|Overconstrained/.test(n)) return 'Kein Mikrofon gefunden.' + syncTipp();
+  if (/NotReadable|TrackStart|Abort/.test(n)) return 'Das Mikrofon ist gerade belegt, etwa durch eine andere App oder einen Anruf.' + syncTipp();
+  return 'Mikrofon nicht verfügbar (' + n + ').' + syncTipp();
+}
 async function syncStart(){
   ensureAudio();
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ say('Dieser Browser erlaubt kein Mikrofon.'); return; }
+  const md = navigator.mediaDevices;
+  if (!md || !md.getUserMedia){ say('Dieser Browser erlaubt hier kein Mikrofon.' + syncTipp()); return; }
+  syncSession(true);
+  let stream = null, err = null;
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}});
-    mic = {stream, src: ctx.createMediaStreamSource(stream)};
-    an = ctx.createAnalyser(); an.fftSize = 1024; an.smoothingTimeConstant = 0;
-    mic.src.connect(an);
+    stream = await md.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}});
+  } catch (e) {
+    err = e;
+    if (!/NotAllowed|Security/.test(e && e.name)){
+      try { stream = await md.getUserMedia({audio: true}); err = null; } catch (e2) { err = e2; }
+    }
+  }
+  if (!stream){ syncSession(false); say(syncFehler(err)); return; }
+  try {
+    let src;
+    try { src = ctx.createMediaStreamSource(stream); }
+    catch (e) {
+      // Firefox: Mikrofon und Wiedergabe mit unterschiedlicher Abtastrate. Dann ein eigener Kontext nur zum Hören.
+      const AC = window.AudioContext || window.webkitAudioContext;
+      const sr = (stream.getAudioTracks()[0].getSettings() || {}).sampleRate;
+      const hctx = sr ? new AC({sampleRate: sr}) : new AC();
+      src = hctx.createMediaStreamSource(stream);
+      if (hctx.state !== 'running') hctx.resume();
+    }
+    mic = {stream, src};
+    an = src.context.createAnalyser(); an.fftSize = 1024; an.smoothingTimeConstant = 0;
+    src.connect(an);
     onsets = []; hist = []; lastOnset = 0; detected = 0;
     syncTimer = setInterval(syncTick, 10);
     $('autoSync').classList.add('on'); $('autoSync').textContent = 'Sync stoppen';
     say('Auto-Sync hört zu. Musik im Raum laufen lassen.');
   } catch (e) {
-    say(e && e.name === 'NotAllowedError' ? 'Mikrofon nicht erlaubt. Bitte in den Browser-Einstellungen freigeben.' : 'Mikrofon nicht verfügbar.');
+    stream.getTracks().forEach(t => t.stop());
+    mic = null; syncSession(false); say(syncFehler(e));
   }
 }
 function syncStop(){
   clearInterval(syncTimer); syncTimer = null;
-  if (mic){ mic.stream.getTracks().forEach(t => t.stop()); mic.src.disconnect(); mic = null; }
+  if (mic){
+    mic.stream.getTracks().forEach(t => t.stop()); mic.src.disconnect();
+    if (mic.src.context !== ctx){ try { mic.src.context.close(); } catch (e) {} }
+    mic = null;
+  }
+  syncSession(false);
   $('autoSync').classList.remove('on'); $('autoSync').textContent = 'Auto-Sync';
   say(detected ? 'Sync beendet. Tempo bleibt bei ' + bpm + ' BPM.' : 'Sync beendet.');
 }
 const fbuf = new Uint8Array(512);
 function syncTick(){
   an.getByteFrequencyData(fbuf);
-  const binHz = ctx.sampleRate / an.fftSize;
+  const binHz = an.context.sampleRate / an.fftSize;
   let e = 0, n = 0;
   for (let i = 1; i * binHz < 180; i++){ e += fbuf[i] * fbuf[i]; n++; }
   e = n ? e / n : 0;
