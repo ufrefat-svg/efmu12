@@ -8,7 +8,8 @@ Staatliches Studienseminar für Lehrerausbildung, Regionalstelle Mittelthüringe
 - `musikomat.html`: Musik’o’mat (Tisch 4)
 - `rhythmus-tresor.html`: Rhythmus-Tresor (Tisch 5)
 - `kompetenz-fussball.html`: Kompetenz Fußball (Abpfiff), Freitextsuche über alle Sammlungen und eigenen Sets. Ein Direktlink lädt eine Sammlung samt ihren Regeln, etwa `kompetenz-fussball.html#set=mrg-einstudieren` (Einstudieren im Fachunterricht, MRG „Musik im Fachunterricht“)
-- `suno-studio.html`: Suno Klanganweisung Studio, Version 9 als Web-Fassung ohne die beiden KI-Funktionen (Credits: Franz Pregler)
+- `suno-studio.html`: Suno Klanganweisung Studio, Version 10.0.1 als Web-Fassung. Drei Einstiege (Lernende, Lehrkräfte, Lehrerbildung), Begriffe deutsch und hörbar, Stichwörter oder Sätze, Vergleichspaar-Baukasten mit eigenen Aufgaben, Übergabe an die Lehrkraft per QR-Code oder Datei mit Sammelmappe. Ein Link mit `#u=…` legt eine Klanganweisung in die Sammelmappe, einer mit `#t=…` lädt eine eigene Aufgabe. Der Anhang hinter `#` wird nicht an den Server geschickt (Credits: Franz Pregler)
+- `druck/`: Druckpaket zum Suno Studio als PDF (Aufgabenkarten A5 und A4, Hörprotokoll, Lehrkraftblätter)
 - `rhythmus-trainer.html`: Rhythmus-Trainer (Drumset Coach), Raster 4 × 8 mit Lauflicht, Klick, Einzählen, Tippen und Auto-Sync über das Mikrofon
 - `melodie-trainer.html`: Melodie-Trainer, Raster mit den Tönen e, cis, h, a, fis, Lauflicht, Klick, Einzählen und Tippen
 - `ki-apps-bauen.html`: Anleitung „Eigene Musik-Apps mit KI bauen“ mit Ideen für den Musikunterricht, Grenzen, Recht und Datenschutz, Prompt-Baukasten, Beispiel-App und Checkliste
@@ -28,7 +29,7 @@ Werkzeuge zum Vorschlag „Beraten und beurteilen in einer Sprache“ (14 fachne
 
 Die Apps laufen im Browser ohne Anmeldung und senden keine Eingaben an einen Server.
 
-Die KI-Funktionen von Anno Musica, Kompetenz Fußball, Suno Studio, Entwurfsspiegel und Vierklang gibt es nur in den Fassungen als Claude-Artefakt (Claude-Konto nötig). In den Web-Fassungen hier zeigt jeweils ein Hinweis mit Link auf das Artefakt:
+Die KI-Funktionen von Anno Musica, Kompetenz Fußball, Suno Studio, Entwurfsspiegel und Vierklang gibt es nur in den Fassungen als Claude-Artefakt (Claude-Konto nötig). In den Web-Fassungen hier zeigt jeweils ein Hinweis mit Link auf das Artefakt. Im Suno Studio lassen sich die beiden KI-Funktionen in der Web-Fassung zusätzlich über „Prompt kopieren“ mit einem KI-Werkzeug eigener Wahl nutzen:
 - Anno Musica: https://claude.ai/artifact/26vPwww45xaSvFTd1PSpzE
 - Kompetenz Fußball: https://claude.ai/artifact/KQvasCkTS8qk6c94fRxqRq
 - Suno Studio: https://claude.ai/artifact/PYk8vokCz4wqz6kr9GNBFN
