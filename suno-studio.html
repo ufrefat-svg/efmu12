@@ -1233,6 +1233,7 @@ select.fi,input.fi,textarea.fi,textarea.fedit{background-color:#ffffff!important
   .mir-head{flex:1;min-width:0}
   .pbar-r .btn{padding:.35rem .65rem;font-size:.84rem}
   .tb-acts{margin-left:0;width:100%}
+  .tb-titles{flex:0 0 auto}
 }
 /* Kopf und Reiter bleiben beim Scrollen stehen: body darf dafür kein eigener Scrollbereich sein */
 body{overflow-x:hidden;overflow-x:clip!important}
@@ -1248,6 +1249,9 @@ body{overflow-x:hidden;overflow-x:clip!important}
   .doors.chosen .door-t{font-size:.8rem;letter-spacing:-.01em}
 }
 
+/* Version 10.0.1 */
+.chint.wortspeicher{font-size:.86rem;line-height:1.5}
+
 </style>
 </head>
 <body>
@@ -1257,7 +1261,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
 <!-- ═══════════ WEGWEISER ═══════════ -->
 <div id="landing">
   <header class="land-hdr">
-    <div class="land-logo">SUNO<span>STUDIO</span><em>v10</em></div>
+    <div class="land-logo">SUNO<span>STUDIO</span><em>v10.0.1</em></div>
     <div class="land-acts">
       <div class="more-wrap">
         <button class="hbtn" id="moreBtnL" aria-expanded="false" aria-controls="moreMenuL" onclick="toggleMore('L')">Mehr <span aria-hidden="true">▾</span></button>
@@ -1274,7 +1278,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
     </div>
 
     <div class="dsg" id="dsgNote">
-      <p><strong>Suno öffnet nur die Lehrkraft an ihrem eigenen Gerät.</strong> Lernende arbeiten hier im Studio, ohne Konto und ohne Datenübertragung. <button class="linkbtn" onclick="openLandPopup('dsgvo',this)">Warum ist das so?</button></p>
+      <p><strong>Suno öffnet nur die Lehrkraft an ihrem eigenen Gerät.</strong> Lernende arbeiten hier im Studio ohne Konto, ihre Eingaben bleiben auf dem Gerät. <button class="linkbtn" onclick="openLandPopup('dsgvo',this)">Warum ist das so?</button></p>
     </div>
 
     <h2 class="door-q" id="doorQ">Wer arbeitet gerade mit dem Studio?</h2>
@@ -1310,7 +1314,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
 
   <footer class="land-footer">
     <span>STAATLICHES STUDIENSEMINAR FÜR LEHRERAUSBILDUNG – Regionalstelle Mittelthüringen (Erfurt) – Lehramt an Gymnasien – Musik / Doppelfach Musik</span>
-    <span>Credits: Franz Pregler · Version 10 für Suno v6 · Stand 25.11.2026 · Web-Fassung</span>
+    <span>Credits: Franz Pregler · Version 10.0.1 für Suno v6 · Stand 25.11.2026 · Web-Fassung</span>
   </footer>
 </div>
 
@@ -1498,7 +1502,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
 <div class="modal-bg" id="introModal" onclick="if(event.target===this)closeIntro()" role="dialog" aria-modal="true" aria-labelledby="inTitle" aria-hidden="true">
   <div class="modal intro"><div class="m-hdr"><div><div class="m-kicker">Kurz erklärt</div><h2 id="inTitle">Suno Klanganweisung Studio</h2></div><button class="m-close" onclick="closeIntro()" aria-label="Schließen">✕</button></div>
     <div class="m-body">
-      <p class="in-lead">Das Studio übersetzt Klangideen in Klanganweisungen für Suno, ein Programm, das aus Text ganze Songs erzeugt. Jede Aufgabe stellt eine musikalische Frage, die ihr durch genaues Hören beantwortet. Suno öffnet nur die Lehrkraft an ihrem eigenen Gerät. Lernende arbeiten hier ohne Datenübertragung und übergeben ihre Klanganweisung als QR-Code oder Datei.</p>
+      <p class="in-lead">Das Studio übersetzt Klangideen in Klanganweisungen für Suno, ein Programm, das aus Text ganze Songs erzeugt. Jede Aufgabe stellt eine musikalische Frage, die ihr durch genaues Hören beantwortet. Suno öffnet nur die Lehrkraft an ihrem eigenen Gerät. Lernende arbeiten hier ohne Konto, ihre Eingaben bleiben auf dem Gerät. Die Klanganweisung übergeben sie als QR-Code oder Datei.</p>
       <ol class="in-steps" aria-label="So läuft eine Aufgabe">
         <li><b aria-hidden="true">1</b>Erwartung notieren</li>
         <li><b aria-hidden="true">2</b>Zwei Fassungen hören</li>
@@ -1634,7 +1638,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
 <div class="modal-bg" id="druckModal" onclick="closeModal('druckModal',event)" role="dialog" aria-modal="true" aria-labelledby="dkTitle" aria-hidden="true">
   <div class="modal" style="max-width:640px"><div class="m-hdr"><div><div class="m-kicker">Für Lehrkräfte</div><h2 id="dkTitle">Druckpaket</h2></div><button class="m-close" onclick="closeModal('druckModal')" aria-label="Schließen">✕</button></div>
     <div class="m-body">
-      <p>Alles für eine Stunde ohne Geräte in Schülerhand. Die Dateien sind fertige PDFs zum Ausdrucken.</p>
+      <p>Alles für eine Stunde, in der Lernende ohne Geräte arbeiten. Die Dateien sind fertige PDFs zum Ausdrucken.</p>
       <div id="dkList" class="dk-list"></div>
       <div class="acc-msg" id="dkMsg" role="status" aria-live="polite"></div>
       <p class="src">Stand 25.11.2026. Die Karten zeigen die Klanganweisung in Stichwörtern.</p>
@@ -1664,7 +1668,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
 <div id="app">
   <header id="hdr">
     <div class="hdr-inner">
-      <button class="logo" onclick="backToLanding()" aria-label="Zur Aufgabenliste">SUNO<span>STUDIO</span><em>v10</em></button>
+      <button class="logo" onclick="backToLanding()" aria-label="Zur Aufgabenliste">SUNO<span>STUDIO</span><em>v10.0.1</em></button>
       <button class="task-chip" id="taskChip" onclick="taskChipClick()">Aufgabe wählen</button>
       <div class="hdr-gap"></div>
       <span class="save-state" id="saveState" title="Der Stand wird im Browser dieses Geräts gesichert.">gespeichert ✓</span>
@@ -1692,6 +1696,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
   </nav>
 
   <main id="main" tabindex="-1">
+  <h1 class="sr-only">Suno Klanganweisung Studio</h1>
   <div id="taskbar" class="hidden"></div>
 
   <!-- ═══ 1 · KLANG ═══ -->
@@ -1841,7 +1846,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
     <section class="acc" id="k-sprache" data-title="Sprache" data-help="sprache"><div class="acc-b"><div class="cs" id="chips-meta" role="group" aria-label="Sprache"></div></div></section>
     <section class="acc" id="k-aus" data-title="Ausschlüsse" data-help="exclude">
       <div class="acc-b">
-        <p class="chint">Was <strong>nicht</strong> vorkommen soll, kommt hierher und nicht in den Stil.</p>
+        <p class="chint">Was <strong>nicht</strong> vorkommen soll, gehört in dieses Feld.</p>
         <div class="fg"><label class="fl" for="excludeInput">Ausschlüsse <span class="opt">mit Komma getrennt, englisch</span></label><input class="fi" id="excludeInput" placeholder="z. B. autotune, EDM drop, schlager" oninput="refreshAll()"><div class="cc" id="exc">0 / 1000</div></div>
         <div class="cw" id="excludeChips" role="group" aria-label="Häufige Ausschlüsse"></div>
       </div>
@@ -1857,7 +1862,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
 
   <!-- ═══ 2 · TEXT UND FORM ═══ -->
   <section class="tpanel" id="tab-text" data-tab="text" role="tabpanel" aria-labelledby="tabbtn-text" hidden>
-    <div class="tp-hdr"><h2>Text und Form</h2><p>Ablauf des Songs und Liedtext. Abschnitts-Tags und Regie gehören in den Liedtext, nicht in den Stil.</p></div>
+    <div class="tp-hdr"><h2>Text und Form</h2><p>Ablauf des Songs und Liedtext. Abschnitts-Tags und Regie stehen im Liedtext.</p></div>
     <section class="acc" id="t-form" data-title="Abschnitte und Regie" data-help="struktur">
       <div class="acc-b">
         <div class="sctrl">
@@ -1929,7 +1934,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
     <section class="acc" id="s-ki" data-title="KI-Song-Recherche" data-help="airesearch" data-sub="nur am Gerät der Lehrkraft">
       <div class="acc-b">
         <div id="airGate">
-          <div class="air-warn" id="airWarn"><strong>Nur am eigenen Gerät der Lehrkraft.</strong> Die Funktion fragt Claude über dein eigenes Claude-Konto, die Anfrage geht an Anthropic (USA). Nicht auf Schüler- oder Leihgeräten verwenden.</div>
+          <div class="air-warn" id="airWarn"><strong>Nur am eigenen Gerät der Lehrkraft.</strong> Die Funktion fragt Claude über dein eigenes Claude-Konto, die Anfrage geht an Anthropic (USA). Nicht auf Geräten von Lernenden und nicht auf Leihgeräten verwenden.</div>
           <label class="consent-row"><input type="checkbox" id="airConsent" onchange="onAirConsentChange()"><span>Ich arbeite an meinem eigenen Gerät und kenne die Datenschutzlage.</span></label>
         </div>
         <div id="airFeature" class="hidden air-feature">
@@ -2068,7 +2073,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
     </section>
     <section class="acc" id="s-studio" data-tier="premier" data-title="Studio-Chatleiste" data-sub="nur Premier">
       <div class="acc-b">
-        <p class="chint">Studio 2.0 ist ein Musikprogramm im Browser mit MIDI, Effekten und einer Chatleiste, die Spuren erzeugt und bearbeitet. Der MIDI-Export ist ein Raster, keine fertige Partitur.</p>
+        <p class="chint">Studio 2.0 ist ein Musikprogramm im Browser mit MIDI, Effekten und einer Chatleiste, die Spuren erzeugt und bearbeitet. Der MIDI-Export liefert ein Raster zum Weiterarbeiten.</p>
         <div class="fl" id="stL">Baustein wählen</div>
         <div class="cw" id="stChips" role="group" aria-labelledby="stL"></div>
         <div class="fg fg-top"><label class="fl" for="stFree">Ergänzung <span class="opt">englisch</span></label><input class="fi" id="stFree" placeholder="z. B. keep it under 90 BPM" oninput="stUpdate()"></div>
@@ -2083,15 +2088,16 @@ body{overflow-x:hidden;overflow-x:clip!important}
           <dt>Speech (Beta, seit 01.10.2026)</dt><dd>Gesprochener Text und Musik in einem Durchgang, etwa für Hörgeschichten. Tarife und Credits dafür nennt Suno bisher nicht.</dd>
           <dt>Workspaces (seit 15.10.2026)</dt><dd>Gemeinsame Arbeitsbereiche im Web, laut Suno für Pro und Premier. Für Lernende scheidet das aus, sie brauchen dafür ein eigenes Konto.</dd>
           <dt>Suno MCP (Beta, seit 28.10.2026)</dt><dd>Verbindet Suno mit KI-Assistenten wie Claude oder ChatGPT, Zugang über eine Warteliste, erzeugte Songs kosten Credits. Für die Schule gilt dasselbe wie für Suno selbst: nur am Gerät der Lehrkraft.</dd>
+          <dt>MIDI in Create (seit 04.11.2026)</dt><dd>Pro und Premier können einen Song aus einer eigenen MIDI-Datei beginnen, zum Start im einfachen Modus mit dem Modell v6-wild und nur im Browser am Computer. So kann ein Motiv, das die Klasse erfunden hat, zum Ausgangspunkt werden. Auch für hochgeladene Dateien erhält Suno Nutzungsrechte, siehe „Datenschutz und Urheberrecht“.</dd>
           <dt>Visuals (seit 17.11.2026)</dt><dd>Aus einem Song entstehen Videoclips von bis zu 15 Sekunden, bezahlt mit eigenen Visual Credits. Im Unterricht eignet sich das als Gesprächsanlass zum Verhältnis von Bild und Musik. Keine Fotos oder Videos von Lernenden hochladen.</dd>
         </dl>
-        <p class="small-src">Quellen: Suno, Release Notes, 2026 · Presseberichte zu Suno Visuals vom 17. und 18.11.2026, unter anderem The Next Web. Stand 25.11.2026.</p>
+        <p class="small-src">Quellen: Suno, Release Notes, 2026 · Berichte zu MIDI in Create vom 04. bis 08.11.2026, unter anderem Unite.AI und The AI Musicpreneur, mit Verweis auf Blog und Help Center von Suno · Presseberichte zu Suno Visuals vom 17. und 18.11.2026, unter anderem The Next Web. Stand 25.11.2026.</p>
       </div>
     </section>
     <section class="acc" id="s-tarife" data-title="Was steckt in welchem Tarif?" data-sub="Übersicht Free, Pro, Premier, Platinum">
       <div class="acc-b">
-        <div class="tbl-wrap" id="featTableWrap"></div>
-        <div class="small-src">Stand 16.10.2026. Preise und Kontingente ändert Suno regelmäßig. Quellen unter „Mehr › Stand und Quellen“.</div>
+        <div class="tbl-wrap" id="featTableWrap" tabindex="0" role="region" aria-label="Tarife von Suno im Vergleich, seitlich verschiebbar"></div>
+        <div class="small-src">Stand 25.11.2026. Preise und Kontingente ändert Suno regelmäßig. Quellen unter „Mehr › Stand und Quellen“.</div>
       </div>
     </section>
   </section>
@@ -2111,6 +2117,7 @@ body{overflow-x:hidden;overflow-x:clip!important}
     <section class="acc" id="h-abgl" data-title="2 · Abgleich" data-help="refAbgleich">
       <div class="acc-b">
         <p class="chint">Nach dem ersten Hören. Statt „es war anders“: <strong>was genau</strong> war anders?</p>
+        <p class="chint wortspeicher"><strong>Wortspeicher.</strong> Tempo (langsam, schnell, treibend) · Tonart und Modus (Dur, Moll, Dorisch) · Besetzung (Instrumente, Stimmen) · Rhythmus (gerade, Offbeat) · Dynamik (leise, laut, Steigerung) · Klangfarbe (warm, hell, rau) · Gesang (Hauptstimme, Chor, mehrstimmig) · Form (Strophe, Refrain, Bridge) · Raum (trocken, hallig)</p>
         <div class="rq-cols">
           <div class="fg"><label for="ref2a" class="rq-col-head gruen">✓ Wie erwartet</label><textarea class="fi" id="ref2a" style="min-height:90px" placeholder="Das kam so, wie ich es erwartet hatte …"></textarea></div>
           <div class="fg"><label for="ref2b" class="rq-col-head gelb">≠ Anders als erwartet</label><textarea class="fi" id="ref2b" style="min-height:90px" placeholder="Ich hatte … erwartet, stattdessen …"></textarea></div>
@@ -2268,21 +2275,22 @@ const HELP={
     <p><strong>Rhodes</strong> (E-Piano der 1970er), <strong>Hammond organ</strong> (Orgel in Jazz und Soul), <strong>808</strong> (Rhythmuscomputer des Hip-Hop).</p>`},
   vocals:{title:'Gesang',body:`
     <p><strong>lead</strong> (Hauptstimme), <strong>falsetto</strong> (Kopfstimme), <strong>belting</strong> (kraftvoll), <strong>close-mic</strong> (nah am Mikrofon), <strong>stacked harmonies</strong> (mehrstimmig). Der Suno-Regler „Vocal Gender“ sollte dazu passen.</p>
-    <div class="warn"><strong>Voices</strong> (eigene Stimme hochladen) sind biometrische Daten nach Art. 9 DSGVO. Mit Lernenden ausgeschlossen.</div>`},
+    <div class="warn"><strong>Voices</strong> (eigene Stimme hochladen) verarbeiten Stimmaufnahmen. Sie können biometrische Daten enthalten, die nach Art. 9 Abs. 1 DSGVO besonders geschützt sind. Mit Lernenden ausgeschlossen.</div>`},
   mix:{title:'Mix und Klang',body:`
     <p><strong>lush reverb</strong> (viel Hall), <strong>dry punchy</strong> (trocken, knackig), <strong>tape saturation</strong> (warm wie eine Bandmaschine), <strong>vinyl crackle</strong> (Plattenknistern), <strong>wide stereo</strong> (breit). Drei bis vier Begriffe genügen, Widersprüche heben sich auf.</p>`},
   sprache:{title:'Sprache',body:`
-    <p>Mit deutschem Liedtext und <code>German</code> singt Suno auf Deutsch. <code>instrumental only</code> heißt ohne Gesang. Ob <code>no explicit</code> (keine anstößigen Wörter) verlässlich wirkt, ist nicht belegt. Eigene Texte sind im Unterricht die sichere Lösung.</p>`},
+    <p>Mit deutschem Liedtext und <code>German</code> singt Suno auf Deutsch. <code>instrumental only</code> heißt ohne Gesang. Ob <code>no explicit</code> (keine anstößigen Wörter) verlässlich wirkt, ist nicht belegt. Eigene Texte sind im Unterricht der sichere Weg. Texte von Lernenden gibt die Lehrkraft nur mit deren Zustimmung ein, bei Minderjährigen auch mit Zustimmung der Eltern. Suno erhält an allen Eingaben weitreichende Rechte.</p>`},
   exclude:{title:'Ausschlüsse',body:`
     <p>Was <strong>nicht</strong> vorkommen soll, gehört in das Suno-Feld <strong>Exclude Styles</strong> (unter More Options). Im Feld Styles wirkt „no drums“ eher wie eine Einladung zu Schlagzeug.</p>
     <p>Die Erfahrungen sind gemischt. Taucht ein ausgeschlossener Begriff trotzdem auf, ist das ein lohnendes Hörexperiment.</p>
     <p class="src">HookGenius, „Suno v6: What Actually Changed“, 2026. Ob Free-Konten das Feld haben, ist nicht belegt.</p>`},
   regler:{title:'Regler in Suno',body:`
-    <p>Unter <strong>More Options</strong>: <strong>Variety</strong> (wie stark sich die zwei Fassungen unterscheiden; 0 lässt die Stilangaben unverändert), <strong>Style Influence</strong> (Gewicht der Anweisung, Start bei 50 %), <strong>Weirdness</strong> (Abweichung vom Üblichen), <strong>Max Mode</strong> (Wirkung nicht dokumentiert).</p>
-    <div class="tip">Für Vergleiche Variety auf 0 und nur eine Sache ändern. Sonst misst du Zufall.</div>
-    <p class="src">HookGenius, 2026, mit Verweis auf die Suno-v6-FAQ. Ob Free alle Regler hat, ist nicht belegt.</p>`},
+    <p>Unter <strong>More Options</strong> stehen fünf Regler.</p>
+    <ul><li><strong>Variety</strong> schreibt die Stilangaben selbst um, damit die Ergebnisse vielfältiger werden. Die Stufen reichen von Off (Exact style) bis Max, voreingestellt ist Normal, bei v6-wild Off. Bei 0 (Off) bleiben die Angaben, wie sie sind.</li><li><strong>Style Influence</strong> legt fest, wie stark die Stilangaben wirken. Start bei 50 %.</li><li><strong>Weirdness</strong> steuert, wie weit Suno vom Üblichen abweicht.</li><li><strong>Personalize</strong> (My Taste) formuliert die Stilangaben nach den Hör- und Erstellgewohnheiten des Kontos aus.</li><li><strong>Max Mode</strong> rechnet länger für gleichmäßigere Ergebnisse und kostet mehr Credits.</li></ul>
+    <div class="tip">Für Vergleiche Variety auf 0 und Personalize aus, dann nur eine Sache ändern. Sonst misst du Zufall.</div>
+    <p class="src">HookGenius, „Suno v6 Prompt Guide“, 2026, mit den Aussagen der v6-FAQ von Suno zu Variety · HookGenius, „Best Suno Settings“, 2026. Ob Free alle Regler hat, ist nicht belegt.</p>`},
   struktur:{title:'Abschnitte und Regie',body:`
-    <p>Abschnitte (Strophe, Refrain, Bridge) legen den Ablauf fest. Neu mit v6 ist eine <strong>Regieanweisung im Tag</strong>, etwa <code>[Bridge | whispered, solo piano]</code>. Die Tags gehören in den Liedtext, nicht in den Stil.</p>
+    <p>Abschnitte (Strophe, Refrain, Bridge) legen den Ablauf fest. Neu mit v6 ist eine <strong>Regieanweisung im Tag</strong>, etwa <code>[Bridge | whispered, solo piano]</code>. Die Tags stehen im Liedtext.</p>
     <p><strong>Takte</strong> sind nur eine Planungshilfe, Suno hält sich nicht genau daran.</p>
     <p class="src">HookGenius, 2026.</p>`},
   lyrics:{title:'Liedtext',body:`
@@ -2300,7 +2308,7 @@ const HELP={
   reflexion:{title:'Hören und Abgleichen',body:`<p>Fünf Schritte: Erwartung vor dem Erzeugen, Abgleich, was hörbar ist, Varianz (Unterschiede zwischen Fassungen), Revision. Die Lücke zwischen Erwartung und Ergebnis ist der Lerninhalt.</p>`},
   refentsch:{title:'Überblick',body:`<p>Alle gewählten Angaben auf einen Blick, dazu Hinweise auf mögliche Spannungen, etwa fehlende Tonart oder widersprüchlicher Mix.</p>`},
   refHoererwartung:{title:'Warum die Erwartung vorher?',body:`
-    <p>Wer das Ergebnis kennt, hält es im Nachhinein für vorhersehbar (Rückschaufehler). Eine vorher notierte Erwartung macht den Abgleich erst ehrlich.</p>
+    <p>Wer das Ergebnis kennt, hält es im Nachhinein für vorhersehbar (Rückschaufehler). Eine vorher notierte Erwartung macht den Abgleich erst überprüfbar.</p>
     <p class="src">Fischhoff, B. (1975): Hindsight ≠ foresight · Huron, D. (2006): Sweet Anticipation.</p>`},
   refAbgleich:{title:'Abgleich',body:`<p><strong>Wie erwartet</strong> zeigt, was verlässlich wirkt. <strong>Anders</strong> zeigt eigene Deutungen von Suno. <strong>Nicht gehört</strong> zeigt Angaben, die zu weit hinten standen oder zu vage waren. „Anders“ heißt nicht „falsch“.</p>`},
   refVarianz:{title:'Varianz',body:`<p>Dieselbe Anweisung ergibt jedes Mal etwas anderes. Meist stabil: Tempo, Sprache, Grundstil. Oft wechselnd: Arrangement, einzelne Instrumente. Kaum steuerbar: Melodie und Harmonik.</p>`},
@@ -2314,7 +2322,7 @@ const HELP={
   seminar:{title:'Seminarmodus',body:`
     <p>Ergänzt jede Aufgabe um Werkzeuge für die Lehrerbildung. Standardmäßig aus, die Aufgaben selbst bleiben gleich.</p>
     <ul><li><strong>Für die Planung:</strong> Lernziel mit Operator, Lehrplanbezug, KI-Perspektive, Bewertung, Planungsbogen als Datei</li><li><strong>Varianz-Protokoll</strong>, <strong>Metakommunikation</strong> und <strong>Hospitationsbogen</strong> unter „Hören“</li><li><strong>Station:</strong> Zeitvorgabe von 12 Minuten</li></ul>
-    <p class="src">Doppeldeckerprinzip nach Geissler (1985) und Wahl (2020), zitiert nach Junghans, Seminardidaktik, 2023, S. 102 ff. Perspektiven „mit, durch, über, trotz, ohne KI“ nach Falck, Alles, Flick, Schulz (2025).</p>`},
+    <p class="src">Doppeldeckerprinzip nach Geissler (1985) und Wahl (2020), zitiert nach Junghans, Seminardidaktik, 2022, S. 102 ff. Perspektiven „mit, über, durch, trotz und ohne KI“ nach Alles, Falck, Flick & Schulz (2025).</p>`},
   lesemodus:{title:'Lesemodus',body:`<p>Größere Schrift, dunklere Texte, kräftigere Rahmen und keine Bewegungseffekte. Die Einstellung gilt auf diesem Gerät.</p>`}
 };
 // Frühere Schlüssel zeigen auf dieselben Einträge
@@ -2574,7 +2582,7 @@ const FEATURES=[
   ['Modelle','v6-mini','v6, v6-wild, v6-mini','v6, v6-wild, v6-mini','wie Premier'],
   ['Credits für Songs','50 pro Tag','2.500 pro Monat','10.000 pro Monat','15.000 pro Monat'],
   ['Visual Credits (Videoclips)','–','–','–','20.000 pro Monat'],
-  ['Downloads','keine monatlichen','20 pro Monat','60 pro Monat','120 pro Monat'],
+  ['Downloads','keine','20 pro Monat','60 pro Monat','120 pro Monat'],
   ['Kommerzielle Nutzung','nein','ja','ja','wie Premier'],
   ['Bearbeiten: Abschnitt ersetzen oder ergänzen, Gesang ergänzen','–','ja','ja','wie Premier'],
   ['Personas','–','ja','ja','wie Premier'],
@@ -2582,6 +2590,7 @@ const FEATURES=[
   ['Custom Models','–','ja','ja','wie Premier'],
   ['Stems','–','Auto, Split from Mix','dazu Advanced Split','wie Premier'],
   ['Suno Studio, seit 17.09.2026 mit MIDI','–','–','ja','ja'],
+  ['Song aus eigener MIDI-Datei starten (Create, seit 04.11.2026, Browser am Computer)','–','ja','ja','wie Premier'],
   ['Uploads','bis 8 Minuten','bis 30 Minuten','nicht geprüft','nicht geprüft'],
   ['Preis im Monat (US-Dollar)','0','10, bei Jahreszahlung 8','30, bei Jahreszahlung 24','120, bei Jahreszahlung 100']
 ];
@@ -2737,15 +2746,6 @@ const LAND_POP={
     <p>Aus Erfahrungsberichten, Stand 02.10.2026: Angaben im Prompt werden übergangen (geprüft), Personas driften, viele Ergebnisse klingen ähnlich, die Qualität fällt spät im Track ab (vor allem v6-wild). Die letzten drei Punkte sind nicht unabhängig geprüft.</p>
     <div class="tip"><strong>Für den Unterricht</strong> sind genau diese Lücken Material: Die Aufgaben 02, 04 und 08 prüfen, was Suno umsetzt und was nicht.</div>
     <p class="src">Quellen: Suno, Release Notes, 2026 · Wieduwilt, The AI Musicpreneur, 09.09.2026 · jackrighteous.com, Erfahrungsbericht zu v6, Stand 02.10.2026.</p>`},
-  dsgvo:{k:'Recht',title:'Datenschutz und Urheberrecht',body:`
-    <h4>Datenschutz</h4>
-    <p>Suno ist ein US-Dienst. Beim Aufruf werden personenbezogene Daten, mindestens die IP-Adresse, auf US-Servern verarbeitet. Für Minderjährige im Schulkontext sind die Voraussetzungen der DSGVO kaum zu erfüllen, eine Einwilligung der Eltern reicht im Pflichtunterricht oft nicht. Für digitale Werkzeuge braucht die Schule eine Auftragsverarbeitungsvereinbarung (AVV). Suno bietet keine an.</p>
-    <div class="warn"><strong>Voices und Uploads.</strong> Die eigene Stimme ist ein biometrisches Merkmal (Art. 9 DSGVO). Voices gibt es seit August 2026 auch im Free-Tarif zum Ausprobieren. Mit Lernenden ausgeschlossen. Ebenso keine Fotos oder Videos mit Personen als Ausgangsmaterial.</div>
-    <p><strong>Dieses Tool</strong> speichert nur im Browser. Die beiden KI-Funktionen laufen über das Claude-Konto der Lehrkraft und sind an eine Bestätigung gebunden.</p>
-    <h4>Urheberrecht</h4>
-    <p>Das <strong>LG München I</strong> hat am <strong>31.07.2026</strong> im Verfahren der GEMA gegen Suno überwiegend für die GEMA entschieden (Az. 42 O 763/25, nicht rechtskräftig). Die Kammer sah eine Vervielfältigung beim Training und in den Modellen v3.5 und v4 eine reproduzierbare „Memorisierung“ von Werken. Für wiedererkennbare Werke in den Ausgaben machte sie Suno verantwortlich, nicht die Nutzer:innen, weil die Prompts einfach gehalten waren.</p>
-    <ul><li>Keine fremden Liedtexte, Titel oder Künstlernamen eingeben.</li><li>Ergebnisse, die nach einem bekannten Werk klingen, nicht verwenden oder veröffentlichen.</li><li>Downloads aus dem Free-Tarif nur privat.</li></ul>
-    <p class="src">Landgericht München I, Pressemitteilung 16/2026 vom 31.07.2026. Stand 16.10.2026, keine Rechtsberatung. Im Zweifel die oder den Datenschutzbeauftragten der Schule fragen.</p>`},
 };
 
 // ═══════════ APP-LOGIK (Version 9) ═══════════
@@ -3372,10 +3372,17 @@ function handleImport(ev){
   r.onload=e=>{
     let b;try{b=JSON.parse(e.target.result)}catch(er){warn('Die Datei ist kein gültiges Backup.',$('#setMsg'));return}
     if(!b||!String(b._type||'').includes('backup')){warn('Die Datei ist kein Backup dieses Studios.',$('#setMsg'));return}
-    askConfirm('Backup laden?','Der aktuelle Stand wird durch das Backup ersetzt.','Backup laden',()=>{
+    askConfirm('Backup laden?','Der aktuelle Stand wird durch das Backup ersetzt, auch die eigenen Aufgaben.','Backup laden',()=>{
       startApp();
       if(b.presets)lsSet('ss_presets',b.presets);if(b.snaps)lsSet('ss_snaps',b.snaps);if(b.lyrics)lsSet('ss_lyrics',b.lyrics);
-      restoreFrom(b.state||{});renderUP();renderSnaps();renderLyricsBox();refreshAll();toast('Backup geladen ✓');
+      let nMy=0;
+      if(Array.isArray(b.mytasks)){
+        for(let i=TASKS.length-1;i>=0;i--)if(TASKS[i].my)TASKS.splice(i,1);
+        b.mytasks.slice(0,30).forEach(raw=>{const t=cleanTask(raw,true);if(t&&!TASKS.some(x=>x.id===t.id)){TASKS.push(t);nMy++}});
+        myTasksStore();
+      }
+      restoreFrom(b.state||{});renderUP();renderSnaps();renderLyricsBox();renderTasks();refreshAll();
+      toast(nMy?'Backup geladen, dazu '+nMy+(nMy===1?' eigene Aufgabe ✓':' eigene Aufgaben ✓'):'Backup geladen ✓');
     });
   };
   r.readAsText(f);ev.target.value='';
@@ -3540,10 +3547,10 @@ function settingsFor(){
   if(!g)return[];
   const model=g==='experiment'?(paid?['v6-wild','für Experimente gedacht']:['v6-mini','v6-wild braucht Pro oder Premier']):[MODELS[S.model].label,'dein gewähltes Modell'];
   const T={
-    einstieg:{variety:['Standard','erst einmal so lassen'],infl:['50 %','Startwert in Suno'],weird:['Standard','erst einmal so lassen']},
+    einstieg:{variety:['Normal','die Voreinstellung von Suno'],infl:['50 %','Startwert in Suno'],weird:['Standard','erst einmal so lassen']},
     praezise:{variety:['0','Stilangaben bleiben unverändert'],infl:['über 50 %','die Anweisung bekommt mehr Gewicht'],weird:['niedrig','weniger Abweichung']},
-    vergleich:{variety:['0','nur deine Änderung soll wirken'],infl:['gleich lassen','Wert notieren, nicht verändern'],weird:['gleich lassen','Wert notieren, nicht verändern']},
-    experiment:{variety:['hoch','die Fassungen unterscheiden sich stärker'],infl:['50 % oder weniger','Suno darf freier deuten'],weird:['höher','mehr Ungewöhnliches']}
+    vergleich:{variety:['0','sonst schreibt Suno die Stilangaben selbst um'],infl:['gleich lassen','Wert notieren, nicht verändern'],weird:['gleich lassen','Wert notieren, nicht verändern']},
+    experiment:{variety:['hoch','Suno schreibt die Stilangaben freier um'],infl:['50 % oder weniger','Suno darf freier deuten'],weird:['höher','mehr Ungewöhnliches']}
   }[g];
   return[
     {n:'Modell',v:model[0],w:model[1]},
@@ -3552,7 +3559,8 @@ function settingsFor(){
     {n:'Weirdness',v:T.weird[0],w:T.weird[1]},
     {n:'Vocal Gender',v:vocalGender()[0],w:vocalGender()[1]},
     {n:'Duration',v:'Auto',w:'der Liedtext bestimmt die Länge'},
-    {n:'Max Mode',v:'gleich lassen',w:'Wirkung nicht dokumentiert'}
+    {n:'Personalize',v:'aus',w:'sonst formuliert Suno die Stilangaben nach dem Hörverlauf des Kontos aus'},
+    {n:'Max Mode',v:'gleich lassen',w:'rechnet länger und kostet mehr Credits'}
   ];
 }
 function renderSettings(){
@@ -3837,7 +3845,7 @@ ${p.lernziel}
 LEHRPLANBEZUG
 ${p.lehrplan}
 
-KI-PERSPEKTIVE (mit, durch, über, trotz, ohne)
+KI-PERSPEKTIVE (mit, über, durch, trotz, ohne)
 ${p.falck}
 
 HÖRAUFTRAG (vor dem Hören, mindestens zwei Parameter)
@@ -3869,10 +3877,11 @@ ${p.bewertung}
 DSGVO-CHECK
 [ ] Suno läuft nur am Gerät der Lehrkraft
 [ ] Keine Namen, Stimmen, Fotos oder Videos von Lernenden
-[ ] Keine fremden Liedtexte, Titel oder Künstlernamen in der Anweisung
-[ ] Die Anweisungen liegen dem Entwurf als Anhang bei (Transparenz)
+[ ] Keine fremden Liedtexte, Titel oder Namen von Künstler:innen in der Anweisung
+[ ] Texte und Melodien von Lernenden nur mit Zustimmung eingeben
+[ ] Ergebnisse als KI-erzeugt gekennzeichnet, Anweisungen im Anhang (Transparenz)
 
-Quellen: Falck, Alles, Flick, Schulz (2025) · Fachliche Empfehlung zur Leistungsbewertung an Thüringer Schulen, Kap. 12 · Lehrplan Musik Gymnasium Thüringen, Entwurf 2026.`;
+Quellen: Alles, Falck, Flick & Schulz (2025) · Fachliche Empfehlung zur Leistungsbewertung an Thüringer Schulen, Stand Juni 2026, Kap. 12 · Lehrplan Musik Gymnasium Thüringen, Entwurf vom 13.08.2026 (Operatoren Kap. 4.1).`;
   saveFile('planungsbogen_'+t.id+'_'+today()+'.txt',txt,'Planungsbogen',btn);
 }
 function toggleStation(){if(stationT)stopStation();else startStation()}
@@ -4051,7 +4060,7 @@ function lernRestart(){
 
 // ═══════════ p10_core ═══════════
 // ═══════════ VERSION 10 · Grundlagen, Rollen, Wegweiser, Fokusansicht ═══════════
-const VARIANT='web',APP_VERSION='10',STAND='25.11.2026';
+const VARIANT='web',APP_VERSION='10.0.1',STAND='25.11.2026';
 const IS_WEB=VARIANT==='web';
 const PAGES_URL='https://ufrefat-svg.github.io/efmu12/suno-studio.html';
 const ARTIFACT_URL='https://claude.ai/artifact/PYk8vokCz4wqz6kr9GNBFN';
@@ -4370,6 +4379,7 @@ const AU={ctx:null,out:null,nodes:[],timer:null,key:null,btn:null,label:'',noise
 function auCtx(){
   if(!AU.ctx){
     const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;
+    try{if(navigator.audioSession&&navigator.audioSession.type!=='playback')navigator.audioSession.type='playback'}catch(e){}
     try{AU.ctx=new C()}catch(e){return null}
     const comp=AU.ctx.createDynamicsCompressor();comp.threshold.value=-14;comp.ratio.value=4;
     AU.out=AU.ctx.createGain();AU.out.gain.value=.85;AU.out.connect(comp);comp.connect(AU.ctx.destination);
@@ -4442,7 +4452,9 @@ function auPlay(key,btn,fn){
   AU.key=key;AU.btn=btn||null;
   if(btn){AU.label=btn.textContent;btn.textContent='⏹ Stopp';btn.classList.add('playing')}
   AU.timer=setTimeout(auStop,dur*1000+250);
+  if(!AU.iosHint&&isAppleTouch()){AU.iosHint=true;toast('Kein Ton? Auf iPhone und iPad den Stummschalter lösen.')}
 }
+function isAppleTouch(){try{return /iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)}catch(e){return false}}
 // ─── Rhythmusmuster ───
 // Muster: {bpm (Schritte pro Minute), n (Schritte pro Takt), bars, sw (Swing-Anteil für jeden zweiten Schritt), k,s,h,o,c,r,sh (Schritte, optional [Schritt,Lautstärke]), b ([Schritt,MIDI,Länge in Schritten]), sub (808), acc (Zählklick)}
 function seqPlay(spec,t0){
@@ -4557,8 +4569,10 @@ function hearScaleCmp(btn){
   const type=S.scale.type,other=$('#scCmp').value;if(!type){warn('Wähle zuerst einen Skalentyp.',btn);return}
   auPlay('scaleCmp',btn,(c,t0)=>{const dr=$('#scDrone').checked,a=planScale(type,hearRoot(),t0,dr);return a+.5+planScale(other,hearRoot(),t0+a+.5,dr)});
 }
-function scaleNotesHTML(type,root,label){
-  return `<div class="hb-line"><span class="hb-name">${esc(label)}</span><span class="hb-seq">${scaleNotes(type,root).slice(0,-1).map(n=>`<span class="hb-n${n.ch?' ch':''}">${esc(n.name)}</span>`).join('')}</span></div>`;
+// other: Vergleichsleiter. Dann sind die Töne markiert, die es in der anderen Leiter nicht gibt.
+function scaleNotesHTML(type,root,label,other){
+  const op=other?new Set(scaleNotes(other,root).map(n=>n.midi%12)):null;
+  return `<div class="hb-line"><span class="hb-name">${esc(label)}</span><span class="hb-seq">${scaleNotes(type,root).slice(0,-1).map(n=>{const df=op?!op.has(n.midi%12):n.ch;return `<span class="hb-n${df?' ch':''}">${esc(n.name)}${op&&df?'<span class="sr-only"> (anders als in der Vergleichsleiter)</span>':''}</span>`}).join('')}</span></div>`;
 }
 function mountScaleHear(){
   const sel=$('#scCmp');if(!sel||sel.options.length)return;
@@ -4573,8 +4587,8 @@ function renderScaleHear(setDefault){
   if(setDefault===true&&sel)sel.value=d.cmp;
   if(sel&&sel.value===type)sel.value=d.cmp;
   const lab=id=>(SCALE_TYPES.find(x=>x.id===id)||{}).label||id;
-  $('#scaleNotes').innerHTML=scaleNotesHTML(type,root,lab(type))+(sel?scaleNotesHTML(sel.value,root,lab(sel.value)):'');
-  $('#scaleInfo').textContent=d.info+(S.scale.root?'':' Ohne Grundton hörst du die Leiter ab C.')+(d.ch.length?' Der hervorgehobene Ton prägt den Klang.':'');
+  $('#scaleNotes').innerHTML=sel?scaleNotesHTML(type,root,lab(type),sel.value)+scaleNotesHTML(sel.value,root,lab(sel.value),type):scaleNotesHTML(type,root,lab(type));
+  $('#scaleInfo').textContent=d.info+(S.scale.root?'':' Ohne Grundton hörst du die Leiter ab C.')+(sel?' Hervorgehoben sind die Töne, in denen sich die beiden Leitern unterscheiden.':(d.ch.length?' Der hervorgehobene Ton prägt den Klang.':''));
 }
 const updateScaleUIV9=updateScaleUI;
 let lastScaleType=null;
@@ -4845,7 +4859,7 @@ function paarBegriffe(d){
 function buildMyTask(id,title,desc,hoer,model,paar){
   const d=paarCalc(model,paar);if(!d||!d.ok)return null;const V=d.V;
   return{id,my:true,num:'E',level:'eigen',levelLabel:'Eigene Aufgabe',title,desc:desc||V.q,focus:V.label,
-    goal:'Ich beschreibe den Unterschied zwischen Fassung A und Fassung B mit Fachbegriffen.',
+    goal:'Ich kann den Unterschied zwischen Fassung A und Fassung B mit Fachbegriffen beschreiben.',
     hoer:hoer||V.hoer,variable:'Nur '+V.what+', '+d.diffDe+'. Variety 0, alles andere bleibt.',
     steps:[{t:'Notiere deine Hörerwartung: Wie wird sich Fassung B von Fassung A unterscheiden?',go:'h-erw'},{t:'Fassung A kopieren und in Suno erzeugen (Variety 0). Beide Takes hören.',go:'s-paar'},{t:'Fassung B kopieren und erzeugen. Wieder beide Takes hören.',go:'s-paar'},{t:'Abgleich: Was hat sich wirklich verändert? Sichere die Begriffe.',go:'h-abgl'}],
     begriffe:paarBegriffe(d),rueckfluss:'Haltet fest, was der Vergleich gezeigt hat, und nutzt die Begriffe in der nächsten Musizier- oder Analysephase.',model,paar};
@@ -5083,13 +5097,24 @@ async function handleHash(){
 // ═══════════ p70_data ═══════════
 // ─── Hintergrundtexte ───
 LAND_POP.suno.body=LAND_POP.suno.body.replace(/<h4>Seit Oktober 2026<\/h4>\s*<p>[\s\S]*?<\/p>/,`<h4>Seit Oktober 2026</h4>
-    <ul><li><strong>Speech (Beta, 01.10.)</strong> erzeugt gesprochenen Text und Musik in einem Durchgang, etwa für Hörgeschichten.</li><li><strong>Workspaces (15.10.)</strong> sind gemeinsame Arbeitsbereiche für Pro und Premier.</li><li><strong>Suno MCP (Beta, 28.10.)</strong> verbindet Suno mit KI-Assistenten.</li><li><strong>Visuals (17.11.)</strong> machen aus einem Song kurze Videoclips.</li></ul>
+    <ul><li><strong>Speech (Beta, 01.10.)</strong> erzeugt gesprochenen Text und Musik in einem Durchgang, etwa für Hörgeschichten.</li><li><strong>Workspaces (15.10.)</strong> sind gemeinsame Arbeitsbereiche für Pro und Premier.</li><li><strong>Suno MCP (Beta, 28.10.)</strong> verbindet Suno mit KI-Assistenten.</li><li><strong>MIDI in Create (04.11.)</strong> startet einen Song aus einer eigenen MIDI-Datei, für Pro und Premier.</li><li><strong>Visuals (17.11.)</strong> machen aus einem Song kurze Videoclips.</li></ul>
     <p>Was das für den Unterricht heißt, steht im Studio unter „Suno“ in der Karte „Neu bei Suno“.</p>`);
-LAND_POP.dsgvo.body=LAND_POP.dsgvo.body
-  .replace('Voices gibt es seit August 2026 auch im Free-Tarif zum Ausprobieren.','Voices gehört laut Preisseite von Suno (25.11.2026) zu den bezahlten Tarifen.')
-  .replace('Ebenso keine Fotos oder Videos mit Personen als Ausgangsmaterial.','Ebenso keine Fotos oder Videos mit Personen als Ausgangsmaterial, auch nicht für die Videoclips der Funktion Visuals.')
-  .replace('<p><strong>Dieses Tool</strong> speichert nur im Browser.','<p><strong>Dieses Studio</strong> speichert nur im Browser. Die Übergabe per QR-Code oder Datei enthält einen Gruppenbuchstaben und keine Namen.')
-  .replace('Stand 16.10.2026','Stand 25.11.2026');
+LAND_POP.dsgvo={k:'Recht',title:'Datenschutz und Urheberrecht',body:`
+    <h4>Alter und Konto</h4>
+    <p>Nach den Nutzungsbedingungen von Suno (gültig seit 03.09.2026) setzt ein Konto 18 Jahre voraus. Von 13 bis 17 Jahren ist es nur mit ausdrücklicher vorheriger Zustimmung der Eltern erlaubt, unter 13 Jahren gar nicht. Im Unterricht bedient deshalb die Lehrkraft Suno mit ihrem eigenen Konto.</p>
+    <h4>Datenschutz</h4>
+    <p>Suno ist ein US-Dienst. Beim Aufruf werden personenbezogene Daten, mindestens die IP-Adresse, auf US-Servern verarbeitet. Für Minderjährige im Schulkontext sind die Voraussetzungen der DSGVO kaum zu erfüllen, eine Einwilligung der Eltern reicht im Pflichtunterricht oft nicht. Verarbeitet ein Anbieter personenbezogene Daten im Auftrag der Schule, braucht sie einen Vertrag zur Auftragsverarbeitung (AVV, Art. 28 DSGVO). In den Nutzungsbedingungen von Suno ist keine Auftragsverarbeitung genannt.</p>
+    <p>In Thüringen liegt der Einsatz weiterer digitaler Lehr- und Lernmittel in der Verantwortung der Schule (§ 45a Abs. 4 ThürSchulG). Personenbezogene Daten darf sie dafür verarbeiten, soweit das für die Nutzung erforderlich ist (§ 57 Abs. 1 Satz 2 ThürSchulG). Ob Suno im Unterricht eingesetzt wird, entscheidet also die Schule, am besten zusammen mit der oder dem Datenschutzbeauftragten.</p>
+    <div class="warn"><strong>Voices und Uploads.</strong> Eine Stimmaufnahme kann biometrische Daten enthalten. Werden sie zur eindeutigen Identifizierung einer Person verarbeitet, gehören sie zu den besonders geschützten Daten (Art. 9 Abs. 1 DSGVO, Begriff in Art. 4 Nr. 14). Voices gehört laut Preisseite von Suno (25.11.2026) zu den bezahlten Tarifen. Mit Lernenden ausgeschlossen. Ebenso keine Fotos oder Videos mit Personen als Ausgangsmaterial, auch nicht für die Videoclips der Funktion Visuals.</div>
+    <p><strong>Dieses Studio</strong> speichert nur im Browser. Die Übergabe per QR-Code oder Datei enthält einen Gruppenbuchstaben und keine Namen. Die beiden KI-Funktionen laufen über das Claude-Konto der Lehrkraft und sind an eine Bestätigung gebunden.</p>
+    <h4>Rechte an Eingaben</h4>
+    <p>Wer bei Suno etwas eingibt oder hochlädt, räumt Suno daran eine weltweite, unbefristete, unwiderrufliche und unterlizenzierbare Lizenz ein, auch zum Verbessern der Modelle. Zugleich sichert man zu, die nötigen Rechte zu haben. Liedtexte, Melodien und MIDI-Dateien von Lernenden sind deren eigene Arbeit. Die Lehrkraft gibt sie nur mit Zustimmung der Lernenden ein, bei Minderjährigen auch mit Zustimmung der Eltern.</p>
+    <h4>Urheberrecht</h4>
+    <p>Das <strong>LG München I</strong> hat am <strong>31.07.2026</strong> im Verfahren der GEMA gegen Suno überwiegend für die GEMA entschieden (Az. 42 O 763/25, nicht rechtskräftig). Die Kammer sah eine Vervielfältigung beim Training und in den Modellen v3.5 und v4 eine reproduzierbare „Memorisierung“ von Werken. Für wiedererkennbare Werke in den Ausgaben sah sie die Verantwortung bei Suno, weil die Prompts der Nutzer:innen einfach gehalten waren.</p>
+    <ul><li>Keine fremden Liedtexte, Titel oder Namen von Künstler:innen eingeben.</li><li>Ergebnisse, die nach einem bekannten Werk klingen, nicht verwenden oder veröffentlichen.</li><li>Songs aus dem Free-Tarif nur privat und nicht kommerziell nutzen.</li></ul>
+    <h4>Kennzeichnung</h4>
+    <p>Was mit KI entstanden ist, wird gekennzeichnet. Die Fachliche Empfehlung zur Leistungsbewertung nennt dafür die Kennzeichnung im Text, die verwendeten Prompts im Anhang und die Dokumentation des Arbeitsprozesses, etwa in einem Protokoll (Kap. 12). Ihre Anlage schlägt einen Quellennachweis vor, der das Werkzeug und die Prompts nennt.</p>
+    <p class="src">Suno, Terms of Service, gültig seit 03.09.2026 · DSGVO Art. 4 Nr. 14, Art. 9 Abs. 1, Art. 28 · ThürSchulG, Fassung ab 01.08.2024, § 45a Abs. 4, § 57 Abs. 1 · Landgericht München I, Pressemitteilung Nr. 16 vom 31.07.2026 · Fachliche Empfehlung zur Leistungsbewertung an Thüringer Schulen, Stand Juni 2026, Kap. 12 und Anlage. Stand 25.11.2026, keine Rechtsberatung. Im Zweifel die oder den Datenschutzbeauftragten der Schule fragen.</p>`};
 LAND_POP.prompt={k:'Handwerk',title:'Prompttechniken',body:`
     <h4>1 · Reihenfolge</h4><p>Was vorn steht, wiegt mehr. Bewährt hat sich: Genre und Ära, dann Stimmung, zwei bis drei Instrumente, Gesang, zuletzt Produktion.</p>
     <h4>2 · Englisch im Style-Feld</h4><p>Suno reagiert auf englische Begriffe zuverlässiger. Der Liedtext darf deutsch sein.</p>
@@ -5102,33 +5127,33 @@ LAND_POP.prompt={k:'Handwerk',title:'Prompttechniken',body:`
     <div class="tip"><strong>Grenzen der Felder.</strong> Styles 1.000 Zeichen, Exclude Styles 1.000, Lyrics 5.000 (HookGenius, 2026). Suno veröffentlicht diese Zahlen nicht selbst. Kurze Anweisungen genügen oft: 54 von Suno vorgestellte v6-Songs kamen im Median mit 385 Zeichen aus (Rare Connections, 2026).</div>
     <p class="src">Quellen: HookGenius, „Suno v6: What Actually Changed“ und „Suno Character Limits“, 2026 · roo.beehiiv, „The Best Suno Prompts After v6“, 2026 · Suno Builder, „Suno v6 Prompt Guide“, 2026 · Rare Connections, „Suno Prompts“, 2026.</p>`};
 LAND_POP.tarife={k:'Konten',title:'Tarife von Suno',body:`
-    <div class="tbl-wrap" id="lpFeatTable"></div>
+    <div class="tbl-wrap" id="lpFeatTable" tabindex="0" role="region" aria-label="Tarife von Suno im Vergleich, seitlich verschiebbar"></div>
     <h4>Downloads</h4>
-    <p>Der Free-Tarif enthält laut Preisseite keine monatlichen Downloads. Pro erlaubt 20, Premier 60 und Platinum 120 im Monat. Konten, die vor dem 03.09.2026 angelegt wurden, behalten bis zu sieben Probe-Downloads (HookGenius, Stand 31.10.2026, mit Verweis auf die Hilfeseiten von Suno).</p>
-    <div class="warn"><strong>Für die Schule:</strong> Mit einem Free-Konto lassen sich Songs in der Bibliothek abspielen, aber kaum sichern. Für das Vorspielen im Unterricht genügt das.</div>
+    <p>Im Free-Tarif gibt es keine Downloads, auch die früheren Probe-Downloads sind entfallen (Suno Help Center, 2026). Pro erlaubt 20, Premier 60 und Platinum 120 im Monat.</p>
+    <div class="warn"><strong>Für die Schule.</strong> Mit einem Free-Konto lassen sich Songs in der Bibliothek abspielen, aber nicht herunterladen. Für das Vorspielen im Unterricht genügt das.</div>
     <h4>Visuals</h4>
     <p>Videoclips kosten eigene Visual Credits. Platinum enthält 20.000 im Monat, einzeln kosten 2.500 Visual Credits 14,99 US-Dollar (Presseberichte vom 17. und 18.11.2026, unter anderem The Next Web).</p>
     <h4>Rechte</h4>
-    <p>Kommerzielle Nutzung gibt es laut Preisseite nur in den bezahlten Tarifen.</p>
-    <p class="src">Quelle: Suno, Preisseite (suno.com/pricing), abgerufen am 25.11.2026. Suno ändert Preise und Kontingente regelmäßig.</p>`};
+    <p>Kommerzielle Nutzung gibt es laut Preisseite nur in den bezahlten Tarifen. Songs aus dem Free-Tarif sind nur für die private, nicht kommerzielle Nutzung bestimmt (Nutzungsbedingungen, 03.09.2026).</p>
+    <p class="src">Quellen: Suno, Preisseite (suno.com/pricing), abgerufen am 25.11.2026 · Suno Help Center, „How many downloads come with my subscription?“, 2026 · Suno, Terms of Service, gültig seit 03.09.2026. Suno ändert Preise und Kontingente regelmäßig.</p>`};
 LAND_POP.unterricht={k:'Didaktik',title:'Von der Musik her denken',body:`
     <p>Am Anfang steht eine musikalische Frage, das Werkzeug kommt danach. Wer eine Klanganweisung schreibt, übersetzt eine Klangvorstellung in Fachbegriffe für Tonart, Tempo, Besetzung, Satzweise und Produktion. Das ist Beschreiben und Analysieren in umgekehrter Richtung.</p>
     <h4>Ablauf jeder Aufgabe</h4>
     <ol><li><strong>Frage</strong> stellen, die sich nur durch Hören beantworten lässt.</li><li><strong>Hörerwartung</strong> schriftlich festhalten, erst dann erzeugen.</li><li><strong>Zwei Takes</strong> hören, dann <strong>eine Variable</strong> ändern und erneut erzeugen.</li><li><strong>Abgleich</strong> mit Fachbegriffen, kurze Erklärphase.</li><li><strong>Rückfluss</strong>: Das Ergebnis wird Teil einer Musizier- oder Analysestunde.</li></ol>
-    <p>Die Aufgaben passen zu den Operatoren beschreiben, analysieren, beurteilen und überprüfen. Bewertet wird der Prozess aus Erwartung, Abgleich und Begriffen. Das Suno-Produkt bleibt unbewertet.</p>
+    <p>Die Lernziele nutzen die Operatoren hörend erfassen, beschreiben, vergleichen, beurteilen, gestalten und überprüfen aus der Operatorenliste des Lehrplanentwurfs (Kap. 4.1). Bewertet wird der Prozess aus Erwartung, Abgleich und Begriffen. Das Suno-Produkt bleibt unbewertet.</p>
     <h4>Einsatzformen</h4>
     <ul>
-      <li><strong>Vorhören:</strong> Die Lehrkraft erzeugt die Takes vorab am eigenen Gerät, die Klasse hört und vergleicht.</li>
-      <li><strong>Live am Beamer:</strong> Die Klasse formuliert, die Lehrkraft gibt ein und erzeugt.</li>
-      <li><strong>Gruppen:</strong> Gruppen bauen Klanganweisungen im Studio und übergeben sie als QR-Code oder Datei. Die Lehrkraft erzeugt die Songs aus der Sammelmappe, danach folgt der gemeinsame Vergleich.</li>
-      <li><strong>Ohne Geräte:</strong> Aufgabenkarten und Hörprotokoll aus dem Druckpaket, Suno läuft nur vorn.</li>
-      <li><strong>Textarbeit:</strong> Lernende schreiben Liedtexte, die Lehrkraft vertont sie.</li>
-      <li><strong>KI und Klasse im Vergleich:</strong> Derselbe Song einmal von Suno, einmal von der Klasse gesungen oder gespielt.</li>
+      <li><strong>Vorhören.</strong> Die Lehrkraft erzeugt die Takes vorab am eigenen Gerät, die Klasse hört und vergleicht.</li>
+      <li><strong>Live am Beamer.</strong> Die Klasse formuliert, die Lehrkraft gibt ein und erzeugt.</li>
+      <li><strong>Gruppen.</strong> Gruppen bauen Klanganweisungen im Studio und übergeben sie als QR-Code oder Datei. Die Lehrkraft erzeugt die Songs aus der Sammelmappe, danach folgt der gemeinsame Vergleich.</li>
+      <li><strong>Ohne Geräte.</strong> Aufgabenkarten und Hörprotokoll aus dem Druckpaket, Suno läuft nur vorn.</li>
+      <li><strong>Textarbeit.</strong> Lernende schreiben Liedtexte, die Lehrkraft vertont sie. Weil Suno an allen Eingaben weitreichende Rechte erhält, braucht es dafür die Zustimmung der Lernenden, bei Minderjährigen auch die der Eltern.</li>
+      <li><strong>KI und Klasse im Vergleich.</strong> Derselbe Song einmal von Suno, einmal von der Klasse gesungen oder gespielt.</li>
     </ul>
     <h4>Erst hören und singen</h4>
     <p>Tonleitern, Taktarten und viele Grooves lassen sich im Studio anhören, bevor Suno ins Spiel kommt. In Aufgabe 01 singt die Klasse beide Leitern über dem liegenden Grundton und benennt den Ton, der sie unterscheidet.</p>
-    <div class="tip"><strong>Fünf Perspektiven:</strong> Jede Aufgabe begründet, ob mit, durch, über, trotz oder ohne KI gelernt wird (Falck, Alles, Flick, Schulz, 2025).</div>
-    <p class="src">Quellen: Falck, Alles, Flick, Schulz (2025) · Fachliche Empfehlung zur Leistungsbewertung an Thüringer Schulen, Kap. 12 · Beiderwieden, Methodenlehre (Komponieren im Klassenverband).</p>`};
+    <div class="tip"><strong>Fünf Perspektiven.</strong> Jede Aufgabe begründet, ob mit, über, durch, trotz oder ohne KI gelernt wird (Alles, Falck, Flick & Schulz, 2025).</div>
+    <p class="src">Quellen: Alles, Falck, Flick & Schulz (2025) · Fachliche Empfehlung zur Leistungsbewertung an Thüringer Schulen, Kap. 12 · Beiderwieden (2008), Kapitel „Prozessqualitäten“ · Lehrplanentwurf Musik Gymnasium, Kap. 4.1 (Operatoren).</p>`};
 LAND_POP.studio={k:'Werkzeug',title:'Das Studio: Aufbau und Bedienung',body:`
     <h4>Drei Türen</h4>
     <p>Die Startseite fragt, wer gerade arbeitet. <strong>Lernende</strong> sehen den Lernmodus und die Aufgaben. <strong>Lehrkräfte</strong> bekommen dazu Vergleichspaar, Sammelmappe, Druckpaket, Tarifübersicht und die beiden KI-Funktionen. Die <strong>Lehrerbildung</strong> ergänzt Planungskasten, Varianz-Protokoll, Metakommunikation und Hospitationsbogen. Die Rolle lässt sich auf der Startseite und in den Einstellungen wechseln.</p>
@@ -5154,33 +5179,47 @@ LAND_POP.quellen={k:'Belege',title:'Stand und Quellen',body:`
     <ul>
       <li>Suno: What’s New (Release Notes), 2026. <a href="https://suno.com/release-notes" target="_blank" rel="noopener">suno.com/release-notes</a></li>
       <li>Suno: Preisseite, abgerufen am 25.11.2026. <a href="https://suno.com/pricing" target="_blank" rel="noopener">suno.com/pricing</a></li>
+      <li>Suno: Terms of Service, gültig seit 03.09.2026 (Mindestalter, Rechte an Eingaben, private Nutzung im Free-Tarif). <a href="https://suno.com/terms-september-2026" target="_blank" rel="noopener">suno.com/terms-september-2026</a></li>
+      <li>Suno Help Center: How many downloads come with my subscription?, 2026 (keine Downloads im Free-Tarif).</li>
       <li>Shulman, M.: Introducing v6. Suno Blog, 09.09.2026.</li>
       <li>Wieduwilt, C.: Suno v6 release date: v6, v6-wild and v6-mini go live on September 9, 2026. The AI Musicpreneur, 2026. <a href="https://www.aimusicpreneur.com/ai-tools-news/suno-v6-v6-wild-v6-mini-launch/" target="_blank" rel="noopener">Artikel</a></li>
       <li>Wieduwilt, C.: Suno caps song downloads from September 3. The AI Musicpreneur, 2026. <a href="https://www.aimusicpreneur.com/ai-tools-news/suno-download-caps-free-pro-premier-september-2026/" target="_blank" rel="noopener">Artikel</a></li>
       <li>HookGenius: Suno v6: What Actually Changed (Tested Day One), 2026. <a href="https://hookgenius.app/learn/suno-v6-guide/" target="_blank" rel="noopener">Artikel</a></li>
-      <li>HookGenius: Suno Character Limits, 2026 (Zeichengrenzen der Felder, Probe-Downloads).</li>
+      <li>HookGenius: Suno v6 Prompt Guide, 2026 (Aussagen der v6-FAQ von Suno zum Regler Variety) · HookGenius: Best Suno Settings, 2026 (Personalize, Max Mode).</li>
+      <li>HookGenius: Suno Character Limits, 2026 (Zeichengrenzen der Felder).</li>
+      <li>Unite.AI: Suno adds MIDI file uploads for AI song creation in Create, 04.11.2026 · The AI Musicpreneur: Bericht zu MIDI in Create, 2026, mit Zitaten aus Blog und Help Center von Suno.</li>
       <li>Rare Connections: Suno Prompts, 2026 (Länge von 54 vorgestellten v6-Songs).</li>
       <li>roo.beehiiv: The Best Suno Prompts After v6, 2026 · Suno Builder: Suno v6 Prompt Guide, 2026 (Sätze statt Stichwortlisten, nicht unabhängig geprüft).</li>
       <li>Presseberichte zu Suno Visuals vom 17. und 18.11.2026, unter anderem Bloomberg und The Next Web.</li>
-      <li>Landgericht München I: Pressemitteilung 16/2026, Urteil vom 31.07.2026, Az. 42 O 763/25. <a href="https://www.justiz.bayern.de/gerichte-und-behoerden/landgericht/muenchen-1/presse/2026/16.php" target="_blank" rel="noopener">justiz.bayern.de</a></li>
-      <li>jackrighteous.com: Erfahrungsbericht zu den Schwächen von Suno v6, Stand 02.10.2026 (Prompt-Adhärenz geprüft, übrige Punkte nicht unabhängig geprüft).</li>
+      <li>Landgericht München I: Pressemitteilung Nr. 16 vom 31.07.2026, „Urteil GEMA gegen SUNO“, Az. 42 O 763/25. <a href="https://www.justiz.bayern.de/gerichte-und-behoerden/landgericht/muenchen-1/presse/2026/16.php" target="_blank" rel="noopener">justiz.bayern.de</a></li>
+      <li>jackrighteous.com: Erfahrungsbericht zu den Schwächen von Suno v6, Stand 02.10.2026 (Aussagen zur Umsetzung der Angaben geprüft, übrige Punkte nicht unabhängig geprüft).</li>
       <li>Fischhoff, B. (1975): Hindsight ≠ foresight. Journal of Experimental Psychology: Human Perception and Performance 1(3), 288–299.</li>
       <li>Huron, D. (2006): Sweet Anticipation. Music and the Psychology of Expectation. MIT Press.</li>
     </ul>
+    <h4>Recht</h4>
+    <ul>
+      <li>Verordnung (EU) 2016/679 (DSGVO), Art. 4 Nr. 14, Art. 9 Abs. 1 und Art. 28.</li>
+      <li>Thüringer Schulgesetz, Fassung gültig ab 01.08.2024, § 45a Abs. 4 und § 57 Abs. 1.</li>
+    </ul>
     <h4>Didaktik</h4>
     <ul>
-      <li>Falck, Alles, Flick, Schulz (2025): Perspektiven „mit, durch, über, trotz, ohne KI“; Verstehen, Anwenden, Reflektieren, Mitgestalten.</li>
-      <li>Junghans, C. (2023): Seminardidaktik. Cornelsen. Doppeldeckerprinzip nach Geissler (1985) und Wahl (2020), S. 102 ff.; Leitfragen für Seminarsequenzen, S. 227 f.</li>
-      <li>Thüringer Ministerium für Bildung, Jugend und Sport: Fachliche Empfehlung zur Leistungsbewertung an Thüringer Schulen, Kap. 12 (Umgang mit KI).</li>
-      <li>Lehrplan Musik Gymnasium Thüringen, Entwurf 2026 (Modulbezüge in den Planungskästen).</li>
-      <li>IBBW-Reihe „Wirksamer Unterricht“, Bd. 2 Kognitive Aktivierung; Bd. 12 Leuders, Loibl (2025): Entdeckendes Lernen mit explizitem Erklären. Nur auf Titelebene herangezogen.</li>
+      <li>Alles, S., Falck, J., Flick, M. & Schulz, R. (2025): KI-Kompetenzen für Lehrende und Lernende. Aus der Praxis für die Praxis – eine adaptierbare Basis. VK:KIWA, 13.03.2025. DOI 10.5281/zenodo.15001019. Darin die Perspektiven „mit, über, durch, trotz und ohne KI“.</li>
+      <li>Beiderwieden, R. (2008): Musik unterrichten. Eine systematische Methodenlehre. Bosse. Kapitel „Prozessqualitäten“ (Komponieren im Klassenverband).</li>
+      <li>Fachliche Empfehlung zur Leistungsbewertung an Thüringer Schulen der Primarstufe (ab Klassenstufe 3) und der Sekundarstufe I, Stand Juni 2026. Kap. 12 „Leistungsbewertung bei der Verwendung digitaler Medien und Werkzeuge“ und Anlage „Empfehlungen für die Zitierweise von KI“.</li>
+      <li>Junghans, C. (2022): Seminardidaktik. Wege und Werkzeuge für die zweite Phase der Lehrer*innenbildung. Cornelsen. Doppeldeckerprinzip nach Geissler (1985) und Wahl (2020), S. 102 ff.; Leitfragen für Seminarsequenzen, S. 227 f.</li>
+      <li>Lehrplan Musik Gymnasium Thüringen, Entwurf vom 13.08.2026 (Modulbezüge in den Planungskästen, Operatorenliste in Kap. 4.1).</li>
+      <li>Mager, R. F. (1965): Lernziele und Unterricht. Beltz (Form der Lernziele im Planungskasten).</li>
+      <li>Fauth, B. & Leuders, T. (2022): Kognitive Aktivierung im Unterricht. Wirksamer Unterricht, Band 2. IBBW, S. 4 f. und 13.</li>
+      <li>Kalkavan-Aydın, Z. & Balzer, J. (2022): Sprachsensibler Fachunterricht. Wirksamer Unterricht, Band 8. IBBW, S. 4 und 10 (Satzanfänge und Wortspeicher).</li>
+      <li>Leuders, T. & Loibl, K. (2025): Entdeckendes Lernen – mit explizitem Erklären. Wirksamer Unterricht, Band 12. IBBW, S. 4, 6 und 17 bis 19 (Erklärphase nach dem Entdecken).</li>
     </ul>
     <h4>Technik</h4>
     <ul>
       <li>Schriften Poppins und Atkinson Hyperlegible Next (SIL Open Font License 1.1), in die Seite eingebettet. Die Seite lädt nichts von fremden Servern.</li>
       <li>QR-Codes: qrcode-generator von Kazuhiko Arase (MIT-Lizenz). „QR Code“ ist eine eingetragene Marke von DENSO WAVE INCORPORATED.</li>
+      <li>WebKit Bugzilla 237322: webaudio api is muted when the iOS ringer is muted, 2022 (Hinweis für iPhone und iPad).</li>
     </ul>
-    <div class="warn"><strong>Nicht geprüft:</strong> Ob Suno ausformulierte Sätze genauer umsetzt als Stichwörter. Die Zeichengrenzen stammen aus Praxisquellen, Suno veröffentlicht sie nicht. Für Platinum sind nur Preis, Credits, Downloads und Studio der Preisseite entnommen.</div>`};
+    <div class="warn"><strong>Nicht geprüft.</strong> Ob Suno ausformulierte Sätze genauer umsetzt als Stichwörter. Die Zeichengrenzen stammen aus Praxisquellen, Suno veröffentlicht sie nicht. Für Platinum sind nur Preis, Credits, Downloads und Studio der Preisseite entnommen. Die Hörbeispiele sind auf iPhone und iPad nicht am Gerät getestet.</div>`};
 // ─── Hilfetexte ───
 HELP.promptleiste={title:'Die mitlaufende Klanganweisung',body:`
     <p>Zeigt live den Text für das Suno-Feld <strong>Styles</strong> mit Zeichenzahl, auf dem Handy als Leiste unten, auf breiten Bildschirmen als Spalte rechts. Über 1.000 Zeichen schneidet Suno ohne Warnung ab.</p>`};
@@ -5192,7 +5231,7 @@ HELP.form={title:'Stichwörter oder Sätze?',body:`
     <p class="src">roo.beehiiv, „The Best Suno Prompts After v6“, 2026 · Suno Builder, „Suno v6 Prompt Guide“, 2026.</p>`};
 HELP.paar={title:'Vergleichspaar',body:`
     <p>Ein sauberer Hörvergleich ändert genau eine Sache. Du wählst die Variable. Das Studio baut <strong>Fassung A</strong> aus deiner aktuellen Auswahl und <strong>Fassung B</strong> mit der einen Änderung. Der Unterschied ist farbig markiert, der Hörauftrag steht dabei.</p>
-    <div class="tip"><strong>Variety auf 0, jede Fassung zweimal.</strong> Zwei Durchgänge derselben Anweisung können sich stärker unterscheiden als eine gezielte Änderung.</div>
+    <div class="tip"><strong>Variety auf 0, Personalize aus, jede Fassung zweimal.</strong> Zwei Durchgänge derselben Anweisung können sich stärker unterscheiden als eine gezielte Änderung.</div>
     <p>Lehrkräfte sichern ein Paar als eigene Aufgabe und geben sie als Datei, Link oder QR-Code weiter. Lernende laden sie auf der Startseite.</p>
     <p class="src">HookGenius, „Suno v6: What Actually Changed“, 2026.</p>`};
 HELP.uebergabe={title:'Übergabe und Sammelmappe',body:`
@@ -5200,11 +5239,13 @@ HELP.uebergabe={title:'Übergabe und Sammelmappe',body:`
     <p>Übertragen werden Styles, Ausschlüsse, Liedtext und Hörerwartung, dazu der Gruppenbuchstabe. Namen sind nicht vorgesehen. Der Inhalt steckt im Code selbst und wird an keinen Server geschickt.</p>`};
 HELP.hoerbar={title:'Begriffe anhören',body:`
     <p>Tonleitern, Taktarten, viele Grooves und der Unterschied zwischen trocken und hallig lassen sich direkt im Studio anhören. Die Klänge erzeugt dein Gerät selbst, ohne Suno und ohne Internet. Sie zeigen das Prinzip und klingen einfacher als ein fertiger Song.</p>
-    <p>Für Afrobeat, Samba, Second Line, Instrumente und Stimmen gibt es kein Hörbeispiel. Ein vereinfachter Nachbau würde dort ein falsches Bild geben.</p>`};
+    <p>Für Afrobeat, Samba, Second Line, Instrumente und Stimmen gibt es kein Hörbeispiel. Ein vereinfachter Nachbau würde dort ein falsches Bild geben.</p>
+    <div class="tip"><strong>iPhone und iPad.</strong> Ist das Gerät stummgeschaltet, können die Hörbeispiele still bleiben. Dann den Stummschalter lösen und den Ton lauter stellen.</div>
+    <p class="src">WebKit Bugzilla 237322, 2022.</p>`};
 HELP.seminar={title:'Werkzeuge der Lehrerbildung',body:`
     <p>Die Rolle „Lehrerbildung“ ergänzt jede Aufgabe um Werkzeuge für Seminar und Ausbildung. Die Aufgaben selbst bleiben gleich.</p>
     <ul><li><strong>Für die Planung:</strong> Lernziel mit Operator, Lehrplanbezug, KI-Perspektive, Bewertung, Planungsbogen als Datei</li><li><strong>Varianz-Protokoll</strong>, <strong>Metakommunikation</strong> und <strong>Hospitationsbogen</strong> unter „Hören“</li><li><strong>Station:</strong> Zeitvorgabe von 12 Minuten</li></ul>
-    <p class="src">Doppeldeckerprinzip nach Geissler (1985) und Wahl (2020), zitiert nach Junghans, Seminardidaktik, 2023, S. 102 ff. Perspektiven „mit, durch, über, trotz, ohne KI“ nach Falck, Alles, Flick, Schulz (2025).</p>`};
+    <p class="src">Doppeldeckerprinzip nach Geissler (1985) und Wahl (2020), zitiert nach Junghans, Seminardidaktik, 2022, S. 102 ff. Perspektiven „mit, über, durch, trotz und ohne KI“ nach Alles, Falck, Flick & Schulz (2025).</p>`};
 HELP.aufgabe.body+=`<p>In einer Aufgabe siehst du nur die Karten, die du dafür brauchst. „Alle Werkzeuge“ in der Aufgabenleiste zeigt wieder alles.</p>`;
 HELP.exclude.body+=`<p>Das Feld „Exclude Styles“ fasst 1.000 Zeichen (HookGenius, 2026).</p>`;
 HELP.tonart.body+=`<p>Unter „Leiter anhören“ hörst du die gewählte Leiter und kannst sie mit einer zweiten vergleichen. Singe mit, am besten über dem liegenden Grundton.</p>`;
@@ -5213,15 +5254,38 @@ HELP.datenlocal.body+=`<p>Auch die Sammelmappe und eigene Aufgaben liegen nur im
 TASKS[0].steps.unshift({t:'Höre unter „Leiter anhören“ erst Moll, dann Dorisch und singe beide über dem liegenden Grundton nach. Welcher Ton ist anders?',go:'k-tonart'});
 TASKS.find(t=>t.id==='abschnitt_edit').note='Laut Preisseite von Suno (25.11.2026) gehört das Ersetzen eines Abschnitts zu den bezahlten Tarifen. Mit einem Free-Konto lässt sich die Aufgabe als Gedankenexperiment führen: Was müsste gleich bleiben, was dürfte sich ändern?';
 TASKS.push({id:'stichwort_vs_satz',num:'09',level:'neu',levelLabel:'Neu · v6',title:'Stichwörter oder Sätze?',desc:'Dieselben Angaben, einmal als Stichwortliste, einmal in ganzen Sätzen. Was setzt Suno genauer um?',focus:'Form der Klanganweisung',
-   goal:'Ich überprüfe an zwei Hörbeispielen, ob Suno ausformulierte Sätze genauer umsetzt als Stichwörter.',
+   goal:'Ich kann überprüfen, ob Suno ganze Sätze genauer umsetzt als Stichwörter.',
    hoer:'Zähle für jede Fassung, welche Angaben du hörst: Instrumente, Gesang, Tempo, Klang. Achte auch darauf, welche Fassung im Ganzen stimmiger wirkt.',
    variable:'Nur die Form wechselt, von Stichwörtern zu ganzen Sätzen. Der Inhalt bleibt gleich, Variety 0.',
    steps:[{t:'Notiere deine Hörerwartung: Welche Form wird Suno genauer umsetzen und warum?',go:'h-erw'},{t:'Form „Stichwörter“: Styles kopieren und in Suno erzeugen (Variety 0). Beide Fassungen hören.',go:'s-fuer'},{t:'Form auf „Sätze“ stellen. Lies die Sätze und glätte sie, ohne den Inhalt zu ändern. Dann erneut erzeugen.',go:'s-fuer'},{t:'Abgleich: Bewerte für jede Angabe, ob du sie hörst. Welche Form hat mehr Treffer?',go:'h-param'}],
-   begriffe:[['Klanganweisung','Die Beschreibung, aus der Suno den Song erzeugt. Im Englischen heißt sie Prompt.'],['Parameter','Eine einzelne musikalische Angabe, zum Beispiel Tempo, Tonart oder Besetzung.'],['Prompt-Adhärenz','Wie genau das Modell die Angaben umsetzt.']],
+   begriffe:[['Klanganweisung','Die Beschreibung, aus der Suno den Song erzeugt. Im Englischen heißt sie Prompt.'],['Parameter','Eine einzelne musikalische Angabe, zum Beispiel Tempo, Tonart oder Besetzung.'],['Hörerwartung','Was du vor dem Hören vermutest und danach am Klang überprüfst.']],
    rueckfluss:'Die Klasse beschreibt ein gehörtes Stück in drei ganzen Sätzen mit Fachbegriffen. Dieselbe Fähigkeit braucht sie in jeder Höranalyse.',
    note:'Praxisratgeber zu Suno v6 empfehlen Sätze, unabhängig geprüft ist das nicht. Zwei Durchgänge derselben Anweisung können sich stärker unterscheiden als die beiden Formen. Erzeuge deshalb jede Form zweimal.',
-   plan:{lernziel:'Die Schüler:innen überprüfen an zwei Hörbeispielen, ob Suno ausformulierte Sätze genauer umsetzt als Stichwörter, und begründen ihr Urteil mit gezählten Treffern. Operator: überprüfen (AFB III).',lehrplan:'Lehrplanentwurf 2026: Kl. 9, Pflichtmodul 3 „Musiknutzung im digitalen Raum“ oder Kl. 8, Wahlmodul 3 „Musik und Medien“.',falck:'Lernen über KI: Wie liest ein Modell Sprache? Die Klasse prüft eine Behauptung aus Ratgebern am eigenen Material.',bewertung:'Sorgfalt der Überprüfung: Erwartung, Zählung je Angabe und begründetes Urteil im Protokoll.'},
+   plan:{lernziel:'Die Schüler:innen können anhand gezählter Treffer je Angabe überprüfen, ob Suno ausformulierte Sätze genauer umsetzt als Stichwörter. Operator: überprüfen (AFB III).',lehrplan:'Lehrplanentwurf 2026: Kl. 9, Pflichtmodul 3 „Musiknutzung im digitalen Raum“ oder Kl. 8, Wahlmodul 3 „Musik und Medien“.',falck:'Lernen über KI: Wie liest ein Modell Sprache? Die Klasse prüft eine Behauptung aus Ratgebern am eigenen Material.',bewertung:'Sorgfalt der Überprüfung: Erwartung, Zählung je Angabe und begründetes Urteil im Protokoll.'},
    apply:{short:'indie pop, bright, playful',scale:['major','D'],bpm:112,chips:['cleanGuitar','drums','femaleLead','harmonies','claps','four4','langDE'],lyrics:DEMO_LYRICS,goal:'vergleich'}});
+// ─── Version 10.0.1: Lernziele nach Mager mit einem Operator aus der Operatorenliste des Lehrplanentwurfs (Kap. 4.1) ───
+const ZIELE_1001={
+  moll_vs_dorisch:{goal:'Ich kann in zwei Fassungen hören, welcher Ton Dorisch von Moll unterscheidet.',lz:'Die Schüler:innen können in zwei Suno-Fassungen desselben Grooves den Unterschied zwischen A-Moll und A-Dorisch hörend erfassen durch Benennung der großen Sexte (fis), die die beiden Modi unterscheidet. Operator: hörend erfassen (AFB II).'},
+  unpraezis_vs_kontext:{goal:'Ich kann an zwei Fassungen vergleichen, welche Angaben Suno hörbar umsetzt.',lz:'Die Schüler:innen können eine knappe und eine genaue Stilbeschreibung in zwei Suno-Fassungen vergleichen, indem sie mindestens drei Kontextangaben als hörbar oder nicht hörbar einordnen. Operator: vergleichen (AFB II–III).'},
+  deskilling:{goal:'Ich kann beurteilen, welche Entscheidungen in meinem Song von mir stammen und welche von Suno.',lz:'Die Schüler:innen können anhand von mindestens zwei Belegen aus dem Hörprotokoll beurteilen, welche musikalischen Entscheidungen in ihrem Song von ihnen und welche von Suno stammen. Operator: beurteilen (AFB III).'},
+  varianz:{goal:'Ich kann an sechs Takes vergleichen, welche Merkmale bleiben und welche wechseln.',lz:'Die Schüler:innen können sechs Takes derselben Klanganweisung vergleichen durch Benennung von mindestens zwei stabilen und zwei wechselnden Merkmalen. Operator: vergleichen (AFB II–III).'},
+  tempo_stimmung:{goal:'Ich kann die Wirkung eines Tempowechsels mit drei treffenden Adjektiven beschreiben.',lz:'Die Schüler:innen können die Wirkung derselben Ballade bei 70 und bei 140 BPM mit je drei treffenden Adjektiven beschreiben. Operator: beschreiben (AFB I–II).'},
+  stilportraet:{goal:'Ich kann eine Klanganweisung gestalten, die einen Stil in sechs Dimensionen beschreibt, ohne Titel, Namen oder fremden Text.',lz:'Die Schüler:innen können zu einem gehörten Stil eine Klanganweisung gestalten, die ihn in mindestens sechs Dimensionen beschreibt, ohne Titel, Namen oder fremden Text. Operator: gestalten (AFB III).'},
+  abschnitt_edit:{goal:'Ich kann beim Vergleich von Original und Bearbeitung hören, was sich außer dem Refrain verändert hat.',lz:'Die Schüler:innen können Original und Bearbeitung Abschnitt für Abschnitt vergleichen durch Benennung jeder Veränderung außerhalb des Refrains. Operator: vergleichen (AFB II–III).'},
+  regie_im_text:{goal:'Ich kann überprüfen, ob Suno die Regieanweisungen in den Abschnitts-Tags hörbar umsetzt.',lz:'Die Schüler:innen können an Bridge und letztem Refrain überprüfen, ob Suno die Regieanweisungen in den Abschnitts-Tags hörbar umsetzt. Operator: überprüfen (AFB III).'}
+};
+TASKS.forEach(t=>{const z=ZIELE_1001[t.id];if(z){t.goal=z.goal;t.plan.lernziel=z.lz}});
+{
+  const T=id=>TASKS.find(t=>t.id===id);
+  T('moll_vs_dorisch').begriffe=[['Modus','Tonleiter mit eigener Stufenfolge. Dorisch ist Moll mit großer Sexte.'],['Große Sexte','In A-Dorisch die sechste Stufe, das fis. In A-Moll steht dort das f, die kleine Sexte.'],['Kirchentonart','Ältere Bezeichnung für Modi wie Dorisch, Phrygisch oder Mixolydisch.']];
+  const k=T('unpraezis_vs_kontext');
+  k.begriffe=[['Idiom','Stilsprache, beschreibbar über Ära, Besetzung und Produktion.'],['Produktionsästhetik','Klangmerkmale, die bei Aufnahme und Abmischung entstehen, etwa Hall, Bandrauschen oder rückwärts laufende Klänge.'],['Besetzung','Die Instrumente und Stimmen, die in einem Stück spielen und singen.']];
+  k.rueckfluss='Die Klasse schreibt zu einem gehörten Original eine Stilbeschreibung in fünf Merkmalen.';
+  k.plan.bewertung='Bewertet wird der Hörvergleich mit Fachbegriffen. Das Suno-Ergebnis bleibt unbewertet.';
+  T('varianz').begriffe=[['Varianz','Unterschiede zwischen Takes bei gleicher Eingabe.'],['Generatives Modell','Erzeugt bei jedem Durchlauf eine neue Fassung, auch bei gleicher Eingabe.'],['Stabiles Merkmal','In jedem Take vorhanden, also wahrscheinlich durch die Klanganweisung gesteuert.']];
+  const sp=T('stilportraet');
+  sp.begriffe=sp.begriffe.map(b=>b[0]==='Analyse in Gegenrichtung'?['Werk','Eine bestimmte Komposition mit Titel und Urheber:in.']:b);
+}
 // ─── KI-Funktionen: mit Claude oder als kopierter Prompt ───
 function airPrompt(){
   const q=val('airQuery'),extra=val('airExtra');
@@ -5362,6 +5426,8 @@ const PRINT_CSS=`
 #printRoot .pa4 p{font-size:9.4pt}
 #printRoot .pa-check{border:.3mm solid #C9D5D7;border-radius:1.8mm;padding:2.2mm 3mm;display:grid;grid-template-columns:1fr 1fr;gap:1.2mm 5mm;font-size:9pt}
 #printRoot .pa-check b{grid-column:1/-1}
+#printRoot .pa-help{border:.3mm dashed #9AA8B2;border-radius:1.8mm;padding:1.6mm 3mm;font-size:8.6pt;line-height:1.35;display:flex;flex-wrap:wrap;gap:.5mm 4.5mm;align-content:flex-start}
+#printRoot .pa-help b{width:100%;margin-bottom:0}
 #printRoot .cb{display:inline-block;width:3mm;height:3mm;border:.3mm solid #232B35;border-radius:.5mm;margin-right:1.6mm;vertical-align:-.4mm}
 #printRoot .pw{border:.3mm solid #C9D5D7;border-radius:1.8mm;padding:2.2mm 3mm;flex:1;min-height:20mm;display:grid;grid-template-rows:auto 1fr}
 #printRoot .pw.acc{border-left:1mm solid #1F6E78}
@@ -5405,8 +5471,8 @@ function teacherHTML(t){
     <div class="pa-two"><div class="pa-box acc"><b>Hörauftrag</b>${esc(t.hoer)}</div><div class="pa-box var"><b>Eine Variable</b>${esc(t.variable)}</div></div>
     <div class="pa-box style"><b>Klanganweisung zum Start, Suno-Feld „Styles“</b><span lang="en">${esc(tagsOf(A)||'ohne Vorgabe')}</span></div>
     <div class="pa-two"><div><h2>Ablauf</h2><ol>${taskSteps(t).map(s=>`<li>${esc(s.t)}</li>`).join('')}</ol></div><div><h2>Begriffe für die Erklärphase</h2><dl>${(t.begriffe||[]).map(b=>`<dt>${esc(b[0])}</dt><dd>${esc(b[1])}</dd>`).join('')}</dl></div></div>
-    <div class="pa-two"><div><h2>Rückfluss in die Stunde</h2><p>${esc(t.rueckfluss||'')}</p></div><div><h2>Fallstricke</h2><ul>${t.note?`<li>${esc(t.note)}</li>`:''}<li>Variety auf 0 stellen und jede Fassung zweimal erzeugen. Zwei Takes derselben Anweisung können sich deutlich unterscheiden.</li><li>Die Hörerwartung steht auf dem Papier, bevor der erste Take läuft.</li></ul></div></div>
-    <div class="pa-check"><b>Vor der Stunde</b><span>${cb}Suno läuft nur am Gerät der Lehrkraft</span><span>${cb}Keine Namen, Stimmen, Fotos oder Videos von Lernenden</span><span>${cb}Keine fremden Liedtexte, Titel oder Künstlernamen</span><span>${cb}Takes vorab erzeugt oder Zeit dafür eingeplant</span></div>
+    <div class="pa-two"><div><h2>Rückfluss in die Stunde</h2><p>${esc(t.rueckfluss||'')}</p></div><div><h2>Fallstricke</h2><ul>${t.note?`<li>${esc(t.note)}</li>`:''}<li>Variety auf 0, jede Fassung zweimal erzeugen. Zwei Takes können sich deutlich unterscheiden.</li><li>Die Hörerwartung steht auf dem Papier, bevor der erste Take läuft.</li></ul></div></div>
+    <div class="pa-check"><b>Vor der Stunde</b><span>${cb}Suno läuft nur am Gerät der Lehrkraft</span><span>${cb}Keine Namen, Stimmen, Fotos oder Videos von Lernenden</span><span>${cb}Keine fremden Liedtexte, Titel oder Namen von Künstler:innen</span><span>${cb}Takes vorab erzeugt oder Zeit dafür eingeplant</span></div>
     ${printFoot('pa-foot')}</section>`;
 }
 function teacherCoverHTML(){
@@ -5415,8 +5481,8 @@ function teacherCoverHTML(){
     <div><h2>So läuft jede Aufgabe</h2><ol><li><strong>Frage</strong> stellen, die sich nur durch Hören beantworten lässt.</li><li><strong>Hörerwartung</strong> schriftlich festhalten, erst dann erzeugen.</li><li><strong>Zwei Takes</strong> hören, dann <strong>eine Variable</strong> ändern und erneut erzeugen.</li><li><strong>Abgleich</strong> mit Fachbegriffen, kurze Erklärphase.</li><li><strong>Rückfluss</strong>: Das Ergebnis wird Teil einer Musizier- oder Analysestunde.</li></ol></div>
     <div class="pa-two"><div class="pa-box"><b>Mit Geräten in den Gruppen</b>Die Gruppen bauen ihre Klanganweisung im Studio und übergeben sie als QR-Code oder Datei. Auf dem Gerät der Lehrkraft landet alles in der Sammelmappe, von dort wird in Suno erzeugt.</div><div class="pa-box"><b>Ohne Geräte in den Gruppen</b>Die Gruppen arbeiten mit Aufgabenkarte und Hörprotokoll. Suno läuft nur vorn, die Takes sind vorab erzeugt oder entstehen live am Beamer.</div></div>
     <div><h2>Die Aufgaben</h2><table class="pt slim"><thead><tr><th>Aufgabe</th><th>Niveau</th></tr></thead><tbody>${TASKS.filter(t=>!t.my).map(t=>`<tr><td><strong>${esc(t.num)} · ${esc(t.title)}</strong><br>${esc(t.desc)}</td><td>${esc(t.levelLabel)}</td></tr>`).join('')}</tbody></table></div>
-    <div class="pa-check"><b>Datenschutz und Urheberrecht</b><span>${cb}Suno läuft nur am Gerät der Lehrkraft</span><span>${cb}Lernende brauchen kein Konto</span><span>${cb}Übergabe nur mit Gruppenbuchstaben</span><span>${cb}Keine Stimmen, Fotos oder Videos von Lernenden hochladen</span><span>${cb}Keine fremden Liedtexte, Titel oder Künstlernamen</span><span>${cb}Ergebnisse, die nach einem bekannten Werk klingen, nicht verwenden</span></div>
-    <p>Bewertet wird der Prozess aus Erwartung, Abgleich und Begriffsverwendung (Fachliche Empfehlung zur Leistungsbewertung an Thüringer Schulen, Kap. 12). Free-Konten enthalten laut Preisseite von Suno keine monatlichen Downloads, die Songs lassen sich aus der Bibliothek abspielen (Stand ${STAND}).</p>
+    <div class="pa-check"><b>Datenschutz und Urheberrecht</b><span>${cb}Suno läuft nur am Gerät der Lehrkraft</span><span>${cb}Lernende brauchen kein Konto</span><span>${cb}Übergabe nur mit Gruppenbuchstaben</span><span>${cb}Keine Stimmen, Fotos oder Videos hochladen</span><span>${cb}Keine fremden Liedtexte, Titel oder Namen von Künstler:innen</span><span>${cb}Was wie ein bekanntes Werk klingt, nicht nutzen</span><span>${cb}Texte von Lernenden nur mit Zustimmung</span><span>${cb}KI-Ergebnisse kennzeichnen</span></div>
+    <p>Bewertet wird der Prozess aus Erwartung, Abgleich und Begriffen (Fachliche Empfehlung zur Leistungsbewertung, Kap. 12). Ein Suno-Konto setzt 18 Jahre voraus, ab 13 die Zustimmung der Eltern. Free-Konten haben keine Downloads (Stand ${STAND}).</p>
     ${printFoot('pa-foot')}</section>`;
 }
 function protokollHTML(){
@@ -5426,6 +5492,7 @@ function protokollHTML(){
   return `<section class="pa4"><div class="pa-head"><div class="pa-kick">Hörprotokoll · Seite 1</div><h1>Erst erwarten, dann hören</h1></div>${head}
       ${w('acc','1 · Unsere Hörerwartung','Schreibt auf, bevor der erste Take läuft. Stimmung, Klang, Tempo, Besonderheiten.',58)}
       <div><h2>2 · Abgleich nach dem Hören</h2><p>Suno liefert zwei Takes. Hört beide, bevor ihr schreibt.</p></div>
+      <div class="pa-two"><div class="pa-help"><b>Satzanfänge</b><span>Wir haben erwartet, dass …, weil …</span><span>In Take 1 hören wir …, in Take 2 …</span><span>Anders als erwartet klingt …</span><span>Nicht gehört haben wir …, obwohl …</span></div><div class="pa-help"><b>Wortspeicher</b><span>Tempo · Tonart · Modus · Besetzung · Rhythmus · Dynamik · Klangfarbe · Gesang · Hauptstimme · Chor · Strophe · Refrain · Bridge · Hall · trocken · treibend</span></div></div>
       <div class="pa-three" style="flex:1">${w('g','Wie erwartet')}${w('y','Anders als erwartet')}${w('r','Nicht gehört')}</div>
       ${w('acc','Unsere Klanganweisung','Styles, damit ihr später wisst, worauf sich das Protokoll bezieht.',40)}
       ${printFoot('pa-foot')}</section>
@@ -5433,6 +5500,7 @@ function protokollHTML(){
       <div><h2>3 · Angabe für Angabe</h2><table class="pt"><thead><tr><th>Angabe aus der Klanganweisung</th><th>klar hörbar</th><th>erahnbar</th><th>nicht hörbar</th></tr></thead><tbody>${rows}</tbody></table></div>
       <div><h2>4 · Varianz</h2><p>Dieselbe Anweisung zwei- bis dreimal erzeugen, Variety auf 0.</p></div>
       <div class="pa-three" style="flex:1">${w('g','Immer da')}${w('y','Ändert sich')}${w('r','Manchmal weg')}</div>
+      <div class="pa-help"><b>Satzanfänge</b><span>In jedem Take ist …, das spricht dafür, dass …</span><span>Von Take zu Take ändert sich …</span><span>Wir würden … ändern, weil …</span></div>
       ${w('acc','Was schließt ihr daraus?','',30)}
       ${w('acc','5 · Revision','Was würdet ihr an der Klanganweisung ändern und warum?',38)}
       ${printFoot('pa-foot')}</section>`;
