@@ -746,7 +746,7 @@ body.vk .chipab.an.passt::after{background:#ffffff!important}
 <body class="vk">
 <header class="kopf">
   <button type="button" id="b-zurueck" class="zur" hidden>Zurück</button>
-  <h1>Satzbaukasten</h1><span class="pille">Beta 9</span><span class="luecke"></span>
+  <h1>Satzbaukasten</h1><span class="pille">Beta 10</span><span class="luecke"></span>
   <button type="button" id="b-saetze">Sätze</button>
   <button type="button" id="b-hilfe">Hilfe</button>
 </header>
@@ -4146,6 +4146,50 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
     return s;
   }
 
+  /* ---------------------------------------------------------------- Weihnachtslieder (Beta 10), Melodien gemeinfrei
+     Quellen der Melodien in QUELLEN_NOTIZEN.md. Punktierte Rhythmen und Sechzehntel passen nur mit verdoppelten Notenwerten ins Achtelraster. */
+  function frohUndMunter() {                                              // Wikibooks-Liederbuch, ABC in C-Dur
+    var s = SB.neuerSatz({ titel: "Lasst uns froh und munter sein", unter: "Nikolauslied, Melodie überliefert", zz: 4, takte: 10, tempo: 120, stimmen: 0 });
+    s.stimmen.push(SB.stimmeAusKurz(s, "Melodie", "m", ["G . G . G A G F", "E . E . E . . .", "F . F . F G F E", "D . D . D . . .", "C . D . E . F .",
+      "G A G A G . . .", "C' . G . G A G F", "E . D . G . . .", "C' . G . G A G F", "E . D . C . . ."]));
+    mitBegleitung(s, "C | C | G7 | G | C | C | C | G C | C | G C", { gruppen: 2, stufe: 1 });
+    s.teil[0] = "A"; s.teil[4] = "B";
+    s.ablauf = "Die Melodie braucht sieben Röhren, von C bis zum hohen C ohne H. Im Teil B steht die Schlusszeile zweimal, beim ersten Mal endet sie auf G, beim zweiten Mal auf C. Begleitung in der Satzart Gruppen mit je zwei Röhren.";
+    return s;
+  }
+
+  function klingGloeckchen() {                                            // Wikibooks-Liederbuch, ABC in C-Dur, 2/4-Takt
+    var s = SB.neuerSatz({ titel: "Kling, Glöckchen", unter: "Weihnachtslied aus dem 19. Jahrhundert, Notenwerte verdoppelt", zz: 4, takte: 16, tempo: 144, stimmen: 0 });
+    var a = ["G . . . E . F .", "G A G A G . . .", "F . . . D . G ."];
+    s.stimmen.push(SB.stimmeAusKurz(s, "Melodie", "m", a.concat(["E . . . . . . .", "D . D . E . C .", "E . . . D . . .", "F . F . G . D .", "F . . . E . . .",
+      "D . D . E . Fis .", "G . . . D . . .", "E . A . G . Fis .", "A . . . G . . ."], a, ["C . . . . . . ."])));
+    mitBegleitung(s, "C | C | G7 | C | G C | C G | G7 | G7 C | G D7 | G | C D7 | D7 G | C | C | G7 | C", { art: 3, stufe: 1 });
+    s.teil[0] = "A"; s.teil[4] = "B"; s.teil[8] = "B'"; s.teil[12] = "A";
+    s.ablauf = "Die Notenwerte sind gegenüber dem 2/4-Takt des Liedes verdoppelt, damit die Sechzehntel ins Achtelraster passen. Im Teil B' weicht die Melodie nach G-Dur aus und braucht dafür ein Fis aus dem chromatischen Ergänzungsset. Begleitung in der Satzart Drei Stimmen.";
+    return s;
+  }
+
+  function tannenbaum() {                                                 // heute gesungene Fassung, nach C-Dur versetzt
+    var s = SB.neuerSatz({ titel: "O Tannenbaum", unter: "Volksweise, Text Ernst Anschütz (1824), nach C-Dur versetzt", zz: 3, takte: 13, tempo: 100, stimmen: 0 });
+    var a = ["C C C . . D", "E E E . . E", "D E F . H, ."];
+    s.stimmen.push(SB.stimmeAusKurz(s, "Melodie", "m", [". . . . G, ."].concat(a, ["D . C . . G", "G E A . . G", "G F F . . F", "F D G . . F", "F E E . . G,"], a, ["D . C . . ."])));
+    mitBegleitung(s, "- | C | C | G7 | G C | C | G7 | G7 | G7 C | C | C | G7 | G C", { art: 3, stufe: 1 });
+    s.teil[0] = "Auftakt"; s.teil[1] = "A"; s.teil[5] = "B"; s.teil[9] = "A";
+    s.ablauf = "Auftakt auf der Drei. Die punktierten Achtel des Liedes sind zu geraden Achteln vereinfacht. Das tiefe G und das tiefe H tragen eine Oktavkappe. Nach dem Teil B kehrt der Teil A wieder.";
+    return s;
+  }
+
+  function stilleNacht() {                                                // heute gesungene Fassung, aus dem 6/8-Takt mit doppelten Notenwerten
+    var s = SB.neuerSatz({ titel: "Stille Nacht", unter: "Franz Xaver Gruber (1818), heute gesungene Fassung, nach G-Dur versetzt", zz: 3, takte: 24, tempo: 132, stimmen: 0 });
+    var a = ["D . . E D .", "H, . . . . ."], b = ["E . . . E .", "G . . Fis E ."];
+    s.stimmen.push(SB.stimmeAusKurz(s, "Melodie", "m", a.concat(a, ["A . . . A .", "Fis . . . . .", "G . . . G .", "D . . . . ."], b, a, b, a,
+      ["A . . . A .", "C' . . A Fis .", "G . . . . .", "H . . . . .", "G . . D H, .", "D . . C A, .", "G, . . . . .", ". . . . . ."])));
+    mitBegleitung(s, "G | G | G | G | D | D | G | G | C | C | G | G | C | C | G | G | D7 | D7 | G | G | G | D7 | G | G", { gruppen: 2, stufe: 1 });
+    s.teil[0] = "A"; s.teil[8] = "B"; s.teil[16] = "C";
+    s.ablauf = "Die Notenwerte sind gegenüber dem 6/8-Takt des Liedes verdoppelt, so passt der punktierte Rhythmus ins Achtelraster. Ein Takt des Liedes ergibt zwei Takte im Satz. In G-Dur braucht die Melodie ein Fis aus dem chromatischen Ergänzungsset, das tiefe G, A und H tragen eine Oktavkappe. Ruhig spielen.";
+    return s;
+  }
+
   function becherspiel() {                                                // bekanntes Bewegungsmuster in eigener Schreibweise, ohne Lied
     var s = SB.neuerSatz({ titel: "Becherspiel", unter: "Bekanntes Bewegungsmuster mit Bechern, ohne Lied, Notenwerte verdoppelt", zz: 4, takte: 4, tempo: 120, stimmen: 0 });
     var st = SB.neueStimme(s, "Becher", "r"), K = 1, T = 2, G = 3, H = 4, A = 5, O = 7, R = 8, W = 9;
@@ -4177,6 +4221,10 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
     { name: "Amazing Grace", text: "3/4-Takt, fünf Töne, Bass und Nachschlag", bau: amazingGrace, melodie: true },
     { name: "Row, Row, Row Your Boat", text: "Kanon im 6/8-Takt mit Bordun", bau: rowYourBoat, melodie: true },
     { name: "Morgen kommt der Weihnachtsmann", text: "Form A, B, A mit sechs Röhren", bau: weihnachtsmann, melodie: true },
+    { name: "Lasst uns froh und munter sein", text: "Nikolauslied mit sieben Röhren", bau: frohUndMunter, melodie: true },
+    { name: "Kling, Glöckchen", text: "Notenwerte verdoppelt, mit Fis im Mittelteil", bau: klingGloeckchen, melodie: true },
+    { name: "O Tannenbaum", text: "3/4-Takt mit Auftakt, zwei Oktavkappen", bau: tannenbaum, melodie: true },
+    { name: "Stille Nacht", text: "In G-Dur mit Fis, Notenwerte verdoppelt", bau: stilleNacht, melodie: true },
     { name: "Joplin: The Entertainer", text: "Erster Teil mit Melodie, Bass und Nachschlag, mit Gis", bau: entertainer, melodie: true },
     { name: "Becherspiel", text: "Becherstimme in zwei Teilen mit Merksatz, ohne Röhren", bau: becherspiel, becher: true }
   ];
@@ -4188,7 +4236,8 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
     "Bruder Jakob": [2, "Kanon Lied"], "Ode an die Freude": [1, "Klassik Lied"], "Kanon-Folge": [2, "Akkordfolge"], "Four-Chord-Song": [2, "Akkordfolge Pop"],
     "Blues in C": [2, "Akkordfolge Blues"], "Brahms: Hauptthema der 1. Sinfonie": [2, "Klassik"], "Mozart: Eine kleine Nachtmusik": [3, "Klassik"], "Jingle Bells": [1, "Lied Weihnachten"],
     "Grieg: Morgenstimmung": [2, "Klassik"], "Cuncti simus concanentes": [1, "Lied Mittelalter"], "Haydn: Sinfonie mit dem Paukenschlag": [3, "Klassik"], "Pachelbel: Kanon": [3, "Klassik Kanon"],
-    "Oh! Susanna": [2, "Lied"], "Amazing Grace": [2, "Lied"], "Row, Row, Row Your Boat": [2, "Kanon Lied"], "Morgen kommt der Weihnachtsmann": [1, "Lied Weihnachten"], "Joplin: The Entertainer": [3, "Klassik Ragtime"], "Becherspiel": [2, "Becher Rhythmus"]
+    "Oh! Susanna": [2, "Lied"], "Amazing Grace": [2, "Lied"], "Row, Row, Row Your Boat": [2, "Kanon Lied"], "Morgen kommt der Weihnachtsmann": [1, "Lied Weihnachten"],
+    "Lasst uns froh und munter sein": [1, "Lied Weihnachten"], "Kling, Glöckchen": [2, "Lied Weihnachten"], "O Tannenbaum": [2, "Lied Weihnachten"], "Stille Nacht": [3, "Lied Weihnachten"], "Joplin: The Entertainer": [3, "Klassik Ragtime"], "Becherspiel": [2, "Becher Rhythmus"]
   });
 })(typeof window !== "undefined" ? window : globalThis);
 
