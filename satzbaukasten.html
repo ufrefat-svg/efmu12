@@ -375,6 +375,13 @@ details.tippd p{margin:4px 0;max-width:70ch}
 
 /* Zurück: im Kopf eine Ansicht zurück, in jedem Fenster einen Schritt zurück */
 .kopf .zur{display:inline-flex;align-items:center;gap:4px}
+.rueckbar{position:sticky;top:-14px;z-index:4;margin:-14px -16px 10px;padding:10px 16px 8px;background:#F4F6FB!important;border-bottom:1px solid #DCDFF0!important}
+.rueckbar[hidden]{display:none}
+.rueckbar .btn{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-height:44px}
+.rueckbar .btn svg{flex:none}
+.rueckbar .rbtitel{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.rueckbar .rbort{flex:none;font-weight:600;font-size:13px;opacity:.8}
+@media(max-width:520px){.rueckbar{top:-12px;margin:-12px -12px 10px;padding:8px 12px 6px}}
 .kopf .zur[hidden]{display:none}
 .dlg header .zur{display:inline-flex;align-items:center;gap:4px;flex:none}
 .dlg header .zur svg{display:block}
@@ -408,6 +415,9 @@ body.vk .kopf button{background:#2B2E8C!important;color:#ffffff!important;border
 body.vk .kopf button:hover{background:#3A3DA8!important;border-color:#ffffff!important}
 body.vk .kopf .zur{background:#FFB020!important;color:#23264F!important;border-color:#FFB020!important}
 body.vk .kopf .zur:hover{background:#FFC04D!important;border-color:#FFC04D!important}
+body.vk .rueckbar{background:#F4F6FB!important;border-bottom-color:#DCDFF0!important}
+body.vk .rueckbar .btn{background:#FFB020!important;color:#23264F!important;border-color:#FFB020!important;font-weight:800}
+body.vk .rueckbar .btn:hover{background:#FFC04D!important;border-color:#FFC04D!important}
 body.vk .satzzeile{border-bottom-color:#DCDFF0!important}
 body.vk .satzzeile input:hover,body.vk .satzzeile input:focus{border-color:#D3D6EA!important}
 body.vk #titel{font-family:"SBK Anzeige","Trebuchet MS",system-ui,sans-serif;font-weight:400;font-size:23px}
@@ -766,6 +776,7 @@ body.vk .chipab.an.passt::after{background:#ffffff!important}
   <button type="button" role="tab" data-v="feedback">Feedback</button>
 </div>
 <main id="haupt">
+  <div class="rueckbar" id="rueckbar" hidden><button type="button" class="btn" id="b-rueckbar"></button></div>
   <p class="tafeltitel" id="tafeltitel"></p>
   <div class="ablaufzeile" id="ablaufzeile" hidden></div>
   <div class="sichtzeile" id="sichtzeile" hidden>
@@ -5474,7 +5485,7 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
       "<li><b>Drucken.</b> Der Reiter Arbeitsblatt speichert ein PDF, als Partitur oder als Stimmenauszug für jede Gruppe.</li></ol>" +
       "<p>Bleibt das Gerät still, hilft ein Blick auf Lautstärke und Stummschalter. Auf iPad und iPhone erklingt der Ton erst nach einem ersten Tipp, zum Beispiel auf den Startknopf.</p>",
     tiefer: [
-      ["Was auf dem Bildschirm wo liegt", "<ul><li><b>Oben</b> stehen Sätze und Hilfe. Links erscheint „Zurück“, sobald es einen Schritt zurück gibt.</li><li><b>Die Reiter</b> wechseln zwischen Start, Bauen, Noten, Röhren, Arbeitsblatt, Anleitung, Didaktik und Feedback.</li><li><b>Unter den Reitern</b> stehen in den Arbeitsansichten Titel und Untertitel des Satzes. Beide Felder lassen sich überschreiben.</li><li><b>Unten</b> liegen die Töne zum Setzen und die Knöpfe zum Abspielen.</li></ul>"],
+      ["Was auf dem Bildschirm wo liegt", "<ul><li><b>Oben</b> stehen Sätze und Hilfe. Links erscheint „Zurück“, sobald es einen Schritt zurück gibt.</li><li><b>In Anleitung, Didaktik und Feedback</b> steht oben „Zurück zu …“ mit dem Titel des Satzes. Der Knopf führt an die Stelle, an der Sie zuletzt am Satz gearbeitet haben.</li><li><b>Die Reiter</b> wechseln zwischen Start, Bauen, Noten, Röhren, Arbeitsblatt, Anleitung, Didaktik und Feedback.</li><li><b>Unter den Reitern</b> stehen in den Arbeitsansichten Titel und Untertitel des Satzes. Beide Felder lassen sich überschreiben.</li><li><b>Unten</b> liegen die Töne zum Setzen und die Knöpfe zum Abspielen.</li></ul>"],
       ["Wo meine Arbeit bleibt", "<p>Die App merkt sich den aktuellen Satz und Ihre Einstellungen in diesem Browser auf diesem Gerät. Sie überträgt keine Daten. Wer das Gerät wechselt, nimmt den Satz als Code mit. Das beschreibt das Thema Merken und weitergeben.</p>"]
     ],
     tun: [["Startseite öffnen", "start"], ["Bibliothek öffnen", "saetze"], ["Thema Merken und weitergeben", "thema:anleitung:merken"]]
@@ -5783,7 +5794,7 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
       "<li><b>Bereiche.</b> Die Marken über den Karten zeigen einen Bereich allein. „Liste“ stellt die Karten als Zeilen dar.</li>" +
       "<li><b>Karte ziehen.</b> Der Knopf öffnet eine Karte, die Sie noch nicht angesehen haben.</li>" +
       "<li><b>Stern und Haken.</b> Der Stern im Fenster merkt eine Karte, sie steht danach oben unter „Gemerkt“. Der Haken zeigt, was Sie angesehen haben. Beides bleibt auf diesem Gerät.</li>" +
-      "<li><b>Blättern.</b> Unten im Fenster geht es zur nächsten Karte, mit der Tastatur über die Pfeiltasten. „Passt dazu“ führt zu verwandten Karten.</li><li><b>Zurück.</b> In jedem Fenster führt „Zurück“ einen Schritt zurück, zum Beispiel von einer verwandten Karte in die Karte davor. „Zurück“ im Kopf der App führt in die vorige Ansicht.</li>" +
+      "<li><b>Blättern.</b> Unten im Fenster geht es zur nächsten Karte, mit der Tastatur über die Pfeiltasten. „Passt dazu“ führt zu verwandten Karten.</li><li><b>Zurück.</b> In jedem Fenster führt „Zurück“ einen Schritt zurück, zum Beispiel von einer verwandten Karte in die Karte davor. „Zurück“ im Kopf der App führt in die vorige Ansicht, an dieselbe Stelle. Das Zurück des Browsers und die Wischgeste am Handy tun dasselbe, ein offenes Fenster schließen sie zuerst.</li>" +
       "<li><b>Hilfe.</b> Der Knopf oben rechts zeigt zum aktuellen Reiter bis zu vier Didaktik-Tipps und die passenden Anleitungen. Im Assistenten und in der Bibliothek steht je ein aufklappbarer Tipp.</li></ul>",
     tun: [["Reiter Didaktik", "reiter:didaktik"], ["Startseite öffnen", "start"]]
   };
@@ -6896,6 +6907,11 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
   };
   var ANSICHTEN = ["start", "bauen", "noten", "roehren", "blatt", "anleitung", "didaktik", "feedback"];
   var wege = [];                                                          // Verlauf der Ansichten für den Knopf „Zurück“ im Kopf
+  // Seit Beta 10: Wer aus der Arbeit am Satz in Anleitung, Didaktik oder Feedback geht, kommt an dieselbe Stelle zurück.
+  // stand: Scrollstand je Ansicht. arbeit: in welcher Ansicht zuletzt am Satz gearbeitet wurde (für die Leiste „Zurück zu …“).
+  // verlauf: Einträge im Browserverlauf, damit Wischgeste und Zurück des Browsers in der App bleiben (pos zählt die Einträge, vor merkt Ansichten fürs Vorwärts).
+  var ARBEIT = ["bauen", "noten", "roehren", "blatt"], REITER = { bauen: "Bauen", noten: "Noten", roehren: "Röhren", blatt: "Arbeitsblatt" };
+  var stand = {}, arbeit = null, gezeigt = null, verlauf = { an: false, pos: 0, vor: [], still: 0 };
   var ruhig = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------------------------------------------------------------- Speicher (nur dieser Browser) */
@@ -7153,6 +7169,10 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
   }
   function zeichne() {
     if (ANSICHTEN.indexOf(Z.ansicht) < 0) Z.ansicht = "bauen";
+    if (gezeigt !== Z.ansicht) {                                          // Wechsel der Ansicht: Stelle der alten merken, solange sie noch zu sehen ist
+      if (gezeigt !== null) { stand[gezeigt] = $("haupt").scrollTop; if (ARBEIT.indexOf(gezeigt) >= 0) arbeit = { v: gezeigt }; }
+      gezeigt = Z.ansicht;
+    }
     var s = Z.satz, lesen = Z.ansicht === "start" || Z.ansicht === "anleitung" || Z.ansicht === "didaktik" || Z.ansicht === "feedback";
     if (lesen && player.aktiv && !Z.vorschau) player.stop();
     if (document.activeElement !== $("titel")) $("titel").value = s.titel;
@@ -7166,6 +7186,9 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
     document.body.classList.toggle("lesen", lesen);
     document.body.classList.toggle("aufstart", Z.ansicht === "start");
     $("b-zurueck").hidden = Z.ansicht === "start" && !wege.length;         // auf der Startseite ohne Vorgeschichte gibt es kein Zurück
+    var leiste = lesen && Z.ansicht !== "start" && !!arbeit;              // in Anleitung, Didaktik und Feedback: ein Knopf zurück an die Arbeit am Satz
+    $("rueckbar").hidden = !leiste;
+    if (leiste) $("b-rueckbar").innerHTML = SB.bild("links", 16) + '<span class="rbtitel">Zurück zu „' + esc(s.titel) + "“</span>" + '<span class="rbort">' + REITER[arbeit.v] + "</span>";
     alle(".reiter button").forEach(function (b) { b.setAttribute("aria-selected", String(at(b, "data-v") === Z.ansicht)); });
     ANSICHTEN.forEach(function (v) { $("v-" + v).hidden = v !== Z.ansicht; });
     if (Z.ansicht !== "start" && $("v-start").firstChild) $("v-start").innerHTML = "";   // die Startseite entsteht bei jedem Besuch neu
@@ -7717,6 +7740,7 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
     }
     Z.khZu = false;
     merkeWeg("bauen");
+    ARBEIT.forEach(function (v) { delete stand[v]; });                    // ein anderer Satz beginnt oben
     Z.satz = satz; Z.bericht = null; Z.cursor = null; Z.ansicht = "bauen"; Z.stop = null;
     if (!SB.hatBeides(satz)) Z.opt.zeige = "alles";
     Z.becher = SB.hatBecher(satz) && !satz.stimmen.some(function (st) { return st.art !== "r"; });   // nur Becher: unten gleich die Bewegungen zeigen
@@ -7881,7 +7905,7 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
         Z.satz = neuS;
       }
       Z.bericht = { stufe: o.stufe, gruppen: r.gruppen, namen: namen, aktiv: r.aktiv, fehlend: r.fehlend, hinweise: r.hinweise, art: r.art || 2, voll: r.voll, akkorde: r.akkorde, technik: r.technik || 0 };
-      merkeWeg("bauen"); Z.ansicht = "bauen"; Z.cursor = null; d.zu(); geaendert(); $("haupt").scrollTop = 0;
+      merkeWeg("bauen"); ARBEIT.forEach(function (v) { delete stand[v]; }); Z.ansicht = "bauen"; Z.cursor = null; d.zu(); geaendert(); $("haupt").scrollTop = 0;
     });
     neu();
   }
@@ -7901,12 +7925,55 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
   }
 
   /* ---------------------------------------------------------------- Schnittstelle für die Module (Wissen, Bibliothek, Gerätetest) */
-  function merkeWeg(ziel) { if (ziel !== Z.ansicht) { wege.push(Z.ansicht); if (wege.length > 30) wege.shift(); } }
-  function zeige(ansicht, ohneVerlauf) { if (Z.vorschau && Z.ansicht === "start") vorhoeren(null); if (!ohneVerlauf) merkeWeg(ansicht); Z.ansicht = ansicht; zeichne(); $("haupt").scrollTop = 0; }
-  function zurueck() {                                                    // Knopf im Kopf: eine Ansicht zurück, ohne Vorgeschichte zur Startseite
+  function merkeWeg(ziel) {                                               // ein Schritt nach vorn: in den Weg für „Zurück“ und in den Browserverlauf
+    if (ziel === Z.ansicht) return;
+    wege.push(Z.ansicht); if (wege.length > 30) wege.shift();
+    verlauf.vor = [];
+    if (verlauf.an) { try { history.pushState({ sbk: verlauf.pos + 1 }, ""); verlauf.pos++; } catch (e) { verlauf.an = false; } }
+  }
+  // zurueckSpringen: an die gemerkte Stelle der Ansicht. Arbeitsansichten öffnen immer dort, wo zuletzt gearbeitet wurde, Lesen beginnt sonst oben.
+  function zeige(ansicht, ohneVerlauf, zurueckSpringen) {
+    if (Z.vorschau && Z.ansicht === "start") vorhoeren(null);
+    if (!ohneVerlauf) merkeWeg(ansicht);
+    Z.ansicht = ansicht; zeichne();
+    var h = $("haupt"), y = zurueckSpringen || ARBEIT.indexOf(ansicht) >= 0 ? stand[ansicht] || 0 : 0;
+    h.scrollTop = y;
+    if (y && window.requestAnimationFrame) requestAnimationFrame(function () { if (Z.ansicht === ansicht) h.scrollTop = y; });   // falls die Seite erst danach ihre Höhe hat
+  }
+  function schritt() {                                                    // eine Ansicht zurück, ohne Vorgeschichte zur Startseite
     var v = wege.pop();
     while (v !== undefined && v === Z.ansicht) v = wege.pop();
-    zeige(v || "start", true);
+    verlauf.vor.push(Z.ansicht);
+    zeige(v || "start", true, true);
+  }
+  function vorwaerts() {                                                  // Vorwärts im Browser nach einem Zurück
+    var v = verlauf.vor.pop();
+    if (!v) return;
+    wege.push(Z.ansicht);
+    zeige(v, true, true);
+  }
+  function zurueck() {                                                    // Knopf im Kopf: der Schritt geschieht sofort, der Browserverlauf geht still mit
+    schritt();
+    if (verlauf.an && verlauf.pos > 0) {
+      verlauf.still++; verlauf.pos--;
+      try { history.back(); } catch (e) { verlauf.still--; }
+      setTimeout(function () { verlauf.still = 0; }, 1000);              // kommt kein popstate, soll das nächste echte nicht verschluckt werden
+    }
+  }
+  function amVerlauf(e) {                                                 // Wischgeste oder Zurück und Vorwärts des Browsers
+    var ziel = e.state && typeof e.state.sbk === "number" ? e.state.sbk : null;
+    if (verlauf.still > 0) { verlauf.still--; if (ziel !== null) verlauf.pos = ziel; return; }   // Folge des Knopfs „Zurück“, der Schritt ist schon getan
+    if (ziel === null || ziel === verlauf.pos) return;                    // fremder Eintrag, etwa ein Sprung zu einem Anker
+    var fenster = $("schicht").lastChild;
+    if (fenster) {                                                        // ein offenes Fenster schließt zuerst, die Ansicht bleibt
+      var zu = fenster.querySelector("[data-zu]");
+      if (zu) zu.click();
+      try { history.go(verlauf.pos - ziel); } catch (x) { /* dann stimmt der Zähler beim nächsten Schritt */ }
+      return;
+    }
+    var n = Math.abs(ziel - verlauf.pos), rueck = ziel < verlauf.pos;
+    verlauf.pos = ziel;
+    while (n-- > 0) { if (rueck) schritt(); else vorwaerts(); }
   }
   var U = SB.UI = { Z: Z, $: $, alle: alle, at: at, dialog: dialog, toast: toast, knopf: knopf, wahlSetzen: wahlSetzen, kreisSvg: kreisSvg, sichern: sichern, heute: heute, kopieren: kopieren,
     speichern: speichern, blattOpt: blattOpt, fusszeile: fusszeile, gotoSection: gotoSection, oeffne: oeffne, assistent: assistent, ablaufDialog: ablaufDialog, transDialog: transDialog,
@@ -7930,6 +7997,13 @@ var SB_ASSETS = {"GLYPHS":{"clef":{"d":"M1.504 -1.048C1.436 -1.324 1.364 -1.604 
     $("b-saetze").addEventListener("click", function () { U.bibliothek(); });
     $("b-hilfe").addEventListener("click", function () { U.hilfe(); });
     $("b-zurueck").addEventListener("click", zurueck);
+    $("b-rueckbar").addEventListener("click", function () { if (arbeit) zeige(arbeit.v, false, true); });
+    try {                                                                 // Browserverlauf: nach einem Neuladen zählt die App vom vorhandenen Eintrag aus weiter
+      var hs = history.state;
+      if (hs && typeof hs.sbk === "number") verlauf.pos = hs.sbk; else history.replaceState({ sbk: 0 }, "");
+      verlauf.an = true;
+      window.addEventListener("popstate", amVerlauf);
+    } catch (e) { verlauf.an = false; }
     $("b-schritt").addEventListener("click", schrittWeiter);
     $("b-modus").addEventListener("click", function () {
       Z.opt.einfach = !Z.opt.einfach; sichern(); zeichne();
